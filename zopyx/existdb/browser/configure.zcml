@@ -3,5 +3,14 @@
     xmlns:zcml="http://namespaces.zope.org/zcml"
     xmlns:browser="http://namespaces.zope.org/browser"
     >
+    
+    <browser:page
+        for="zopyx.existdb.connector.Connector"
+        name="connector-view"
+        class=".connector.Connector"
+        template="connector_view.pt"
+        permission="zope2.View"
+    />
+
 
 </configure>
