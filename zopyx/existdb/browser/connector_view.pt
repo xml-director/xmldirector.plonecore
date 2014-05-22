@@ -18,7 +18,7 @@
       <div tal:content="context/Title">Title inserted here</div>
       hello world
       <pre tal:content="context/url" />
-
+      <pre tal:content="view/subpath" />
   </metal:content-core>
 </metal:main>
 

@@ -18,5 +18,4 @@ class IConnector(model.Schema):
 
 
 class Connector(Container):
-
     implements(IConnector)

@@ -5,12 +5,11 @@
     >
     
     <browser:page
-        for="zopyx.existdb.connector.Connector"
+        for="*"
         name="connector-view"
         class=".connector.Connector"
         template="connector_view.pt"
         permission="zope2.View"
     />
-
 
 </configure>
