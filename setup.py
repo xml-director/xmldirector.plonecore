@@ -5,7 +5,7 @@ version = '0.0.1'
 
 setup(name='zopyx.existdb',
       version=version,
-      description="Plone-ExistDB integration"
+      description="Plone-ExistDB integration",
       long_description=open(os.path.join("docs", "source", "README.rst")).read() + "\n" +
                        open(os.path.join("docs", "source", "HISTORY.rst")).read(),
       # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
