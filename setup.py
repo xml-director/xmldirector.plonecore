@@ -1,11 +1,11 @@
 from setuptools import setup, find_packages
 import os
 
-version = '0.2.2'
+version = '0.0.1'
 
-setup(name='pp.client-plone',
+setup(name='zopyx.existdb',
       version=version,
-      description="Produce & Publisher Plone Client Connector",
+      description="Plone-ExistDB integration"
       long_description=open(os.path.join("docs", "source", "README.rst")).read() + "\n" +
                        open(os.path.join("docs", "source", "HISTORY.rst")).read(),
       # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
@@ -19,23 +19,16 @@ setup(name='pp.client-plone',
       keywords='PDF Plone Python EBook EPUB',
       author='Andreas Jung',
       author_email='info@zopyx.com',
-      url='http://pypi.python.org/pypi/pp.client-plone',
+      url='http://pypi.python.org/pypi/zopyx.existdb',
       license='GPL',
       packages=find_packages(exclude=['ez_setup']),
-      namespace_packages=['pp', 'pp.client', 'pp.client'],
+      namespace_packages=['zopyx', 'zopyx.existdb'],
       include_package_data=True,
       zip_safe=False,
       install_requires=[
           'setuptools',
           'plone.browserlayer',
-          'BeautifulSoup',
           'lxml',
-          'Pillow',
-          'cssutils',
-          'pp.client-python',
-          'pp.core',
-          'archetypes.schemaextender',
-          'unittest2'
           # -*- Extra requirements: -*-
       ],
       tests_require=['zope.testing'],
