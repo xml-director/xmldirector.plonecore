@@ -9,6 +9,8 @@ except ImportError:
     from pkgutil import extend_path
     __path__ = extend_path(__path__, __name__)
 
-from zope.i18nmessageid import MessageFactory
-
-MessageFactory = MessageFactory('eteaching.policy')
+try:
+    from zope.i18nmessageid import MessageFactory
+    MessageFactory = MessageFactory('eteaching.policy')
+except ImportError:
+    pass
