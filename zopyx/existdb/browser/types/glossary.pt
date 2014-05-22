@@ -1,0 +1,15 @@
+<div class="type-glossary content-body" i18n:domain="ploneglossary">
+    <h1 class="title" tal:content="context/Title" />
+    <div class="description" tal:content="structure context/Description" />
+
+    <tal:loop repeat="entry view/getGlossaryDefinitions">
+        <div class="type-glossary-definition"> 
+            <h2 class="title" tal:content="entry/Title" />
+            <div class="variants" tal:condition="entry/getVariants">
+                <span class="label" i18n:translate="label_glossary_variants">Variants</span>:
+                <span tal:content="python: ', '.join(entry.getVariants())" />
+            </div>
+            <div class="body" tal:content="structure entry/getDefinition" />
+        </div>
+    </tal:loop>
+</div>

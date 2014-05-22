@@ -1,0 +1,4 @@
+<layers>
+    <layer name="zopyx.existdb"
+        interface="pp.client.plone.interfaces.IPloneClientConnectorLayer" />
+</layers>

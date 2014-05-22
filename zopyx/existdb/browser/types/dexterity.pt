@@ -1,0 +1,5 @@
+<!-- HTML fragment for Dexterity documents -->
+<div class="type-dexterity-document content-body">
+    <h1>This is the generic dexterity content handler</h1>
+    <span class="label">Portal type:</span> <span tal:content="context/portal_type" />
+</div>

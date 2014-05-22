@@ -1,0 +1,11 @@
+<html metal:use-macro="context/main_template/macros/master">
+    <div metal:fill-slot="main">
+        <h1>Preflight - Structure Check</h1>
+        <div tal:define="result view/preflight">
+            <tal:loop repeat="row result">
+                <div tal:attributes="style python: 'margin-left: %dpx' % ((row['level']-1)*30) "
+                     tal:content="string:${row/level} - ${row/text}" />
+            </tal:loop>
+        </div>
+    </div>
+</html>

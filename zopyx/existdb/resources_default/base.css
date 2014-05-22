@@ -1,0 +1,36 @@
+@import url("fonts.css");
+
+body {
+    font-size: 12px;
+    font-family: "DejaVu Sans";
+}
+
+h1 {
+    font-size: 2em;
+}
+
+h2 {
+    font-size: 1.6em;
+}
+
+h3 {
+    font-size: 1.4em;
+}
+
+h4 {
+    font-size: 1.2em;
+}
+
+
+.description {
+    font-size: 1.2em;
+}
+
+figure {
+    text-align: center;
+}
+
+img {
+    width: 50%;
+    height: 50%;
+}

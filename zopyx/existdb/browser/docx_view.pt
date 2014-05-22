@@ -1,0 +1,8 @@
+<html metal:use-macro="context/main_template/macros/master">
+    <metal:slot fill-slot="main">
+        <tal:def define="result view/view_docx">
+            <style type="text/css" tal:content="result/styles" />
+            <div tal:content="structure result/html" />
+        </tal:def>
+    </metal:slot>
+</html>

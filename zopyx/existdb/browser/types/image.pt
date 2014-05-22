@@ -1,0 +1,7 @@
+<!-- HTML fragment for standard Plone documents -->
+
+<div class="type-image">
+    <h1 class="title" tal:condition="context/Title" tal:content="context/Title" />
+    <div class="description documentDescription" tal:condition="context/Description" tal:content="context/Description" />
+    <img tal:attributes="src string:${context/absolute_url}/image" />
+</div>

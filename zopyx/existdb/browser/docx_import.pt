@@ -1,0 +1,19 @@
+<html metal:use-macro="context/main_template/macros/master">
+    <metal:slot fill-slot="main">
+        <div id="contentfolder-importform" i18n:domain="pp.client.plone">
+            <fieldset id="contentfolder-importform-fieldset">
+                <legend i18n:translate="label_import_office_document">Import DOCX</legend>
+                <form action="@@docx-import" method="post" enctype="multipart/form-data" id="content-import-form">
+
+                    <div class="form-row">
+                        <label i18n:translate="label_file">File</label>
+                        <input type="file" name="doc" value="" size="60" />
+                    </div>
+                    <div class="form-control">
+                        <input class="context" type="submit" value="Upload" i18n:attributes="value label_upload" />
+                    </div>
+                </form>
+            </fieldset>
+        </div>
+    </metal:slot>
+</html>

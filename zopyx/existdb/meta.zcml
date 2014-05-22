@@ -1,0 +1,12 @@
+<configure 
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:meta="http://namespaces.zope.org/meta">
+
+  <meta:directive 
+      namespace="http://namespaces.zopyx.com/pp"
+      name="resourceDirectory" 
+      schema=".zcml.IResourcesDirectory"
+      handler=".zcml.resourcesDirectory"
+      />
+
+</configure>

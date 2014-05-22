@@ -1,0 +1,16 @@
+<!-- HTML fragment for standard Plone documents -->
+
+<div class="type-newsitem content-body">
+    <h1 class="title" tal:content="context/Title" />
+    <div class="description" tal:content="context/Description" />
+    <div>
+        <div class="image-container" tal:condition="nocall: context/image | nothing">    
+            <img class="teaser-image" tal:attributes="src string:${context/absolute_url}/image" />
+            <div class="image-caption">
+                <span class="image-caption-with-text" tal:content="image/Title | nothing" />
+                <span class="image-caption-with-description" tal:content="context/getImageCaption | nothing" />
+            </div>
+        </div>
+        <div class="body" tal:content="structure context/getText" />
+    </div>
+</div>

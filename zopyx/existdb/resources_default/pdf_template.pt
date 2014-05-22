@@ -1,0 +1,11 @@
+<html i18n:domain="plone"> 
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" href="base.css" />
+    </head>
+    <body>
+        <div id="main-content">
+            <div tal:replace="structure options/body" />
+        </div>
+    </body>
+</html>
