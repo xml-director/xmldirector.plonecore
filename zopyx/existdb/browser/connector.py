@@ -69,8 +69,11 @@ class Connector(BrowserView):
             self.request.response.setHeader('Content-Type', mt)
             if 'size' in info:
                 self.request.response.setHeader('Content-Length', info['size'])
-            return webdav_iterator(handle)
-            return handle.open('.', 'rb').read()
+                return webdav_iterator(handle)
+            else:
+                data = handle.open('.', 'rb').read()
+                self.request.response.setHeader('Content-Length', len(data))
+                return data
         else:
             raise RuntimeError()
 
