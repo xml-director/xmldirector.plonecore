@@ -5,14 +5,15 @@ import fs.errors
 import zExceptions
 from fs.opener import opener
 from fs.contrib.davfs import DAVFS
-from Products.Five.browser import BrowserView
 from zope.interface import implements
 from zope.interface import implementer
+from zope.component import getUtility
 from zope.publisher.interfaces import IPublishTraverse
+from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
-
 from ZPublisher.Iterators import IStreamIterator
+from plone.registry.interfaces import IRegistry
+from zopyx.existdb.interfaces import IExistDBSettings
 
 class webdav_iterator(file):
 
@@ -47,9 +48,19 @@ class Connector(BrowserView):
         self.subpath = []
 
     def __call__(self, *args, **kw):
-        url = self.context.url + '/' + urllib.quote('/'.join(self.subpath))
+
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(IExistDBSettings)
+
+        url = '{}/exist/webdav/db'.format(settings.existdb_url)
+        if self.context.existdb_subpath:
+            url += '/{}'.format(self.context.existdb_subpath)
+        if self.subpath:
+            url += '/{}'.format('/'.join(self.subpath))
+
         try:
-            handle = DAVFS(url, credentials=dict(username='admin', password='pnmaster'))
+            handle = DAVFS(url, credentials=dict(username=settings.existdb_username,
+                                                 password=settings.existdb_password))
         except fs.errors.ResourceNotFoundError:
             raise zExceptions.NotFound()
             

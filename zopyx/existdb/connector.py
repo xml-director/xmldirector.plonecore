@@ -10,10 +10,10 @@ from zopyx.existdb import MessageFactory as _
 
 class IConnector(model.Schema):
 
-    url = schema.TextLine(
-        title=_(u'label_existdb_url') ,
-        description=_(u'help_existdb_url'),
-        required=True
+    existdb_subpath = schema.TextLine(
+        title=_(u'Subdirectory in Exist-DB'),
+        description=_(u'Subdirectory in Exist-DB'),
+        required=False
     )    
 
 
