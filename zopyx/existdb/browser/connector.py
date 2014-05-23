@@ -1,5 +1,6 @@
-
 import fs
+import urllib
+import mimetypes
 from fs.opener import opener
 from fs.contrib.davfs import DAVFS
 from Products.Five.browser import BrowserView
@@ -19,37 +20,25 @@ class Connector(BrowserView):
         self.subpath = []
 
     def __call__(self, *args, **kw):
-        url = self.context.url + '/' + '/'.join(self.subpath)
+        url = self.context.url + '/' + urllib.quote('/'.join(self.subpath))
         handle = DAVFS(url, credentials=dict(username='admin', password='pnmaster'))
         if handle.isdir('.'):
             files = handle.listdirinfo(files_only=True)
+            files = sorted(files)
             dirs = handle.listdirinfo(dirs_only=True)
+            dirs = sorted(dirs)
             return self.template(
                     subpath='/'.join(self.subpath),
                     files=files, 
                     dirs=dirs)
         elif handle.isfile('.'):
             filename = self.subpath[-1]
-            disposition = 'inline'
-            mt = 'application/octetstream'
-            if filename.endswith('.html'):
-                mt = 'text/html'
-            elif filename.endswith('.css'):
-                mt = 'text/css'
-            elif filename.endswith('.png'):
-                mt = 'image/png'
-            elif filename.endswith('.gif'):
-                mt = 'image/gif'
-            elif filename.endswith('.jpg'):
-                mt = 'image/jpeg'
-            else:
-                disposition = 'attachment'
-            data = handle.open('.', 'rb').read()
+            info = handle.getinfo('.')
+            mt, encoding = mimetypes.guess_type(filename)
             self.request.response.setHeader('Content-Type', mt)
-            self.request.response.setHeader('Content-Length', str(len(data)))
-            if disposition == 'attachment':
-                self.request.response.setHeader('content-disposition', 'attachment; filename={}'.format(filename))
-            return data
+            if 'size' in info:
+                self.request.response.setHeader('Content-Length', info['size'])
+            return handle.open('.', 'rb').read()
         else:
             raise RuntimeError()
 

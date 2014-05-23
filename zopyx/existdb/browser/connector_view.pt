@@ -14,16 +14,19 @@
 
 <metal:main fill-slot="content-core">
   <metal:content-core define-macro="content-core">
-
+      <pre tal:content="view/subpath" />
       <div tal:content="context/Title">Title inserted here</div>
       <h2>Files</h2>
-      <ul>
+      <ul tal:condition="options/files">
           <li tal:repeat="item options/files">
               <a tal:attributes="href python: 'view/{}/{}'.format(options['subpath'], item[0])" tal:content="python: item[0]" />
           </li>
       </ul>
       <h2>Directories</h2>
       <ul>
+          <li>
+              <a tal:attributes="href python: 'view/{}'.format('/'.join(view.subpath[:-1]))">..</a>
+          </li>
           <li tal:repeat="item options/dirs">
               <a tal:attributes="href python: 'view/{}/{}'.format(options['subpath'], item[0])" tal:content="python: item[0]" />
           </li>
