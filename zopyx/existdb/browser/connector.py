@@ -66,6 +66,8 @@ class Connector(BrowserView):
             filename = self.subpath[-1]
             info = handle.getinfo('.')
             mt, encoding = mimetypes.guess_type(filename)
+            if not mt:
+                mt = 'application/octet-stream'
             self.request.response.setHeader('Content-Type', mt)
             if 'size' in info:
                 self.request.response.setHeader('Content-Length', info['size'])
