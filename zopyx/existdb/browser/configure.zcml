@@ -12,4 +12,11 @@
         permission="zope2.View"
     />
 
+    <browser:page
+        name="existdb-settings"
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        class=".controlpanel.ExistDBSettingsControlPanel"
+        permission="cmf.ManagePortal"
+    />
+
 </configure>
