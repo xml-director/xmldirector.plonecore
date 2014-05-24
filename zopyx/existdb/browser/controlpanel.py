@@ -9,7 +9,7 @@ from zopyx.existdb import MessageFactory as _
 class ExistDBSettingsEditForm(controlpanel.RegistryEditForm):
 
     schema = IExistDBSettings
-    label = _(u'eteaching.policy settings')
+    label = _(u'eXistdb settings')
     description = _(u'')
 
     def updateFields(self):

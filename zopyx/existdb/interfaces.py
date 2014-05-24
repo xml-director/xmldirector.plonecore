@@ -17,22 +17,22 @@ class IExistDBSettings(Interface):
     """ ExistDB settings """
 
     existdb_url = schema.TextLine(
-        title=_(u'Exist-DB base url'),
-        description=_(u'Exist-DB base url'),
+        title=_(u'eXistdb server url'),
+        description=_(u'eXistdb base url'),
         default=u'http://localhost:6080',
         required=True,
     )
 
     existdb_username = schema.TextLine(
-        title=_(u'Exist-DB username '),
-        description=_(u'Exist-DB username'),
+        title=_(u'eXistdb username '),
+        description=_(u'eXistdb username'),
         default=u'admin',
         required=True,
     )
 
     existdb_password = schema.Password(
-        title=_(u'Exist-DB password'),
-        description=_(u'Exist-DB password'),
+        title=_(u'eXistdb password'),
+        description=_(u'eXistdb password'),
         default=u'',
         required=True,
     )

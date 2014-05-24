@@ -2,6 +2,7 @@ import urllib
 import mimetypes
 import fs
 import fs.errors
+import time
 import zExceptions
 from fs.opener import opener
 from fs.contrib.davfs import DAVFS
@@ -14,6 +15,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from ZPublisher.Iterators import IStreamIterator
 from plone.registry.interfaces import IRegistry
 from zopyx.existdb.interfaces import IExistDBSettings
+
 
 class webdav_iterator(file):
 
@@ -57,7 +59,6 @@ class Connector(BrowserView):
             url += '/{}'.format(self.context.existdb_subpath)
         if self.subpath:
             url += '/{}'.format(urllib.quote('/'.join(self.subpath)))
-
         try:
             handle = DAVFS(url, credentials=dict(username=settings.existdb_username,
                                                  password=settings.existdb_password))

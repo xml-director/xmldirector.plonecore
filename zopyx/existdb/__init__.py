@@ -11,6 +11,6 @@ except ImportError:
 
 try:
     from zope.i18nmessageid import MessageFactory
-    MessageFactory = MessageFactory('eteaching.policy')
+    MessageFactory = MessageFactory('zopyx.existdb')
 except ImportError:
     pass

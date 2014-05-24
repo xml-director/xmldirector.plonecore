@@ -6,7 +6,7 @@
     purge="False">
 
     <configlet
-        title="zopyx.existdb"
+        title="eXistdb"
         action_id="zopyx.existdb"
         appId="zopyx.existdb"
         category="Products"
