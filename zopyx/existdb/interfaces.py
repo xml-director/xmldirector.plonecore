@@ -30,7 +30,7 @@ class IExistDBSettings(Interface):
         required=True,
     )
 
-    existdb_password = schema.TextLine(
+    existdb_password = schema.Password(
         title=_(u'Exist-DB password'),
         description=_(u'Exist-DB password'),
         default=u'',

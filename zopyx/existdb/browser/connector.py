@@ -56,7 +56,7 @@ class Connector(BrowserView):
         if self.context.existdb_subpath:
             url += '/{}'.format(self.context.existdb_subpath)
         if self.subpath:
-            url += '/{}'.format('/'.join(self.subpath))
+            url += '/{}'.format(urllib.quote('/'.join(self.subpath)))
 
         try:
             handle = DAVFS(url, credentials=dict(username=settings.existdb_username,
