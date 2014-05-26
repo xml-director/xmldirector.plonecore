@@ -19,4 +19,11 @@
         permission="cmf.ManagePortal"
     />
 
+    <browser:page
+        name="view_html"
+        for="*"
+        template="foo.pt"
+        permission="zope2.View"
+        />
+
 </configure>
