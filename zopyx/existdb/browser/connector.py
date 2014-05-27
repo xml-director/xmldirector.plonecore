@@ -1,3 +1,4 @@
+import os
 import fs
 import fs.errors
 import urllib
@@ -7,6 +8,7 @@ import zExceptions
 import lxml.html
 from fs.opener import opener
 from fs.contrib.davfs import DAVFS
+from fs.zipfs import ZipFS
 from zope.interface import implements
 from zope.interface import implementer
 from zope.component import getUtility
@@ -51,7 +53,8 @@ class Connector(BrowserView):
         self.context = context
         self.subpath = []
 
-    def __call__(self, *args, **kw):
+    @property
+    def fs_handle(self):
 
         registry = getUtility(IRegistry)
         settings = registry.forInterface(IExistDBSettings)
@@ -64,11 +67,15 @@ class Connector(BrowserView):
             url += '/{}'.format(urllib.quote('/'.join(self.subpath)))
 
         try:
-            handle = DAVFS(url, credentials=dict(username=settings.existdb_username,
+            return DAVFS(url, credentials=dict(username=settings.existdb_username,
                                                  password=settings.existdb_password))
         except fs.errors.ResourceNotFoundError:
             raise zExceptions.NotFound()
-            
+
+    def __call__(self, *args, **kw):
+
+        handle = self.fs_handle
+
         if handle.isdir('.'):
 
             files = handle.listdirinfo(files_only=True)
@@ -134,3 +141,31 @@ class Connector(BrowserView):
         html = lxml.html.tostring(root)
         print time.time() - ts
         return self.html_template(html=html)
+
+    def zip_upload(self):
+
+        handle = self.fs_handle
+
+        # Cleanup directory 
+        for name in handle.listdir():
+            if handle.isfile(name):
+                handle.remove(name)
+            else:
+                handle.removedir(name, force=True, recursive=True)
+
+        with ZipFS(self.request.zipfile, 'r') as zip_handle:
+            for name in zip_handle.walkfiles():
+                dirname = '/'.join(name.split('/')[:-1])
+                try:
+                    handle.makedir(dirname, recursive=True, allow_recreate=True)
+                except Exception as e:
+                    print e
+                print name
+               
+                out_fp = handle.open(name.lstrip('/'), 'wb') 
+                zip_fp = zip_handle.open(name, 'rb')
+                out_fp.write(zip_fp.read())
+#                out_fp.close()
+#                zip_fp.close()
+
+        return 'foo'        

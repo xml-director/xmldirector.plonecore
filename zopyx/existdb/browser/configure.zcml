@@ -5,11 +5,26 @@
     >
     
     <browser:page
-        for="*"
+        for="zopyx.existdb.connector.IConnector"
         name="connector-view"
         class=".connector.Connector"
         template="connector_view.pt"
         permission="zope2.View"
+    />
+
+    <browser:page
+        for="zopyx.existdb.connector.IConnector"
+        name="connector-zip-import"
+        template="connector_zip_import.pt"
+        permission="cmf.ModifyPortalContent"
+    />
+
+    <browser:page
+        for="zopyx.existdb.connector.IConnector"
+        name="connector-zip-upload"
+        class=".connector.Connector"
+        attribute="zip_upload"
+        permission="cmf.ModifyPortalContent"
     />
 
     <browser:page
