@@ -225,6 +225,13 @@ state_vocab = SimpleVocabulary([
     SimpleTerm(value=u'archived', title=_(u'Archived')),
 ])
 
+classification_vocab = SimpleVocabulary([
+    SimpleTerm(value=u'guideline', title=_(u'Guideline')),
+    SimpleTerm(value=u'studies', title=_(u'Studies')),
+    SimpleTerm(value=u'certifications', title=_(u'Certifications')),
+])
+
+
 id_terms = list()
 for id in sorted(id2titles):
     title = unicode(id2titles[id], 'utf8')
@@ -239,7 +246,7 @@ class IGuideline(model.Schema):
     model.fieldset(
         'fieldset_guideline',
         label=_(u'Guideline'),
-        fields=['gl_language', 'gl_state', 'gl_area', 'gl_id', 'gl_archive_id']
+        fields=['gl_language', 'gl_state', 'gl_area', 'gl_id', 'gl_archive_id', 'gl_classification']
     )
     gl_language = schema.Choice(
         title=_(u'Guideline language'),
@@ -263,6 +270,14 @@ class IGuideline(model.Schema):
         required=True,
         default=u'onkopedia',
         vocabulary=area_vocab
+    )
+
+    gl_classification = schema.Choice(
+        title=_(u'Guideline classification'),
+        description=_(u'Classification of guideline'),
+        required=True,
+        default=u'guideline',
+        vocabulary=classification_vocab
     )
 #
     gl_id = schema.Choice(
@@ -296,4 +311,5 @@ class Guideline(object):
     gl_area = context_property('gl_area')
     gl_id = context_property('gl_id')
     gl_archive_id = context_property('gl_archive_id')
+    gl_classification = context_property('gl_classification')
 
