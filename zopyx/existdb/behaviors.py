@@ -51,6 +51,11 @@ id_vocab = SimpleVocabulary([
 class IGuideline(model.Schema):
     """ Interface for Guideline behavior """
     
+    model.fieldset(
+        'fieldset_guideline',
+        label=_(u'Guideline'),
+        fields=['gl_language', 'gl_state', 'gl_area', 'gl_id', 'gl_archive_id']
+    )
     gl_language = schema.Choice(
         title=_(u'Guideline language'),
         description=_(u"Language of guideline"),
@@ -83,6 +88,13 @@ class IGuideline(model.Schema):
         vocabulary=id_vocab
     )
 
+    gl_archive_id = schema.TextLine(
+        title=_(u'ID in archive'),
+        description=_(u'ID in archive'),
+        required=False,
+        default=u'',
+    )
+
 alsoProvides(IGuideline, IFormFieldProvider)
 
 
@@ -98,4 +110,5 @@ class Guideline(object):
     gl_state = context_property('gl_state')
     gl_area = context_property('gl_area')
     gl_id = context_property('gl_id')
+    gl_archive_id = context_property('gl_archive_id')
 
