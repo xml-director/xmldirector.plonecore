@@ -23,8 +23,8 @@ def context_property(name):
 
 
 language_vocab = SimpleVocabulary([
-    SimpleTerm(value=u'de', title=_(u'de')),
-    SimpleTerm(value=u'en', title=_(u'en')),
+    SimpleTerm(value=u'de', title=_(u'German')),
+    SimpleTerm(value=u'en', title=_(u'English')),
 ])
 
 area_vocab = SimpleVocabulary([
