@@ -147,7 +147,8 @@ class Connector(BrowserView):
 
         html = lxml.html.tostring(root)
         print time.time() - ts
-        return self.html_template(html=html)
+        return self.html_template(base_url=base_url,
+                                  html=html)
 
     def clear_contents(self):
         """ Remove all sub content """
