@@ -2,8 +2,8 @@
     <body i18n:domain="eteaching.policy">
         <div metal:fill-slot="content-core">
             <link rel="stylesheet" 
-                  tal:attributes="href string:${options/base_url}/styles.css" />
-            <div tal:content="structure options/html" />
+                tal:attributes="href string:${options/base_url}/styles.css" />
+            <div class="ll-html" tal:content="structure options/html" />
         </div>
     </body>
 </html>
