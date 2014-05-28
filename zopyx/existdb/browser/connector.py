@@ -18,6 +18,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from ZPublisher.Iterators import IStreamIterator
 from plone.registry.interfaces import IRegistry
 from zopyx.existdb.interfaces import IExistDBSettings
+from zopyx.existdb import MessageFactory as _
 
 
 class webdav_iterator(file):
@@ -71,6 +72,12 @@ class Connector(BrowserView):
                                                  password=settings.existdb_password))
         except fs.errors.ResourceNotFoundError:
             raise zExceptions.NotFound()
+
+    def redirect(self, message=None, level='info'):
+        if message:
+            self.context.plone_utils.addPortalMessage(message, level)
+        return self.request.response.redirect(self.context.absolute_url())
+
 
     def __call__(self, *args, **kw):
 
@@ -142,6 +149,18 @@ class Connector(BrowserView):
         print time.time() - ts
         return self.html_template(html=html)
 
+    def clear_contents(self):
+        """ Remove all sub content """
+
+        handle = self.fs_handle
+        for name in handle.listdir():
+            if handle.isfile(name):
+                handle.remove(name)
+            else:
+                handle.removedir(name, force=True, recursive=False)
+
+        return self.redirect(_(u'eXist-db collection cleared'))
+
     def zip_upload(self):
 
         handle = self.fs_handle
@@ -151,7 +170,7 @@ class Connector(BrowserView):
             if handle.isfile(name):
                 handle.remove(name)
             else:
-                handle.removedir(name, force=True, recursive=True)
+                handle.removedir(name, force=True, recursive=False)
 
         with ZipFS(self.request.zipfile, 'r') as zip_handle:
             for name in zip_handle.walkfiles():
@@ -168,4 +187,4 @@ class Connector(BrowserView):
 #                out_fp.close()
 #                zip_fp.close()
 
-        return 'foo'        
+        return self.redirect(_(u'Uploaded ZIP archive imported'))
