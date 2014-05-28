@@ -5,18 +5,27 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:i18n="http://namespaces.zope.org/i18n"
     xmlns:pp="http://namespaces.zopyx.com/pp"
+    xmlns:plone="http://namespaces.plone.org/plone"
     >
 
-  <include package="plone.browserlayer" />
-  <include package="Products.CMFCore" file="permissions.zcml" />
-  <include package=".browser" />
+    <include package="plone.browserlayer" />
+    <include package="Products.CMFCore" file="permissions.zcml" />
+    <include package=".browser" />
 
-  <!-- Register the installation GenericSetup extension profile -->
-  <genericsetup:registerProfile
-      name="default"
-      title="zopyx.existdb"
-      directory="profiles/default"
-      description="ExistDB integration with Plone"
-      provides="Products.GenericSetup.interfaces.EXTENSION"
-      />
+    <plone:behavior
+        title="Guideline Schema"
+        description="Behavior for Onkopedia Guidelines"
+        provides=".behaviors.IGuideline"
+        factory=".behaviors.Guideline"
+        for="plone.dexterity.interfaces.IDexterityContent"
+    />
+
+    <genericsetup:registerProfile
+        name="default"
+        title="zopyx.existdb"
+        directory="profiles/default"
+        description="ExistDB integration with Plone"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+    />
+
 </configure>
