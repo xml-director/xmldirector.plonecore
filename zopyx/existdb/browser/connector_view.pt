@@ -17,6 +17,17 @@
 
       <div tal:content="context/Title">Title inserted here</div>
 
+      <div class="actions">
+          <ul>
+              <li>
+                  <a href="connector-zip-import" i18n:translate="">ZIP import</a>
+              </li>
+              <li>
+                  <a href="connector-zip-export" i18n:translate="">ZIP export</a>
+              </li>
+          </ul>
+      </div>
+
       <h2>Files</h2>
       <ul tal:condition="options/files">
           <li tal:repeat="item options/files">
