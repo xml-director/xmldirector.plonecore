@@ -7,7 +7,6 @@ import zipfile
 import tempfile
 import mimetypes
 import logging
-import time
 import zExceptions
 import lxml.html
 from fs.opener import opener
@@ -139,14 +138,11 @@ class Connector(BrowserView):
 
     def deliver_html(self, handle):
 
-        print '-'*80
-        ts = time.time()
         # exist-db base url
         base_url = '{}/view/{}'.format(self.context.absolute_url(1), '/'.join(self.subpath[:-1]))
 
         # get HTML
         html = handle.open('.', 'rb').read()
-        print time.time() - ts
         root = lxml.html.fromstring(html)
 
         # rewrite relative image urls
@@ -162,7 +158,6 @@ class Connector(BrowserView):
                 link.attrib['href'] = '{}/{}'.format(base_url, src)
 
         html = lxml.html.tostring(root)
-        print time.time() - ts
         return self.html_template(base_url=base_url,
                                   html=html)
 
