@@ -6,6 +6,7 @@ import urllib
 import zipfile
 import tempfile
 import mimetypes
+import logging
 import time
 import zExceptions
 import lxml.html
@@ -22,6 +23,9 @@ from ZPublisher.Iterators import IStreamIterator
 from plone.registry.interfaces import IRegistry
 from zopyx.existdb.interfaces import IExistDBSettings
 from zopyx.existdb import MessageFactory as _
+
+
+LOG = logging.getLogger('zopyx.existdb')
 
 
 class webdav_iterator(file):
@@ -74,7 +78,12 @@ class Connector(BrowserView):
             return DAVFS(url, credentials=dict(username=settings.existdb_username,
                                                  password=settings.existdb_password))
         except fs.errors.ResourceNotFoundError:
+            LOG.error('eXist-db path {} does not exist'.format(url))
             raise zExceptions.NotFound()
+        except fs.errors.PermissionDeniedError:
+            LOG.error('eXist-db path {} unauthorizd access (check credentials)'.format(url))
+            raise zExceptions.Unauthorized()
+
 
     def redirect(self, message=None, level='info'):
         if message:

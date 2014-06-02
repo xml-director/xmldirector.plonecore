@@ -57,4 +57,9 @@
         permission="zope2.View"
         />
 
+    <browser:resourceDirectory
+        name="zopyx.existdb"
+        directory="resources"
+    />
+
 </configure>
