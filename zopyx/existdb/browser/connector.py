@@ -78,10 +78,14 @@ class Connector(BrowserView):
             return DAVFS(url, credentials=dict(username=settings.existdb_username,
                                                  password=settings.existdb_password))
         except fs.errors.ResourceNotFoundError:
-            LOG.error('eXist-db path {} does not exist'.format(url))
+            msg = 'eXist-db path {} does not exist'.format(url)
+            self.context.plone_utils.addPortalMessage(msg, 'error')
+            LOG.error(msg)
             raise zExceptions.NotFound()
         except fs.errors.PermissionDeniedError:
-            LOG.error('eXist-db path {} unauthorizd access (check credentials)'.format(url))
+            msg = 'eXist-db path {} unauthorizd access (check credentials)'.format(url)
+            self.context.plone_utils.addPortalMessage(msg, 'error')
+            LOG.error(msg)
             raise zExceptions.Unauthorized()
 
 
