@@ -1,7 +1,10 @@
 import os
 import fs
 import fs.errors
+import fs.path
 import urllib
+import zipfile
+import tempfile
 import mimetypes
 import time
 import zExceptions
@@ -161,6 +164,33 @@ class Connector(BrowserView):
                 handle.removedir(name, force=True, recursive=False)
 
         return self.redirect(_(u'eXist-db collection cleared'))
+
+    def zip_export(self, download=True):
+
+        handle = self.fs_handle
+
+        zip_filename = tempfile.mktemp(suffix='.zip')
+        zf = zipfile.ZipFile(zip_filename, 'w')
+        for dirname, filenames in handle.walk():
+            if dirname.startswith('/'):
+                dirname = dirname.lstrip('/')
+            for filename in filenames:
+                z_filename = fs.path.join(dirname, filename)
+                with handle.open(z_filename, 'rb') as fp:
+                    zf.writestr(z_filename, fp.read())
+        zf.close()
+
+        if download:
+            self.request.response.setHeader('content-type', 'application/zip')
+            self.request.response.setHeader('content-size', os.path.getsize(zip_filename))
+            self.request.response.setHeader('content-disposition', 'attachment; filename={}.zip'.format(self.context.id))
+            with open(zip_filename, 'rb') as fp:
+                self.request.response.write(fp.read())
+            os.unlink(zip_filename)
+            return
+        else:
+            return zip_filename
+        
 
     def zip_upload(self):
 

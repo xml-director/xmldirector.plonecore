@@ -29,6 +29,14 @@
 
     <browser:page
         for="zopyx.existdb.connector.IConnector"
+        name="connector-zip-export"
+        class=".connector.Connector"
+        attribute="zip_export"
+        permission="cmf.ModifyPortalContent"
+    />
+
+    <browser:page
+        for="zopyx.existdb.connector.IConnector"
         name="connector-zip-upload"
         class=".connector.Connector"
         attribute="zip_upload"
