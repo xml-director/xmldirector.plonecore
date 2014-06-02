@@ -25,6 +25,9 @@
               <li>
                   <a href="connector-zip-export" i18n:translate="">ZIP export</a>
               </li>
+              <li>
+                  <a href="connector-log" i18n:translate="">Log</a>
+              </li>
           </ul>
       </div>
 

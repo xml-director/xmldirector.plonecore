@@ -174,6 +174,7 @@ class Connector(BrowserView):
         return self.redirect(_(u'eXist-db collection cleared'))
 
     def zip_export(self, download=True):
+        """ Export WebDAV subfolder to a ZIP file """
 
         handle = self.fs_handle
 
@@ -200,30 +201,42 @@ class Connector(BrowserView):
             return zip_filename
         
 
-    def zip_upload(self):
+    def zip_import(self, zip_file=None):
+        """ Import WebDAV subfolder from an uploaded ZIP file """
 
         handle = self.fs_handle
 
-        # Cleanup directory 
-        for name in handle.listdir():
-            if handle.isfile(name):
-                handle.remove(name)
-            else:
-                handle.removedir(name, force=True, recursive=False)
+        if not zip_file:
+            zip_filename = self.request.zipfile.filename
+            zip_file = self.request.zipfile
+        else:
+            zip_filename = open(zip_file, 'rb')
 
-        with ZipFS(self.request.zipfile, 'r') as zip_handle:
+        with ZipFS(zip_file, 'r') as zip_handle:
+
+            # Cleanup webdav directory first
+            for name in handle.listdir():
+                if handle.isfile(name):
+                    handle.remove(name)
+                else:
+                    handle.removedir(name, force=True, recursive=False)
+            self.context.log(u'Subdirectory clear (ZIP import)')
+
+            # import all files from ZIP into WebDAV
+            count = 0
             for name in zip_handle.walkfiles():
                 dirname = '/'.join(name.split('/')[:-1])
                 try:
                     handle.makedir(dirname, recursive=True, allow_recreate=True)
                 except Exception as e:
-                    print e
-                print name
+                    LOG.error('Failed creating {} failed ({})'.format(dirname, e))
                
                 out_fp = handle.open(name.lstrip('/'), 'wb') 
                 zip_fp = zip_handle.open(name, 'rb')
                 out_fp.write(zip_fp.read())
+                count += 1
 #                out_fp.close()
 #                zip_fp.close()
 
+        self.context.log(u'ZIP file imported ({}, {} files'.format(zip_filename, count))
         return self.redirect(_(u'Uploaded ZIP archive imported'))

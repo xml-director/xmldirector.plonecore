@@ -22,6 +22,14 @@
 
     <browser:page
         for="zopyx.existdb.connector.IConnector"
+        name="connector-log"
+        class=".connector.Connector"
+        template="connector_log.pt"
+        permission="cmf.ModifyPortalContent"
+    />
+
+    <browser:page
+        for="zopyx.existdb.connector.IConnector"
         name="connector-zip-import"
         template="connector_zip_import.pt"
         permission="cmf.ModifyPortalContent"
@@ -39,7 +47,7 @@
         for="zopyx.existdb.connector.IConnector"
         name="connector-zip-upload"
         class=".connector.Connector"
-        attribute="zip_upload"
+        attribute="zip_import"
         permission="cmf.ModifyPortalContent"
     />
 

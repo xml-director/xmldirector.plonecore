@@ -1,12 +1,20 @@
 # -*- coding: utf-8 -*-
 
+import plone.api
+import datetime
 from zope import schema
 from zope.interface import implements
 from plone.directives import form
 from plone.dexterity.content import Container
-from z3c.form.browser.select import SelectWidget
 from plone.supermodel import model
+from zope.annotation.interfaces import IAnnotations
+from persistent.list import PersistentList
+from z3c.form.browser.select import SelectWidget
+
 from zopyx.existdb import MessageFactory as _
+
+
+LOG_KEY = 'zopyx.existdb.connector.log'
 
 
 class IConnector(model.Schema):
@@ -20,3 +28,22 @@ class IConnector(model.Schema):
 
 class Connector(Container):
     implements(IConnector)
+
+    @property
+    def logger(self):
+        annotations = IAnnotations(self)
+        if not LOG_KEY in annotations:
+            annotations[LOG_KEY] = PersistentList()
+        return annotations[LOG_KEY]
+
+    def log(self, comment, level='info'):
+        """ Add a log entry """
+
+        logger = self.logger
+        entry = dict(date=datetime.datetime.now(),
+                     username=plone.api.user.get_current().getUserName(),
+                     level=level,
+                     comment=comment)
+        logger.append(entry)
+        logger._p_changed = 1
+
