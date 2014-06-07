@@ -3,6 +3,14 @@
     xmlns:zcml="http://namespaces.zope.org/zcml"
     xmlns:browser="http://namespaces.zope.org/browser"
     >
+
+    <browser:page
+        for="zopyx.existdb.connector.IConnector"
+        name="searchabletext"
+        class=".connector.Connector"
+        attribute="searchabletext"
+        permission="zope2.View"
+    />
     
     <browser:page
         for="zopyx.existdb.connector.IConnector"

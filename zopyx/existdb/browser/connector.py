@@ -136,6 +136,15 @@ class Connector(BrowserView):
         self.subpath.append(name)
         return self
 
+    def searchabletext(self):
+        """ Return indexable content """
+        handle = self.fs_handle
+        if 'index.html' in handle.listdir():
+            with handle.open('index.html', 'rb') as fp:
+                data = fp.read()
+                return data
+        return None
+
     def deliver_html(self, handle):
 
         # exist-db base url
