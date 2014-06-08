@@ -138,12 +138,16 @@ class Connector(BrowserView):
 
     def searchabletext(self):
         """ Return indexable content """
-        handle = self.fs_handle
+        handle = self.handle
         if 'index.html' in handle.listdir():
             with handle.open('index.html', 'rb') as fp:
-                data = fp.read()
-                return data
+                return fp.read()
         return None
+
+    def reindex(self):
+        """ Reindex current connector """
+        self.context.reindexObject()
+        return self.redirect(u'Reindex successfully')
 
     def deliver_html(self, handle):
 

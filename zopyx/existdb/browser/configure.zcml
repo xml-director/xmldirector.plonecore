@@ -60,6 +60,14 @@
     />
 
     <browser:page
+        for="zopyx.existdb.connector.IConnector"
+        name="connector-reindex"
+        class=".connector.Connector"
+        attribute="reindex"
+        permission="cmf.ModifyPortalContent"
+    />
+
+    <browser:page
         name="existdb-settings"
         for="Products.CMFPlone.interfaces.IPloneSiteRoot"
         class=".controlpanel.ExistDBSettingsControlPanel"
