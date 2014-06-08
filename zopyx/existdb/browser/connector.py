@@ -1,4 +1,5 @@
 import os
+import re
 import fs
 import fs.errors
 import fs.path
@@ -138,7 +139,7 @@ class Connector(BrowserView):
 
     def searchabletext(self):
         """ Return indexable content """
-        handle = self.handle
+        handle = self.fs_handle
         if 'index.html' in handle.listdir():
             with handle.open('index.html', 'rb') as fp:
                 return fp.read()
@@ -253,3 +254,28 @@ class Connector(BrowserView):
 
         self.context.log(u'ZIP file imported ({}, {} files'.format(zip_filename, count))
         return self.redirect(_(u'Uploaded ZIP archive imported'))
+
+    def navigation_structure(self, level_offset=0, strip_leading_numbers=True):
+
+        handle = self.fs_handle
+        if not 'index.html' in handle.listdir():
+            return []
+        with handle.open('index.html', 'rb') as fp:
+            content = fp.read()
+
+        root = lxml.html.fromstring(content)
+        result = []
+        for node in root.xpath('//*[local-name() = "h1"  or local-name() = "h2" or local-name() = "h3" or local-name() = "h4" or local-name() = "h5"]'):  
+            level = int(node.tag[1:]) - level_offset
+            texts = node.xpath('./text()')
+            texts = [t.strip() for t in texts]
+            text = u' '.join(texts).strip()
+            if strip_leading_numbers:
+                reg = re.compile(r'^[\d\.]*\s', re.UNICODE)
+                text = reg.sub('', text)
+            result.append(dict(level=level, text=text))
+        return result
+
+
+
+
