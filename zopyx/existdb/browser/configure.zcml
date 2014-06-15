@@ -30,6 +30,20 @@
 
     <browser:page
         for="zopyx.existdb.connector.IConnector"
+        name="view-editor-readonly"
+        class=".connector.AceEditorReadonly"
+        permission="zope2.View"
+    />
+
+    <browser:page
+        for="zopyx.existdb.connector.IConnector"
+        name="view-editor"
+        class=".connector.AceEditor"
+        permission="zope2.View"
+    />
+
+    <browser:page
+        for="zopyx.existdb.connector.IConnector"
         name="connector-clear-contents"
         class=".connector.Connector"
         attribute="clear_contents"

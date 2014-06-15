@@ -50,11 +50,138 @@ class webdav_iterator(file):
         return size
 
 
+class Precondition(object):
+
+    def __init__(self, suffixes=[], view_names=[], view_handler=None):
+        self.suffixes = suffixes
+        self.view_names = view_names
+        self.view_handler = view_handler
+
+    def can_handle(self, filename, view_name):
+
+        if view_name not in self.view_names:
+            return False
+
+        basename, suffix = os.path.splitext(filename)
+        if suffix not in self.suffixes:
+            return False
+
+        return True
+    
+    def handle_view(self, webdav_handle, filename, view_name, request):
+        return self.view_handler(webdav_handle, filename, view_name, request)
+
+
+class PreconditionRegistry(object):
+
+    def __init__(self):
+        self._p = list()
+        self._p_default = None
+
+    def register(self, precondition, priority=None):
+        self._p.append(precondition)
+
+    def set_default(self, precondition):
+        self._p_default = precondition
+
+    def dispatch(self, webdav_handle, filename, view_name, request):
+        
+        for precondition in self._p:
+            if precondition.can_handle(filename, view_name):
+                return precondition.handle_view(webdav_handle, filename, view_name, request)
+
+        if self._p_default:
+            return self._p_default.handle_view(webdav_handle, filename, view_name, request)
+        raise ValueError('No matching precondition found')
+       
+
+def default_html_handler(webdav_handle, filename, view_name, request):
+
+    html_template = ViewPageTemplateFile('html_view.pt')
+
+    # exist-db base url
+    base_url = '{}/view/{}'.format(request.context.absolute_url(1), '/'.join(request.subpath[:-1]))
+
+    # get HTML
+    html = webdav_handle.open('.', 'rb').read()
+    root = lxml.html.fromstring(html)
+
+    # rewrite relative image urls
+    for img in root.xpath('//img'):
+        src = img.attrib['src']
+        if not src.startswith('http'):
+            img.attrib['src'] = '{}/{}'.format(base_url, src)
+
+    # rewrite relative image urls
+    for link in root.xpath('//link'):
+        src = link.attrib['href']
+        if not src.startswith('http'):
+            link.attrib['href'] = '{}/{}'.format(base_url, src)
+
+    html = lxml.html.tostring(root)
+    return html_template.pt_render(dict(
+                         template='html_view',
+                         request=request,
+                         context=request.context,
+                         options=dict(
+                             base_url=base_url,
+                             html=html)))
+
+def ace_editor(webdav_handle, filename, view_name, request, readonly=False, template_name='ace_editor.pt'):
+
+    template = ViewPageTemplateFile(template_name)
+    mt, encoding = mimetypes.guess_type(filename)
+
+    # get HTML
+    content = webdav_handle.open('.', 'rb').read()
+    ace_mode = {'text/html': 'xml',
+                'text/xml': 'xml',
+                'text/css': 'css',
+                'application/json': 'json',
+            }.get(mt, 'text');
+    return template.pt_render(dict(
+                         template='ace_editor.pt',
+                         request=request,
+                         context=request.context,
+                         options=dict(content=content, 
+                                      ace_readonly=str(readonly).lower(),
+                                      ace_mode=ace_mode)))
+
+
+def ace_editor_readonly(webdav_handle, filename, view_name, request, readonly=True, template_name='ace_editor.pt'):
+    return ace_editor(webdav_handle, filename, view_name, request, readonly, template_name)
+                         
+
+
+def default_view_handler(webdav_handle, filename, view_name, request):
+    """ Default handler for images and other binary resources """
+
+    info = webdav_handle.getinfo('.')
+    mt, encoding = mimetypes.guess_type(filename)
+    if not mt:
+        mt = 'application/octet-stream'
+    request.response.setHeader('Content-Type', mt)
+    if 'size' in info:
+        request.response.setHeader('Content-Length', info['size'])
+        return webdav_iterator(webdav_handle)
+    else:
+        data = webdav_handle.open('.', 'rb').read()
+        request.response.setHeader('Content-Length', len(data))
+        return data
+
+
+PC = PreconditionRegistry()
+PC.register(Precondition(suffixes=['.html', '.htm'], view_names=['view'], view_handler=default_html_handler))
+PC.register(Precondition(suffixes=['.html', '.htm', '.css', '.json'], view_names=['view-editor'], view_handler=ace_editor))
+PC.register(Precondition(suffixes=['.html', '.htm', '.css', '.json'], view_names=['view-editor-readonly'], view_handler=ace_editor_readonly))
+PC.set_default(Precondition(view_handler=default_view_handler))
+
+
 @implementer(IPublishTraverse)
 class Connector(BrowserView):
-    
+
+    view_name = 'view'
     template = ViewPageTemplateFile('connector_view.pt')
-    html_template = ViewPageTemplateFile('html_view.pt')
 
     def __init__(self, context, request):
         self.request = request
@@ -98,7 +225,6 @@ class Connector(BrowserView):
     def __call__(self, *args, **kw):
 
         handle = self.fs_handle
-
         if handle.isdir('.'):
 
             files = handle.listdirinfo(files_only=True)
@@ -111,23 +237,11 @@ class Connector(BrowserView):
                     dirs=dirs)
 
         elif handle.isfile('.'):
-
             filename = self.subpath[-1]
-            if filename.endswith('.html'):
-                return self.deliver_html(handle)
+            self.request.subpath = self.subpath
+            self.request.context = self.context
+            return PC.dispatch(handle, filename, self.view_name, self.request)
 
-            info = handle.getinfo('.')
-            mt, encoding = mimetypes.guess_type(filename)
-            if not mt:
-                mt = 'application/octet-stream'
-            self.request.response.setHeader('Content-Type', mt)
-            if 'size' in info:
-                self.request.response.setHeader('Content-Length', info['size'])
-                return webdav_iterator(handle)
-            else:
-                data = handle.open('.', 'rb').read()
-                self.request.response.setHeader('Content-Length', len(data))
-                return data
         else:
             raise RuntimeError()
 
@@ -149,31 +263,6 @@ class Connector(BrowserView):
         """ Reindex current connector """
         self.context.reindexObject()
         return self.redirect(u'Reindex successfully')
-
-    def deliver_html(self, handle):
-
-        # exist-db base url
-        base_url = '{}/view/{}'.format(self.context.absolute_url(1), '/'.join(self.subpath[:-1]))
-
-        # get HTML
-        html = handle.open('.', 'rb').read()
-        root = lxml.html.fromstring(html)
-
-        # rewrite relative image urls
-        for img in root.xpath('//img'):
-            src = img.attrib['src']
-            if not src.startswith('http'):
-                img.attrib['src'] = '{}/{}'.format(base_url, src)
-
-        # rewrite relative image urls
-        for link in root.xpath('//link'):
-            src = link.attrib['href']
-            if not src.startswith('http'):
-                link.attrib['href'] = '{}/{}'.format(base_url, src)
-
-        html = lxml.html.tostring(root)
-        return self.html_template(base_url=base_url,
-                                  html=html)
 
     def clear_contents(self):
         """ Remove all sub content """
@@ -277,5 +366,9 @@ class Connector(BrowserView):
         return result
 
 
+class AceEditor(Connector):
+    view_name = 'view-editor'
 
 
+class AceEditorReadonly(Connector):
+    view_name = 'view-editor-readonly'

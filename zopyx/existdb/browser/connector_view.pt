@@ -7,11 +7,6 @@
       i18n:domain="zopyx.existdb">
 <body>
 
-<tal:comment tal:condition="nothing">
-    This is a sample view template. It will not be used for rendering the
-    content unless activated by creation of a view class with a matching name.
-</tal:comment>
-
 <metal:main fill-slot="content-core">
   <metal:content-core define-macro="content-core">
 
@@ -49,31 +44,6 @@
               <a tal:attributes="href python: 'view/{}/{}'.format(options['subpath'], item[0])" tal:content="python: item[0]" />
           </li>
       </ul>
-
-        <style type="text/css" media="screen">
-            #editor { 
-                position: relative;
-                width: 100%;
-                height: 400px;
-            }
-        </style>
-
-        <div id="editor">function foo(items) {
-            var x = "All this is syntax highlighted";
-            return x;
-        }</div>
-            
-
-        <script>
-            var editor = ace.edit("editor");
-            editor.setTheme("ace/theme/monokai");
-            editor.getSession().setMode("ace/mode/javascript");
-            editor.setReadOnly(true);
-        </script>
-
-
-
-
 
   </metal:content-core>
 </metal:main>
