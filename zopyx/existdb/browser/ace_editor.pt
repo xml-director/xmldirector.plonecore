@@ -20,7 +20,10 @@
         }
     </style>
 
-    <div id="editor" tal:content="options/content" />
+    <div id="editor" 
+        tal:attributes="data-url options/action_url"
+        tal:content="options/content" />
+
     <tal:if condition="not: options/readonly">
         <button id="ace-editor-save" i18n:translate="">
             Save
@@ -52,6 +55,9 @@
         $(document).ready(function() {
             $('#ace-editor-save').on('click', function() {
                 var text = editor.getValue();
+                var url = $('#editor').data('url');
+                $.post(url, {data: text});
+
             });        
         });
     </script>

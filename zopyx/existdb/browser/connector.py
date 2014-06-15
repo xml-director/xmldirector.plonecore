@@ -138,11 +138,14 @@ def ace_editor(webdav_handle, filename, view_name, request, readonly=False, temp
                 'application/json': 'json',
             }.get(mt, 'text');
     template = ViewPageTemplateFile(template_name)
+    action_url = '{}/view-editor/{}'.format(request.context.absolute_url(),
+                                            '/'.join(request.subpath))
     return template.pt_render(dict(
                          template='ace_editor.pt',
                          request=request,
                          context=request.context,
                          options=dict(content=content, 
+                                      action_url=action_url,
                                       readonly=readonly,
                                       ace_readonly=str(readonly).lower(), # JS
                                       ace_mode=ace_mode)))
@@ -366,6 +369,16 @@ class Connector(BrowserView):
 
 class AceEditor(Connector):
     view_name = 'view-editor'
+
+    def __call__(self, *args, **kw):
+        method = self.request.method
+        if method == 'GET':
+            return super(AceEditor, self).__call__(*args, **kw)
+        elif method == 'POST':
+            handle = self.fs_handle
+            with handle.open('.', 'wb') as fp:
+                fp.write(self.request.data)
+            return 'done'
 
 
 class AceEditorReadonly(Connector):
