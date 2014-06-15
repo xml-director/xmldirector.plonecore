@@ -143,6 +143,7 @@ def ace_editor(webdav_handle, filename, view_name, request, readonly=False, temp
                          request=request,
                          context=request.context,
                          options=dict(content=content, 
+                                      readonly=readonly,
                                       ace_readonly=str(readonly).lower(), # JS
                                       ace_mode=ace_mode)))
 

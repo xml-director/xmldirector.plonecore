@@ -21,6 +21,21 @@
     </style>
 
     <div id="editor" tal:content="options/content" />
+    <tal:if condition="not: options/readonly">
+        <button id="ace-editor-save" i18n:translate="">
+            Save
+        </button>
+    </tal:if>
+
+    <ul id="ace-editor-info">
+        <li>
+            <span i18n:translate="">Mode</span>: <span tal:content="options/ace_mode" />
+        </li>
+        <li>
+            <span i18n:translate="">Read-only</span>: <span tal:content="options/ace_readonly" />
+        </li>
+    </ul>
+
 
     <script type="text/javascript" tal:content="string: ACE_MODE='${options/ace_mode}'"/>
     <script type="text/javascript" tal:content="string: ACE_READONLY=${options/ace_readonly}"/>
@@ -33,14 +48,13 @@
         editor.setReadOnly(ACE_READONLY);
     </script>
 
-    <ul id="ace-editor-info">
-        <li>
-            <span i18n:translate="">Mode</span>: <span tal:content="options/ace_mode" />
-        </li>
-        <li>
-            <span i18n:translate="">Read-only</span>: <span tal:content="options/ace_readonly" />
-        </li>
-    </ul>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#ace-editor-save').on('click', function() {
+                var text = editor.getValue();
+            });        
+        });
+    </script>
 
   </metal:content-core>
 </metal:main>
