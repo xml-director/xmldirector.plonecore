@@ -128,29 +128,27 @@ def default_html_handler(webdav_handle, filename, view_name, request):
                              html=html)))
 
 def ace_editor(webdav_handle, filename, view_name, request, readonly=False, template_name='ace_editor.pt'):
+    """ Default handler for showing/editing textish content through the ACE editor """
 
-    template = ViewPageTemplateFile(template_name)
     mt, encoding = mimetypes.guess_type(filename)
-
-    # get HTML
     content = webdav_handle.open('.', 'rb').read()
     ace_mode = {'text/html': 'xml',
                 'text/xml': 'xml',
                 'text/css': 'css',
                 'application/json': 'json',
             }.get(mt, 'text');
+    template = ViewPageTemplateFile(template_name)
     return template.pt_render(dict(
                          template='ace_editor.pt',
                          request=request,
                          context=request.context,
                          options=dict(content=content, 
-                                      ace_readonly=str(readonly).lower(),
+                                      ace_readonly=str(readonly).lower(), # JS
                                       ace_mode=ace_mode)))
 
 
 def ace_editor_readonly(webdav_handle, filename, view_name, request, readonly=True, template_name='ace_editor.pt'):
     return ace_editor(webdav_handle, filename, view_name, request, readonly, template_name)
-                         
 
 
 def default_view_handler(webdav_handle, filename, view_name, request):
@@ -226,7 +224,6 @@ class Connector(BrowserView):
 
         handle = self.fs_handle
         if handle.isdir('.'):
-
             files = handle.listdirinfo(files_only=True)
             files = sorted(files)
             dirs = handle.listdirinfo(dirs_only=True)
