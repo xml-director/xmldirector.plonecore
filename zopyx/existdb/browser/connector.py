@@ -265,6 +265,7 @@ class Connector(BrowserView):
     def reindex(self):
         """ Reindex current connector """
         self.context.reindexObject()
+        self.context.log('Reindexed')
         return self.redirect(u'Reindex successfully')
 
     def clear_contents(self):

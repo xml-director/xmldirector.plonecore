@@ -13,7 +13,7 @@
 
       <h2 i18n:translate="">Connector logfile</h2>
       <tal:def define="rows context/logger"> 
-          <table class="listing">
+          <table class="listing" id="logging">
               <thead>
                   <tr>
                       <th i18n:translate="">Date</th>
@@ -24,7 +24,7 @@
               <tbody>
                   <tr tal:repeat="row rows">
                       <td tal:content="python: toLocalizedTime(row['date'], True)" />
-                      <td tal:content="row/level" />
+                      <td tal:attributes="class string:level-${row/level}" tal:content="row/level" />
                       <td tal:content="row/comment" />
                   </tr>
               </tbody>

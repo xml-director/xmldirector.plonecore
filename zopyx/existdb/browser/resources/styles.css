@@ -1,3 +1,16 @@
 #form-widgets-existdb_subpath {
     width: 400px;
 }
+
+#logging .level-info {
+    color: green;
+}
+
+#logging .level-warn {
+    color: orange;
+}
+
+#logging .level-error {
+    color: red;
+    font-weight: bold;
+}
