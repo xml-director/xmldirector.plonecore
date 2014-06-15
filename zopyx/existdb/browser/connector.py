@@ -229,9 +229,11 @@ class Connector(BrowserView):
         handle = self.fs_handle
         if handle.isdir('.'):
             files = handle.listdirinfo(files_only=True)
+            files = [f for f in files if not f[0].startswith('.')]
             files = sorted(files)
             dirs = handle.listdirinfo(dirs_only=True)
             dirs = sorted(dirs)
+            dirs = [d for d in dirs if not d[0].startswith('.')]
             return self.template(
                     subpath='/'.join(self.subpath),
                     files=files, 
