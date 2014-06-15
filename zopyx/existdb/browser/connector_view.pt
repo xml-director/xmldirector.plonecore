@@ -32,6 +32,10 @@
       <h2>Files</h2>
       <ul tal:condition="options/files">
           <li tal:repeat="item options/files">
+              <a tal:attributes="href python: 'view-editor/{}/{}'.format(options['subpath'], item[0])">
+                  <img src="++resource++zopyx.existdb/images/edit.png" />
+              </a>
+              &nbsp;
               <a tal:attributes="href python: 'view/{}/{}'.format(options['subpath'], item[0])" tal:content="python: item[0]" />
           </li>
       </ul>

@@ -96,13 +96,6 @@
         permission="cmf.ManagePortal"
     />
 
-    <browser:page
-        name="view_html"
-        for="*"
-        template="foo.pt"
-        permission="zope2.View"
-        />
-
     <browser:resourceDirectory
         name="zopyx.existdb"
         directory="resources"
