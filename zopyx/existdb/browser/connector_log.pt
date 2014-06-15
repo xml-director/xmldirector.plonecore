@@ -8,17 +8,24 @@
 <body>
 
 <metal:main fill-slot="content-core">
-  <metal:content-core define-macro="content-core">
+    <metal:content-core define-macro="content-core"
+        tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime">
 
       <h2 i18n:translate="">Connector logfile</h2>
-
-      <tal:def define="row context/logger"> 
-          <table>
+      <tal:def define="rows context/logger"> 
+          <table class="listing">
+              <thead>
+                  <tr>
+                      <th i18n:translate="">Date</th>
+                      <th i18n:translate="">Level</th>
+                      <th i18n:translate="">Comment</th>
+                  </tr>
+              </thead>
               <tbody>
                   <tr tal:repeat="row rows">
-                      <td>row/date</td>
-                      <td>row/level</td>
-                      <td>row/comment</td>
+                      <td tal:content="python: toLocalizedTime(row['date'], True)" />
+                      <td tal:content="row/level" />
+                      <td tal:content="row/comment" />
                   </tr>
               </tbody>
           </table>

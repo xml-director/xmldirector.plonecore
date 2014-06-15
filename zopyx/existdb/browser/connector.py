@@ -341,7 +341,7 @@ class Connector(BrowserView):
 #                out_fp.close()
 #                zip_fp.close()
 
-        self.context.log(u'ZIP file imported ({}, {} files'.format(zip_filename, count))
+        self.context.log(u'ZIP file imported ({}, {} files)'.format(zip_filename, count))
         return self.redirect(_(u'Uploaded ZIP archive imported'))
 
     def navigation_structure(self, level_offset=0, strip_leading_numbers=True):
@@ -372,3 +372,11 @@ class AceEditor(Connector):
 
 class AceEditorReadonly(Connector):
     view_name = 'view-editor-readonly'
+
+
+class Logging(BrowserView):
+
+    template = ViewPageTemplateFile('connector_log.pt')
+
+    def __call__(self):
+        return self.template()

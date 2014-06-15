@@ -53,7 +53,7 @@
     <browser:page
         for="zopyx.existdb.connector.IConnector"
         name="connector-log"
-        class=".connector.Connector"
+        class=".connector.Logging"
         template="connector_log.pt"
         permission="cmf.ModifyPortalContent"
     />
