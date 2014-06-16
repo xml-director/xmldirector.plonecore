@@ -14,7 +14,7 @@
         #editor { 
             position: relative;
             width: 90%;
-            height: 700px;
+            height: 500px;
             margin-top: 1em;
             margin-bottom: 1em;
         }
@@ -24,11 +24,12 @@
         tal:attributes="data-url options/action_url"
         tal:content="options/content" />
 
-    <tal:if condition="not: options/readonly">
+    <div tal:condition="not: options/readonly">
         <button id="ace-editor-save" i18n:translate="">
             Save
         </button>
-    </tal:if>
+        <div id="ajax-result"></div>
+    </div>
 
     <ul id="ace-editor-info">
         <li>
@@ -56,7 +57,14 @@
             $('#ace-editor-save').on('click', function() {
                 var text = editor.getValue();
                 var url = $('#editor').data('url');
-                $.post(url, {data: text});
+                $.post(url, {
+                    data: text})
+                .done(function() {
+                    $('#ajax-result').html('<span class="status-ok">Content saved<span>').show().delay(2500).fadeOut(500);
+                })
+                .fail(function() {
+                    $('#ajax-result').html('<span class="status-error">Save failed</span>').show().delay(2500).fadeOut(500);
+                })
 
             });        
         });

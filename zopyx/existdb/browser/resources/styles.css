@@ -14,3 +14,13 @@
     color: red;
     font-weight: bold;
 }
+
+.status-ok {
+    color: green;
+    font-weight: bold;
+}
+
+.status-error {
+    color: red;
+    font-weight: bold;
+}

@@ -174,8 +174,8 @@ def default_view_handler(webdav_handle, filename, view_name, request):
 
 PC = PreconditionRegistry()
 PC.register(Precondition(suffixes=['.html', '.htm'], view_names=['view'], view_handler=default_html_handler))
-PC.register(Precondition(suffixes=['.html', '.htm', '.css', '.json'], view_names=['view-editor'], view_handler=ace_editor))
-PC.register(Precondition(suffixes=['.html', '.htm', '.css', '.json'], view_names=['view-editor-readonly'], view_handler=ace_editor_readonly))
+PC.register(Precondition(suffixes=['.xml', '.html', '.htm', '.css', '.json'], view_names=['view-editor'], view_handler=ace_editor))
+PC.register(Precondition(suffixes=['.xml', '.html', '.htm', '.css', '.json'], view_names=['view-editor-readonly'], view_handler=ace_editor_readonly))
 PC.set_default(Precondition(view_handler=default_view_handler))
 
 
