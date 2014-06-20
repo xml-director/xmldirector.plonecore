@@ -28,6 +28,7 @@ setup(name='zopyx.existdb',
       install_requires=[
           'setuptools',
           'plone.directives.form',
+          'hurry.filesize',
           'zope.i18nmessageid',
           'plone.browserlayer',
           'plone.api',

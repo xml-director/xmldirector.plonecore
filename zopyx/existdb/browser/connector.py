@@ -3,6 +3,7 @@ import re
 import fs
 import fs.errors
 import fs.path
+import hurry.filesize
 import urllib
 import zipfile
 import tempfile
@@ -26,6 +27,15 @@ from zopyx.existdb import MessageFactory as _
 
 
 LOG = logging.getLogger('zopyx.existdb')
+
+
+# Map content-types to ACE editor mods
+ACE_MODES = {
+    'text/html': 'xml',
+    'text/xml': 'xml',
+    'text/css': 'css',
+    'application/json': 'json'
+}
 
 
 class webdav_iterator(file):
@@ -132,11 +142,7 @@ def ace_editor(webdav_handle, filename, view_name, request, readonly=False, temp
 
     mt, encoding = mimetypes.guess_type(filename)
     content = webdav_handle.open('.', 'rb').read()
-    ace_mode = {'text/html': 'xml',
-                'text/xml': 'xml',
-                'text/css': 'css',
-                'application/json': 'json',
-            }.get(mt, 'text');
+    ace_mode = ACE_MODES.get(mt, 'text') 
     template = ViewPageTemplateFile(template_name)
     action_url = '{}/view-editor/{}'.format(request.context.absolute_url(),
                                             '/'.join(request.subpath))
@@ -234,6 +240,7 @@ class Connector(BrowserView):
             dirs = handle.listdirinfo(dirs_only=True)
             dirs = sorted(dirs)
             dirs = [d for d in dirs if not d[0].startswith('.')]
+            print dirs
             return self.template(
                     subpath='/'.join(self.subpath),
                     files=files, 
@@ -253,6 +260,15 @@ class Connector(BrowserView):
             self.subpath = []
         self.subpath.append(name)
         return self
+
+    def is_ace_editable(self, name):
+        """ check if the given filename is editable using ACE editor """
+        mt, encoding = mimetypes.guess_type(name)
+        return mt in ACE_MODES
+
+    def human_readable_filesize(self, num_bytes):
+        """ Return num_bytes as human readable representation """
+        return hurry.filesize.size(num_bytes, hurry.filesize.alternative)
 
     def searchabletext(self):
         """ Return indexable content """

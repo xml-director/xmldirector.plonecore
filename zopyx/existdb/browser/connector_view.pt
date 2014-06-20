@@ -29,25 +29,65 @@
           </ul>
       </div>
 
-      <h2>Files</h2>
-      <ul tal:condition="options/files">
-          <li tal:repeat="item options/files">
-              <a tal:attributes="href python: u'view-editor/{}/{}'.format(options['subpath'], item[0])">
-                  <img src="++resource++zopyx.existdb/images/edit.png" />
-              </a>
-              &nbsp;
-              <a tal:attributes="href python: u'view/{}/{}'.format(options['subpath'], item[0])" tal:content="python: item[0]" />
-          </li>
-      </ul>
-      <h2>Directories</h2>
-      <ul>
-          <li>
-              <a tal:attributes="href python: u'view/{}'.format('/'.join(view.subpath[:-1]))">..</a>
-          </li>
-          <li tal:repeat="item options/dirs">
-              <a tal:attributes="href python: u'view/{}/{}'.format(options['subpath'], item[0])" tal:content="python: item[0]" />
-          </li>
-      </ul>
+      <h2 tal:condition="options/files">Files</h2>
+      <table class="listing" tal:condition="options/files">
+          <thead>
+              <tr>
+                  <th i18n:translate="">Filename</th>
+                  <th i18n:translate="">Last modified</th>
+                  <th i18n:translate="">Size</th>
+                  <th i18n:translate="">Action</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr tal:repeat="item options/files">
+                  <td>
+                      <a tal:attributes="href python: u'view/{}/{}'.format(options['subpath'], item[0])" tal:content="python: item[0]" />
+                  </td>
+                  <td>
+                      <span tal:replace="python: item[1]['modified_time'].isoformat()" />
+                  </td>
+                  <td>
+                      <span tal:replace="python: view.human_readable_filesize(item[1]['size'])" />
+                  </td>
+                  <td>
+                      <a tal:condition="python: view.is_ace_editable(item[0])" 
+                         tal:attributes="href python: u'view-editor/{}/{}'.format(options['subpath'], item[0])"
+                         i18n:attributes="title"
+                         title="Edit"
+                          >
+                          <img src="++resource++zopyx.existdb/images/edit.png" />
+                      </a>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+
+      <h2 tal:condition="options/dirs">Directories</h2>
+      <table class="listing" tal:condition="options/dirs">
+          <thead>
+              <tr>
+                  <th i18n:translate="">Directory</th>
+                  <th i18n:translate="">Last modified</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr>
+                  <td>
+                      <a tal:attributes="href python: u'view/{}'.format('/'.join(view.subpath[:-1]))">..</a>
+                  </td>
+                  <td />
+              </tr>
+              <tr tal:repeat="item options/dirs">
+                  <td>
+                      <a tal:attributes="href python: u'view/{}/{}'.format(options['subpath'], item[0])" tal:content="python: item[0]" />
+                  </td>
+                  <td>
+                      <span tal:replace="python: item[1]['modified_time'].isoformat()" />
+                  </td>
+              </tr>
+          </tbody>
+      </table>
 
   </metal:content-core>
 </metal:main>
