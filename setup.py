@@ -1,7 +1,7 @@
-from setuptools import setup, find_packages
 import os
+from setuptools import setup, find_packages
 
-version = '0.0.1'
+version = '0.1.0'
 
 setup(name='zopyx.existdb',
       version=version,

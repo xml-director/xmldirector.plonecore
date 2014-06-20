@@ -1,41 +1,63 @@
-.. Produce & Publish Plone Client Connector documentation master file, created by
-   sphinx-quickstart on Sun Nov 13 15:03:42 2011.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+zopyx.existdb
+=============
 
-Produce & Publish Plone Client Connector
-========================================
+``zopyx.existdb`` integrates  Plone 4.3 and higher with 
+eXist-db providing the following features:
 
-The Produce & Publish Plone Client connector integrates the Plone
-CMS with the Produce & Publishing platform and supports the
-generation of PDF (requires other external PDF converters).
+- mounts an arbitary eXist-db collection into Plone
+- indexing support (limited to one content document per Connector  
+  instance)
+- ACE editor integration
+- ZIP export from eXist-db
+- ZIP import into eXist-db
 
-Documentation
+Installation
+------------
+
+Add ``zopyx.existdb`` to the ``eggs`` and ``zcml`` options of your buildout
+configuration, re-run buildout and install the connector through the add-ons
+management of Plone.
+
+Configuration
 -------------
 
-Primary documentation: http://pythonhosted.org/pp.client-plone
+Goto the Plone control panel and click on the ``Exist-DB`` configlet and
+configure the 
 
-Produce & Publish website: http://www.produce-and-publish.info
+- eXist-db server url e.g. ``http://localhost:6080``
+- eXist-db username
+- eXist-db password
+
+Using zopyx.existdb
+-------------------
+The package provides a new content-types ``Connector`` that will include
+eXist-db into Plone - either from the top-level collection of your eXist-db
+database or from a subcollection. You can browse and traverse into
+subcollections, view single documents or edit text-ish content through the web
+(using the build-in ACE editor integration).
+
+License
+-------
+This package is published under the GNU Public License V2 (GPL 2)
+
 
 Source code
 -----------
-See https://bitbucket.org/ajung/pp.client-plone
+See https://bitbucket.org/onkopedia/zopyx.existdb
 
 Bugtracker
 ----------
-See https://bitbucket.org/ajung/pp.client-plone/issues
+See https://bitbucket.org/onkopedia/zopyx.existdb
 
-Licence
--------
-Published under the GNU Public Licence Version 2 (GPL 2)
 
 Author
 ------
-| ZOPYX Limited
+| Andreas Jung/ZOPYX
 | Hundskapfklinge 33
 | D-72074 Tuebingen, Germany
 | info@zopyx.com
 | www.zopyx.com
+
 
 
 
