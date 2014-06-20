@@ -16,7 +16,7 @@ from zope.annotation.interfaces import IAnnotations
 from persistent.list import PersistentList
 from z3c.form.browser.select import SelectWidget
 
-from zopyx.existdb import MessageFactory as _
+from zopyx.existdb.i18n import MessageFactory as _
 
 
 LOG_KEY = 'zopyx.existdb.connector.log'

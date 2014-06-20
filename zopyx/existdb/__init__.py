@@ -9,8 +9,3 @@ except ImportError:
     from pkgutil import extend_path
     __path__ = extend_path(__path__, __name__)
 
-try:
-    from zope.i18nmessageid import MessageFactory
-    MessageFactory = MessageFactory('zopyx.existdb')
-except ImportError:
-    pass

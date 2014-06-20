@@ -27,7 +27,7 @@ from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.registry.interfaces import IRegistry
 from zopyx.existdb.interfaces import IExistDBSettings
-from zopyx.existdb import MessageFactory as _
+from zopyx.existdb.i18n import MessageFactory as _
 
 from view_registry import precondition_registry
 from view_registry import Precondition

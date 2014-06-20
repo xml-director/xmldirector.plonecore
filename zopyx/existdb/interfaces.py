@@ -7,7 +7,7 @@
 
 from zope import schema
 from zope.interface import Interface
-from zopyx.existdb import MessageFactory as _
+from zopyx.existdb.i18n import MessageFactory as _
 
 
 class IBrowserLayer(Interface):

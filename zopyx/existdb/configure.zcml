@@ -13,14 +13,6 @@
     <include package=".browser" />
     <include package=".adapters" />
 
-    <plone:behavior
-        title="Guideline Schema"
-        description="Behavior for Onkopedia Guidelines"
-        provides=".behaviors.IGuideline"
-        factory=".behaviors.Guideline"
-        for="plone.dexterity.interfaces.IDexterityContent"
-    />
-
     <genericsetup:registerProfile
         name="default"
         title="zopyx.existdb"

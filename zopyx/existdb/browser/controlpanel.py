@@ -8,7 +8,7 @@
 from plone.app.registry.browser import controlpanel
 
 from zopyx.existdb.interfaces import IExistDBSettings
-from zopyx.existdb import MessageFactory as _
+from zopyx.existdb.i18n import MessageFactory as _
 
 
 class ExistDBSettingsEditForm(controlpanel.RegistryEditForm):
