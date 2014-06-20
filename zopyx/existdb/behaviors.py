@@ -26,6 +26,7 @@ def context_property(name):
         delattr(self.context, name)
     return property(getter, setter, deleter)
 
+
 id2titles = {'acute-lymphoblastic-leukemia-all': 'Acute Lymphoblastic Leukemia (ALL)',
  'acute-promyelocytic-leukemia-apl': 'Acute Promyelocytic Leukemia (APL)',
  'adolescents-and-young-adults-aya': 'Adolescents and Young Adults (AYA)',
@@ -305,6 +306,7 @@ alsoProvides(IGuideline, IFormFieldProvider)
 
 class Guideline(object):
     """ Adapter for Guideline """
+
     implements(IGuideline)
     adapts(IDexterityContent)
 
