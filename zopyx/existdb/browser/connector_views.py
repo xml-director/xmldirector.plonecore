@@ -4,6 +4,7 @@
 ################################################################
 
 import mimetypes
+import lxml.html
 
 from zope.interface import implements
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
