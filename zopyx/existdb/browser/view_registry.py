@@ -4,6 +4,9 @@
 ################################################################
 
 import os
+import inspect
+
+_marker = object
 
 
 class Precondition(object):
@@ -29,7 +32,11 @@ class Precondition(object):
         return True
     
     def handle_view(self, webdav_handle, filename, view_name, request):
-        return self.view_handler(webdav_handle, filename, view_name, request)
+        if inspect.isfunction(self.view_handler):
+            return self.view_handler(webdav_handle, filename, view_name, request)
+        elif inspect.isclass(self.view_handler):
+            return self.view_handler(webdav_handle, filename, view_name, request)()
+        raise TypeError('Unsupported kind of view_handler {}'.format(self.view_handler))
 
     def __str__(self):
         return 'Precondition: {}, {}, {}'.format(self.suffixes, self.view_names, self.view_handler)
@@ -41,8 +48,11 @@ class PreconditionRegistry(object):
         self._p = list()
         self._p_default = None
 
-    def register(self, precondition, priority=None):
-        self._p.append(precondition)
+    def register(self, precondition, position=_marker):
+        if position is not _marker:
+            self._p.insert(position, precondition)
+        else:
+            self._p.append(precondition)
 
     def set_default(self, precondition):
         self._p_default = precondition
