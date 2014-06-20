@@ -25,6 +25,8 @@ from plone.registry.interfaces import IRegistry
 from zopyx.existdb.interfaces import IExistDBSettings
 from zopyx.existdb import MessageFactory as _
 
+from view_registry import precondition_registry
+from view_registry import Precondition
 
 LOG = logging.getLogger('zopyx.existdb')
 
@@ -59,51 +61,6 @@ class webdav_iterator(file):
         self.seek(cur_pos, 0)
         return size
 
-
-class Precondition(object):
-
-    def __init__(self, suffixes=[], view_names=[], view_handler=None):
-        self.suffixes = suffixes
-        self.view_names = view_names
-        self.view_handler = view_handler
-
-    def can_handle(self, filename, view_name):
-
-        if view_name not in self.view_names:
-            return False
-
-        basename, suffix = os.path.splitext(filename)
-        if suffix not in self.suffixes:
-            return False
-
-        return True
-    
-    def handle_view(self, webdav_handle, filename, view_name, request):
-        return self.view_handler(webdav_handle, filename, view_name, request)
-
-
-class PreconditionRegistry(object):
-
-    def __init__(self):
-        self._p = list()
-        self._p_default = None
-
-    def register(self, precondition, priority=None):
-        self._p.append(precondition)
-
-    def set_default(self, precondition):
-        self._p_default = precondition
-
-    def dispatch(self, webdav_handle, filename, view_name, request):
-        
-        for precondition in self._p:
-            if precondition.can_handle(filename, view_name):
-                return precondition.handle_view(webdav_handle, filename, view_name, request)
-
-        if self._p_default:
-            return self._p_default.handle_view(webdav_handle, filename, view_name, request)
-        raise ValueError('No matching precondition found')
-       
 
 def default_html_handler(webdav_handle, filename, view_name, request):
 
@@ -178,11 +135,17 @@ def default_view_handler(webdav_handle, filename, view_name, request):
         return data
 
 
-PC = PreconditionRegistry()
-PC.register(Precondition(suffixes=['.html', '.htm'], view_names=['view'], view_handler=default_html_handler))
-PC.register(Precondition(suffixes=['.xml', '.html', '.htm', '.css', '.json'], view_names=['view-editor'], view_handler=ace_editor))
-PC.register(Precondition(suffixes=['.xml', '.html', '.htm', '.css', '.json'], view_names=['view-editor-readonly'], view_handler=ace_editor_readonly))
-PC.set_default(Precondition(view_handler=default_view_handler))
+
+precondition_registry.register(Precondition(suffixes=['.html', '.htm'], 
+    view_names=['view'], 
+    view_handler=default_html_handler))
+precondition_registry.register(Precondition(suffixes=['.xml', '.html', '.htm', '.css', '.json'], 
+    view_names=['view-editor'], 
+    view_handler=ace_editor))
+precondition_registry.register(Precondition(suffixes=['.xml', '.html', '.htm', '.css', '.json'], 
+    view_names=['view-editor-readonly'], 
+    view_handler=ace_editor_readonly))
+precondition_registry.set_default(Precondition(view_handler=default_view_handler))
 
 
 @implementer(IPublishTraverse)
@@ -250,7 +213,7 @@ class Connector(BrowserView):
             filename = self.subpath[-1]
             self.request.subpath = self.subpath
             self.request.context = self.context
-            return PC.dispatch(handle, filename, self.view_name, self.request)
+            return precondition_registry.dispatch(handle, filename, self.view_name, self.request)
 
         else:
             raise RuntimeError()
