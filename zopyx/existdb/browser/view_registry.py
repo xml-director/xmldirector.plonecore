@@ -45,7 +45,6 @@ class PreconditionRegistry(object):
     def dispatch(self, webdav_handle, filename, view_name, request):
 
         for precondition in self._p:
-            print precondition
             if precondition.can_handle(filename, view_name):
                 return precondition.handle_view(webdav_handle, filename, view_name, request)
 
