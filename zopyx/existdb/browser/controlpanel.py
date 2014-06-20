@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+################################################################
+# zopyx.existdb
+# (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
+################################################################
+
 from plone.app.registry.browser import controlpanel
 
 from zopyx.existdb.interfaces import IExistDBSettings

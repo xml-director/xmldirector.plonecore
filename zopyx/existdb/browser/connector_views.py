@@ -1,3 +1,8 @@
+################################################################
+# zopyx.existdb
+# (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
+################################################################
+
 import mimetypes
 
 from zope.interface import implements

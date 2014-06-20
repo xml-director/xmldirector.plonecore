@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
+
 ################################################################
 # zopyx.existdb
-# (C) 2013,  ZOPYX Limited, D-72074 Tuebingen, Germany
+# (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
 from zope import schema

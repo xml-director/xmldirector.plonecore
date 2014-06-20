@@ -1,3 +1,8 @@
+################################################################
+# zopyx.existdb
+# (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
+################################################################
+
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.dexterity.interfaces import IDexterityContent
 from plone.supermodel import model

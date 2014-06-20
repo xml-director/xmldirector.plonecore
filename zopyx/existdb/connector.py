@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+################################################################
+# zopyx.existdb
+# (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
+################################################################
+
 import plone.api
 import datetime
 from zope import schema
