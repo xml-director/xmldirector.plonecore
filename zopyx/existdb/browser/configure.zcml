@@ -14,14 +14,6 @@
     
     <browser:page
         for="zopyx.existdb.connector.IConnector"
-        name="navigation_structure"
-        class=".connector.Connector"
-        attribute="navigation_structure"
-        permission="zope2.View"
-    />
-
-    <browser:page
-        for="zopyx.existdb.connector.IConnector"
         name="connector-view"
         class=".connector.Connector"
         template="connector_view.pt"
