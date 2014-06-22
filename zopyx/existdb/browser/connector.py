@@ -25,6 +25,7 @@ from zope.publisher.interfaces import IPublishTraverse
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.registry.interfaces import IRegistry
+from plone.app.layout.globals.interfaces import IViewView
 from zopyx.existdb.interfaces import IExistDBSettings
 from zopyx.existdb.i18n import MessageFactory as _
 
@@ -42,6 +43,8 @@ class Connector(BrowserView):
 
     view_name = 'view'
     template = ViewPageTemplateFile('connector_view.pt')
+
+    implements(IViewView)
 
     def __init__(self, context, request):
         self.request = request
