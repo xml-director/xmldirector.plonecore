@@ -138,6 +138,11 @@ class Connector(BrowserView):
         self.context.log('Reindexed')
         return self.redirect(u'Reindex successfully')
 
+    def datetime2DateTime(self, dt):
+        """ Convert Python datetime.datetime to Zope DateTime.DateTime """
+        view = self.context.restrictedTraverse('@@plone').toLocalizedTime
+        return view(dt, True)
+
     def clear_contents(self):
         """ Remove all sub content """
 

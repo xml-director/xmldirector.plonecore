@@ -45,7 +45,7 @@
                       <a tal:attributes="href python: u'view/{}/{}'.format(options['subpath'], item[0])" tal:content="python: item[0]" />
                   </td>
                   <td>
-                      <span tal:replace="python: item[1]['modified_time'].isoformat()" />
+                      <span tal:replace="python: view.datetime2DateTime(item[1]['modified_time'])" />
                   </td>
                   <td>
                       <span tal:replace="python: view.human_readable_filesize(item[1]['size'])" />
@@ -83,7 +83,7 @@
                       <a tal:attributes="href python: u'view/{}/{}'.format(options['subpath'], item[0])" tal:content="python: item[0]" />
                   </td>
                   <td>
-                      <span tal:replace="python: item[1]['modified_time'].isoformat()" />
+                      <span tal:replace="python: view.datetime2DateTime(item[1]['modified_time'])" />
                   </td>
               </tr>
           </tbody>

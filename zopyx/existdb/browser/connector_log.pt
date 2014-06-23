@@ -23,7 +23,7 @@
                   </tr>
               </thead>
               <tbody>
-                  <tr tal:repeat="row rows">
+                  <tr tal:repeat="row python: reversed(rows)">
                       <td tal:content="python: toLocalizedTime(row['date'], True)" />
                       <td tal:attributes="class string:level-${row/level}" tal:content="row/level" />
                       <td tal:content="row/username" />
