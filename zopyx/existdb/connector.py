@@ -39,7 +39,7 @@ class Connector(Container):
         annotations = IAnnotations(self)
         if not LOG_KEY in annotations:
             annotations[LOG_KEY] = PersistentList()
-        return annotations[LOG_KEY]
+        return reversed(annotations[LOG_KEY])
 
     def log(self, comment, level='info'):
         """ Add a log entry """

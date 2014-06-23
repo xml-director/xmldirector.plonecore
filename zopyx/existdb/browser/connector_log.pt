@@ -18,6 +18,7 @@
                   <tr>
                       <th i18n:translate="">Date</th>
                       <th i18n:translate="">Level</th>
+                      <th i18n:translate="">Username</th>
                       <th i18n:translate="">Comment</th>
                   </tr>
               </thead>
@@ -25,6 +26,7 @@
                   <tr tal:repeat="row rows">
                       <td tal:content="python: toLocalizedTime(row['date'], True)" />
                       <td tal:attributes="class string:level-${row/level}" tal:content="row/level" />
+                      <td tal:content="row/username" />
                       <td tal:content="row/comment" />
                   </tr>
               </tbody>

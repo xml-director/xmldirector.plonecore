@@ -187,7 +187,9 @@ class Connector(BrowserView):
             zip_filename = self.request.zipfile.filename
             zip_file = self.request.zipfile
         else:
-            zip_filename = open(zip_file, 'rb')
+            zip_filename = zip_file
+            zip_file = open(zip_file, 'rb')
+            LOG.info('ZIP import ({})'.format(zip_filename))
 
         with ZipFS(zip_file, 'r') as zip_handle:
 
@@ -197,7 +199,7 @@ class Connector(BrowserView):
                     handle.remove(name)
                 else:
                     handle.removedir(name, force=True, recursive=False)
-            self.context.log(u'Subdirectory clear (ZIP import)')
+            self.context.log(u'Subdirectory cleared (ZIP import)')
 
             # import all files from ZIP into WebDAV
             count = 0
@@ -208,6 +210,7 @@ class Connector(BrowserView):
                 except Exception as e:
                     LOG.error('Failed creating {} failed ({})'.format(dirname, e))
                
+                LOG.info('ZIP filename({})'.format(name))
                 out_fp = handle.open(name.lstrip('/'), 'wb') 
                 zip_fp = zip_handle.open(name, 'rb')
                 out_fp.write(zip_fp.read())
