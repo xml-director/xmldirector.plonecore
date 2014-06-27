@@ -78,6 +78,32 @@ class Connector(BrowserView):
             LOG.error(msg)
             raise zExceptions.Unauthorized()
 
+    @property
+    def fs_handle_parent(self):
+
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(IExistDBSettings)
+
+        url = '{}/exist/webdav/db'.format(settings.existdb_url)
+
+        if self.context.existdb_subpath:
+            url += '/{}'.format(self.context.existdb_subpath)
+        if self.subpath:
+            url += '/{}'.format(urllib.quote('/'.join(self.subpath[:-1])))
+
+        try:
+            return DAVFS(url, credentials=dict(username=settings.existdb_username,
+                                                 password=settings.existdb_password))
+        except fs.errors.ResourceNotFoundError:
+            msg = 'eXist-db path {} does not exist'.format(url)
+            self.context.plone_utils.addPortalMessage(msg, 'error')
+            LOG.error(msg)
+            raise zExceptions.NotFound()
+        except fs.errors.PermissionDeniedError:
+            msg = 'eXist-db path {} unauthorizd access (check credentials)'.format(url)
+            self.context.plone_utils.addPortalMessage(msg, 'error')
+            LOG.error(msg)
+            raise zExceptions.Unauthorized()
 
     def redirect(self, message=None, level='info'):
         if message:
@@ -183,7 +209,7 @@ class Connector(BrowserView):
             return zip_filename
         
 
-    def zip_import(self, zip_file=None):
+    def zip_import(self, zip_file=None, clean_directories=[]):
         """ Import WebDAV subfolder from an uploaded ZIP file """
 
         handle = self.fs_handle
@@ -195,11 +221,12 @@ class Connector(BrowserView):
             zip_filename = zip_file
             zip_file = open(zip_file, 'rb')
             LOG.info('ZIP import ({})'.format(zip_filename))
-
+        
         with ZipFS(zip_file, 'r') as zip_handle:
-
             # Cleanup webdav directory first
             for name in handle.listdir():
+                if not name in clean_directories:
+                    continue
                 if handle.isfile(name):
                     handle.remove(name)
                 else:
@@ -235,8 +262,9 @@ class AceEditor(Connector):
         if method == 'GET':
             return super(AceEditor, self).__call__(*args, **kw)
         elif method == 'POST':
-            handle = self.fs_handle
-            with handle.open('.', 'wb') as fp:
+            handle = self.fs_handle_parent
+            import pdb; pdb.set_trace() 
+            with handle.open(self.subpath[-1], 'wb') as fp:
                 fp.write(self.request.data)
             return 'done'
 

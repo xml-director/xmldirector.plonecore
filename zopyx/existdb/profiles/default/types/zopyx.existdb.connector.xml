@@ -30,6 +30,7 @@
   <property name="default_view">@@connector-view</property>
   <property name="view_methods">
    <element value="view"/>
+   <element value="@@connector-view"/>
   </property>
   <property name="default_view_fallback">False</property>
   <property name="add_permission">cmf.AddPortalContent</property>
