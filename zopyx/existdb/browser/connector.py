@@ -51,6 +51,10 @@ class Connector(BrowserView):
         self.context = context
         self.subpath = []
 
+    def get_handle(self):
+        """ Browser view method for returning the webdav handle """
+        return self.fs_handle
+
     @property
     def fs_handle(self):
 
@@ -263,7 +267,6 @@ class AceEditor(Connector):
             return super(AceEditor, self).__call__(*args, **kw)
         elif method == 'POST':
             handle = self.fs_handle_parent
-            import pdb; pdb.set_trace() 
             with handle.open(self.subpath[-1], 'wb') as fp:
                 fp.write(self.request.data)
             return 'done'

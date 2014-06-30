@@ -6,6 +6,14 @@
 
     <browser:page
         for="zopyx.existdb.connector.IConnector"
+        name="get_handle"
+        class=".connector.Connector"
+        attribute="get_handle"
+        permission="cmf.ModifyPortalContent"
+    />
+
+    <browser:page
+        for="zopyx.existdb.connector.IConnector"
         name="searchabletext"
         class=".connector.Connector"
         attribute="searchabletext"
