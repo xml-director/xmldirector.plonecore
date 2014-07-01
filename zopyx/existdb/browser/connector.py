@@ -22,8 +22,10 @@ from zope.interface import implements
 from zope.interface import implementer
 from zope.component import getUtility
 from zope.publisher.interfaces import IPublishTraverse
+from AccessControl.SecurityManagement import getSecurityManager
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from Products.CMFCore import permissions
 from plone.registry.interfaces import IRegistry
 from plone.app.layout.globals.interfaces import IViewView
 from zopyx.existdb.interfaces import IExistDBSettings
@@ -38,6 +40,23 @@ import config
 LOG = logging.getLogger('zopyx.existdb')
 
 
+class Dispatcher(BrowserView):
+
+    def __call__(self, *args, **kw):
+
+        user = getSecurityManager().getUser()
+        if user.has_permission(permissions.ModifyPortalContent, self.context):
+            return self.request.response.redirect('{}/@@view'.format(self.context.absolute_url()))
+        else:
+            default_view = self.context.default_view_anonymous
+            if default_view:
+                return self.request.response.redirect('{}/{}'.format(self.context.absolute_url(), default_view))
+            else:
+                msg = _(u'no default view configured for anonymous')
+                self.context.plone_utils.addPortalMessage(msg, 'error')
+                self.request.response.setStatus(404)
+
+
 @implementer(IPublishTraverse)
 class Connector(BrowserView):
 
@@ -47,8 +66,7 @@ class Connector(BrowserView):
     implements(IViewView)
 
     def __init__(self, context, request):
-        self.request = request
-        self.context = context
+        super(Connector, self).__init__(context, request)
         self.subpath = []
 
     def get_handle(self):

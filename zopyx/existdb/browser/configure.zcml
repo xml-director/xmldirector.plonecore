@@ -22,11 +22,19 @@
     
     <browser:page
         for="zopyx.existdb.connector.IConnector"
-        name="connector-view"
+        name="view"
         class=".connector.Connector"
         template="connector_view.pt"
         permission="zope2.View"
     />
+
+    <browser:page
+        for="zopyx.existdb.connector.IConnector"
+        name="connector-dispatch"
+        class=".connector.Dispatcher"
+        permission="zope2.View"
+    />
+
 
     <browser:page
         for="zopyx.existdb.connector.IConnector"

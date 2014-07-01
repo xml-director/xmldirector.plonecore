@@ -30,6 +30,12 @@ class IConnector(model.Schema):
         required=False
     )    
 
+    default_view_anonymous = schema.TextLine(
+        title=_(u'Default view'),
+        description=_(u'Name of a default view for site visitors without edit permission'),
+        required=False,
+        default=None,
+    )    
 
 class Connector(Container):
     implements(IConnector)
