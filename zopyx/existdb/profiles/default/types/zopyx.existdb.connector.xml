@@ -26,10 +26,10 @@
 
   <!-- View information -->
   <property name="link_target"></property>
-  <property name="immediate_view">@@connector-view</property>
-  <property name="default_view">@@connector-view</property>
+  <property name="immediate_view">@@connector-dispatch</property>
+  <property name="default_view">@@connector-dispatch</property>
   <property name="view_methods">
-   <element value="view"/>
+   <element value="@@view"/>
    <element value="@@connector-view"/>
   </property>
   <property name="default_view_fallback">False</property>
