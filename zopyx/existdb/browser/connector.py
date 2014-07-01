@@ -52,9 +52,9 @@ class Dispatcher(BrowserView):
             if default_view:
                 return self.request.response.redirect('{}/{}'.format(self.context.absolute_url(), default_view))
             else:
-                msg = _(u'no default view configured for anonymous')
+                msg = _(u'No default view configured for anonymous visitors')
                 self.context.plone_utils.addPortalMessage(msg, 'error')
-                self.request.response.setStatus(404)
+                raise zExceptions.NotFound()
 
 
 @implementer(IPublishTraverse)
