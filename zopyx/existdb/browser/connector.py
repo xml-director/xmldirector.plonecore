@@ -153,7 +153,6 @@ class Connector(BrowserView):
             self.request.subpath = self.subpath
             self.request.context = self.context
             return precondition_registry.dispatch(handle, filename, self.view_name, self.request)
-
         else:
             raise RuntimeError()
 
