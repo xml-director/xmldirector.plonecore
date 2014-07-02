@@ -30,6 +30,12 @@ class IConnector(model.Schema):
         required=False
     )    
 
+    api_enabled = schema.Bool(
+        title=_(u'Public web API enabled'),
+        default=False,
+        required=False
+    )    
+
     default_view_anonymous = schema.TextLine(
         title=_(u'Default view'),
         description=_(u'Name of a default view for site visitors without edit permission'),
