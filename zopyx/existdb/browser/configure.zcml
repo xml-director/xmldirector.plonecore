@@ -104,6 +104,17 @@
         permission="cmf.ManagePortal"
     />
 
+
+    <!-- Public XML-DB API --> 
+
+    <browser:page 
+        name="api-query"
+        for="zopyx.existdb.connector.IConnector"
+        permission="zope2.View"
+        class=".api.API"
+        attribute="generic_query"
+    />
+
     <browser:resourceDirectory
         name="zopyx.existdb"
         directory="resources"
