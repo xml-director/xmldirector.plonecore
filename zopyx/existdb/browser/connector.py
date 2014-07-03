@@ -148,7 +148,7 @@ class Connector(BrowserView):
         """ Reindex current connector """
         self.context.reindexObject()
         self.context.log('Reindexed')
-        return self.redirect(u'Reindex successfully')
+        return self.redirect(u'Reindexing successfully')
 
     def datetime2DateTime(self, dt):
         """ Convert Python datetime.datetime to Zope DateTime.DateTime """
