@@ -69,11 +69,12 @@ class Connector(BrowserView):
         super(Connector, self).__init__(context, request)
         self.subpath = []
 
-    def webdav_handle(self, subpath=None):
+    def webdav_handle(self, subpath=None, root=False):
         """ Returns a webdav handle for the current subpath """
 
-        if not subpath:
-            subpath = '/'.join(self.subpath)
+        if not root:
+            if not subpath:
+                subpath = '/'.join(self.subpath)
 
         try:
             return self.context.webdav_handle(subpath)
@@ -89,7 +90,7 @@ class Connector(BrowserView):
             raise zExceptions.Unauthorized()
 
     def webdav_handle_parent(self):
-        return self.webdav_handle('/')
+        return self.webdav_handle(root=True)
 
     def redirect(self, message=None, level='info'):
         if message:
