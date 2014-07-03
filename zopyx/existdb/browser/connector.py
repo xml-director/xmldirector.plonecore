@@ -69,63 +69,27 @@ class Connector(BrowserView):
         super(Connector, self).__init__(context, request)
         self.subpath = []
 
-    def get_handle(self):
-        """ Browser view method for returning the webdav handle """
-        return self.fs_handle
+    def webdav_handle(self, subpath=None):
+        """ Returns a webdav handle for the current subpath """
 
-    @property
-    def fs_handle(self):
-
-        registry = getUtility(IRegistry)
-        settings = registry.forInterface(IExistDBSettings)
-
-        url = '{}/exist/webdav/db'.format(settings.existdb_url)
-
-        if self.context.existdb_subpath:
-            url += '/{}'.format(self.context.existdb_subpath)
-        if self.subpath:
-            url += '/{}'.format(urllib.quote('/'.join(self.subpath)))
+        if not subpath:
+            subpath = '/'.join(self.subpath)
 
         try:
-            return DAVFS(url, credentials=dict(username=settings.existdb_username,
-                                                 password=settings.existdb_password))
-        except fs.errors.ResourceNotFoundError:
-            msg = 'eXist-db path {} does not exist'.format(url)
+            return self.context.webdav_handle(subpath)
+        except fs.errors.ResourceNotFoundError as e:
+            msg = 'eXist-db path {} does not exist'.format(e.url)
             self.context.plone_utils.addPortalMessage(msg, 'error')
             LOG.error(msg)
             raise zExceptions.NotFound()
-        except fs.errors.PermissionDeniedError:
-            msg = 'eXist-db path {} unauthorizd access (check credentials)'.format(url)
+        except fs.errors.PermissionDeniedError as e:
+            msg = 'eXist-db path {} unauthorizd access (check credentials)'.format(e.url)
             self.context.plone_utils.addPortalMessage(msg, 'error')
             LOG.error(msg)
             raise zExceptions.Unauthorized()
 
-    @property
-    def fs_handle_parent(self):
-
-        registry = getUtility(IRegistry)
-        settings = registry.forInterface(IExistDBSettings)
-
-        url = '{}/exist/webdav/db'.format(settings.existdb_url)
-
-        if self.context.existdb_subpath:
-            url += '/{}'.format(self.context.existdb_subpath)
-        if self.subpath:
-            url += '/{}'.format(urllib.quote('/'.join(self.subpath[:-1])))
-
-        try:
-            return DAVFS(url, credentials=dict(username=settings.existdb_username,
-                                                 password=settings.existdb_password))
-        except fs.errors.ResourceNotFoundError:
-            msg = 'eXist-db path {} does not exist'.format(url)
-            self.context.plone_utils.addPortalMessage(msg, 'error')
-            LOG.error(msg)
-            raise zExceptions.NotFound()
-        except fs.errors.PermissionDeniedError:
-            msg = 'eXist-db path {} unauthorizd access (check credentials)'.format(url)
-            self.context.plone_utils.addPortalMessage(msg, 'error')
-            LOG.error(msg)
-            raise zExceptions.Unauthorized()
+    def webdav_handle_parent(self):
+        return self.webdav_handle('/')
 
     def redirect(self, message=None, level='info'):
         if message:
@@ -135,7 +99,7 @@ class Connector(BrowserView):
 
     def __call__(self, *args, **kw):
 
-        handle = self.fs_handle
+        handle = self.webdav_handle()
         if handle.isdir('.'):
             files = handle.listdirinfo(files_only=True)
             files = [f for f in files if not f[0].startswith('.')]
@@ -173,7 +137,7 @@ class Connector(BrowserView):
 
     def searchabletext(self):
         """ Return indexable content """
-        handle = self.fs_handle
+        handle = self.webdav_handle()
         if 'index.html' in handle.listdir():
             with handle.open('index.html', 'rb') as fp:
                 return fp.read()
@@ -193,7 +157,7 @@ class Connector(BrowserView):
     def clear_contents(self):
         """ Remove all sub content """
 
-        handle = self.fs_handle
+        handle = self.webdav_handle()
         for name in handle.listdir():
             if handle.isfile(name):
                 handle.remove(name)
@@ -205,7 +169,7 @@ class Connector(BrowserView):
     def zip_export(self, download=True):
         """ Export WebDAV subfolder to a ZIP file """
 
-        handle = self.fs_handle
+        handle = self.webdav_handle()
 
         zip_filename = tempfile.mktemp(suffix='.zip')
         zf = zipfile.ZipFile(zip_filename, 'w')
@@ -233,7 +197,7 @@ class Connector(BrowserView):
     def zip_import(self, zip_file=None, clean_directories=[]):
         """ Import WebDAV subfolder from an uploaded ZIP file """
 
-        handle = self.fs_handle
+        handle = self.webdav_handle()
 
         if not zip_file:
             zip_filename = self.request.zipfile.filename
@@ -283,7 +247,7 @@ class AceEditor(Connector):
         if method == 'GET':
             return super(AceEditor, self).__call__(*args, **kw)
         elif method == 'POST':
-            handle = self.fs_handle_parent
+            handle = self.webdav_handle_parent()
             with handle.open(self.subpath[-1], 'wb') as fp:
                 fp.write(self.request.data)
             return 'done'

@@ -5,17 +5,22 @@
 # (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
+import urllib
 import plone.api
 import datetime
+from fs.contrib.davfs import DAVFS
 from zope import schema
 from zope.interface import implements
+from zope.component import getUtility
 from plone.directives import form
 from plone.dexterity.content import Container
 from plone.supermodel import model
+from plone.registry.interfaces import IRegistry
 from zope.annotation.interfaces import IAnnotations
 from persistent.list import PersistentList
 from z3c.form.browser.select import SelectWidget
 
+from zopyx.existdb.interfaces import IExistDBSettings
 from zopyx.existdb.i18n import MessageFactory as _
 
 
@@ -64,3 +69,24 @@ class Connector(Container):
         logger.append(entry)
         logger._p_changed = 1
 
+    def webdav_handle(self, subpath=None):
+        """ Return WebDAV handle to root of configured connector object
+            including configured existdb_subpath.
+        """
+
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(IExistDBSettings)
+
+        url = '{}/exist/webdav/db'.format(settings.existdb_url)
+        if self.existdb_subpath:
+            url += '/{}'.format(self.existdb_subpath)
+
+        if subpath:
+            url += '/{}'.format(urllib.quote(subpath))
+
+        try:
+            return DAVFS(url, credentials=dict(username=settings.existdb_username,
+                                               password=settings.existdb_password))
+        except Exception as e:
+            e.url = url
+            raise e
