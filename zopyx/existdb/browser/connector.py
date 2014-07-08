@@ -99,7 +99,6 @@ class Connector(BrowserView):
 
 
     def __call__(self, *args, **kw):
-
         handle = self.webdav_handle()
         if handle.isdir('.'):
             files = handle.listdirinfo(files_only=True)
