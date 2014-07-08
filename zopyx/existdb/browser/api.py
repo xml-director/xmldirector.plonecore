@@ -30,7 +30,7 @@ def timeit(method):
 class API(BrowserView):
 
     @timeit
-    def generic_query(self, script_path='scripts/all-documents.xql', output_format='json', **kw):
+    def generic_query(self, script_path='scripts/all-documents', output_format='json', **kw):
         """ Public eXist-db query API """
 
         if not self.context.api_enabled:
@@ -38,7 +38,7 @@ class API(BrowserView):
 
         registry = getUtility(IRegistry)
         settings = registry.forInterface(IExistDBSettings)
-        url = '{}/exist/rest/db/{}'.format(settings.existdb_url, script_path)
+        url = '{}/exist/restxq/{}.{}'.format(settings.existdb_url, script_path, output_format)
         username = settings.existdb_username
         password = settings.existdb_password
         result = requests.get(url, auth=HTTPBasicAuth(username, password), params=kw)
