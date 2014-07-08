@@ -1,3 +1,11 @@
+# -*- coding: utf-8 -*-
+
+################################################################
+# zopyx.existdb
+# (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
+################################################################
+
+
 import time
 import requests
 from requests.auth import HTTPBasicAuth
