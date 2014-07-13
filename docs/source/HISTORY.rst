@@ -3,7 +3,11 @@ Changelog
 
 0.1.4 (2014-07-12)
 ------------------
-- made webservice query API aware of all output formats (xml, html, json)
+- made webservice query API aware of all output formats (xml, html, json) 
+  
+- timezone handling: using environment variable TZ for converting eXist-db UTC
+  timestamps to the TZ timezone (or UTC as default) for display purposes with
+  Plone
 
 0.1.3 (2014-07-07)
 ------------------
