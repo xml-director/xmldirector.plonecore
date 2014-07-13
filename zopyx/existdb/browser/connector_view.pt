@@ -12,22 +12,6 @@
 
       <div tal:content="context/Title">Title inserted here</div>
 
-      <div class="actions">
-          <ul>
-              <li>
-                  <a href="connector-zip-import" i18n:translate="">ZIP import</a>
-              </li>
-              <li>
-                  <a href="connector-zip-export" i18n:translate="">ZIP export</a>
-              </li>
-              <li>
-                  <a href="connector-reindex" i18n:translate="">Reindex</a>
-              </li>
-              <li>
-                  <a href="connector-log" i18n:translate="">Log</a>
-              </li>
-          </ul>
-      </div>
 
       <h2 tal:condition="options/files">Files</h2>
       <table class="listing" tal:condition="options/files">
@@ -88,6 +72,24 @@
               </tr>
           </tbody>
       </table>
+
+      <div class="actions">
+          <span i18n:translate="">Actions:</span>
+          <ul>
+              <li>
+                  <a href="connector-zip-import" i18n:translate="">ZIP import</a>
+              </li>
+              <li>
+                  <a href="connector-zip-export" i18n:translate="">ZIP export</a>
+              </li>
+              <li>
+                  <a href="connector-reindex" i18n:translate="">Reindex</a>
+              </li>
+              <li>
+                  <a href="connector-log" i18n:translate="">Log</a>
+              </li>
+          </ul>
+      </div>
 
   </metal:content-core>
 </metal:main>

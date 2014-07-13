@@ -43,6 +43,7 @@ LOG = logging.getLogger('zopyx.existdb')
 TZ = os.environ.get('TZ', 'UTC')
 LOG.info('Local timezone: {}'.format(TZ))
 
+
 class Dispatcher(BrowserView):
 
     def __call__(self, *args, **kw):
@@ -214,34 +215,39 @@ class Connector(BrowserView):
             zip_filename = zip_file
             zip_file = open(zip_file, 'rb')
             LOG.info('ZIP import ({})'.format(zip_filename))
-        
-        with ZipFS(zip_file, 'r') as zip_handle:
-            # Cleanup webdav directory first
-            for name in handle.listdir():
-                if not name in clean_directories:
-                    continue
-                if handle.isfile(name):
-                    handle.remove(name)
-                else:
-                    handle.removedir(name, force=True, recursive=False)
-            self.context.log(u'Subdirectory cleared (ZIP import)')
 
-            # import all files from ZIP into WebDAV
-            count = 0
-            for name in zip_handle.walkfiles():
-                dirname = '/'.join(name.split('/')[:-1])
-                try:
-                    handle.makedir(dirname, recursive=True, allow_recreate=True)
-                except Exception as e:
-                    LOG.error('Failed creating {} failed ({})'.format(dirname, e))
-               
-                LOG.info('ZIP filename({})'.format(name))
-                out_fp = handle.open(name.lstrip('/'), 'wb') 
-                zip_fp = zip_handle.open(name, 'rb')
-                out_fp.write(zip_fp.read())
-                count += 1
+        try:
+            with ZipFS(zip_file, 'r') as zip_handle:
+                # Cleanup webdav directory first
+                for name in handle.listdir():
+                    if not name in clean_directories:
+                        continue
+                    if handle.isfile(name):
+                        handle.remove(name)
+                    else:
+                        handle.removedir(name, force=True, recursive=False)
+                self.context.log(u'Subdirectory cleared (ZIP import)')
+
+                # import all files from ZIP into WebDAV
+                count = 0
+                for name in zip_handle.walkfiles():
+                    dirname = '/'.join(name.split('/')[:-1])
+                    try:
+                        handle.makedir(dirname, recursive=True, allow_recreate=True)
+                    except Exception as e:
+                        LOG.error('Failed creating {} failed ({})'.format(dirname, e))
+                   
+                    LOG.info('ZIP filename({})'.format(name))
+                    out_fp = handle.open(name.lstrip('/'), 'wb') 
+                    zip_fp = zip_handle.open(name, 'rb')
+                    out_fp.write(zip_fp.read())
+                    count += 1
 #                out_fp.close()
 #                zip_fp.close()
+
+        except fs.zipfs.ZipOpenError as e:
+            msg = u'Error opening ZIP file: {}'.format(e)
+            return self.redirect(msg, 'error')
 
         self.context.log(u'ZIP file imported ({}, {} files)'.format(zip_filename, count))
         return self.redirect(_(u'Uploaded ZIP archive imported'))
