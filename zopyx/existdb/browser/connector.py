@@ -157,7 +157,7 @@ class Connector(BrowserView):
         self.context.log('Reindexed')
         return self.redirect(u'Reindexing successfully')
 
-    def datetime2DateTime(self, dt):
+    def datetime_tz(self, dt):
         """ Convert Python UTC datetime.datetime to Zope DateTime.DateTime """
         to_tz = tz.gettz(TZ)
         dt = dt.replace(tzinfo=tz.gettz('UTC'))
