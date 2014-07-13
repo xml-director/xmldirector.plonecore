@@ -15,6 +15,7 @@ import tempfile
 import mimetypes
 import logging
 import zExceptions
+from dateutil import tz
 from fs.opener import opener
 from fs.contrib.davfs import DAVFS
 from fs.zipfs import ZipFS
@@ -39,6 +40,8 @@ import config
 
 LOG = logging.getLogger('zopyx.existdb')
 
+TZ = os.environ.get('TZ', 'UTC')
+LOG.info('Local timezone: {}'.format(TZ))
 
 class Dispatcher(BrowserView):
 
@@ -154,9 +157,10 @@ class Connector(BrowserView):
         return self.redirect(u'Reindexing successfully')
 
     def datetime2DateTime(self, dt):
-        """ Convert Python datetime.datetime to Zope DateTime.DateTime """
-        view = self.context.restrictedTraverse('@@plone').toLocalizedTime
-        return view(dt, True)
+        """ Convert Python UTC datetime.datetime to Zope DateTime.DateTime """
+        to_tz = tz.gettz(TZ)
+        dt = dt.replace(tzinfo=tz.gettz('UTC'))
+        return dt.astimezone(to_tz).strftime('%d.%m.%Y %H:%M:%Sh')
 
     def clear_contents(self):
         """ Remove all sub content """
