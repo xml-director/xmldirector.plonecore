@@ -10,6 +10,27 @@ eXist-db providing the following features:
 - ACE editor integration
 - ZIP export from eXist-db
 - ZIP import into eXist-db
+- pluggable view mechanism for configuring custom views for XML database  
+  content by filename and view name
+- extensible architecture through Plone Dexterity behaviors
+- support for XQuery scripts called through the RESTXQ layer of eXist-db
+  (allows you to call XQuery scripts and return the output format (JSON,
+  HTML, XML) depending on your application requirements)
+- dedicated per-connector logging facility
+- small and extensible
+
+The primary usecase for ``zopyx.existdb`` is the integration of XML document
+collections into Plone using eXist-db as storage layer. ``zopyx.existdb`` is
+not storage layer for Plone content in the first place although it could be
+used in some way for storing primary Plone content (or parts of the content)
+inside eXist-db. There is no build-in support for mapping metadata as stored in
+XML documents to Plone metadata or vice versa. However this could be
+implemented easily in application specific code build on top of
+``zopyx.existdb``. The design goal of ``zopyx.existdb`` is to provide the basic
+functionality for integrating Plone with eXist-db without implementing any
+further specific application requirements.  Additional functionality can be
+added through Dexterity behaviors, supplementary browser views, event lifecycle
+subscribers and related technology.
 
 Installation
 ------------
@@ -57,7 +78,4 @@ Author
 | D-72074 Tuebingen, Germany
 | info@zopyx.com
 | www.zopyx.com
-
-
-
 

@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.1.5 (2014-07-13)
+------------------
+- minor fixes and cleanup
+
 0.1.4 (2014-07-12)
 ------------------
 - made webservice query API aware of all output formats (xml, html, json) 
