@@ -6,7 +6,6 @@
 ################################################################
 
 
-import time
 import requests
 from requests.auth import HTTPBasicAuth
 
@@ -16,7 +15,6 @@ from Products.Five.browser import BrowserView
 from zExceptions import Forbidden
 from zExceptions import NotFound
 
-from zopyx.existdb.logger import LOG
 from zopyx.existdb.interfaces import IExistDBSettings
 
 
@@ -38,14 +36,12 @@ class API(BrowserView):
         if not self.context.api_enabled:
             raise Forbidden('API not enabled')
 
-        if not output_format in ('json', 'xml', 'html'):
+        if output_format not in ('json', 'xml', 'html'):
             raise NotFound('Unsupported output format "{}"'.format(output_format))
 
         registry = getUtility(IRegistry)
         settings = registry.forInterface(IExistDBSettings)
         url = '{}/exist/restxq/{}.{}'.format(settings.existdb_url, script_path, output_format)
-        username = settings.existdb_username
-        password = settings.existdb_password
         result = requests.get(url, 
                               auth=HTTPBasicAuth(settings.existdb_username,
                                                  settings.existdb_password),

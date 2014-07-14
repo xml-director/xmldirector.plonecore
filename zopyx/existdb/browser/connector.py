@@ -4,36 +4,28 @@
 ################################################################
 
 import os
-import re
 import fs
 import fs.errors
 import fs.path
 import hurry.filesize
-import urllib
 import zipfile
 import tempfile
 import mimetypes
 import logging
 import zExceptions
 from dateutil import tz
-from fs.opener import opener
-from fs.contrib.davfs import DAVFS
 from fs.zipfs import ZipFS
 from zope.interface import implements
 from zope.interface import implementer
-from zope.component import getUtility
 from zope.publisher.interfaces import IPublishTraverse
 from AccessControl.SecurityManagement import getSecurityManager
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore import permissions
-from plone.registry.interfaces import IRegistry
 from plone.app.layout.globals.interfaces import IViewView
-from zopyx.existdb.interfaces import IExistDBSettings
 from zopyx.existdb.i18n import MessageFactory as _
 
 from view_registry import precondition_registry
-from view_registry import Precondition
 
 import connector_views  # needed to initalize the registry
 import config
@@ -220,7 +212,7 @@ class Connector(BrowserView):
             with ZipFS(zip_file, 'r') as zip_handle:
                 # Cleanup webdav directory first
                 for name in handle.listdir():
-                    if not name in clean_directories:
+                    if name not in clean_directories:
                         continue
                     if handle.isfile(name):
                         handle.remove(name)

@@ -12,13 +12,11 @@ from fs.contrib.davfs import DAVFS
 from zope import schema
 from zope.interface import implements
 from zope.component import getUtility
-from plone.directives import form
 from plone.dexterity.content import Container
 from plone.supermodel import model
 from plone.registry.interfaces import IRegistry
 from zope.annotation.interfaces import IAnnotations
 from persistent.list import PersistentList
-from z3c.form.browser.select import SelectWidget
 
 from zopyx.existdb.interfaces import IExistDBSettings
 from zopyx.existdb.i18n import MessageFactory as _
