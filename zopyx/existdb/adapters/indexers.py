@@ -1,6 +1,11 @@
+################################################################
+# zopyx.existdb
+# (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
+################################################################
 
 from plone.indexer import indexer
 from zopyx.existdb.connector import IConnector
+
 
 @indexer(IConnector)
 def SearchableText(obj):
