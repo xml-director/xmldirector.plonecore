@@ -68,3 +68,11 @@ class TestBase(unittest2.TestCase):
         """ Login as manager """
         user = self.portal.acl_users.getUser(uid)
         newSecurityManager(None, user.__of__(self.portal.acl_users))
+
+        from zope.component import getUtility
+        from plone.registry.interfaces import IRegistry
+        from zopyx.existdb.interfaces import IExistDBSettings
+
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(IExistDBSettings)
+        settings.existdb_password = u'admin'
