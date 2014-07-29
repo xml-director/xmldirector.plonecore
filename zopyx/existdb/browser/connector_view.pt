@@ -64,7 +64,7 @@
               </tr>
               <tr tal:repeat="item options/dirs">
                   <td>
-                      <a tal:attributes="href python: u'view/{}/{}'.format(options['subpath'], item[0])" tal:content="python: item[0]" />
+                      <a tal:attributes="href python: u'@@view/{}/{}'.format(options['subpath'], item[0])" tal:content="python: item[0]" />
                   </td>
                   <td>
                       <span tal:replace="python: view.datetime_tz(item[1]['modified_time'])" />
