@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.1.6 (2014-07-29)
+------------------
+- fixed improper view prefix in directory browser
+
 0.1.5 (2014-07-13)
 ------------------
 - minor fixes and cleanup
