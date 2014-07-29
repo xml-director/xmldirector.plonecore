@@ -95,17 +95,35 @@ class Connector(BrowserView):
 
 
     def __call__(self, *args, **kw):
+
         handle = self.webdav_handle()
+
         if handle.isdir('.'):
-            files = handle.listdirinfo(files_only=True)
-            files = [f for f in files if not f[0].startswith('.')]
-            files = sorted(files)
-            dirs = handle.listdirinfo(dirs_only=True)
-            dirs = sorted(dirs)
-            dirs = [d for d in dirs if not d[0].startswith('.')]
-            view_prefix = '@@view/'
+
+            context_url = self.context.absolute_url()
+            view_prefix = '@@view'
+            edit_prefix = '@@view-editor'
             if self.subpath:
-                view_prefix += '/'.join(self.subpath)
+                view_prefix += '/' + '/'.join(self.subpath)
+                edit_prefix += '/' + '/'.join(self.subpath)
+
+            files = list()
+            for info in handle.listdirinfo(files_only=True):
+                if not info[0].startswith('.'):
+                    files.append(dict(url='{}/{}/{}'.format(context_url, view_prefix, info[0]),
+                                      edit_url='{}/{}/{}'.format(context_url, edit_prefix, info[0]),
+                                      title=info[0],
+                                      editable=self.is_ace_editable(info[0]),
+                                      size=self.human_readable_filesize(info[1]['size']),
+                                      modified=self.datetime_tz(info[1]['modified_time'])))
+
+
+            dirs = list()
+            for info in handle.listdirinfo(dirs_only=True):
+                dirs.append(dict(url='{}/{}/{}'.format(context_url, view_prefix, info[0]),
+                                 title=info[0],
+                                 modified=self.datetime_tz(info[1]['modified_time'])))
+
             return self.template(
                     view_prefix=view_prefix,
                     subpath='/'.join(self.subpath),
