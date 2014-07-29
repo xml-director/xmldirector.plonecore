@@ -103,7 +103,7 @@ class Connector(BrowserView):
             dirs = handle.listdirinfo(dirs_only=True)
             dirs = sorted(dirs)
             dirs = [d for d in dirs if not d[0].startswith('.')]
-            view_prefix = '@@view'
+            view_prefix = '@@view/'
             if self.subpath:
                 view_prefix += '/'.join(self.subpath)
             return self.template(
