@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.1.7 (2014-07-29)
+------------------
+- rewritten code exist-db browser code (dealing the correct
+  way with paths, filenames etc.)
+
 0.1.6 (2014-07-29)
 ------------------
 - fixed improper view prefix in directory browser
