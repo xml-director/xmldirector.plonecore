@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.1.8 (2014-07-31)
+------------------
+- minor visual changes
+
 0.1.7 (2014-07-29)
 ------------------
 - rewritten code exist-db browser code (dealing the correct
