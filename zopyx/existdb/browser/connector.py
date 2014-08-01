@@ -237,7 +237,7 @@ class Connector(BrowserView):
         try:
             with ZipFS(zip_file, 'r') as zip_handle:
                 # Cleanup webdav directory first
-                for name in handle.listdir():
+                for i, name in enumerate(handle.listdir()):
                     if name not in clean_directories:
                         continue
                     if handle.isfile(name):
@@ -248,7 +248,8 @@ class Connector(BrowserView):
 
                 # import all files from ZIP into WebDAV
                 count = 0
-                for name in zip_handle.walkfiles():
+                for i, name in enumerate(zip_handle.walkfiles()):
+                    print i, name
                     dirname = '/'.join(name.split('/')[:-1])
                     try:
                         handle.makedir(dirname, recursive=True, allow_recreate=True)
