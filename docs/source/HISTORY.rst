@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.1.9 (2014-08-01)
+------------------
+- human readable timestamps
+
 0.1.8 (2014-07-31)
 ------------------
 - minor visual changes

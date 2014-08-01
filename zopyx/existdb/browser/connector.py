@@ -5,8 +5,10 @@
 
 import os
 import fs
+import datetime
 import fs.errors
 import fs.path
+import humanize
 import hurry.filesize
 import zipfile
 import tempfile
@@ -115,14 +117,13 @@ class Connector(BrowserView):
                                       title=info[0],
                                       editable=self.is_ace_editable(info[0]),
                                       size=self.human_readable_filesize(info[1]['size']),
-                                      modified=self.datetime_tz(info[1]['modified_time'])))
-
+                                      modified=self.human_readable_datetime(info[1]['modified_time'])))
 
             dirs = list()
             for info in handle.listdirinfo(dirs_only=True):
                 dirs.append(dict(url='{}/{}/{}'.format(context_url, view_prefix, info[0]),
                                  title=info[0],
-                                 modified=self.datetime_tz(info[1]['modified_time'])))
+                                 modified=self.human_readable_datetime(info[1]['modified_time'])))
 
             return self.template(
                     view_prefix=view_prefix,
@@ -172,6 +173,13 @@ class Connector(BrowserView):
         to_tz = tz.gettz(TZ)
         dt = dt.replace(tzinfo=tz.gettz('UTC'))
         return dt.astimezone(to_tz).strftime('%d.%m.%Y %H:%M:%Sh')
+
+    def human_readable_datetime(self, dt):
+        """ Convert with `dt` datetime string into a human readable
+            representation using humanize module.
+        """
+        diff = datetime.datetime.utcnow() - dt
+        return humanize.naturaltime(diff)
 
     def clear_contents(self):
         """ Remove all sub content """
