@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.1.10 (2014-08-05)
+------------------
+- log() got a new 'details' parameter for adding extensive logging information
+
 0.1.9 (2014-08-01)
 ------------------
 - human readable timestamps

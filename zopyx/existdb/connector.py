@@ -56,13 +56,14 @@ class Connector(Container):
             annotations[LOG_KEY] = PersistentList()
         return annotations[LOG_KEY]
 
-    def log(self, comment, level='info'):
+    def log(self, comment, level='info', details=None):
         """ Add a log entry """
 
         logger = self.logger
         entry = dict(date=datetime.datetime.utcnow(),
                      username=plone.api.user.get_current().getUserName(),
                      level=level,
+                     details=details,
                      comment=comment)
         logger.append(entry)
         logger._p_changed = 1
