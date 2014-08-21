@@ -294,5 +294,12 @@ class Logging(BrowserView):
 
     template = ViewPageTemplateFile('connector_log.pt')
 
+    def log_clear(self):
+        """ Clear connector persistent log """
+        self.context.log_clear()
+        msg = u'Log entries cleared'
+        self.context.plone_utils.addPortalMessage(msg)
+        return self.request.response.redirect('{}/@@view'.format(self.context.absolute_url()))
+
     def __call__(self):
         return self.template()

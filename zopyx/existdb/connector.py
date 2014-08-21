@@ -68,6 +68,11 @@ class Connector(Container):
         logger.append(entry)
         logger._p_changed = 1
 
+    def log_clear(self):
+        """ Clear all logger entries """
+        annotations = IAnnotations(self)
+        annotations[LOG_KEY] = PersistentList()
+
     def webdav_handle(self, subpath=None):
         """ Return WebDAV handle to root of configured connector object
             including configured existdb_subpath.

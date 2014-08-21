@@ -60,6 +60,14 @@
 
     <browser:page
         for="zopyx.existdb.connector.IConnector"
+        name="connector-log-clear"
+        class=".connector.Logging"
+        attribute="log_clear"
+        permission="cmf.ModifyPortalContent"
+    />
+
+    <browser:page
+        for="zopyx.existdb.connector.IConnector"
         name="connector-zip-import"
         template="connector_zip_import.pt"
         permission="cmf.ModifyPortalContent"

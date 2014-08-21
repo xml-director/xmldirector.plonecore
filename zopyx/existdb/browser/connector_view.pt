@@ -74,16 +74,19 @@
           <span i18n:translate="">Actions:</span>
           <ul>
               <li>
-                  <a class="action" href="connector-zip-import" i18n:translate="">ZIP import</a>
+                  <a id="connector-zip-import" class="action" href="connector-zip-import" i18n:translate="">ZIP import</a>
               </li>
               <li>
-                  <a class="action" href="connector-zip-export" i18n:translate="">ZIP export</a>
+                  <a id="connector-zip-export" class="action" href="connector-zip-export" i18n:translate="">ZIP export</a>
               </li>
               <li>
-                  <a class="action" href="connector-reindex" i18n:translate="">Reindex</a>
+                  <a id="connector-reindex" class="action" href="connector-reindex" i18n:translate="">Reindex</a>
               </li>
               <li>
-                  <a class="action" href="connector-log" i18n:translate="">Log</a>
+                  <a id="connector-log" class="action" href="connector-log" i18n:translate="">Log</a>
+              </li>
+              <li>
+                  <a id="connector-log-clear" class="action" href="connector-log-clear" i18n:translate="">Clear log</a>
               </li>
           </ul>
       </div>

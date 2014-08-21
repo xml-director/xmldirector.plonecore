@@ -13,7 +13,12 @@
 
       <h2 i18n:translate="">Connector logfile</h2>
       <tal:def define="rows context/logger"> 
-          <table class="listing" id="logging">
+
+          <div class="warning" i18n:translate="">
+              No logger entries found
+          </div>
+
+          <table class="listing" id="logging" tal:condition="rows">
               <thead>
                   <tr>
                       <th i18n:translate="">Date</th>
