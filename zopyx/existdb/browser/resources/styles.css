@@ -31,6 +31,10 @@
     font-weight: bold;
 }
 
+#content .actions {
+    border-top: 1px solid #329fd7;
+}
+
 #content .actions ul {
     padding: 0;
     margin: 0;
@@ -40,6 +44,17 @@
     display: inline;
     padding-right: 1em;
     font-weight: bold;
+}
+
+#content .actions a {
+    text-decoration: none;
+    border: none;
+}
+
+
+#content .actions a:before {
+    content: '\00bb';
+    padding-right: 0.25em;
 }
 
 /* hide folder contents action */

@@ -71,7 +71,6 @@
       </table>
 
       <div class="actions">
-          <span i18n:translate="">Actions:</span>
           <ul>
               <li>
                   <a id="connector-zip-import" class="action" href="connector-zip-import" i18n:translate="">ZIP import</a>
