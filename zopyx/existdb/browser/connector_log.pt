@@ -14,7 +14,7 @@
       <h2 i18n:translate="">Connector logfile</h2>
       <tal:def define="rows context/logger"> 
 
-          <div class="warning" i18n:translate="">
+          <div class="warning" i18n:translate="" tal:condition="not: rows">
               No logger entries found
           </div>
 
