@@ -6,11 +6,11 @@ Changelog
 - support for creating new collections TTW
 
 0.1.11 (2014-08-21)
-------------------
+-------------------
 - action "Clear log" added 
 
 0.1.10 (2014-08-05)
-------------------
+-------------------
 - log() got a new 'details' parameter for adding extensive logging information
 
 0.1.9 (2014-08-01)
