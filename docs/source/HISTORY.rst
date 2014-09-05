@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.1.12 (2014-09-05)
+------------------
+- support for creating new collections TTW
+
 0.1.11 (2014-08-21)
 ------------------
 - action "Clear log" added 

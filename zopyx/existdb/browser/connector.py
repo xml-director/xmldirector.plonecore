@@ -162,6 +162,19 @@ class Connector(BrowserView):
                 return fp.read()
         return None
 
+    def create_collection(self, name):
+        """ Create a new collection """
+
+        handle = self.webdav_handle()
+        if handle.exists(name):
+            msg = u'Collection already exists'
+            self.context.plone_utils.addPortalMessage(msg, 'error')
+        else:
+            handle.makedir(name)
+            msg = u'Collection created'
+            self.context.plone_utils.addPortalMessage(msg)
+        return self.request.response.redirect('{}/@@view'.format(self.context.absolute_url()))
+    
     def reindex(self):
         """ Reindex current connector """
         self.context.reindexObject()

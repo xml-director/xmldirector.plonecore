@@ -27,6 +27,13 @@
         permission="zope2.View"
     />
 
+    <browser:page
+        for="zopyx.existdb.connector.IConnector"
+        name="create-collection"
+        attribute="create_collection"
+        class=".connector.Connector"
+        permission="cmf.ModifyPortalContent"
+    />
 
     <browser:page
         for="zopyx.existdb.connector.IConnector"

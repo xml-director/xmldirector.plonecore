@@ -34,7 +34,24 @@
                   </td>
               </tr>
           </tbody>
+          <tfoot>
+              <tr>
+                  <th colspan="2" class="actions">
+                      <a class="action" 
+                         id="action-create-collection">
+                          New collection
+                      </a>
+                      <form action="@@create-collection" method="post" id="create-collection-form" style="display: none">
+                          <label for="name" i18n:translate="">Collection name</label>
+                          <input type="text" name="name" size="20" />
+                          <input type="submit" i18n:attributes="value" value="Create" />
+                      </form>
+                  </th>
+              </tr>
+          </tfoot>
       </table>
+
+
 
       <h2 tal:condition="options/files" i18n:translate="">Files</h2>
       <table class="listing" tal:condition="options/files">
@@ -89,6 +106,14 @@
               </li>
           </ul>
       </div>
+
+      <script type="text/javascript">
+          $(document).ready(function() {
+            $('#action-create-collection').click(function() {
+                $('#create-collection-form').show();
+            });
+          });
+      </script>
 
   </metal:content-core>
 </metal:main>
