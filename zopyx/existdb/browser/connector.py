@@ -9,6 +9,7 @@ import datetime
 import fs.errors
 import fs.path
 import humanize
+import operator
 import hurry.filesize
 import zipfile
 import tempfile
@@ -124,6 +125,9 @@ class Connector(BrowserView):
                 dirs.append(dict(url='{}/{}/{}'.format(context_url, view_prefix, info[0]),
                                  title=info[0],
                                  modified=self.human_readable_datetime(info[1]['modified_time'])))
+
+            dirs = sorted(dirs, key=operator.itemgetter('title'))
+            files = sorted(files, key=operator.itemgetter('title'))
 
             return self.template(
                     view_prefix=view_prefix,
