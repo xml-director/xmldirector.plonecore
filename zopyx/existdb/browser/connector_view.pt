@@ -110,7 +110,7 @@
       <script type="text/javascript">
           $(document).ready(function() {
             $('#action-create-collection').click(function() {
-                $('#create-collection-form').show();
+                $('#create-collection-form').toggle();
             });
           });
       </script>
