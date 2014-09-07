@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.1.13 (2014-09-07)
+-------------------
+- support for removing collections TTW
+
 0.1.12 (2014-09-05)
 -------------------
 - support for creating new collections TTW

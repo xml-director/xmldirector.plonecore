@@ -178,6 +178,19 @@ class Connector(BrowserView):
             msg = u'Collection created'
             self.context.plone_utils.addPortalMessage(msg)
         return self.request.response.redirect('{}/@@view'.format(self.context.absolute_url()))
+
+    def remove_collection(self, name):
+        """ Remove a collection """
+
+        handle = self.webdav_handle()
+        if handle.exists(name):
+            handle.removedir(name, True, True)
+            msg = u'Collection removed'
+            self.context.plone_utils.addPortalMessage(msg)
+        else:
+            msg = u'Collection does not exist'
+            self.context.plone_utils.addPortalMessage(msg, error)
+        return self.request.response.redirect('{}/@@view'.format(self.context.absolute_url()))
     
     def reindex(self):
         """ Reindex current connector """
