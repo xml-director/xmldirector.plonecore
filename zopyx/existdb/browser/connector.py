@@ -122,7 +122,9 @@ class Connector(BrowserView):
 
             dirs = list()
             for info in handle.listdirinfo(dirs_only=True):
-                dirs.append(dict(url='{}/{}/{}'.format(context_url, view_prefix, info[0]),
+                print info
+                url = u'{}/{}/{}'.format(context_url, view_prefix, info[0])
+                dirs.append(dict(url=url,
                                  title=info[0],
                                  modified=self.human_readable_datetime(info[1]['modified_time'])))
 
@@ -189,7 +191,7 @@ class Connector(BrowserView):
             self.context.plone_utils.addPortalMessage(msg)
         else:
             msg = u'Collection does not exist'
-            self.context.plone_utils.addPortalMessage(msg, error)
+            self.context.plone_utils.addPortalMessage(msg, 'error')
         return self.request.response.redirect('{}/@@view'.format(self.context.absolute_url()))
     
     def reindex(self):

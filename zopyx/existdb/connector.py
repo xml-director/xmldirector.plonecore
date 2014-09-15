@@ -87,7 +87,7 @@ class Connector(Container):
 
         if subpath:
             url += '/{}'.format(urllib.quote(subpath))
-
+        
         try:
             return DAVFS(url, credentials=dict(username=settings.existdb_username,
                                                password=settings.existdb_password))
