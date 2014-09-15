@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.1.14 (2014-09-15)
+-------------------
+
+- fixed subpath handling in create/remove collections
+
 0.1.13 (2014-09-07)
 -------------------
 - support for removing collections TTW
