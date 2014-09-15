@@ -122,7 +122,6 @@ class Connector(BrowserView):
 
             dirs = list()
             for info in handle.listdirinfo(dirs_only=True):
-                print info
                 url = u'{}/{}/{}'.format(context_url, view_prefix, info[0])
                 dirs.append(dict(url=url,
                                  title=info[0],
@@ -168,10 +167,10 @@ class Connector(BrowserView):
                 return fp.read()
         return None
 
-    def create_collection(self, name):
+    def create_collection(self, subpath, name):
         """ Create a new collection """
 
-        handle = self.webdav_handle()
+        handle = self.webdav_handle(subpath)
         if handle.exists(name):
             msg = u'Collection already exists'
             self.context.plone_utils.addPortalMessage(msg, 'error')
@@ -179,20 +178,20 @@ class Connector(BrowserView):
             handle.makedir(name)
             msg = u'Collection created'
             self.context.plone_utils.addPortalMessage(msg)
-        return self.request.response.redirect('{}/@@view'.format(self.context.absolute_url()))
+        return self.request.response.redirect('{}/@@view/{}'.format(self.context.absolute_url(), subpath))
 
-    def remove_collection(self, name):
+    def remove_collection(self, subpath, name):
         """ Remove a collection """
 
-        handle = self.webdav_handle()
+        handle = self.webdav_handle(subpath)
         if handle.exists(name):
-            handle.removedir(name, True, True)
+            handle.removedir(name, force=True)
             msg = u'Collection removed'
             self.context.plone_utils.addPortalMessage(msg)
         else:
             msg = u'Collection does not exist'
             self.context.plone_utils.addPortalMessage(msg, 'error')
-        return self.request.response.redirect('{}/@@view'.format(self.context.absolute_url()))
+        return self.request.response.redirect('{}/@@view/{}'.format(self.context.absolute_url(), subpath))
     
     def reindex(self):
         """ Reindex current connector """
@@ -281,7 +280,6 @@ class Connector(BrowserView):
                 # import all files from ZIP into WebDAV
                 count = 0
                 for i, name in enumerate(zip_handle.walkfiles()):
-                    print i, name
                     dirname = '/'.join(name.split('/')[:-1])
                     try:
                         handle.makedir(dirname, recursive=True, allow_recreate=True)
