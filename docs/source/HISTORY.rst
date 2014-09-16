@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.1.15 (2014-xx-xx)
+-------------------
+
+- removed out of the box indexing support completely
+
 0.1.14 (2014-09-15)
 -------------------
 

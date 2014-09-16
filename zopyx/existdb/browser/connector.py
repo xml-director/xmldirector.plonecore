@@ -159,14 +159,6 @@ class Connector(BrowserView):
         """ Return num_bytes as human readable representation """
         return hurry.filesize.size(num_bytes, hurry.filesize.alternative)
 
-    def searchabletext(self):
-        """ Return indexable content """
-        handle = self.webdav_handle()
-        if 'index.html' in handle.listdir():
-            with handle.open('index.html', 'rb') as fp:
-                return fp.read()
-        return None
-
     def create_collection(self, subpath, name):
         """ Create a new collection """
 

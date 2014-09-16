@@ -12,7 +12,6 @@
     <include package="plone.browserlayer" />
     <include package="Products.CMFCore" file="permissions.zcml" />
     <include package=".browser" />
-    <include package=".adapters" />
 
     <genericsetup:registerProfile
         name="default"
