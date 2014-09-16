@@ -6,14 +6,6 @@
 
     <browser:page
         for="zopyx.existdb.connector.IConnector"
-        name="searchabletext"
-        class=".connector.Connector"
-        attribute="searchabletext"
-        permission="zope2.View"
-    />
-    
-    <browser:page
-        for="zopyx.existdb.connector.IConnector"
         name="view"
         class=".connector.Connector"
         template="connector_view.pt"
