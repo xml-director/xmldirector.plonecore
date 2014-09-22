@@ -1,10 +1,11 @@
 Changelog
 =========
 
-0.1.15 (2014-xx-xx)
+0.1.15 (2014-09-22)
 -------------------
 
-- removed out of the box indexing support completely
+- removed indexing support completely (leaving a specific
+  indexing functionality to policy packages using zopyx.existdb)
 
 0.1.14 (2014-09-15)
 -------------------
