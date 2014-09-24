@@ -7,7 +7,7 @@
   <property name="title" i18n:translate="">Connector</property>
   <property name="description"
     i18n:translate="">Connector</property>
-  <property name="icon_expr">string:${portal_url}/document_icon.png</property>
+  <property name="icon_expr">string:${portal_url}/++resource++zopyx.existdb/images/connector_icon.png</property>
   <property name="factory">zopyx.existdb.connector</property>
   <property name="global_allow">True</property>
   <property name="filter_content_types">False</property>
