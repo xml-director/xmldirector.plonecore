@@ -5,7 +5,6 @@
 # (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
-import os
 from base import TestBase
 import plone.api
 
