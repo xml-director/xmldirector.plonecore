@@ -12,7 +12,7 @@ from fs.contrib.davfs import DAVFS
 from zope import schema
 from zope.interface import implements
 from zope.component import getUtility
-from plone.dexterity.content import Container
+from plone.dexterity.content import Item
 from plone.supermodel import model
 from plone.registry.interfaces import IRegistry
 from zope.annotation.interfaces import IAnnotations
@@ -46,7 +46,7 @@ class IConnector(model.Schema):
         default=None,
     )    
 
-class Connector(Container):
+class Connector(Item):
     implements(IConnector)
 
     @property
