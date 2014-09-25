@@ -73,6 +73,11 @@ Bugtracker
 ----------
 See https://bitbucket.org/onkopedia/zopyx.existdb
 
+Credits
+-------
+The development of ``zopyx.existdb`` was funded as part of a customer project
+by Deutsche Gesellschaft für Hämatologie und medizinische Onkologie (DGHO).
+
 
 Author
 ------
