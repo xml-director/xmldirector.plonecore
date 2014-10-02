@@ -111,6 +111,12 @@
         permission="cmf.ManagePortal"
     />
 
+    <browser:page
+        name="error"
+        for="zopyx.existdb.connector.IConnector"
+        template="error.pt"
+        permission="zope2.View"
+    />
 
     <!-- Public XML-DB API --> 
 
