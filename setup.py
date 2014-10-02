@@ -33,6 +33,7 @@ setup(name='zopyx.existdb',
           'zope.i18nmessageid',
           'plone.browserlayer',
           'plone.api',
+          'requests',
           'fs',
           'dexml'
           # -*- Extra requirements: -*-

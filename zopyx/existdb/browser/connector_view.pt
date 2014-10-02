@@ -41,7 +41,7 @@
                          id="action-create-collection">
                           New collection
                       </a>
-                      <form action="@@create-collection" method="post" id="create-collection-form" style="display: none">
+                      <form tal:attributes="action string:${context/absolute_url}/create-collection" method="post" id="create-collection-form" style="display: none">
                           <label for="name" i18n:translate="">Collection name</label>
                           <input type="text" name="name" size="20" />
                           <input name="subpath" type="hidden" tal:attributes="value options/subpath" />
@@ -51,7 +51,7 @@
                          id="action-remove-collection">
                           Remove collection
                       </a>
-                      <form action="@@remove-collection" method="post" id="remove-collection-form" style="display: none">
+                      <form tal:attributes="href string:${context/absolute_url}/remove-collection" method="post" id="remove-collection-form" style="display: none">
                           <select name="name">
                               <option tal:repeat="item options/dirs" 
                                   tal:attributes="value item/title"
