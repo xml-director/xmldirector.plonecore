@@ -5,6 +5,7 @@ Changelog
 -------------------
 
 - various minor bug fixes
+- added basic tests 
 
 0.1.17 (2014-09-25)
 -------------------
