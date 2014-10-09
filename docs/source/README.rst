@@ -59,12 +59,6 @@ License
 -------
 This package is published under the GNU Public License V2 (GPL 2)
 
-Known issues
-------------
-- handling of non-ascii collection and file names
-
-
-
 Source code
 -----------
 See https://bitbucket.org/onkopedia/zopyx.existdb
