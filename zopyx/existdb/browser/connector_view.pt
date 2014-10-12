@@ -57,7 +57,7 @@
                           <input name="subpath" type="hidden" tal:attributes="value options/subpath" />
                           <input type="submit" i18n:attributes="value" value="Create" />
                       </form>
-                      <form tal:attributes="href string:${context/absolute_url}/remove-collection" method="post" id="remove-collection-form" style="display: none">
+                      <form tal:attributes="action string:${context/absolute_url}/remove-collection" method="post" id="remove-collection-form" style="display: none">
                           <label for="name" i18n:translate="">Remove collection </label>
                           <select name="name">
                               <option tal:repeat="item options/dirs" 

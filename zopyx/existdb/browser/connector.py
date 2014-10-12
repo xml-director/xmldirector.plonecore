@@ -174,7 +174,7 @@ class Connector(BrowserView):
 
     def remove_collection(self, subpath, name):
         """ Remove a collection """
-
+        
         handle = self.webdav_handle(subpath)
         if handle.exists(name):
             handle.removedir(name, force=True)
