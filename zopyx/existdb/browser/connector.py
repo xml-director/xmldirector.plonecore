@@ -184,6 +184,19 @@ class Connector(BrowserView):
             msg = u'Collection does not exist'
             self.context.plone_utils.addPortalMessage(msg, 'error')
         return self.request.response.redirect('{}/@@view/{}'.format(self.context.absolute_url(), subpath))
+
+    def rename_collection(self, subpath, name, new_name):
+        """ Rename a collection """
+
+        handle = self.webdav_handle(subpath)
+        if handle.exists(name):
+            handle.rename(name, new_name)
+            msg = u'Collection renamed'
+            self.context.plone_utils.addPortalMessage(msg)
+        else:
+            msg = u'Collection does not exist'
+            self.context.plone_utils.addPortalMessage(msg, 'error')
+        return self.request.response.redirect('{}/@@view/{}'.format(self.context.absolute_url(), subpath))
     
     def reindex(self):
         """ Reindex current connector """

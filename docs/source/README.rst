@@ -10,6 +10,7 @@ eXist-db providing the following features:
 - ZIP import into eXist-db
 - pluggable view mechanism for configuring custom views for XML database  
   content by filename and view name
+- create, rename or delete collections through the web
 - extensible architecture through Plone Dexterity behaviors
 - support for XQuery scripts called through the RESTXQ layer of eXist-db
   (allows you to call XQuery scripts and return the output format (JSON,

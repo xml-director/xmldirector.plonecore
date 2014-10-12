@@ -37,6 +37,14 @@
 
     <browser:page
         for="zopyx.existdb.connector.IConnector"
+        name="rename-collection"
+        attribute="rename_collection"
+        class=".connector.Connector"
+        permission="cmf.ModifyPortalContent"
+    />
+
+    <browser:page
+        for="zopyx.existdb.connector.IConnector"
         name="view-editor-readonly"
         class=".connector.AceEditorReadonly"
         permission="zope2.View"

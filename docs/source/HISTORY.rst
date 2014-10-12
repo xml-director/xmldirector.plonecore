@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.2.1 (2014-10-12)
+-------------------
+
+- added support for renaming a collection through the web
+
 0.2.0 (2014-10-02)
 -------------------
 
