@@ -33,6 +33,7 @@
 
 #content .actions {
     border-top: 1px solid #329fd7;
+    cursor: pointer;
 }
 
 #content .actions ul {
