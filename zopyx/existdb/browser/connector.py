@@ -88,7 +88,7 @@ class Connector(BrowserView):
             LOG.error(msg)
             raise zExceptions.Unauthorized()
 
-    def webdav_handle_parent(self):
+    def webdav_handle_root(self):
         return self.webdav_handle(root=True)
 
     def redirect(self, message=None, level='info'):
@@ -169,6 +169,7 @@ class Connector(BrowserView):
         else:
             handle.makedir(name)
             msg = u'Collection created'
+            self.context.log('Created {} (subpath: {})'.format(name, subpath))
             self.context.plone_utils.addPortalMessage(msg)
         return self.request.response.redirect('{}/@@view/{}'.format(self.context.absolute_url(), subpath))
 
@@ -179,6 +180,7 @@ class Connector(BrowserView):
         if handle.exists(name):
             handle.removedir(name, force=True)
             msg = u'Collection removed'
+            self.context.log('Removed {} (subpath: {})'.format(name, subpath))
             self.context.plone_utils.addPortalMessage(msg)
         else:
             msg = u'Collection does not exist'
@@ -192,6 +194,7 @@ class Connector(BrowserView):
         if handle.exists(name):
             handle.rename(name, new_name)
             msg = u'Collection renamed'
+            self.context.log('Renamed {}  to {} (subpath: {})'.format(name, new_name, subpath))
             self.context.plone_utils.addPortalMessage(msg)
         else:
             msg = u'Collection does not exist'
@@ -315,8 +318,8 @@ class AceEditor(Connector):
         if method == 'GET':
             return super(AceEditor, self).__call__(*args, **kw)
         elif method == 'POST':
-            handle = self.webdav_handle_parent()
-            with handle.open(self.subpath[-1], 'wb') as fp:
+            handle = self.webdav_handle_root()
+            with handle.open('/'.join(self.subpath), 'wb') as fp:
                 fp.write(self.request.data)
             return 'done'
 
