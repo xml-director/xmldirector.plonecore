@@ -319,8 +319,9 @@ class AceEditor(Connector):
             return super(AceEditor, self).__call__(*args, **kw)
         elif method == 'POST':
             handle = self.webdav_handle_root()
-            with handle.open('/'.join(self.subpath), 'wb') as fp:
-                fp.write(self.request.data)
+            fp = handle.open('/'.join(self.subpath), 'wb')
+            fp.write(self.request.data)
+#            fp.close() # does not work ParentDirectoryMissingError: ParentDi...ngError()
             return 'done'
 
 
