@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.2.3 (2014-10-13)
+-------------------
+- fix in saving ACE editor content
+
 0.2.2 (2014-10-12)
 -------------------
 - typo in page template
