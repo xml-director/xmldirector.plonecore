@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.2.4 (2014-10-22)
+-------------------
+- configuration option for default view for authenticated site visitors
+
+
 0.2.3 (2014-10-13)
 -------------------
 - fix in saving ACE editor content

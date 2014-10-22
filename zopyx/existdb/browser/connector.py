@@ -45,7 +45,8 @@ class Dispatcher(BrowserView):
 
         user = getSecurityManager().getUser()
         if user.has_permission(permissions.ModifyPortalContent, self.context):
-            return self.request.response.redirect('{}/@@view'.format(self.context.absolute_url()))
+            default_view = self.context.default_view_authenticated
+            return self.request.response.redirect('{}/{}'.format(self.context.absolute_url(), default_view))
         else:
             default_view = self.context.default_view_anonymous
             if default_view:
