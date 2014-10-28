@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.2.5 (unreleased)
+------------------
+- experimental traversal support for accessing WebDAV resources by path
+  using (un)restrictedTraverse()
+
 0.2.4 (2014-10-22)
 -------------------
 - configuration option for default view for authenticated site visitors

@@ -68,6 +68,21 @@ class Connector(BrowserView):
     def __init__(self, context, request):
         super(Connector, self).__init__(context, request)
         self.subpath = []
+        self.traversal_subpath = []
+
+
+    def  __bobo_traverse__(self, request, entryname):
+        self.traversal_subpath.append(entryname)
+        traversal_subpath = '/'.join(self.traversal_subpath)
+        handle = self.webdav_handle()
+        if handle.exists(traversal_subpath):
+            if handle.isdir(traversal_subpath):
+                return self
+            elif handle.isfile(traversal_subpath):
+                data = handle.open(traversal_subpath, 'rb').read()
+                self.wrapped_object = data
+                return self
+        return None
 
     def webdav_handle(self, subpath=None, root=False):
         """ Returns a webdav handle for the current subpath """
