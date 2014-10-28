@@ -18,6 +18,7 @@ import logging
 import zExceptions
 from dateutil import tz
 from fs.zipfs import ZipFS
+import zExceptions
 from zope.interface import implements
 from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
@@ -70,8 +71,8 @@ class Connector(BrowserView):
         self.subpath = []
         self.traversal_subpath = []
 
-
     def  __bobo_traverse__(self, request, entryname):
+        """ Traversal hook for (un)restrictedTraverse() """
         self.traversal_subpath.append(entryname)
         traversal_subpath = '/'.join(self.traversal_subpath)
         handle = self.webdav_handle()
@@ -82,7 +83,7 @@ class Connector(BrowserView):
                 data = handle.open(traversal_subpath, 'rb').read()
                 self.wrapped_object = data
                 return self
-        return None
+        raise zExceptions.NotFound('not found: {}'.format(entryname))
 
     def webdav_handle(self, subpath=None, root=False):
         """ Returns a webdav handle for the current subpath """
@@ -111,7 +112,6 @@ class Connector(BrowserView):
         if message:
             self.context.plone_utils.addPortalMessage(message, level)
         return self.request.response.redirect(self.context.absolute_url())
-
 
     def __call__(self, *args, **kw):
 
