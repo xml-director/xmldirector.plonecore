@@ -21,7 +21,7 @@
           <tbody>
               <tr>
                   <td>                                     
-                      <a class="dir" tal:attributes="href python: u'@@view/{}'.format('/'.join(view.subpath[:-1]))">..</a>
+                      <a class="dir" tal:attributes="href python: u'{}/@@view/{}'.format(context.absolute_url(), '/'.join(view.subpath[:-1]))">..</a>
                   </td>
                   <td />
               </tr>
