@@ -1,10 +1,12 @@
 Changelog
 =========
 
-0.2.5 (unreleased)
+0.2.5 (2014-10-30)
 ------------------
 - experimental traversal support for accessing WebDAV resources by path
   using (un)restrictedTraverse()
+- minor URL fixes
+- more tests  
 
 0.2.4 (2014-10-22)
 -------------------
