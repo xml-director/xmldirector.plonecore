@@ -17,7 +17,7 @@ class BasicTests(TestBase):
 
     def testCheckWebdavHandle(self):
         handle = self.portal.connector.webdav_handle()
-        assert handle.url == EXIST_DB_URL
+        self.assertEqual(handle.url, EXIST_DB_URL + '/exist/webdav/db/')
 
 
 def test_suite():
