@@ -19,6 +19,10 @@ class BasicTests(TestBase):
         handle = self.portal.connector.webdav_handle()
         self.assertEqual(handle.url, EXIST_DB_URL + '/exist/webdav/db/')
 
+    def testMkdirRemovedir(self):
+        handle = self.portal.connector.webdav_handle()
+        handle.makedir('_testing_')
+        handle.removedir('_testing_')
 
 def test_suite():
     from unittest2 import TestSuite, makeSuite
