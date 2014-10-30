@@ -14,8 +14,11 @@ from plone.app.testing import IntegrationTesting
 from plone.app.testing import setRoles
 from plone.app.testing import login
 from plone.testing import z2
+from plone.registry.interfaces import IRegistry
 
+from zope.component import getUtility
 from zope.configuration import xmlconfig
+from zopyx.existdb.interfaces import IExistDBSettings
 from AccessControl.SecurityManagement import newSecurityManager
 
 import zopyx.existdb
@@ -47,6 +50,10 @@ class PolicyFixture(PloneSandboxLayer):
         setRoles(portal, 'member', ['Member'])
         login(portal, 'god')
 
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(IExistDBSettings)
+        settings.existdb_password = u'admin'
+
         self.connector = plone.api.content.create(
                 container=portal, 
                 type='zopyx.existdb.connector', 
@@ -75,10 +82,3 @@ class TestBase(unittest2.TestCase):
         user = self.portal.acl_users.getUser(uid)
         newSecurityManager(None, user.__of__(self.portal.acl_users))
 
-        from zope.component import getUtility
-        from plone.registry.interfaces import IRegistry
-        from zopyx.existdb.interfaces import IExistDBSettings
-
-        registry = getUtility(IRegistry)
-        settings = registry.forInterface(IExistDBSettings)
-        settings.existdb_password = u'admin'
