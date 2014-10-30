@@ -6,6 +6,7 @@
 ################################################################
 
 from base import TestBase
+from base import EXIST_DB_URL
 import plone.api
 
 
@@ -16,7 +17,7 @@ class BasicTests(TestBase):
 
     def testCheckWebdavHandle(self):
         handle = self.portal.connector.webdav_handle()
-        assert handle.url == 'http://localhost:6080/exist/webdav/db/'
+        assert handle.url == EXIST_DB_URL
 
 
 def test_suite():
