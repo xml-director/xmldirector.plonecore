@@ -5,6 +5,7 @@
 # (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
+import os
 import unittest2
 import plone.api
 from plone.app.testing import PloneSandboxLayer
@@ -23,6 +24,12 @@ from AccessControl.SecurityManagement import newSecurityManager
 
 import zopyx.existdb
 import plone.app.dexterity
+
+
+EXIST_DB_URL = os.environ.get('EXIST_DB_URL', 'http://localhost:6080')
+EXIST_DB_USERNAME = os.environ.get('EXIST_DB_USERNAME', 'admin')
+EXIST_DB_PASSWORD = os.environ.get('EXIST_DB_PASSWORD', 'admin')
+
 
 class PolicyFixture(PloneSandboxLayer):
 
@@ -52,7 +59,9 @@ class PolicyFixture(PloneSandboxLayer):
 
         registry = getUtility(IRegistry)
         settings = registry.forInterface(IExistDBSettings)
-        settings.existdb_password = u'admin'
+        settings.existdb_username = unicode(EXIST_DB_USERNAME)
+        settings.existdb_password = unicode(EXIST_DB_PASSWORD)
+        settings.existdb_url = unicode(EXIST_DB_URL)
 
         self.connector = plone.api.content.create(
                 container=portal, 
