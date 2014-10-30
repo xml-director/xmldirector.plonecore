@@ -48,7 +48,7 @@ class IConnector(model.Schema):
 
     default_view_authenticated = schema.TextLine(
         title=_(u'Default view (authenticated)'),
-        description=_(u'Name of a default view anonymous site visitors'),
+        description=_(u'Name of a default view for anonymous site visitors'),
         required=False,
         default=u'@@view',
     )    
