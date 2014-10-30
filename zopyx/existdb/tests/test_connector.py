@@ -12,9 +12,7 @@ import plone.api
 class BasicTests(TestBase):
 
     def testCreateTestFolder(self):
-        self.login('god')
-        connector = plone.api.content.create(self.portal, 'zopyx.existdb.connector', id='connector')
-        assert connector.portal_type == 'zopyx.existdb.connector'
+        assert self.portal.connector.portal_type == 'zopyx.existdb.connector'
 
 
 def test_suite():

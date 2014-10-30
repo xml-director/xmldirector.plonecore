@@ -6,6 +6,7 @@
 ################################################################
 
 import unittest2
+import plone.api
 from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import applyProfile
 from plone.app.testing import PLONE_FIXTURE
@@ -45,6 +46,11 @@ class PolicyFixture(PloneSandboxLayer):
         portal.acl_users.userFolderAddUser('member', 'dummy', ['Member'], [])
         setRoles(portal, 'member', ['Member'])
         login(portal, 'god')
+
+        self.connector = plone.api.content.create(
+                container=portal, 
+                type='zopyx.existdb.connector', 
+                id='connector')
 
     def tearDownZope(self, app):
         # Uninstall product
