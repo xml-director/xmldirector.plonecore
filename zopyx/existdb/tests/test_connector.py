@@ -77,6 +77,15 @@ class BasicTests(TestBase):
         zf.close()
         os.unlink(fn)
 
+    def testZipImport(self):
+        self.login('god')
+        fn = os.path.join(os.path.dirname(__file__), 'sample.zip')
+        view = self.portal.connector.restrictedTraverse('@@connector-zip-upload')
+        view.zip_import(fn)
+        handle = self.portal.connector.webdav_handle()
+        self.assertEqual(handle.exists('import/test.xml'), True)
+        self.assertEqual(handle.exists('import/test.html'), True)
+
     def testLogger(self):
         c = self.portal.connector
         self.assertEqual(len(c.logger), 0)
