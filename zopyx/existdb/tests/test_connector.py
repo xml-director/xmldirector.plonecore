@@ -103,6 +103,11 @@ class BasicTests(TestBase):
         result = view.human_readable_datetime(now)
         self.assertEqual(result, 'now')
 
+    def testHumanReadableFilesize(self):
+        view = self._get_view()
+        result = view.human_readable_filesize(1000000)
+        self.assertEqual(result, '976 KB')
+
     def testLogger(self):
         c = self.portal.connector
         self.assertEqual(len(c.logger), 0)
