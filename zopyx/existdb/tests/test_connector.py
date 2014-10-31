@@ -45,6 +45,28 @@ class BasicTests(TestBase):
         self.assertEqual(handle.exists('foo/index.xml'), True)
         self.assertEqual(handle.exists('foo/xxxx.html'), False)
 
+    def testRenameCollection(self):
+        self.login('god')
+        view = self.portal.connector.restrictedTraverse('@@rename-collection')
+        view.rename_collection('', 'foo', 'bar')
+        handle = self.portal.connector.webdav_handle()
+        self.assertEqual(handle.exists('bar/index.html'), True)
+        self.assertEqual(handle.exists('bar/index.xml'), True)
+
+    def testCreateCollection(self):
+        self.login('god')
+        view = self.portal.connector.restrictedTraverse('@@create-collection')
+        view.create_collection('', 'new')
+        handle = self.portal.connector.webdav_handle()
+        self.assertEqual(handle.exists('new'), True)
+
+    def testRemoveCollection(self):
+        self.login('god')
+        view = self.portal.connector.restrictedTraverse('@@create-collection')
+        view.remove_collection('', 'foo')
+        handle = self.portal.connector.webdav_handle()
+        self.assertEqual(handle.exists('foo'), False)
+
     def testZipExport(self):
         self.login('god')
         view = self.portal.connector.restrictedTraverse('@@connector-zip-export')
@@ -54,6 +76,16 @@ class BasicTests(TestBase):
         self.assertEqual('foo/index.xml' in zf.namelist(), True)
         zf.close()
         os.unlink(fn)
+
+    def testLogger(self):
+        c = self.portal.connector
+        self.assertEqual(len(c.logger), 0)
+        c.log(u'error', 'error')
+        c.log(u'info', 'info')
+        self.assertEqual(len(c.logger), 2)
+        c.log_clear()
+        self.assertEqual(len(c.logger), 0)
+
 
 def test_suite():
     from unittest2 import TestSuite, makeSuite
