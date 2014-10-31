@@ -6,6 +6,7 @@
 ################################################################
 
 import os
+import datetime
 from zipfile import ZipFile
 from base import TestBase
 from base import EXIST_DB_URL
@@ -32,6 +33,16 @@ class BasicTests(TestBase):
         if handle.exists('_testing_'):
             handle.removedir('_testing_', False,  True)
 
+    def _get_view(self):
+        from zopyx.existdb.browser.connector import Connector as ConnectorView
+        from Testing.makerequest import makerequest
+        request = makerequest(self.portal)
+        class FakeResponse(object):
+            def redirect(self, url):
+                pass
+        request.response = FakeResponse()
+        return ConnectorView(request=request, context=self.portal.connector)
+
     def testCheckPortalType(self):
         assert self.portal.connector.portal_type == 'zopyx.existdb.connector'
 
@@ -47,7 +58,7 @@ class BasicTests(TestBase):
 
     def testRenameCollection(self):
         self.login('god')
-        view = self.portal.connector.restrictedTraverse('@@rename-collection')
+        view = self._get_view()
         view.rename_collection('', 'foo', 'bar')
         handle = self.portal.connector.webdav_handle()
         self.assertEqual(handle.exists('bar/index.html'), True)
@@ -55,21 +66,21 @@ class BasicTests(TestBase):
 
     def testCreateCollection(self):
         self.login('god')
-        view = self.portal.connector.restrictedTraverse('@@create-collection')
+        view = self._get_view()
         view.create_collection('', 'new')
         handle = self.portal.connector.webdav_handle()
         self.assertEqual(handle.exists('new'), True)
 
     def testRemoveCollection(self):
         self.login('god')
-        view = self.portal.connector.restrictedTraverse('@@create-collection')
+        view = self._get_view()
         view.remove_collection('', 'foo')
         handle = self.portal.connector.webdav_handle()
         self.assertEqual(handle.exists('foo'), False)
 
     def testZipExport(self):
         self.login('god')
-        view = self.portal.connector.restrictedTraverse('@@connector-zip-export')
+        view = self._get_view()
         fn = view.zip_export(download=False)
         zf = ZipFile(fn, 'r')
         self.assertEqual('foo/index.html' in zf.namelist(), True)
@@ -80,11 +91,17 @@ class BasicTests(TestBase):
     def testZipImport(self):
         self.login('god')
         fn = os.path.join(os.path.dirname(__file__), 'sample.zip')
-        view = self.portal.connector.restrictedTraverse('@@connector-zip-upload')
+        view = self._get_view()
         view.zip_import(fn)
         handle = self.portal.connector.webdav_handle()
         self.assertEqual(handle.exists('import/test.xml'), True)
         self.assertEqual(handle.exists('import/test.html'), True)
+
+    def testHumanReadableDatetime(self):
+        view = self._get_view()
+        now = datetime.datetime.utcnow()
+        result = view.human_readable_datetime(now)
+        self.assertEqual(result, 'now')
 
     def testLogger(self):
         c = self.portal.connector
