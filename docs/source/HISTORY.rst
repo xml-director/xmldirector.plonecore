@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.2.7 (unreleased)
+------------------
+- experimental support for BaseX XML database through the WebDAV API.
+  Limitations: REMOVE operations over WebDAV do not seem to work 
+  against BaseX 7.9
+
+
 0.2.6 (2014-11-01)
 ------------------
 - more tests
