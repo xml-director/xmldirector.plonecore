@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.2.8 (2014-11-01)
+------------------
+- minor fix for mounting Plone sites over WebDAV into another Plone site
+
 0.2.7 (2014-11-01)
 ------------------
 - experimental support for BaseX XML database through the WebDAV API.
