@@ -11,6 +11,7 @@ from zipfile import ZipFile
 from base import TestBase
 from base import EXIST_DB_URL
 import plone.api
+import zExceptions
 
 PREFIX = 'testing'
 
@@ -117,6 +118,16 @@ class BasicTests(TestBase):
         self.assertEqual(len(c.logger), 2)
         c.log_clear()
         self.assertEqual(len(c.logger), 0)
+
+    def testTraversalExistingPath(self):
+        path = 'connector/@@view/foo/index.html'
+        result = self.portal.restrictedTraverse(path)
+        self.assertEqual('<html/>' in result.wrapped_object, True) # with XML preamble
+
+    def testTraversalNonExistingPath(self):
+        path = 'connector/@@view/foo/doesnot.html'
+        with self.assertRaises(zExceptions.NotFound):
+            result = self.portal.restrictedTraverse(path)
 
 
 def test_suite():
