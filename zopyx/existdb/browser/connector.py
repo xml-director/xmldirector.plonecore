@@ -167,7 +167,7 @@ class Connector(BrowserView):
             self.request.context = self.context
             return precondition_registry.dispatch(handle, filename, self.view_name, self.request)
         else:
-            raise RuntimeError()
+            raise RuntimeError('This should not happen :-)')
 
     def publishTraverse(self, request, name):
         if not hasattr(self, 'subpath'):
