@@ -12,26 +12,27 @@ from base import TestBase
 from base import EXIST_DB_URL
 import plone.api
 
+PREFIX = 'testing'
 
 class BasicTests(TestBase):
 
     def setUp(self):
         handle = self.portal.connector.webdav_handle()
-        if handle.exists('_testing_'):
-            handle.removedir('_testing_', False,  True)
-        handle.makedir('_testing_')
-        handle.makedir('_testing_/foo')
-        with handle.open('_testing_/foo/index.html', 'wb') as fp:
+        if handle.exists(PREFIX):
+            handle.removedir(PREFIX, False,  True)
+        handle.makedir(PREFIX)
+        handle.makedir(PREFIX + '/foo')
+        with handle.open(PREFIX + '/foo/index.html', 'wb') as fp:
             fp.write('<html/>')
-        with handle.open('_testing_/foo/index.xml', 'wb') as fp:
+        with handle.open(PREFIX + '/foo/index.xml', 'wb') as fp:
             fp.write('<?xml version="1.0" ?>\n<hello>world</hello>')
-        self.portal.connector.existdb_subpath = '_testing_'
+        self.portal.connector.existdb_subpath = PREFIX
 
     def tearDown(self):
         self.portal.connector.existdb_subpath = None
         handle = self.portal.connector.webdav_handle()
-        if handle.exists('_testing_'):
-            handle.removedir('_testing_', False,  True)
+        if handle.exists(PREFIX):
+            handle.removedir(PREFIX, False,  True)
 
     def _get_view(self):
         from zopyx.existdb.browser.connector import Connector as ConnectorView
@@ -48,7 +49,7 @@ class BasicTests(TestBase):
 
     def testCheckWebdavHandle(self):
         handle = self.portal.connector.webdav_handle()
-        self.assertEqual(handle.url, EXIST_DB_URL + '/exist/webdav/db/_testing_/')
+        self.assertEqual(handle.url, EXIST_DB_URL + '/exist/webdav/db/{}/'.format(PREFIX))
 
     def testFileCheck(self):
         handle = self.portal.connector.webdav_handle()
