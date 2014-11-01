@@ -82,6 +82,11 @@ class Connector(BrowserView):
             elif handle.isfile(traversal_subpath):
                 data = handle.open(traversal_subpath, 'rb').read()
                 self.wrapped_object = data
+                self.wrapped_info = handle.getinfo(traversal_subpath)
+                try:
+                    self.wrapped_meta = handle.getmeta(traversal_subpath)
+                except fs.errors.NoMetaError:
+                    self.wrapped_meta = None
                 return self
         raise zExceptions.NotFound('not found: {}'.format(entryname))
 
