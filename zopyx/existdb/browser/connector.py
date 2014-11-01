@@ -129,11 +129,15 @@ class Connector(BrowserView):
             files = list()
             for info in handle.listdirinfo(files_only=True):
                 if not info[0].startswith('.'):
+                    try:
+                        size=self.human_readable_filesize(info[1]['size'])
+                    except KeyError:
+                        size = u'n/a'
                     files.append(dict(url='{}/{}/{}'.format(context_url, view_prefix, info[0]),
                                       edit_url='{}/{}/{}'.format(context_url, edit_prefix, info[0]),
                                       title=info[0],
                                       editable=self.is_ace_editable(info[0]),
-                                      size=self.human_readable_filesize(info[1]['size']),
+                                      size=size,
                                       modified=self.human_readable_datetime(info[1]['modified_time'])))
 
             dirs = list()
