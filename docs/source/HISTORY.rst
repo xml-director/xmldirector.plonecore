@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.2.9 (2014-11-01)
+------------------
+- support for overriding credentials locally 
+
 0.2.8 (2014-11-01)
 ------------------
 - minor fix for mounting Plone sites over WebDAV into another Plone site
