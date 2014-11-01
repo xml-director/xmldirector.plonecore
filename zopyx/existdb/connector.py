@@ -88,7 +88,13 @@ class Connector(Item):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(IExistDBSettings)
 
-        url = '{}/exist/webdav/db'.format(settings.existdb_url)
+        if settings.existdb_emulation == 'existdb':
+            url = '{}/exist/webdav/db'.format(settings.existdb_url)
+        elif settings.existdb_emulation == 'basex':
+            url = settings.existdb_url
+        else:
+            raise ValueError('Unsupported emulation mode {}'.format(settings.existdb_emulation))
+
         if self.existdb_subpath:
             url += '/{}'.format(self.existdb_subpath)
 
