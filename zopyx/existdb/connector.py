@@ -33,6 +33,16 @@ class IConnector(model.Schema):
         required=False
     )    
 
+    existdb_username = schema.TextLine(
+        title=_(u'(optional) username overriding the system settings'),
+        required=False
+    )    
+
+    existdb_password = schema.TextLine(
+        title=_(u'(optional) password overriding the system settings'),
+        required=False
+    )    
+
     api_enabled = schema.Bool(
         title=_(u'Public web API enabled'),
         default=False,
@@ -100,10 +110,19 @@ class Connector(Item):
 
         if subpath:
             url += '/{}'.format(urllib.quote(subpath))
-        
+
+        # system-wide credentials
+        username = settings.existdb_username
+        password = settings.existdb_password
+
+        # local credentials override the system credentials
+        if self.existdb_username and self.existdb_password:
+            username = self.existdb_username
+            password = self.existdb_password
+
         try:
-            return DAVFS(url, credentials=dict(username=settings.existdb_username,
-                                               password=settings.existdb_password))
+            return DAVFS(url, credentials=dict(username=username,
+                                               password=password))
         except Exception as e:
             e.url = url
             raise e
