@@ -127,6 +127,11 @@ class BasicTests(TestBase):
         result = self.portal.restrictedTraverse(path)
         # with XML preamble
         self.assertEqual('<html/>' in result.wrapped_object, True)
+        self.assertEqual('wrapped_meta' in result.__dict__, True)
+        info = result.wrapped_info
+        self.assertEqual('modified_time' in info, True)
+        self.assertEqual('name' in info, True)
+        self.assertEqual('st_mode' in info, True)
 
     def testTraversalNonExistingPath(self):
         path = 'connector/@@view/foo/doesnot.html'
