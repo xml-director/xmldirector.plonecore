@@ -134,10 +134,18 @@ class BasicTests(TestBase):
         self.assertEqual('st_mode' in info, True)
 
     def testTraversalNonExistingPath(self):
-        path = 'connector/@@view/foo/doesnot.html'
+        path = 'connector/@@view/foo/doesnotexist.html'
         with self.assertRaises(zExceptions.NotFound):
             self.portal.restrictedTraverse(path)
 
+    def testRenderControlPanel(self):
+        with self.assertRaises(zExceptions.Unauthorized):
+            view = self.portal.restrictedTraverse('@@existdb-settings')
+            result = view()
+
+        self.login('god')
+        view = self.portal.restrictedTraverse('@@existdb-settings')
+        result = view()
 
 def test_suite():
     from unittest2 import TestSuite, makeSuite
