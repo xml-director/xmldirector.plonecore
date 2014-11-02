@@ -8,8 +8,8 @@
 import os
 import datetime
 from zipfile import ZipFile
-from base import TestBase
-from base import EXIST_DB_URL
+from .base import TestBase
+from .base import EXIST_DB_URL
 import plone.api
 import zExceptions
 
@@ -21,7 +21,7 @@ class BasicTests(TestBase):
     def setUp(self):
         handle = self.portal.connector.webdav_handle()
         if handle.exists(PREFIX):
-            handle.removedir(PREFIX, False,  True)
+            handle.removedir(PREFIX, False, True)
         handle.makedir(PREFIX)
         handle.makedir(PREFIX + '/foo')
         with handle.open(PREFIX + '/foo/index.html', 'wb') as fp:
@@ -34,7 +34,7 @@ class BasicTests(TestBase):
         self.portal.connector.existdb_subpath = None
         handle = self.portal.connector.webdav_handle()
         if handle.exists(PREFIX):
-            handle.removedir(PREFIX, False,  True)
+            handle.removedir(PREFIX, False, True)
 
     def _get_view(self):
         from zopyx.existdb.browser.connector import Connector as ConnectorView

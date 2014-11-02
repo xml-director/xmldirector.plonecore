@@ -24,7 +24,8 @@ class ExistDBError(Exception):
 
 class API(BrowserView):
 
-    def generic_query(self, script_path='all-documents', output_format='json', deserialize_json=False, **kw):
+    def generic_query(self, script_path='all-documents',
+                      output_format='json', deserialize_json=False, **kw):
         """ Public query API for calling xquery scripts through RESTXQ.
             The related xquery script must expose is functionality through
             http://host:port/exist/restxq/<script_path>.<output_format>.

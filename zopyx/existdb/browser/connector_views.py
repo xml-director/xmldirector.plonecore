@@ -10,9 +10,9 @@ from zope.interface import implements
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from ZPublisher.Iterators import IStreamIterator
 
-from view_registry import precondition_registry
-from view_registry import Precondition
-import config
+from .view_registry import precondition_registry
+from .view_registry import Precondition
+from . import config
 
 
 class webdav_iterator(file):
@@ -73,7 +73,8 @@ def default_html_handler(webdav_handle, filename, view_name, request):
             html=html)))
 
 
-def ace_editor(webdav_handle, filename, view_name, request, readonly=False, template_name='ace_editor.pt'):
+def ace_editor(webdav_handle, filename, view_name, request,
+               readonly=False, template_name='ace_editor.pt'):
     """ Default handler for showing/editing textish content through the ACE editor """
 
     mt, encoding = mimetypes.guess_type(filename)
@@ -93,8 +94,10 @@ def ace_editor(webdav_handle, filename, view_name, request, readonly=False, temp
                      ace_mode=ace_mode)))
 
 
-def ace_editor_readonly(webdav_handle, filename, view_name, request, readonly=True, template_name='ace_editor.pt'):
-    return ace_editor(webdav_handle, filename, view_name, request, readonly, template_name)
+def ace_editor_readonly(webdav_handle, filename, view_name,
+                        request, readonly=True, template_name='ace_editor.pt'):
+    return ace_editor(
+        webdav_handle, filename, view_name, request, readonly, template_name)
 
 
 def default_view_handler(webdav_handle, filename, view_name, request):
