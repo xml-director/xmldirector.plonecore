@@ -18,7 +18,6 @@ import logging
 import zExceptions
 from dateutil import tz
 from fs.zipfs import ZipFS
-import zExceptions
 from zope.interface import implements
 from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse

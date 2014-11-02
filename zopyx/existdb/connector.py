@@ -71,7 +71,7 @@ class Connector(Item):
     @property
     def logger(self):
         annotations = IAnnotations(self)
-        if not LOG_KEY in annotations:
+        if LOG_KEY not in annotations:
             annotations[LOG_KEY] = PersistentList()
         return annotations[LOG_KEY]
 

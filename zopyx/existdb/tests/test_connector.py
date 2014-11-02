@@ -10,7 +10,6 @@ import datetime
 from zipfile import ZipFile
 from .base import TestBase
 from .base import EXIST_DB_URL
-import plone.api
 import zExceptions
 
 PREFIX = 'testing'
@@ -132,7 +131,7 @@ class BasicTests(TestBase):
     def testTraversalNonExistingPath(self):
         path = 'connector/@@view/foo/doesnot.html'
         with self.assertRaises(zExceptions.NotFound):
-            result = self.portal.restrictedTraverse(path)
+            self.portal.restrictedTraverse(path)
 
 
 def test_suite():
