@@ -30,13 +30,14 @@ class Precondition(object):
             return False
 
         return True
-    
+
     def handle_view(self, webdav_handle, filename, view_name, request):
         if inspect.isfunction(self.view_handler):
             return self.view_handler(webdav_handle, filename, view_name, request)
         elif inspect.isclass(self.view_handler):
             return self.view_handler(webdav_handle, filename, view_name, request)()
-        raise TypeError('Unsupported kind of view_handler {}'.format(self.view_handler))
+        raise TypeError(
+            'Unsupported kind of view_handler {}'.format(self.view_handler))
 
     def __str__(self):
         return 'Precondition: {}, {}, {}'.format(self.suffixes, self.view_names, self.view_handler)

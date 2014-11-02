@@ -31,37 +31,39 @@ class IConnector(model.Schema):
         title=_(u'Subdirectory in Exist-DB'),
         description=_(u'Subdirectory in Exist-DB'),
         required=False
-    )    
+    )
 
     existdb_username = schema.TextLine(
         title=_(u'(optional) username overriding the system settings'),
         required=False
-    )    
+    )
 
     existdb_password = schema.TextLine(
         title=_(u'(optional) password overriding the system settings'),
         required=False
-    )    
+    )
 
     api_enabled = schema.Bool(
         title=_(u'Public web API enabled'),
         default=False,
         required=False
-    )    
+    )
 
     default_view_anonymous = schema.TextLine(
         title=_(u'Default view (anonymous)'),
-        description=_(u'Name of a default view for site visitors without edit permission'),
+        description=_(
+            u'Name of a default view for site visitors without edit permission'),
         required=False,
         default=None,
-    )    
+    )
 
     default_view_authenticated = schema.TextLine(
         title=_(u'Default view (authenticated)'),
         description=_(u'Name of a default view for anonymous site visitors'),
         required=False,
         default=u'@@view',
-    )    
+    )
+
 
 class Connector(Item):
     implements(IConnector)
@@ -103,7 +105,8 @@ class Connector(Item):
         elif settings.existdb_emulation == 'basex':
             url = settings.existdb_url
         else:
-            raise ValueError('Unsupported emulation mode {}'.format(settings.existdb_emulation))
+            raise ValueError(
+                'Unsupported emulation mode {}'.format(settings.existdb_emulation))
 
         if self.existdb_subpath:
             url += '/{}'.format(self.existdb_subpath)

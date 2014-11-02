@@ -38,7 +38,7 @@ class PolicyFixture(PloneSandboxLayer):
 
     def setUpZope(self, app, configurationContext):
 
-#        xmlconfig.file('meta.zcml', z3c.jbot, context=configurationContext)
+        #        xmlconfig.file('meta.zcml', z3c.jbot, context=configurationContext)
         for mod in [plone.app.dexterity,
                     zopyx.existdb,
                     ]:
@@ -66,9 +66,9 @@ class PolicyFixture(PloneSandboxLayer):
         settings.existdb_emulation = unicode(EXIST_DB_EMULATION)
 
         self.connector = plone.api.content.create(
-                container=portal, 
-                type='zopyx.existdb.connector', 
-                id='connector')
+            container=portal,
+            type='zopyx.existdb.connector',
+            id='connector')
 
     def tearDownZope(self, app):
         # Uninstall product
@@ -92,4 +92,3 @@ class TestBase(unittest2.TestCase):
         """ Login as manager """
         user = self.portal.acl_users.getUser(uid)
         newSecurityManager(None, user.__of__(self.portal.acl_users))
-

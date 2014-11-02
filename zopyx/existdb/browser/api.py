@@ -37,31 +37,36 @@ class API(BrowserView):
             raise Forbidden('API not enabled')
 
         if output_format not in ('json', 'xml', 'html'):
-            raise NotFound('Unsupported output format "{}"'.format(output_format))
+            raise NotFound(
+                'Unsupported output format "{}"'.format(output_format))
 
         registry = getUtility(IRegistry)
         settings = registry.forInterface(IExistDBSettings)
-        url = '{}/exist/restxq/{}.{}'.format(settings.existdb_url, script_path, output_format)
-        result = requests.get(url, 
+        url = '{}/exist/restxq/{}.{}'.format(
+            settings.existdb_url, script_path, output_format)
+        result = requests.get(url,
                               auth=HTTPBasicAuth(settings.existdb_username,
                                                  settings.existdb_password),
                               params=kw)
         if result.status_code != 200:
-            raise ExistDBError('eXist-db return an response with HTTP code {} for {}'.format(result.status_code, url))
+            raise ExistDBError(
+                'eXist-db return an response with HTTP code {} for {}'.format(result.status_code, url))
 
         if output_format == 'json':
-            data = result.json() 
+            data = result.json()
             if deserialize_json:
                 # called internally (and not through the web)
                 data = result.json()
                 return data
             else:
                 data = result.text
-                self.request.response.setHeader('content-type', 'application/json')
+                self.request.response.setHeader(
+                    'content-type', 'application/json')
                 self.request.response.setHeader('content-length', len(data))
                 return data
         else:
             data = result.text
-            self.request.response.setHeader('content-type', 'text/{}'.format(output_format))
+            self.request.response.setHeader(
+                'content-type', 'text/{}'.format(output_format))
             self.request.response.setHeader('content-length', len(data))
             return data

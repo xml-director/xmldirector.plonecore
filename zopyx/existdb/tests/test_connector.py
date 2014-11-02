@@ -15,6 +15,7 @@ import zExceptions
 
 PREFIX = 'testing'
 
+
 class BasicTests(TestBase):
 
     def setUp(self):
@@ -39,7 +40,9 @@ class BasicTests(TestBase):
         from zopyx.existdb.browser.connector import Connector as ConnectorView
         from Testing.makerequest import makerequest
         request = makerequest(self.portal)
+
         class FakeResponse(object):
+
             def redirect(self, url):
                 pass
         request.response = FakeResponse()
@@ -50,7 +53,8 @@ class BasicTests(TestBase):
 
     def testCheckWebdavHandle(self):
         handle = self.portal.connector.webdav_handle()
-        self.assertEqual(handle.url, EXIST_DB_URL + '/exist/webdav/db/{}/'.format(PREFIX))
+        self.assertEqual(
+            handle.url, EXIST_DB_URL + '/exist/webdav/db/{}/'.format(PREFIX))
 
     def testFileCheck(self):
         handle = self.portal.connector.webdav_handle()
@@ -122,7 +126,8 @@ class BasicTests(TestBase):
     def testTraversalExistingPath(self):
         path = 'connector/@@view/foo/index.html'
         result = self.portal.restrictedTraverse(path)
-        self.assertEqual('<html/>' in result.wrapped_object, True) # with XML preamble
+        # with XML preamble
+        self.assertEqual('<html/>' in result.wrapped_object, True)
 
     def testTraversalNonExistingPath(self):
         path = 'connector/@@view/foo/doesnot.html'

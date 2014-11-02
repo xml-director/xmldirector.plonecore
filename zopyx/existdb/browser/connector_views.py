@@ -12,14 +12,14 @@ from ZPublisher.Iterators import IStreamIterator
 
 from view_registry import precondition_registry
 from view_registry import Precondition
-import config 
+import config
 
 
 class webdav_iterator(file):
 
     implements(IStreamIterator)
 
-    def __init__(self, handle, mode='rb', streamsize=1<<16):
+    def __init__(self, handle, mode='rb', streamsize=1 << 16):
         self.fp = handle.open('.', mode)
         self.streamsize = streamsize
 
@@ -44,7 +44,8 @@ def default_html_handler(webdav_handle, filename, view_name, request):
     html_template = ViewPageTemplateFile('html_view.pt')
 
     # exist-db base url
-    base_url = '{}/view/{}'.format(request.context.absolute_url(1), '/'.join(request.subpath[:-1]))
+    base_url = '{}/view/{}'.format(request.context.absolute_url(1),
+                                   '/'.join(request.subpath[:-1]))
 
     # get HTML
     html = webdav_handle.open('.', 'rb').read()
@@ -64,31 +65,32 @@ def default_html_handler(webdav_handle, filename, view_name, request):
 
     html = lxml.html.tostring(root)
     return html_template.pt_render(dict(
-                         template='html_view',
-                         request=request,
-                         context=request.context,
-                         options=dict(
-                             base_url=base_url,
-                             html=html)))
+        template='html_view',
+        request=request,
+        context=request.context,
+        options=dict(
+            base_url=base_url,
+            html=html)))
+
 
 def ace_editor(webdav_handle, filename, view_name, request, readonly=False, template_name='ace_editor.pt'):
     """ Default handler for showing/editing textish content through the ACE editor """
 
     mt, encoding = mimetypes.guess_type(filename)
     content = webdav_handle.open('.', 'rb').read()
-    ace_mode = config.ACE_MODES.get(mt, 'text') 
+    ace_mode = config.ACE_MODES.get(mt, 'text')
     template = ViewPageTemplateFile(template_name)
     action_url = '{}/view-editor/{}'.format(request.context.absolute_url(),
                                             '/'.join(request.subpath))
     return template.pt_render(dict(
-                         template='ace_editor.pt',
-                         request=request,
-                         context=request.context,
-                         options=dict(content=content, 
-                                      action_url=action_url,
-                                      readonly=readonly,
-                                      ace_readonly=str(readonly).lower(), # JS
-                                      ace_mode=ace_mode)))
+        template='ace_editor.pt',
+        request=request,
+        context=request.context,
+        options=dict(content=content,
+                     action_url=action_url,
+                     readonly=readonly,
+                     ace_readonly=str(readonly).lower(),  # JS
+                     ace_mode=ace_mode)))
 
 
 def ace_editor_readonly(webdav_handle, filename, view_name, request, readonly=True, template_name='ace_editor.pt'):
@@ -112,14 +114,15 @@ def default_view_handler(webdav_handle, filename, view_name, request):
         return data
 
 
-
-precondition_registry.register(Precondition(suffixes=['.html', '.htm'], 
-    view_names=['view'], 
-    view_handler=default_html_handler))
-precondition_registry.register(Precondition(suffixes=['.xml', '.html', '.htm', '.css', '.json'], 
-    view_names=['view-editor'], 
-    view_handler=ace_editor))
-precondition_registry.register(Precondition(suffixes=['.xml', '.html', '.htm', '.css', '.json'], 
-    view_names=['view-editor-readonly'], 
-    view_handler=ace_editor_readonly))
-precondition_registry.set_default(Precondition(view_handler=default_view_handler))
+precondition_registry.register(Precondition(suffixes=['.html', '.htm'],
+                                            view_names=['view'],
+                                            view_handler=default_html_handler))
+precondition_registry.register(Precondition(suffixes=['.xml', '.html', '.htm', '.css', '.json'],
+                                            view_names=['view-editor'],
+                                            view_handler=ace_editor))
+precondition_registry.register(Precondition(suffixes=['.xml', '.html', '.htm', '.css', '.json'],
+                                            view_names=[
+                                                'view-editor-readonly'],
+                                            view_handler=ace_editor_readonly))
+precondition_registry.set_default(
+    Precondition(view_handler=default_view_handler))
