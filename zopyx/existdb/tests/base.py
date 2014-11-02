@@ -29,6 +29,7 @@ import plone.app.dexterity
 EXIST_DB_URL = os.environ.get('EXIST_DB_URL', 'http://localhost:6080')
 EXIST_DB_USERNAME = os.environ.get('EXIST_DB_USERNAME', 'admin')
 EXIST_DB_PASSWORD = os.environ.get('EXIST_DB_PASSWORD', 'admin')
+EXIST_DB_EMULATION = os.environ.get('EXIST_DB_EMULATION', 'existdb')
 
 
 class PolicyFixture(PloneSandboxLayer):
@@ -62,6 +63,7 @@ class PolicyFixture(PloneSandboxLayer):
         settings.existdb_username = unicode(EXIST_DB_USERNAME)
         settings.existdb_password = unicode(EXIST_DB_PASSWORD)
         settings.existdb_url = unicode(EXIST_DB_URL)
+        settings.existdb_emulation = unicode(EXIST_DB_EMULATION)
 
         self.connector = plone.api.content.create(
                 container=portal, 
