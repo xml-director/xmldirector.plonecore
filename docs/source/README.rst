@@ -26,6 +26,8 @@ eXist-db providing the following features:
   HTML, XML) depending on your application requirements)
 - dedicated per-connector logging facility
 - small and extensible
+- experimental support for mounting arbitrary WebDAV service into Plone (set
+  the emulation mode to ``webdav`` in the eXist-db control panel of Plone)
 
 The primary usecase for ``zopyx.existdb`` is the integration of XML document
 collections into Plone using eXist-db as storage layer. ``zopyx.existdb`` is
@@ -54,8 +56,16 @@ Goto the Plone control panel and click on the ``Exist-DB`` configlet and
 configure the 
 
 - eXist-db server url e.g. ``http://localhost:6080``
+
+  The eXist-db subpath ``/exist/webdav/db`` will be added internally.
+
 - eXist-db username
+
 - eXist-db password
+
+- eXist-db emulation mode. Set the emulation mode to ``webdav`` for the integration of
+  arbitrary WebDAV services.
+
 
 Using zopyx.existdb
 -------------------
@@ -64,6 +74,15 @@ eXist-db into Plone - either from the top-level collection of your eXist-db
 database or from a subcollection. You can browse and traverse into
 subcollections, view single documents or edit text-ish content through the web
 (using the build-in ACE editor integration).
+
+.. note:: This module provides a generic integration of arbitrary 
+   WebDAV services like OwnCloud, BaseX (over WebDAV) or even other Plone
+   serves (exposed through the Plone WebDAV source port) with Plone.
+   This integration is highly experimental and not the primary purpose
+   of ``zopyx.existdb``. Use the functionality at your own risk.
+   In order to use this module together with WebDAV services other than the
+   XML database eXist-db: you have to set the emulation mode to ``webdav``
+   inside the eXist-db control panel of Plone
 
 License
 -------
