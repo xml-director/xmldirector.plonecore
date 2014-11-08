@@ -13,8 +13,9 @@ from zope.schema.vocabulary import SimpleVocabulary
 
 
 class IBrowserLayer(Interface):
+
     """A brower layer specific to my product """
-   
+
 
 EMULATION_VOCABULARY = SimpleVocabulary([
     SimpleTerm(u'existdb', u'existdb', u'eXist-db'),
@@ -23,6 +24,7 @@ EMULATION_VOCABULARY = SimpleVocabulary([
 
 
 class IExistDBSettings(Interface):
+
     """ ExistDB settings """
 
     existdb_emulation = schema.Choice(
@@ -52,4 +54,3 @@ class IExistDBSettings(Interface):
         default=u'',
         required=True,
     )
-

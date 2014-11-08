@@ -8,19 +8,19 @@
 import os
 import datetime
 from zipfile import ZipFile
-from base import TestBase
-from base import EXIST_DB_URL
-import plone.api
+from .base import TestBase
+from .base import EXIST_DB_URL
 import zExceptions
 
 PREFIX = 'testing'
+
 
 class BasicTests(TestBase):
 
     def setUp(self):
         handle = self.portal.connector.webdav_handle()
         if handle.exists(PREFIX):
-            handle.removedir(PREFIX, False,  True)
+            handle.removedir(PREFIX, False, True)
         handle.makedir(PREFIX)
         handle.makedir(PREFIX + '/foo')
         with handle.open(PREFIX + '/foo/index.html', 'wb') as fp:
@@ -33,13 +33,15 @@ class BasicTests(TestBase):
         self.portal.connector.existdb_subpath = None
         handle = self.portal.connector.webdav_handle()
         if handle.exists(PREFIX):
-            handle.removedir(PREFIX, False,  True)
+            handle.removedir(PREFIX, False, True)
 
     def _get_view(self):
         from zopyx.existdb.browser.connector import Connector as ConnectorView
         from Testing.makerequest import makerequest
         request = makerequest(self.portal)
+
         class FakeResponse(object):
+
             def redirect(self, url):
                 pass
         request.response = FakeResponse()
@@ -50,7 +52,8 @@ class BasicTests(TestBase):
 
     def testCheckWebdavHandle(self):
         handle = self.portal.connector.webdav_handle()
-        self.assertEqual(handle.url, EXIST_DB_URL + '/exist/webdav/db/{}/'.format(PREFIX))
+        self.assertEqual(
+            handle.url, EXIST_DB_URL + '/exist/webdav/db/{}/'.format(PREFIX))
 
     def testFileCheck(self):
         handle = self.portal.connector.webdav_handle()
@@ -122,13 +125,27 @@ class BasicTests(TestBase):
     def testTraversalExistingPath(self):
         path = 'connector/@@view/foo/index.html'
         result = self.portal.restrictedTraverse(path)
-        self.assertEqual('<html/>' in result.wrapped_object, True) # with XML preamble
+        # with XML preamble
+        self.assertEqual('<html/>' in result.wrapped_object, True)
+        self.assertEqual('wrapped_meta' in result.__dict__, True)
+        info = result.wrapped_info
+        self.assertEqual('modified_time' in info, True)
+        self.assertEqual('name' in info, True)
+        self.assertEqual('st_mode' in info, True)
 
     def testTraversalNonExistingPath(self):
-        path = 'connector/@@view/foo/doesnot.html'
+        path = 'connector/@@view/foo/doesnotexist.html'
         with self.assertRaises(zExceptions.NotFound):
-            result = self.portal.restrictedTraverse(path)
+            self.portal.restrictedTraverse(path)
 
+    def testRenderControlPanel(self):
+        with self.assertRaises(zExceptions.Unauthorized):
+            view = self.portal.restrictedTraverse('@@existdb-settings')
+            result = view()
+
+        self.login('god')
+        view = self.portal.restrictedTraverse('@@existdb-settings')
+        result = view()
 
 def test_suite():
     from unittest2 import TestSuite, makeSuite

@@ -31,27 +31,39 @@ class IConnector(model.Schema):
         title=_(u'Subdirectory in Exist-DB'),
         description=_(u'Subdirectory in Exist-DB'),
         required=False
-    )    
+    )
+
+    existdb_username = schema.TextLine(
+        title=_(u'(optional) username overriding the system settings'),
+        required=False
+    )
+
+    existdb_password = schema.TextLine(
+        title=_(u'(optional) password overriding the system settings'),
+        required=False
+    )
 
     api_enabled = schema.Bool(
         title=_(u'Public web API enabled'),
         default=False,
         required=False
-    )    
+    )
 
     default_view_anonymous = schema.TextLine(
         title=_(u'Default view (anonymous)'),
-        description=_(u'Name of a default view for site visitors without edit permission'),
+        description=_(
+            u'Name of a default view for site visitors without edit permission'),
         required=False,
         default=None,
-    )    
+    )
 
     default_view_authenticated = schema.TextLine(
         title=_(u'Default view (authenticated)'),
         description=_(u'Name of a default view for anonymous site visitors'),
         required=False,
         default=u'@@view',
-    )    
+    )
+
 
 class Connector(Item):
     implements(IConnector)
@@ -59,7 +71,7 @@ class Connector(Item):
     @property
     def logger(self):
         annotations = IAnnotations(self)
-        if not LOG_KEY in annotations:
+        if LOG_KEY not in annotations:
             annotations[LOG_KEY] = PersistentList()
         return annotations[LOG_KEY]
 
@@ -95,17 +107,27 @@ class Connector(Item):
         elif settings.existdb_emulation == 'webdav':
             pass
         else:
-            raise ValueError('Unsupported emulation mode {}'.format(settings.existdb_emulation))
+            raise ValueError(
+                'Unsupported emulation mode {}'.format(settings.existdb_emulation))
 
         if self.existdb_subpath:
             url += '/{}'.format(self.existdb_subpath)
 
         if subpath:
             url += '/{}'.format(urllib.quote(subpath))
-        
+
+        # system-wide credentials
+        username = settings.existdb_username
+        password = settings.existdb_password
+
+        # local credentials override the system credentials
+        if self.existdb_username and self.existdb_password:
+            username = self.existdb_username
+            password = self.existdb_password
+
         try:
-            return DAVFS(url, credentials=dict(username=settings.existdb_username,
-                                               password=settings.existdb_password))
+            return DAVFS(url, credentials=dict(username=username,
+                                               password=password))
         except Exception as e:
             e.url = url
             raise e

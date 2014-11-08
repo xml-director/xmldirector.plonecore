@@ -1,6 +1,15 @@
 zopyx.existdb
 =============
 
+.. note:: This module  
+
+  - *is not* a replacement for the ZODB or any other Plone storage (never was, never will)
+  - *is not* a storage layer for Archetypes or Dexterity content (never was, never will)
+  - *is* a solution for mounting XML databases like eXist-db or
+    BaseX into Plone through their WebDAV port
+  - *is* an experimental solution for mounting general WebDAV 
+    services into Plone
+
 ``zopyx.existdb`` integrates  Plone 4.3 and higher with 
 eXist-db providing the following features:
 

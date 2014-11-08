@@ -18,7 +18,6 @@ import logging
 import zExceptions
 from dateutil import tz
 from fs.zipfs import ZipFS
-import zExceptions
 from zope.interface import implements
 from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
@@ -29,10 +28,10 @@ from Products.CMFCore import permissions
 from plone.app.layout.globals.interfaces import IViewView
 from zopyx.existdb.i18n import MessageFactory as _
 
-from view_registry import precondition_registry
+from .view_registry import precondition_registry
 
-import connector_views  # needed to initalize the registry
-import config
+from . import connector_views  # needed to initalize the registry
+from . import config
 
 LOG = logging.getLogger('zopyx.existdb')
 
@@ -47,11 +46,13 @@ class Dispatcher(BrowserView):
         user = getSecurityManager().getUser()
         if user.has_permission(permissions.ModifyPortalContent, self.context):
             default_view = self.context.default_view_authenticated
-            return self.request.response.redirect('{}/{}'.format(self.context.absolute_url(), default_view))
+            return self.request.response.redirect(
+                '{}/{}'.format(self.context.absolute_url(), default_view))
         else:
             default_view = self.context.default_view_anonymous
             if default_view:
-                return self.request.response.redirect('{}/{}'.format(self.context.absolute_url(), default_view))
+                return self.request.response.redirect(
+                    '{}/{}'.format(self.context.absolute_url(), default_view))
             else:
                 msg = _(u'No default view configured for anonymous visitors')
                 self.context.plone_utils.addPortalMessage(msg, 'error')
@@ -71,7 +72,7 @@ class Connector(BrowserView):
         self.subpath = []
         self.traversal_subpath = []
 
-    def  __bobo_traverse__(self, request, entryname):
+    def __bobo_traverse__(self, request, entryname):
         """ Traversal hook for (un)restrictedTraverse() """
         self.traversal_subpath.append(entryname)
         traversal_subpath = '/'.join(self.traversal_subpath)
@@ -105,7 +106,8 @@ class Connector(BrowserView):
             LOG.error(msg)
             raise zExceptions.NotFound()
         except fs.errors.PermissionDeniedError as e:
-            msg = 'eXist-db path {} unauthorizd access (check credentials)'.format(e.url)
+            msg = 'eXist-db path {} unauthorizd access (check credentials)'.format(
+                e.url)
             self.context.plone_utils.addPortalMessage(msg, 'error')
             LOG.error(msg)
             raise zExceptions.Unauthorized()
@@ -134,11 +136,16 @@ class Connector(BrowserView):
             files = list()
             for info in handle.listdirinfo(files_only=True):
                 if not info[0].startswith('.'):
+                    try:
+                        size = self.human_readable_filesize(info[1]['size'])
+                    except KeyError:
+                        size = u'n/a'
                     files.append(dict(url='{}/{}/{}'.format(context_url, view_prefix, info[0]),
-                                      edit_url='{}/{}/{}'.format(context_url, edit_prefix, info[0]),
+                                      edit_url='{}/{}/{}'.format(
+                                          context_url, edit_prefix, info[0]),
                                       title=info[0],
                                       editable=self.is_ace_editable(info[0]),
-                                      size=self.human_readable_filesize(info[1]['size']),
+                                      size=size,
                                       modified=self.human_readable_datetime(info[1]['modified_time'])))
 
             dirs = list()
@@ -152,18 +159,19 @@ class Connector(BrowserView):
             files = sorted(files, key=operator.itemgetter('title'))
 
             return self.template(
-                    view_prefix=view_prefix,
-                    subpath='/'.join(self.subpath),
-                    files=files, 
-                    dirs=dirs)
+                view_prefix=view_prefix,
+                subpath='/'.join(self.subpath),
+                files=files,
+                dirs=dirs)
 
         elif handle.isfile('.'):
             filename = self.subpath[-1]
             self.request.subpath = self.subpath
             self.request.context = self.context
-            return precondition_registry.dispatch(handle, filename, self.view_name, self.request)
+            return precondition_registry.dispatch(
+                handle, filename, self.view_name, self.request)
         else:
-            raise RuntimeError()
+            raise RuntimeError('This should not happen :-)')
 
     def publishTraverse(self, request, name):
         if not hasattr(self, 'subpath'):
@@ -192,11 +200,12 @@ class Connector(BrowserView):
             msg = u'Collection created'
             self.context.log('Created {} (subpath: {})'.format(name, subpath))
             self.context.plone_utils.addPortalMessage(msg)
-        return self.request.response.redirect('{}/@@view/{}'.format(self.context.absolute_url(), subpath))
+        return self.request.response.redirect(
+            '{}/@@view/{}'.format(self.context.absolute_url(), subpath))
 
     def remove_collection(self, subpath, name):
         """ Remove a collection """
-        
+
         handle = self.webdav_handle(subpath)
         if handle.exists(name):
             handle.removedir(name, force=True)
@@ -206,7 +215,8 @@ class Connector(BrowserView):
         else:
             msg = u'Collection does not exist'
             self.context.plone_utils.addPortalMessage(msg, 'error')
-        return self.request.response.redirect('{}/@@view/{}'.format(self.context.absolute_url(), subpath))
+        return self.request.response.redirect(
+            '{}/@@view/{}'.format(self.context.absolute_url(), subpath))
 
     def rename_collection(self, subpath, name, new_name):
         """ Rename a collection """
@@ -215,13 +225,15 @@ class Connector(BrowserView):
         if handle.exists(name):
             handle.rename(name, new_name)
             msg = u'Collection renamed'
-            self.context.log('Renamed {}  to {} (subpath: {})'.format(name, new_name, subpath))
+            self.context.log(
+                'Renamed {}  to {} (subpath: {})'.format(name, new_name, subpath))
             self.context.plone_utils.addPortalMessage(msg)
         else:
             msg = u'Collection does not exist'
             self.context.plone_utils.addPortalMessage(msg, 'error')
-        return self.request.response.redirect('{}/@@view/{}'.format(self.context.absolute_url(), subpath))
-    
+        return self.request.response.redirect(
+            '{}/@@view/{}'.format(self.context.absolute_url(), subpath))
+
     def reindex(self):
         """ Reindex current connector """
         self.context.reindexObject()
@@ -271,15 +283,16 @@ class Connector(BrowserView):
 
         if download:
             self.request.response.setHeader('content-type', 'application/zip')
-            self.request.response.setHeader('content-size', os.path.getsize(zip_filename))
-            self.request.response.setHeader('content-disposition', 'attachment; filename={}.zip'.format(self.context.id))
+            self.request.response.setHeader(
+                'content-size', os.path.getsize(zip_filename))
+            self.request.response.setHeader(
+                'content-disposition', 'attachment; filename={}.zip'.format(self.context.id))
             with open(zip_filename, 'rb') as fp:
                 self.request.response.write(fp.read())
             os.unlink(zip_filename)
             return
         else:
             return zip_filename
-        
 
     def zip_import(self, zip_file=None, clean_directories=[]):
         """ Import WebDAV subfolder from an uploaded ZIP file """
@@ -311,12 +324,14 @@ class Connector(BrowserView):
                 for i, name in enumerate(zip_handle.walkfiles()):
                     dirname = '/'.join(name.split('/')[:-1])
                     try:
-                        handle.makedir(dirname, recursive=True, allow_recreate=True)
+                        handle.makedir(
+                            dirname, recursive=True, allow_recreate=True)
                     except Exception as e:
-                        LOG.error('Failed creating {} failed ({})'.format(dirname, e))
-                   
+                        LOG.error(
+                            'Failed creating {} failed ({})'.format(dirname, e))
+
                     LOG.info('ZIP filename({})'.format(name))
-                    out_fp = handle.open(name.lstrip('/'), 'wb') 
+                    out_fp = handle.open(name.lstrip('/'), 'wb')
                     zip_fp = zip_handle.open(name, 'rb')
                     out_fp.write(zip_fp.read())
                     count += 1
@@ -327,7 +342,8 @@ class Connector(BrowserView):
             msg = u'Error opening ZIP file: {}'.format(e)
             return self.redirect(msg, 'error')
 
-        self.context.log(u'ZIP file imported ({}, {} files)'.format(zip_filename, count))
+        self.context.log(
+            u'ZIP file imported ({}, {} files)'.format(zip_filename, count))
         return self.redirect(_(u'Uploaded ZIP archive imported'))
 
 
@@ -342,7 +358,8 @@ class AceEditor(Connector):
             handle = self.webdav_handle_root()
             fp = handle.open('/'.join(self.subpath), 'wb')
             fp.write(self.request.data)
-            fp.close() # does not work ParentDirectoryMissingError: ParentDi...ngError()
+            # does not work ParentDirectoryMissingError: ParentDi...ngError()
+            fp.close()
             return 'done'
 
 
@@ -359,7 +376,8 @@ class Logging(BrowserView):
         self.context.log_clear()
         msg = u'Log entries cleared'
         self.context.plone_utils.addPortalMessage(msg)
-        return self.request.response.redirect('{}/@@view'.format(self.context.absolute_url()))
+        return self.request.response.redirect(
+            '{}/@@view'.format(self.context.absolute_url()))
 
     def __call__(self):
         return self.template()
