@@ -1,7 +1,7 @@
 import os
 from setuptools import setup, find_packages
 
-version = '0.2.10'
+version = '0.2.11'
 
 setup(name='zopyx.existdb',
       version=version,
@@ -14,10 +14,11 @@ setup(name='zopyx.existdb',
           "Programming Language :: Python",
           "Framework :: Plone",
           "Framework :: Plone :: 4.3",
+          "Framework :: Plone :: 5.0",
           "Framework :: Zope2",
           "Topic :: Software Development :: Libraries :: Python Modules",
       ],
-      keywords='exist-db existdb Plone XML Python',
+      keywords='exist-db basex existdb Plone XML Python WebDAV',
       author='Andreas Jung',
       author_email='info@zopyx.com',
       url='http://pypi.python.org/pypi/zopyx.existdb',

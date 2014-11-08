@@ -1,6 +1,14 @@
 Changelog
 =========
 
+0.2.11 (2014-11-08)
+------------------
+- updated documentation
+
+0.2.10 (2014-11-08)
+------------------
+- bugfix release
+
 0.2.9 (2014-11-01)
 ------------------
 - support for overriding credentials locally 
