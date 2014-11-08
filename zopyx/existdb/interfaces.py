@@ -18,7 +18,7 @@ class IBrowserLayer(Interface):
 
 EMULATION_VOCABULARY = SimpleVocabulary([
     SimpleTerm(u'existdb', u'existdb', u'eXist-db'),
-    SimpleTerm(u'basex', u'basex', u'basex'),
+    SimpleTerm(u'webdav', u'webdav', u'WebDAV generic (BaseX, OwnCloud,...)'),
 ])
 
 

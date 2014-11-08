@@ -90,7 +90,7 @@ class Connector(Item):
 
         if settings.existdb_emulation == 'existdb':
             url = '{}/exist/webdav/db'.format(settings.existdb_url)
-        elif settings.existdb_emulation == 'basex':
+        elif settings.existdb_emulation == 'webdav':
             url = settings.existdb_url
         else:
             raise ValueError('Unsupported emulation mode {}'.format(settings.existdb_emulation))
