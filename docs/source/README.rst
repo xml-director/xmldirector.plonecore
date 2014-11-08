@@ -7,7 +7,7 @@ zopyx.existdb
   - *is not* a storage layer for Archetypes or Dexterity content (never was, never will)
   - *is* a solution for mounting XML databases like eXist-db or
     BaseX into Plone through their WebDAV port
-  - *is* an experimental solution for mounting general WebDAV 
+  - *is* an _experimental_ solution for mounting general WebDAV 
     services into Plone
 
 ``zopyx.existdb`` integrates  Plone 4.3 and higher with 
@@ -74,6 +74,10 @@ eXist-db into Plone - either from the top-level collection of your eXist-db
 database or from a subcollection. You can browse and traverse into
 subcollections, view single documents or edit text-ish content through the web
 (using the build-in ACE editor integration).
+
+All connection settings (URL, username and password can be overriden on 
+the connector level) in order to ignore the Plone site-wide eXist-db
+settings).
 
 .. note:: This module provides a generic integration of arbitrary 
    WebDAV services like OwnCloud, BaseX (over WebDAV) or even other Plone
