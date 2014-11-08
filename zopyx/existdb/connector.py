@@ -66,7 +66,14 @@ class IConnector(model.Schema):
 
 
 class Connector(Item):
+
     implements(IConnector)
+
+    existdb_url = None
+    existdb_username = None
+    existdb_password = None
+    existdb_subpath = None
+
 
     @property
     def logger(self):
@@ -100,7 +107,9 @@ class Connector(Item):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(IExistDBSettings)
 
-        url = self.existdb_url or settings.existdb_url
+        adapted = IConnector(self)
+
+        url = adapted.existdb_url or settings.existdb_url
 
         if settings.existdb_emulation == 'existdb':
             url = '{}/exist/webdav/db'.format(url)
@@ -110,8 +119,8 @@ class Connector(Item):
             raise ValueError(
                 'Unsupported emulation mode {}'.format(settings.existdb_emulation))
 
-        if self.existdb_subpath:
-            url += '/{}'.format(self.existdb_subpath)
+        if adapted.existdb_subpath:
+            url += '/{}'.format(adapted.existdb_subpath)
 
         if subpath:
             url += '/{}'.format(urllib.quote(subpath))
@@ -121,9 +130,9 @@ class Connector(Item):
         password = settings.existdb_password
 
         # local credentials override the system credentials
-        if self.existdb_username and self.existdb_password:
-            username = self.existdb_username
-            password = self.existdb_password
+        if adapted.existdb_username and adapted.existdb_password:
+            username = adapted.existdb_username
+            password = adapted.existdb_password
 
         try:
             return DAVFS(url, credentials=dict(username=username,
