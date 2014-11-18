@@ -36,6 +36,7 @@ setup(name='zopyx.existdb',
           'plone.browserlayer',
           'plone.api',
           'requests',
+          'progressbar',
           'fs',
           'dexml'
           # -*- Extra requirements: -*-

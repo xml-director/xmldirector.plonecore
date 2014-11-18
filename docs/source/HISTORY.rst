@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.2.12 (2014-11-18)
+-------------------
+- added progressbar for zip_upload()
+
 0.2.11 (2014-11-08)
 -------------------
 - updated documentation

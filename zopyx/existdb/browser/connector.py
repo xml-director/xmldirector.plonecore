@@ -18,6 +18,7 @@ import logging
 import zExceptions
 from dateutil import tz
 from fs.zipfs import ZipFS
+from progressbar import Bar, ETA, Percentage, ProgressBar, RotatingMarker
 from zope.interface import implements
 from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
@@ -319,10 +320,17 @@ class Connector(BrowserView):
                         handle.removedir(name, force=True, recursive=False)
                 self.context.log(u'Subdirectory cleared (ZIP import)')
 
+                # setup progressbar
+                widgets = ['ZIP import: ', Percentage(), ' ', Bar(marker=RotatingMarker()), ' ', ETA(), ' ']
+                files = list(zip_handle.walkfiles())
+                pbar = ProgressBar(widgets=widgets, maxval=len(files)).start()
+
                 # import all files from ZIP into WebDAV
                 count = 0
                 for i, name in enumerate(zip_handle.walkfiles()):
+                    pbar.update(i)
                     dirname = '/'.join(name.split('/')[:-1])
+
                     try:
                         handle.makedir(
                             dirname, recursive=True, allow_recreate=True)
@@ -331,12 +339,15 @@ class Connector(BrowserView):
                             'Failed creating {} failed ({})'.format(dirname, e))
 
                     LOG.info('ZIP filename({})'.format(name))
+                    
                     out_fp = handle.open(name.lstrip('/'), 'wb')
                     zip_fp = zip_handle.open(name, 'rb')
                     out_fp.write(zip_fp.read())
+                    out_fp.close()
                     count += 1
-#                out_fp.close()
-#                zip_fp.close()
+
+                zip_fp.close()
+                pbar.finish()
 
         except fs.zipfs.ZipOpenError as e:
             msg = u'Error opening ZIP file: {}'.format(e)
