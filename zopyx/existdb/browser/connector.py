@@ -106,7 +106,7 @@ class Connector(BrowserView):
             LOG.error(msg)
             raise zExceptions.NotFound()
         except fs.errors.PermissionDeniedError as e:
-            msg = 'eXist-db path {} unauthorizd access (check credentials)'.format(
+            msg = 'eXist-db path {} unauthorized access (check credentials)'.format(
                 e.url)
             self.context.plone_utils.addPortalMessage(msg, 'error')
             LOG.error(msg)
