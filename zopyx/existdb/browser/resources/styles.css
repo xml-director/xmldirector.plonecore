@@ -81,3 +81,51 @@
 .portaltype-zopyx-existdb-connector #contentview-folderContents {
     display: none;
 }
+
+/* mimetype icons */
+
+a.file:before {
+    content: '';
+    background-size: contain;
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+}
+
+
+a.file[href$='.xml']:before {
+    background-image: url(++resource++zopyx.existdb/images/svg/xml5.svg) !important;
+}
+
+a.file[href$='.html']:before {
+    background-image: url(++resource++zopyx.existdb/images/svg/html9.svg) !important;
+}
+
+a.file[href$='.pdf']:before {
+    background-image: url(++resource++zopyx.existdb/images/svg/pdf19.svg) !important;
+}
+
+a.file[href$='.css']:before {
+    background-image: url(++resource++zopyx.existdb/images/svg/css5.svg) !important;
+}
+
+a.file[href$='.png']:before {
+    background-image: url(++resource++zopyx.existdb/images/svg/png3.svg) !important;
+}
+
+a.file[href$='.gif']:before {
+    background-image: url(++resource++zopyx.existdb/images/svg/gif3.svg) !important;
+}
+
+a.file[href$='.jpg']:before {
+    background-image: url(++resource++zopyx.existdb/images/svg/jpg3.svg) !important;
+}
+
+a.file[href$='.svg']:before {
+    background-image: url(++resource++zopyx.existdb/images/svg/svg1.svg) !important;
+}
+
+a.file[href$='.docx']:before {
+    background-image: url(++resource++zopyx.existdb/images/svg/docx.svg) !important;
+}
+
