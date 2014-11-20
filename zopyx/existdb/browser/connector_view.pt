@@ -27,7 +27,9 @@
               </tr>
               <tr tal:repeat="item options/dirs">
                   <td>
-                      <a class="dir" tal:attributes="href item/url" tal:content="item/title" />
+                      <a class="dir" tal:attributes="href item/url">
+                          <span tal:content="item/title" />
+                      </a>
                   </td>
                   <td>
                       <span tal:replace="item/modified" />
@@ -97,7 +99,9 @@
           <tbody>
               <tr tal:repeat="item options/files">
                   <td>
-                      <a class="file" tal:attributes="href item/url" tal:content="item/title" />
+                      <a class="file" tal:attributes="href item/url">
+                          <span tal:content="item/title" />
+                      </a>
                   </td>
                   <td>
                       <span tal:replace="item/modified" />
