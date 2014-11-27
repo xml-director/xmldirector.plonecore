@@ -29,8 +29,8 @@ class API(BrowserView):
         """ Public query API for calling xquery scripts through RESTXQ.
             The related xquery script must expose is functionality through
             http://host:port/exist/restxq/<script_path>.<output_format>.
-            The result is then returned text (html, xml) or deserialized JSON
-            data structure.
+            The result is then returned as text (html, xml) or deserialized
+            JSON data structure.
             Note that <script_path> must start with '/db/' or 'db/'.
         """
 
