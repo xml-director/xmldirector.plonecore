@@ -125,7 +125,7 @@
       <div class="actions">
           <ul>
               <li>
-                  <a id="connector-zip-import" class="action" tal:attributes="href string:${context/absolute_url}/connector-zip-import" i18n:translate="">ZIP import</a>
+                  <a id="connector-zip-import" class="action" tal:attributes="href string:${context/absolute_url}/connector-zip-import?subpath=${options/subpath}" i18n:translate="">ZIP import</a>
               </li>
               <li>
                   <a id="connector-zip-export" class="action" tal:attributes="href string:${context/absolute_url}/connector-zip-export" i18n:translate="">ZIP export</a>

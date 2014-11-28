@@ -295,7 +295,7 @@ class Connector(BrowserView):
         else:
             return zip_filename
 
-    def zip_import(self, zip_file=None, clean_directories=[]):
+    def zip_import(self, zip_file=None, subpath=None, clean_directories=[]):
         """ Import WebDAV subfolder from an uploaded ZIP file """
 
         handle = self.webdav_handle()
@@ -307,6 +307,20 @@ class Connector(BrowserView):
             zip_filename = zip_file
             zip_file = open(zip_file, 'rb')
             LOG.info('ZIP import ({})'.format(zip_filename))
+
+        # zip_import() can also be used to upload single files
+        # into the current webdav folder
+        if not zip_filename.endswith('.zip'):
+            if subpath:
+                target_filename = '{}/{}'.format(subpath, zip_filename)
+            else:
+                target_filename = zip_filename
+            with handle.open(target_filename, 'wb') as fp:
+                fp.write(zip_file.read())
+
+            msg = u'File "{}" imported'.format(zip_filename)
+            self.context.log(msg)
+            return self.redirect(_(msg))
 
         try:
             with ZipFS(zip_file, 'r') as zip_handle:

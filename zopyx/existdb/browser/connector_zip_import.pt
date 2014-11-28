@@ -16,6 +16,7 @@
               <div>
                   <label for="zip-file" i18n:translate="">ZIP file</label>
                   <input type="file" name="zipfile" size="60" id="zipfile" />
+                  <input type="hidden" name="subpath" tal:attributes="value request/subpath | nothing" />
               </div>
               <div>
                   <input type="submit" class="context" i18n:attributes="value" value="Upload"/>
