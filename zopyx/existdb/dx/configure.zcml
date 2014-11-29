@@ -8,18 +8,8 @@
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="zopyx.existdb"
     >
-
-    <include package="plone.browserlayer" />
-    <include package="Products.CMFCore" file="permissions.zcml" />
-    <include package=".browser" />
-    <include package=".dx" />
-
-    <genericsetup:registerProfile
-        name="default"
-        title="zopyx.existdb"
-        directory="profiles/default"
-        description="ExistDB integration with Plone"
-        provides="Products.GenericSetup.interfaces.EXTENSION"
+    <utility
+        name=".fields.XML"
+        component=".fields.XMLFactory"
     />
-
 </configure>
