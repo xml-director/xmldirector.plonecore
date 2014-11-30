@@ -3,7 +3,21 @@ $(document).ready(function() {
     var num_editors = 0;
     var editors = [];
 
-    $('.template-edit .xml-field').each(function() {
+    $('.template-view .xml-field').each(function() {
+
+        $(this).hide();
+        var id = $(this).attr('id');
+        
+        $(this).after('<div id="' + id + '-editor" style="width: 80%; min-height: 100px; height: 100px; max-height: 400px">hello</div>')
+        var editor = ace.edit(id + '-editor');
+        editor.setTheme("ace/theme/chrome");
+        editor.getSession().setMode("ace/mode/xml");
+        editor.setShowPrintMargin(false);
+        editor.setReadOnly(true);
+        editor.getSession().setValue($(this).text());
+    });
+
+    $('#form .xml-field').each(function() {
 
         $(this).hide();
         num_editors++;
@@ -16,7 +30,9 @@ $(document).ready(function() {
         editor.setTheme("ace/theme/chrome");
         editor.getSession().setMode("ace/mode/xml");
         editor.setShowPrintMargin(false);
+        editor.setReadOnly(false);
         editor.getSession().setValue($(this).val());
+        $('#' + id + '-chars').text($(this).val().length + ' chars');
         editor.getSession().on('change', function(){
               var xml = editor.getSession().getValue();
               $('#' + id + '-chars').text(xml.length + ' chars');
