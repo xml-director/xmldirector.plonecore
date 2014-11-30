@@ -3,12 +3,13 @@ $(document).ready(function() {
     var num_editors = 0;
     var editors = [];
 
+    /* View mode */
     $('.template-view .xml-field').each(function() {
 
         $(this).hide();
         var id = $(this).attr('id');
         
-        $(this).after('<div id="' + id + '-editor" style="width: 80%; min-height: 100px; height: 100px; max-height: 400px">hello</div>')
+        $(this).after('<div id="' + id + '-editor" style="width: 80%; min-height: 100px; height: 100px; max-height: 400px"></div>')
         var editor = ace.edit(id + '-editor');
         editor.setTheme("ace/theme/chrome");
         editor.getSession().setMode("ace/mode/xml");
@@ -17,6 +18,7 @@ $(document).ready(function() {
         editor.getSession().setValue($(this).text());
     });
 
+    /* Edit mode */
     $('#form .xml-field').each(function() {
 
         $(this).hide();
@@ -24,7 +26,7 @@ $(document).ready(function() {
 
         var id = $(this).attr('id');
         $(this).after('<div id="' + id + '-chars"></div>');
-        $(this).after('<div id="' + id + '-editor" style="width: 80%; min-height: 200px; height: 400px; max-height: 400px">hello</div>')
+        $(this).after('<div id="' + id + '-editor" style="width: 80%; min-height: 200px; height: 400px; max-height: 400px"></div>')
         var editor = ace.edit(id + '-editor');
         editors.push(editor);
         editor.setTheme("ace/theme/chrome");
@@ -38,7 +40,8 @@ $(document).ready(function() {
               $('#' + id + '-chars').text(xml.length + ' chars');
         });
     });
-    
+
+    /* Push XML content from editors back to textarea fields before submit */    
     if (num_editors) {
         $('#form').on('submit', function(e) {
             $(editors).each(function(i) {
