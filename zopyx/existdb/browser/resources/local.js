@@ -9,7 +9,7 @@ $(document).ready(function() {
         $(this).hide();
         var id = $(this).attr('id');
         
-        $(this).after('<div id="' + id + '-editor" style="width: 80%; min-height: 100px; height: 100px; max-height: 400px"></div>')
+        $(this).after('<div class="xml-editor" id="' + id + '-editor" style="width: 80%; min-height: 100px; height: 100px; max-height: 400px"></div>')
         var editor = ace.edit(id + '-editor');
         editor.setTheme("ace/theme/chrome");
         editor.getSession().setMode("ace/mode/xml");
@@ -25,8 +25,8 @@ $(document).ready(function() {
         num_editors++;
 
         var id = $(this).attr('id');
-        $(this).after('<div id="' + id + '-chars"></div>');
-        $(this).after('<div id="' + id + '-editor" style="width: 80%; min-height: 200px; height: 400px; max-height: 400px"></div>')
+        $(this).after('<div class="xml-editor-chars" id="' + id + '-chars"></div>');
+        $(this).after('<div class="xml-editor" id="' + id + '-editor" style="width: 80%; min-height: 200px; height: 400px; max-height: 400px"></div>')
         var editor = ace.edit(id + '-editor');
         editors.push(editor);
         editor.setTheme("ace/theme/chrome");
