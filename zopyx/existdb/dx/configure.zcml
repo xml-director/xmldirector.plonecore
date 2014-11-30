@@ -12,4 +12,9 @@
         name=".fields.XML"
         component=".fields.XMLFactory"
     />
+
+    <utility
+        component=".fields.XMLHandler"
+        name="zopyx.existdb.dx.fields.XML"
+        />
 </configure>
