@@ -8,6 +8,7 @@
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="zopyx.existdb"
     >
+
     <utility
         name=".fields.XML"
         component=".fields.XMLFactory"
@@ -17,4 +18,9 @@
         component=".fields.XMLHandler"
         name="zopyx.existdb.dx.fields.XML"
         />
+
+    <adapter
+        factory=".fields.AttributeField"
+        />
+
 </configure>
