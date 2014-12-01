@@ -3,6 +3,7 @@
 # (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
+import os
 import plone.api
 import lxml.etree
 from zopyx.existdb.i18n import MessageFactory as _
@@ -54,11 +55,29 @@ class AttributeField(DataManager):
         self.field = field
 
     @property
+    def webdav_handle(self):
+
+        from fs.contrib.davfs import DAVFS
+        from zope.component import getUtility
+        from plone.registry.interfaces import IRegistry
+        from zopyx.existdb.interfaces import IExistDBSettings
+
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(IExistDBSettings)
+
+        url = settings.existdb_url
+        url = '{}/exist/webdav/db'.format(url)
+        username = settings.existdb_username
+        password = settings.existdb_password
+
+        return DAVFS(url, credentials=dict(username=username,
+                                           password=password))
+    @property
     def storage_key(self):
         plone_uid = plone.api.portal.get().getId()
         context_uid = self.context.UID()
         field_id = self.field.__name__
-        return '{}-{}-{}'.format(plone_uid, context_uid, field_id)
+        return '{}/{}-{}.xml'.format(plone_uid, context_uid, field_id)
 
     @property
     def adapted_context(self):
@@ -77,8 +96,10 @@ class AttributeField(DataManager):
 
     def get(self):
         """See z3c.form.interfaces.IDataManager"""
-        print 'get', self.storage_key
-        return getattr(self.adapted_context, self.field.__name__)
+        handle = self.webdav_handle
+        if handle.exists(self.storage_key):
+            with handle.open(self.storage_key, 'rb') as fp:
+                return fp.read()
 
     def query(self, default=interfaces.NO_VALUE):
         """See z3c.form.interfaces.IDataManager"""
@@ -91,15 +112,13 @@ class AttributeField(DataManager):
 
     def set(self, value):
         """See z3c.form.interfaces.IDataManager"""
-        print 'set', self.storage_key
-        if self.field.readonly:
-            raise TypeError("Can't set values on read-only fields "
-                            "(name=%s, class=%s.%s)"
-                            % (self.field.__name__,
-                               self.context.__class__.__module__,
-                               self.context.__class__.__name__))
-        # get the right adapter or context
-        setattr(self.adapted_context, self.field.__name__, value)
+        handle = self.webdav_handle
+        storage_key = self.storage_key
+        dirname = os.path.dirname(storage_key)
+        if not handle.exists(dirname):
+            handle.makedir(dirname, False, True)
+        with handle.open(storage_key, 'wb') as fp:
+            fp.write(value)
 
     def canAccess(self):
         """See z3c.form.interfaces.IDataManager"""
