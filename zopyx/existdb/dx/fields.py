@@ -3,7 +3,7 @@
 # (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
-
+import plone.api
 import lxml.etree
 from zopyx.existdb.i18n import MessageFactory as _
 
@@ -54,6 +54,13 @@ class AttributeField(DataManager):
         self.field = field
 
     @property
+    def storage_key(self):
+        plone_uid = plone.api.portal.get().getId()
+        context_uid = self.context.UID()
+        field_id = self.field.__name__
+        return '{}-{}-{}'.format(plone_uid, context_uid, field_id)
+
+    @property
     def adapted_context(self):
         # get the right adapter or context
         context = self.context
@@ -70,6 +77,7 @@ class AttributeField(DataManager):
 
     def get(self):
         """See z3c.form.interfaces.IDataManager"""
+        print 'get', self.storage_key
         return getattr(self.adapted_context, self.field.__name__)
 
     def query(self, default=interfaces.NO_VALUE):
@@ -83,6 +91,7 @@ class AttributeField(DataManager):
 
     def set(self, value):
         """See z3c.form.interfaces.IDataManager"""
+        print 'set', self.storage_key
         if self.field.readonly:
             raise TypeError("Can't set values on read-only fields "
                             "(name=%s, class=%s.%s)"
