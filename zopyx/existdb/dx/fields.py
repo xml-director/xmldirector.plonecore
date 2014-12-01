@@ -70,7 +70,6 @@ class AttributeField(DataManager):
 
     def get(self):
         """See z3c.form.interfaces.IDataManager"""
-        print 'custom get'
         return getattr(self.adapted_context, self.field.__name__)
 
     def query(self, default=interfaces.NO_VALUE):
@@ -84,7 +83,6 @@ class AttributeField(DataManager):
 
     def set(self, value):
         """See z3c.form.interfaces.IDataManager"""
-        print 'custom set'
         if self.field.readonly:
             raise TypeError("Can't set values on read-only fields "
                             "(name=%s, class=%s.%s)"
