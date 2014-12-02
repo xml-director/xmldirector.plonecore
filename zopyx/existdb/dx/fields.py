@@ -45,7 +45,7 @@ class XML(Text):
         try:
             root = lxml.etree.fromstring(normalize_xml(value))
         except lxml.etree.XMLSyntaxError as e:
-            raise ValueError(u'XML syntax error {}'.format(e))
+            raise zope.interface.Invalid(u'XML syntax error {}'.format(e))
 
         return super(XML, self).validate(value)
 
