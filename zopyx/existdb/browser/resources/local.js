@@ -46,13 +46,26 @@ $(document).ready(function() {
     /* Push XML content from editors back to textarea fields before submit */    
     if (num_editors) {
         $('#form').on('submit', function(e) {
+            var editors_ok = true;
             $(editors).each(function(i) {
                 var editor = editors[i];
                 var editor_id = editor['container'].getAttribute('id');
                 var textarea_id = editor_id.replace('-editor', '');
                 var xml = editor.getSession().getValue();
+                try {
+                    $.parseXML(xml);
+                    var msg = 'XML is OK';
+                    $('#' + textarea_id).siblings('.xml-editor-validation-msg').text(msg).addClass('status-ok');
+                } catch(e) {
+                    editors_ok = false;
+                    var msg = 'Error in XML';
+                    $('#' + textarea_id).siblings('.xml-editor-validation-msg').text(msg).addClass('status-error');
+                }
                 $('#' + textarea_id).val(xml); 
             });
+            if (! editors_ok) {
+                e.preventDefault();
+            }
         });
     }
 
@@ -63,7 +76,6 @@ $(document).ready(function() {
             var xml = editor.getSession().getValue();
             try {
                 $.parseXML(xml);
-                msg 
                 var msg = 'XML is OK';
                 $(this).siblings('.xml-editor-validation-msg').text(msg).addClass('status-ok');
             } catch(e) {
