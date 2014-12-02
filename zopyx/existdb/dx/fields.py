@@ -24,6 +24,14 @@ from z3c.form import interfaces
 from z3c.form.datamanager import DataManager
 
 
+
+def normalize_xml(xml):
+    if isinstance(xml, unicode):
+        xml = xml.encode('utf-8')
+    xml = xml.replace('\r\n', '\n')
+    return xml
+
+
 class IXMLField(IField):
     """ Marker for XML fields """
     pass
@@ -35,12 +43,7 @@ class XML(Text):
     def validate(self, value):
         """ Perform XML validation """
         try:
-            value2 = value
-            if isinstance(value2, unicode):
-                value2 = value2.encode('utf-8')
-            # check against utf8 encoded string only since a unicode string
-            # with encoding spec in the xml preamble will fail   
-            root = lxml.etree.fromstring(value2)
+            root = lxml.etree.fromstring(normalize_xml(value))
         except lxml.etree.XMLSyntaxError as e:
             raise ValueError(u'XML syntax error {}'.format(e))
 
@@ -130,8 +133,7 @@ class AttributeField(DataManager):
         dirname = os.path.dirname(storage_key)
         if not handle.exists(dirname):
             handle.makedir(dirname, False, True)
-        value = value.replace('\r\n', '\n')
-        value_utf8 = value.encode('utf-8')
+        value_utf8 = normalize_xml(value)
         value_sha256 = hashlib.sha256(value_utf8).hexdigest()
         with handle.open(storage_key, 'wb') as fp:
             with handle.open(storage_key + '.sha256', 'wb') as fp_sha:
