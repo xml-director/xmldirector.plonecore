@@ -22,10 +22,11 @@ $(document).ready(function() {
     $('#form .xml-field').each(function() {
 
         $(this).hide();
-        num_editors++;
 
         var id = $(this).attr('id');
         $(this).after('<div class="xml-editor-chars" id="' + id + '-chars"></div>');
+        $(this).after('<span  class="xml-editor-validation-msg" id="' + id + '-validate" data-index="' + num_editors + '"></span>');
+        $(this).after('<a class="xml-editor-validate" id="' + id + '-validate" data-index="' + num_editors + '"><button>Validate XML</button></a>');
         $(this).after('<div class="xml-editor" id="' + id + '-editor" style="width: 80%; min-height: 200px; height: 400px; max-height: 400px"></div>')
         var editor = ace.edit(id + '-editor');
         editors.push(editor);
@@ -39,6 +40,7 @@ $(document).ready(function() {
               var xml = editor.getSession().getValue();
               $('#' + id + '-chars').text(xml.length + ' chars');
         });
+        num_editors++;
     });
 
     /* Push XML content from editors back to textarea fields before submit */    
@@ -53,4 +55,21 @@ $(document).ready(function() {
             });
         });
     }
+
+    $('.xml-editor-validate').on('click', function(e) {
+            e.preventDefault();
+            var index = $(this).data('index');
+            var editor = editors[index];
+            var xml = editor.getSession().getValue();
+            try {
+                $.parseXML(xml);
+                msg 
+                var msg = 'XML is OK';
+                $(this).siblings('.xml-editor-validation-msg').text(msg).addClass('status-ok');
+            } catch(e) {
+                var msg = 'Error in XML';
+                $(this).siblings('.xml-editor-validation-msg').text(msg).addClass('status-error');
+            }
+
+    });
 });
