@@ -4,6 +4,7 @@
 ################################################################
 
 import os
+import hashlib
 import plone.api
 import lxml.etree
 from zopyx.existdb.i18n import MessageFactory as _
@@ -34,9 +35,15 @@ class XML(Text):
     def validate(self, value):
         """ Perform XML validation """
         try:
-            root = lxml.etree.fromstring(value)
+            value2 = value
+            if isinstance(value2, unicode):
+                value2 = value2.encode('utf-8')
+            # check against utf8 encoded string only since a unicode string
+            # with encoding spec in the xml preamble will fail   
+            root = lxml.etree.fromstring(value2)
         except lxml.etree.XMLSyntaxError as e:
             raise ValueError(u'XML syntax error {}'.format(e))
+
         return super(XML, self).validate(value)
 
 
@@ -97,9 +104,15 @@ class AttributeField(DataManager):
     def get(self):
         """See z3c.form.interfaces.IDataManager"""
         handle = self.webdav_handle
-        if handle.exists(self.storage_key):
-            with handle.open(self.storage_key, 'rb') as fp:
-                return fp.read()
+        storage_key = self.storage_key
+        if handle.exists(storage_key):
+            with handle.open(storage_key, 'rb') as fp:
+                with handle.open(storage_key + '.sha256', 'rb') as fp_sha:
+                    xml = fp.read()
+                    xml_sha256 = fp_sha.read()
+            if hashlib.sha256(xml).hexdigest() != xml_sha256:
+                raise ValueError('Hashes for {} differ'.format(storage_key))
+            return xml
 
     def query(self, default=interfaces.NO_VALUE):
         """See z3c.form.interfaces.IDataManager"""
@@ -117,8 +130,13 @@ class AttributeField(DataManager):
         dirname = os.path.dirname(storage_key)
         if not handle.exists(dirname):
             handle.makedir(dirname, False, True)
+        value = value.replace('\r\n', '\n')
+        value_utf8 = value.encode('utf-8')
+        value_sha256 = hashlib.sha256(value_utf8).hexdigest()
         with handle.open(storage_key, 'wb') as fp:
-            fp.write(value)
+            with handle.open(storage_key + '.sha256', 'wb') as fp_sha:
+                fp.write(value_utf8)
+                fp_sha.write(value_sha256)
 
     def canAccess(self):
         """See z3c.form.interfaces.IDataManager"""
