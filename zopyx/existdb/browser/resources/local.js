@@ -41,6 +41,9 @@ $(document).ready(function() {
               $('#' + id + '-chars').text(xml.length + ' chars');
         });
         num_editors++;
+
+//        $('.ace_content').jqResize('.ace_content');
+
     });
 
     /* Push XML content from editors back to textarea fields before submit */    
