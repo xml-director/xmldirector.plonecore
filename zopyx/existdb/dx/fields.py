@@ -87,7 +87,7 @@ class AttributeField(DataManager):
         plone_uid = plone.api.portal.get().getId()
         context_uid = self.context.UID()
         field_id = self.field.__name__
-        return '{}/{}-{}.xml'.format(plone_uid, context_uid, field_id)
+        return 'plone-data/{}/{}/{}.xml'.format(plone_uid, context_uid, field_id)
 
     @property
     def adapted_context(self):
