@@ -5,22 +5,61 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:i18n="http://namespaces.zope.org/i18n"
     xmlns:pp="http://namespaces.zopyx.com/pp"
+    xmlns:z3c="http://namespaces.zope.org/z3c"
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="zopyx.existdb"
     >
 
+    <include package="z3c.form" file="meta.zcml" />
+
     <utility
         name=".fields.XML"
-        component=".fields.XMLFactory"
+        component=".fields.XMLTextFactory"
     />
 
     <utility
-        component=".fields.XMLHandler"
-        name="zopyx.existdb.dx.fields.XML"
+        component=".fields.XMLTextHandler"
+        name="zopyx.existdb.dx.fields.XMLText"
         />
+
+    <utility
+        name=".fields.XMLXPath"
+        component=".fields.XMLXPathFactory"
+    />
+
+    <utility
+        component=".fields.XMLXPathHandler"
+        name="zopyx.existdb.dx.fields.XMLXPath"
+    />
 
     <adapter
         factory=".fields.AttributeField"
+        />
+
+    <adapter factory=".widget.XPathFieldWidget"/>
+
+    <class class=".widget.XPathWidget">
+        <require
+        permission="zope.Public"
+        interface=".widget.IXPathWidget"
+        />
+    </class>
+
+
+    <adapter factory=".widget.XPathDataConverter" />
+
+    <z3c:widgetTemplate
+        mode="input"
+        widget=".widget.IXPathWidget"
+        layer="z3c.form.interfaces.IFormLayer"
+        template="input.pt"
+        />
+
+    <z3c:widgetTemplate
+        mode="display"
+        widget=".widget.IXPathWidget"
+        layer="z3c.form.interfaces.IFormLayer"
+        template="input.pt"
         />
 
 </configure>

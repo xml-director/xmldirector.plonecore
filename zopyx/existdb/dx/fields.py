@@ -22,6 +22,7 @@ import zope.schema
 import zope.interface
 import zope.component
 from zope.schema import Text
+from zope.schema import TextLine
 from zope.schema.interfaces import IField
 from zope.component import getUtility
 from zope.security.interfaces import ForbiddenAttribute
@@ -65,9 +66,21 @@ class XMLText(Text):
                 raise zope.interface.Invalid(u'XML syntax error {}'.format(e))
         return super(XMLText, self).validate(value)
 
+XMLTextFactory = FieldFactory(XMLText, _(u'label_xml_field', default=u'XML'))
+XMLTextHandler = plone.supermodel.exportimport.BaseHandler(XMLText)
 
-XMLFactory = FieldFactory(XMLText, _(u'label_xml_field', default=u'XML'))
-XMLHandler = plone.supermodel.exportimport.BaseHandler(XMLText)
+class IXMLXPath(IField):
+    """ Marker for XML fields """
+    pass
+
+
+class XMLXPath(TextLine):
+
+    zope.interface.implements(IXMLXPath)
+
+XMLXPathFactory = FieldFactory(XMLXPath, _(u'label_xml_xpath_field', default=u'XMLPath'))
+XMLXPathHandler = plone.supermodel.exportimport.BaseHandler(XMLXPath)
+
 
 # Custom data manager
 
@@ -126,8 +139,8 @@ class AttributeField(DataManager):
                 with handle.open(storage_key + '.sha256', 'rb') as fp_sha:
                     xml = fp.read()
                     xml_sha256 = fp_sha.read()
-            if xml_hash(xml) != xml_sha256:    
-                raise ValueError('Hashes for {} differ'.format(storage_key))
+#            if xml_hash(xml) != xml_sha256:    
+#                raise ValueError('Hashes for {} differ'.format(storage_key))
             return xml
 
     def query(self, default=interfaces.NO_VALUE):
