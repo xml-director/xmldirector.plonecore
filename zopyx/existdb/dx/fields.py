@@ -4,12 +4,17 @@
 ################################################################
 
 import os
+import uuid
 import hashlib
 import plone.api
 import lxml.etree
+from fs.contrib.davfs import DAVFS
+
 from zopyx.existdb.i18n import MessageFactory as _
+from zopyx.existdb.interfaces import IExistDBSettings
 
 import plone.supermodel.exportimport
+from plone.registry.interfaces import IRegistry
 from plone.schemaeditor.fields import FieldFactory
 from plone.schemaeditor.interfaces import IFieldFactory
 
@@ -18,47 +23,58 @@ import zope.interface
 import zope.component
 from zope.schema import Text
 from zope.schema.interfaces import IField
+from zope.component import getUtility
 from zope.security.interfaces import ForbiddenAttribute
 from zope.security.checker import canAccess, canWrite, Proxy
 from z3c.form import interfaces
 from z3c.form.datamanager import DataManager
 
 
-
 def normalize_xml(xml):
+    if not xml:
+        u''
     if isinstance(xml, unicode):
         xml = xml.encode('utf-8')
     xml = xml.replace('\r\n', '\n')
     return xml
 
 
-class IXMLField(IField):
+def xml_hash(xml):
+    """ Get a stable hash from XML string """
+    xml = normalize_xml(xml)
+    if xml.startswith('<?xml'):
+        xml = xml[xml.find('?>')+2:]
+        xml = xml.lstrip('\n')
+    return hashlib.sha256(xml).hexdigest()
+
+
+class IXMLText(IField):
     """ Marker for XML fields """
     pass
 
 
-class XML(Text):
-    zope.interface.implements(IXMLField)
+class XMLText(Text):
+    zope.interface.implements(IXMLText)
 
     def validate(self, value):
         """ Perform XML validation """
-        try:
-            root = lxml.etree.fromstring(normalize_xml(value))
-        except lxml.etree.XMLSyntaxError as e:
-            raise zope.interface.Invalid(u'XML syntax error {}'.format(e))
+        if value:
+            try:
+                root = lxml.etree.fromstring(normalize_xml(value))
+            except lxml.etree.XMLSyntaxError as e:
+                raise zope.interface.Invalid(u'XML syntax error {}'.format(e))
+        return super(XMLText, self).validate(value)
 
-        return super(XML, self).validate(value)
 
-
-XMLFactory = FieldFactory(XML, _(u'label_xml_field', default=u'XML'))
-XMLHandler = plone.supermodel.exportimport.BaseHandler(XML)
+XMLFactory = FieldFactory(XMLText, _(u'label_xml_field', default=u'XML'))
+XMLHandler = plone.supermodel.exportimport.BaseHandler(XMLText)
 
 # Custom data manager
 
 class AttributeField(DataManager):
     """Attribute field."""
     zope.component.adapts(
-        zope.interface.Interface, IXMLField)
+        zope.interface.Interface, IXMLText)
 
     def __init__(self, context, field):
         self.context = context
@@ -66,11 +82,6 @@ class AttributeField(DataManager):
 
     @property
     def webdav_handle(self):
-
-        from fs.contrib.davfs import DAVFS
-        from zope.component import getUtility
-        from plone.registry.interfaces import IRegistry
-        from zopyx.existdb.interfaces import IExistDBSettings
 
         registry = getUtility(IRegistry)
         settings = registry.forInterface(IExistDBSettings)
@@ -85,9 +96,11 @@ class AttributeField(DataManager):
     @property
     def storage_key(self):
         plone_uid = plone.api.portal.get().getId()
-        context_uid = self.context.UID()
+        context_id = getattr(self.context, '__xml_storage_id__', None)
+        if not context_id:
+            context_id = self.context.__xml_storage_id__ = uuid.uuid4()
         field_id = self.field.__name__
-        return 'plone-data/{}/{}/{}.xml'.format(plone_uid, context_uid, field_id)
+        return 'plone-data/{}/{}/{}.xml'.format(plone_uid, context_id, field_id)
 
     @property
     def adapted_context(self):
@@ -113,7 +126,7 @@ class AttributeField(DataManager):
                 with handle.open(storage_key + '.sha256', 'rb') as fp_sha:
                     xml = fp.read()
                     xml_sha256 = fp_sha.read()
-            if hashlib.sha256(xml).hexdigest() != xml_sha256:
+            if xml_hash(xml) != xml_sha256:    
                 raise ValueError('Hashes for {} differ'.format(storage_key))
             return xml
 
@@ -132,9 +145,9 @@ class AttributeField(DataManager):
         storage_key = self.storage_key
         dirname = os.path.dirname(storage_key)
         if not handle.exists(dirname):
-            handle.makedir(dirname, False, True)
+            handle.makedir(dirname, True, True)
         value_utf8 = normalize_xml(value)
-        value_sha256 = hashlib.sha256(value_utf8).hexdigest()
+        value_sha256 = xml_hash(value_utf8)
         with handle.open(storage_key, 'wb') as fp:
             with handle.open(storage_key + '.sha256', 'wb') as fp_sha:
                 fp.write(value_utf8)

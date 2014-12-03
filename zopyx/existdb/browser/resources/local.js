@@ -4,7 +4,7 @@ $(document).ready(function() {
     var editors = [];
 
     /* View mode */
-    $('.template-view .xml-field').each(function() {
+    $('.template-view .xmltext-field').each(function() {
 
         $(this).hide();
         var id = $(this).attr('id');
@@ -19,7 +19,7 @@ $(document).ready(function() {
     });
 
     /* Edit mode */
-    $('#form .xml-field').each(function() {
+    $('#form .xmltext-field').each(function() {
 
         $(this).hide();
 
