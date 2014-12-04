@@ -75,7 +75,6 @@ class IXMLXPath(IField):
 
 
 class XMLXPath(TextLine):
-
     zope.interface.implements(IXMLXPath)
 
 XMLXPathFactory = FieldFactory(XMLXPath, _(u'label_xml_xpath_field', default=u'XMLPath'))

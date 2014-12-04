@@ -34,6 +34,7 @@ class XPathWidget(text.TextWidget):
     """Input type password widget implementation."""
     zope.interface.implementsOnly(IXPathWidget)
 
+
 class XPathDataConverter(converter.FieldDataConverter):
     """A data converter using the field's ``fromUnicode()`` method."""
     zope.component.adapts(
@@ -53,10 +54,10 @@ class XPathDataConverter(converter.FieldDataConverter):
         return self.field.fromUnicode(value)
 
 from z3c.form.widget import FieldWidget
-from zopyx.existdb.dx.fields import IXMLXPath
 
 @implementer(IFieldWidget)
-@adapter(IXMLXPath, IFormLayer)
+@adapter(zope.schema.interfaces.IField, IFormLayer)
 def XPathFieldWidget(field, request):
     """IFieldWidget factory for RecurrenceWidget."""
+    import pdb; pdb.set_trace() 
     return FieldWidget(field, XPathWidget(request))

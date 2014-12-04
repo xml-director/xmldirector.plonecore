@@ -34,6 +34,7 @@
 
     <adapter
         factory=".fields.AttributeField"
+        for=".fields.IXMLXPath .widget.IXPathWidget"
         />
 
     <adapter factory=".widget.XPathFieldWidget"/>
@@ -45,6 +46,9 @@
         />
     </class>
 
+    <class class=".fields.XMLXPath">
+        <implements interface=".fields.IXMLXPath"/>
+    </class>
 
     <adapter factory=".widget.XPathDataConverter" />
 
