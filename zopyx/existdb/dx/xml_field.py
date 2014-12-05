@@ -27,13 +27,17 @@ from zope.component import getUtility
 from zope.security.interfaces import ForbiddenAttribute
 from zope.security.checker import canAccess, canWrite, Proxy
 from plone.namedfile.field import NamedBlobFile
+import z3c.form
 from z3c.form import interfaces
 from z3c.form.datamanager import DataManager
 
 
 def normalize_xml(xml):
+    """ Normalize XML to utf8 encoded string
+        with normalized line-endings.
+    """
     if not xml:
-        u''
+        return u''
     if isinstance(xml, unicode):
         xml = xml.encode('utf-8')
     xml = xml.replace('\r\n', '\n')
@@ -41,8 +45,9 @@ def normalize_xml(xml):
 
 
 def xml_hash(xml):
-    """ Get a stable hash from XML string """
+    """ Get a stable SHA256 hash from XML string """
     xml = normalize_xml(xml)
+    # remove XML preamble
     if xml.startswith('<?xml'):
         xml = xml[xml.find('?>')+2:]
         xml = xml.lstrip('\n')
@@ -69,12 +74,13 @@ class XMLText(Text):
                 raise zope.interface.Invalid(u'XML syntax error {}'.format(e))
         return super(XMLText, self).validate(value)
 
+
 XMLTextFactory = FieldFactory(XMLText, _(u'label_xml_field', default=u'XML'))
 XMLTextHandler = plone.supermodel.exportimport.BaseHandler(XMLText)
 
 
-class XMLFieldDataManager(DataManager):
-    """Attribute field."""
+class XMLFieldDataManager(z3c.form.datamanager.AttributeField):
+    """A dedicated manager for XMLText field."""
     zope.component.adapts(
         zope.interface.Interface, IXMLText)
 
@@ -104,21 +110,6 @@ class XMLFieldDataManager(DataManager):
         field_id = self.field.__name__
         return 'plone-data/{}/{}/{}.xml'.format(plone_uid, context_id, field_id)
 
-    @property
-    def adapted_context(self):
-        # get the right adapter or context
-        context = self.context
-        # NOTE: zope.schema fields defined in inherited interfaces will point
-        # to the inherited interface. This could end in adapting the wrong item.
-        # This is very bad because the widget field offers an explicit interface
-        # argument which doesn't get used in Widget setup during IDataManager
-        # lookup. We should find a concept which allows to adapt the
-        # IDataManager use the widget field interface instead of the zope.schema
-        # field.interface, ri
-        if self.field.interface is not None:
-            context = self.field.interface(context)
-        return context
-
     def get(self):
         """See z3c.form.interfaces.IDataManager"""
         handle = self.webdav_handle
@@ -131,15 +122,6 @@ class XMLFieldDataManager(DataManager):
 #            if xml_hash(xml) != xml_sha256:    
 #                raise ValueError('Hashes for {} differ'.format(storage_key))
             return xml
-
-    def query(self, default=interfaces.NO_VALUE):
-        """See z3c.form.interfaces.IDataManager"""
-        try:
-            return self.get()
-        except ForbiddenAttribute as e:
-            raise e
-        except AttributeError:
-            return default
 
     def set(self, value):
         """See z3c.form.interfaces.IDataManager"""
@@ -154,18 +136,4 @@ class XMLFieldDataManager(DataManager):
             with handle.open(storage_key + '.sha256', 'wb') as fp_sha:
                 fp.write(value_utf8)
                 fp_sha.write(value_sha256)
-
-    def canAccess(self):
-        """See z3c.form.interfaces.IDataManager"""
-        context = self.adapted_context
-        if isinstance(context, Proxy):
-            return canAccess(context, self.field.__name__)
-        return True
-
-    def canWrite(self):
-        """See z3c.form.interfaces.IDataManager"""
-        context = self.adapted_context
-        if isinstance(context, Proxy):
-            return canWrite(context, self.field.__name__)
-        return True
 
