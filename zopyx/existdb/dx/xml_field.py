@@ -55,7 +55,6 @@ def xml_hash(xml):
 
 class IXMLText(IField):
     """ Marker for XML fields """
-    pass
 
 
 class XMLText(Text):
