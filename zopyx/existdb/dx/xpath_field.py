@@ -31,23 +31,7 @@ from plone.namedfile.field import NamedBlobFile
 from z3c.form import interfaces
 from z3c.form.datamanager import DataManager
 
-
-
-################################################################
-# XPath field
-################################################################
-
-class IXMLXPath(IField):
-    """ Marker for XML fields """
-    pass
-
-
-class XMLXPath(TextLine):
-    zope.interface.implements(IXMLXPath)
-
-XMLXPathFactory = FieldFactory(XMLXPath, _(u'label_xml_xpath_field', default=u'XMLPath'))
-XMLXPathHandler = plone.supermodel.exportimport.BaseHandler(XMLXPath)
-
+from z3c.form.widget import FieldWidget
 
 import lxml
 
@@ -75,6 +59,27 @@ from zope.component import getUtility
 
 
 from z3c.form.interfaces import IWidget
+from plone.dexterity.interfaces import IDexterityFTI
+from plone.behavior.interfaces import IBehaviorAssignable
+
+
+################################################################
+# XPath field
+################################################################
+
+class IXMLXPath(IField):
+    """ Marker for XML fields """
+    pass
+
+
+class XMLXPath(TextLine):
+    zope.interface.implements(IXMLXPath)
+
+
+XMLXPathFactory = FieldFactory(XMLXPath, _(u'label_xml_xpath_field', default=u'XMLPath'))
+XMLXPathHandler = plone.supermodel.exportimport.BaseHandler(XMLXPath)
+
+from zopyx.existdb.dx.xml_field import XMLFieldDataManager
 
 class IXPathWidget(IWidget):
     pass
@@ -86,9 +91,7 @@ class XPathWidget(text.TextWidget):
 
     def xpath_to_value(self):
 
-        from plone.dexterity.interfaces import IDexterityFTI
-        from plone.behavior.interfaces import IBehaviorAssignable
-         
+        # collect all fields (schema and behavior fields)
         schema = zope.component.getUtility(
             IDexterityFTI, name=self.context.portal_type).lookupSchema()
         fields = dict((fieldname, schema[fieldname]) for fieldname in schema)
@@ -98,44 +101,22 @@ class XPathWidget(text.TextWidget):
             behavior_schema = behavior.interface
             fields.update((name, behavior_schema[name]) for name in behavior_schema)
 
-        print self.value
+        # parse our mini language (fix this)
         parts = self.value.split(',', 1)
         fieldname = parts[0].split('=')[1]
         xpath_expr = parts[1].split('=')[1]
-        print fieldname
-        print xpath_expr
         xml_field = fields.get(fieldname)
         if not xml_field: 
             raise ValueError('No such field "{}"'.format(fieldname))
 
-        import pdb; pdb.set_trace()                         
-
-        from zopyx.existdb.dx.xml_field import XMLFieldDataManager
+        # get the dedicated datamanager for the XMLText field
+        # that knows how to pull data from the database
         adapter = AttributeField(context=self.context, field=xml_field)
         xml = adapter.get()
         root = lxml.etree.fromstring(xml)
         result = root.xpath(xpath_expr)
         return result
 
-
-class XPathDataConverter(converter.FieldDataConverter):
-    """A data converter using the field's ``fromUnicode()`` method."""
-    zope.component.adapts(
-        zope.schema.interfaces.IFromUnicode, 
-        IXPathWidget)
-    zope.interface.implements(IDataConverter)
-
-    def toFieldValue(self, value):
-        """See interfaces.IDataConverter"""
-        # check for empty form input
-        confirm = self.widget.request.get(self.widget.name + '.confirm', None)
-        if value == u'' and confirm == u'' and self.field.required == False:
-            # if there is a empty value, we return the field value if widget 
-            # was set to required = False by the PasswordRequiredValue adapter
-            return self.field.query(self.widget.context)
-        return self.field.fromUnicode(value)
-
-from z3c.form.widget import FieldWidget
 
 @implementer(IFieldWidget)
 @adapter(IXMLXPath, IFormLayer)

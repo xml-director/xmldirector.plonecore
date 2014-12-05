@@ -49,8 +49,6 @@
         <implements interface=".xpath_field.IXMLXPath"/>
     </class>
 
-    <adapter factory=".xpath_field.XPathDataConverter" />
-
     <z3c:widgetTemplate
         mode="input"
         widget=".xpath_field.IXPathWidget"
