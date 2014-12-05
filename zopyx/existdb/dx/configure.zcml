@@ -12,16 +12,20 @@
 
     <include package="z3c.form" file="meta.zcml" />
 
+    <!-- XML content field -->
     <utility
-        name=".fields.XML"
-        component=".fields.XMLTextFactory"
+        name=".xml_field.XML"
+        component=".xml_field.XMLTextFactory"
     />
 
     <utility
-        component=".fields.XMLTextHandler"
-        name="zopyx.existdb.dx.fields.XMLText"
+        component=".xml_field.XMLTextHandler"
+        name="zopyx.existdb.dx.xml_field.XMLText"
         />
 
+    <adapter factory=".xml_field.XMLFieldDataManager" />
+
+    <!-- XML XPath field -->
     <utility
         name=".fields.XMLXPath"
         component=".fields.XMLXPathFactory"
@@ -42,7 +46,6 @@
         name="zopyx.existdb.dx.fields.XMLBinary"
     />
 
-    <adapter factory=".fields.AttributeField" />
     <adapter factory=".fields.XMLBinaryDatamanager" />
         />
 

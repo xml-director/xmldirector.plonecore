@@ -32,47 +32,53 @@ from z3c.form import interfaces
 from z3c.form.datamanager import DataManager
 
 
+def normalize_xml(xml):
+    if not xml:
+        u''
+    if isinstance(xml, unicode):
+        xml = xml.encode('utf-8')
+    xml = xml.replace('\r\n', '\n')
+    return xml
+
+
+def xml_hash(xml):
+    """ Get a stable hash from XML string """
+    xml = normalize_xml(xml)
+    if xml.startswith('<?xml'):
+        xml = xml[xml.find('?>')+2:]
+        xml = xml.lstrip('\n')
+    return hashlib.sha256(xml).hexdigest()
+
 
 ################################################################
-# XML Binary Content
+# XML Content
 ################################################################
 
-class IXMLBinary(IField):
+class IXMLText(IField):
     """ Marker for XML fields """
     pass
 
 
-class XMLBinary(NamedBlobFile):
-    zope.interface.implements(IXMLBinary)
+class XMLText(Text):
+    zope.interface.implements(IXMLText)
 
     def validate(self, value):
-        """ Perform validation """
-        return super(XMLBinary, self).validate(value)
+        """ Perform XML validation """
+        if value:
+            try:
+                root = lxml.etree.fromstring(normalize_xml(value))
+            except lxml.etree.XMLSyntaxError as e:
+                raise zope.interface.Invalid(u'XML syntax error {}'.format(e))
+        return super(XMLText, self).validate(value)
 
-XMLBinaryFactory = FieldFactory(XMLBinary, _(u'label_xml_binary_field', default=u'XMLBinary'))
-XMLBinaryHandler = plone.supermodel.exportimport.BaseHandler(XMLBinary)
-
-
-################################################################
-# XPath field
-################################################################
-
-class IXMLXPath(IField):
-    """ Marker for XML fields """
-    pass
+XMLTextFactory = FieldFactory(XMLText, _(u'label_xml_field', default=u'XML'))
+XMLTextHandler = plone.supermodel.exportimport.BaseHandler(XMLText)
 
 
-class XMLXPath(TextLine):
-    zope.interface.implements(IXMLXPath)
-
-XMLXPathFactory = FieldFactory(XMLXPath, _(u'label_xml_xpath_field', default=u'XMLPath'))
-XMLXPathHandler = plone.supermodel.exportimport.BaseHandler(XMLXPath)
-
-
-class XMLBinaryDatamanager(DataManager):
+class XMLFieldDataManager(DataManager):
     """Attribute field."""
     zope.component.adapts(
-        zope.interface.Interface, IXMLBinary)
+        zope.interface.Interface, IXMLText)
 
     def __init__(self, context, field):
         self.context = context
@@ -98,7 +104,7 @@ class XMLBinaryDatamanager(DataManager):
         if not context_id:
             context_id = self.context.__xml_storage_id__ = uuid.uuid4()
         field_id = self.field.__name__
-        return 'plone-data/{}/{}/{}.bin'.format(plone_uid, context_id, field_id)
+        return 'plone-data/{}/{}/{}.xml'.format(plone_uid, context_id, field_id)
 
     @property
     def adapted_context(self):
@@ -122,14 +128,11 @@ class XMLBinaryDatamanager(DataManager):
         if handle.exists(storage_key):
             with handle.open(storage_key, 'rb') as fp:
                 with handle.open(storage_key + '.sha256', 'rb') as fp_sha:
-                    data = fp.read()
-                    data_sha256 = fp_sha.read()
-            
-            blob = NamedBlobFile()
-            blob.data = data
-            blob.contentType = 'bin/bin'
-            blob.filename= 'abc.bin'
-            return blob
+                    xml = fp.read()
+                    xml_sha256 = fp_sha.read()
+#            if xml_hash(xml) != xml_sha256:    
+#                raise ValueError('Hashes for {} differ'.format(storage_key))
+            return xml
 
     def query(self, default=interfaces.NO_VALUE):
         """See z3c.form.interfaces.IDataManager"""
@@ -142,18 +145,16 @@ class XMLBinaryDatamanager(DataManager):
 
     def set(self, value):
         """See z3c.form.interfaces.IDataManager"""
-        print value
-        if not value:
-            return
         handle = self.webdav_handle
         storage_key = self.storage_key
         dirname = os.path.dirname(storage_key)
         if not handle.exists(dirname):
             handle.makedir(dirname, True, True)
-        value_sha256 = hashlib.sha256(value.data).hexdigest()
+        value_utf8 = normalize_xml(value)
+        value_sha256 = xml_hash(value_utf8)
         with handle.open(storage_key, 'wb') as fp:
             with handle.open(storage_key + '.sha256', 'wb') as fp_sha:
-                fp.write(value.data)
+                fp.write(value_utf8)
                 fp_sha.write(value_sha256)
 
     def canAccess(self):
@@ -169,3 +170,4 @@ class XMLBinaryDatamanager(DataManager):
         if isinstance(context, Proxy):
             return canWrite(context, self.field.__name__)
         return True
+
