@@ -1,0 +1,4 @@
+<div class="xpath-widget" i18n:domain="zopyx.existdb">
+    <label i18n:translate="">XPath expression:</label>
+    <span tal:content="view/value" />
+</div>

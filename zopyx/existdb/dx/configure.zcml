@@ -32,9 +32,18 @@
         name="zopyx.existdb.dx.fields.XMLXPath"
     />
 
-    <adapter
-        factory=".fields.AttributeField"
-        for=".fields.IXMLXPath .widget.IXPathWidget"
+    <utility
+        name=".fields.XMLBinary"
+        component=".fields.XMLBinaryFactory"
+    />
+
+    <utility
+        component=".fields.XMLBinaryHandler"
+        name="zopyx.existdb.dx.fields.XMLBinary"
+    />
+
+    <adapter factory=".fields.AttributeField" />
+    <adapter factory=".fields.XMLBinaryDatamanager" />
         />
 
     <adapter factory=".widget.XPathFieldWidget"/>
@@ -63,7 +72,7 @@
         mode="display"
         widget=".widget.IXPathWidget"
         layer="z3c.form.interfaces.IFormLayer"
-        template="input.pt"
+        template="xpath_display.pt"
         />
 
 </configure>

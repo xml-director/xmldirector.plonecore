@@ -26,7 +26,10 @@ from zope.interface import implementsOnly, implementer
 from zope.component import adapter
 
 
-class IXPathWidget(zope.interface.Interface):
+from z3c.form.interfaces import IWidget
+
+#class IXPathWidget(zope.interface.Interface):
+class IXPathWidget(IWidget):
     pass
 
 
@@ -45,7 +48,6 @@ class XPathDataConverter(converter.FieldDataConverter):
     def toFieldValue(self, value):
         """See interfaces.IDataConverter"""
         # check for empty form input
-        import pdb; pdb.set_trace() 
         confirm = self.widget.request.get(self.widget.name + '.confirm', None)
         if value == u'' and confirm == u'' and self.field.required == False:
             # if there is a empty value, we return the field value if widget 
@@ -54,10 +56,10 @@ class XPathDataConverter(converter.FieldDataConverter):
         return self.field.fromUnicode(value)
 
 from z3c.form.widget import FieldWidget
+from zopyx.existdb.dx.fields import IXMLXPath
 
 @implementer(IFieldWidget)
-@adapter(zope.schema.interfaces.IField, IFormLayer)
+@adapter(IXMLXPath, IFormLayer)
 def XPathFieldWidget(field, request):
     """IFieldWidget factory for RecurrenceWidget."""
-    import pdb; pdb.set_trace() 
     return FieldWidget(field, XPathWidget(request))
