@@ -3,6 +3,52 @@
 # (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
+import os
+import uuid
+import hashlib
+import plone.api
+import lxml.etree
+from fs.contrib.davfs import DAVFS
+
+from zopyx.existdb.i18n import MessageFactory as _
+from zopyx.existdb.interfaces import IExistDBSettings
+
+import plone.supermodel.exportimport
+from plone.registry.interfaces import IRegistry
+from plone.schemaeditor.fields import FieldFactory
+from plone.schemaeditor.interfaces import IFieldFactory
+
+import zope.schema
+import zope.interface
+import zope.component
+from zope.schema import Text
+from zope.schema import TextLine
+from zope.schema.interfaces import IField
+from zope.component import getUtility
+from zope.security.interfaces import ForbiddenAttribute
+from zope.security.checker import canAccess, canWrite, Proxy
+from plone.namedfile.field import NamedBlobFile
+from z3c.form import interfaces
+from z3c.form.datamanager import DataManager
+
+
+
+################################################################
+# XPath field
+################################################################
+
+class IXMLXPath(IField):
+    """ Marker for XML fields """
+    pass
+
+
+class XMLXPath(TextLine):
+    zope.interface.implements(IXMLXPath)
+
+XMLXPathFactory = FieldFactory(XMLXPath, _(u'label_xml_xpath_field', default=u'XMLPath'))
+XMLXPathHandler = plone.supermodel.exportimport.BaseHandler(XMLXPath)
+
+
 import lxml
 
 import zope.component
@@ -30,7 +76,6 @@ from zope.component import getUtility
 
 from z3c.form.interfaces import IWidget
 
-#class IXPathWidget(zope.interface.Interface):
 class IXPathWidget(IWidget):
     pass
 
@@ -65,7 +110,7 @@ class XPathWidget(text.TextWidget):
 
         import pdb; pdb.set_trace()                         
 
-        from zopyx.existdb.dx.fields import AttributeField
+        from zopyx.existdb.dx.xml_field import XMLFieldDataManager
         adapter = AttributeField(context=self.context, field=xml_field)
         xml = adapter.get()
         root = lxml.etree.fromstring(xml)
@@ -91,7 +136,6 @@ class XPathDataConverter(converter.FieldDataConverter):
         return self.field.fromUnicode(value)
 
 from z3c.form.widget import FieldWidget
-from zopyx.existdb.dx.fields import IXMLXPath
 
 @implementer(IFieldWidget)
 @adapter(IXMLXPath, IFormLayer)

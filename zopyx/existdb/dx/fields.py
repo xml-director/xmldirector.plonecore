@@ -53,21 +53,6 @@ XMLBinaryFactory = FieldFactory(XMLBinary, _(u'label_xml_binary_field', default=
 XMLBinaryHandler = plone.supermodel.exportimport.BaseHandler(XMLBinary)
 
 
-################################################################
-# XPath field
-################################################################
-
-class IXMLXPath(IField):
-    """ Marker for XML fields """
-    pass
-
-
-class XMLXPath(TextLine):
-    zope.interface.implements(IXMLXPath)
-
-XMLXPathFactory = FieldFactory(XMLXPath, _(u'label_xml_xpath_field', default=u'XMLPath'))
-XMLXPathHandler = plone.supermodel.exportimport.BaseHandler(XMLXPath)
-
 
 class XMLBinaryDatamanager(DataManager):
     """Attribute field."""

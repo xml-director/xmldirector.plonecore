@@ -1,10 +1,10 @@
 $(document).ready(function() {
-
+alert(1);
     var num_editors = 0;
     var editors = [];
 
     /* View mode */
-    $('.template-view .xmltext-field').each(function() {
+    $('#form .xmltext-field').each(function() {
 
         $(this).hide();
         var id = $(this).attr('id');

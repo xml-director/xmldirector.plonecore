@@ -27,53 +27,40 @@
 
     <!-- XML XPath field -->
     <utility
-        name=".fields.XMLXPath"
-        component=".fields.XMLXPathFactory"
+        name=".xpath_field.XMLXPath"
+        component=".xpath_field.XMLXPathFactory"
     />
 
     <utility
-        component=".fields.XMLXPathHandler"
-        name="zopyx.existdb.dx.fields.XMLXPath"
+        component=".xpath_field.XMLXPathHandler"
+        name="zopyx.existdb.dx.xpath_field.XMLXPath"
     />
 
-    <utility
-        name=".fields.XMLBinary"
-        component=".fields.XMLBinaryFactory"
-    />
+    <adapter factory=".xpath_field.XPathFieldWidget"/>
 
-    <utility
-        component=".fields.XMLBinaryHandler"
-        name="zopyx.existdb.dx.fields.XMLBinary"
-    />
-
-    <adapter factory=".fields.XMLBinaryDatamanager" />
-        />
-
-    <adapter factory=".widget.XPathFieldWidget"/>
-
-    <class class=".widget.XPathWidget">
+    <class class=".xpath_field.XPathWidget">
         <require
         permission="zope.Public"
-        interface=".widget.IXPathWidget"
+        interface=".xpath_field.IXPathWidget"
         />
     </class>
 
-    <class class=".fields.XMLXPath">
-        <implements interface=".fields.IXMLXPath"/>
+    <class class=".xpath_field.XMLXPath">
+        <implements interface=".xpath_field.IXMLXPath"/>
     </class>
 
-    <adapter factory=".widget.XPathDataConverter" />
+    <adapter factory=".xpath_field.XPathDataConverter" />
 
     <z3c:widgetTemplate
         mode="input"
-        widget=".widget.IXPathWidget"
+        widget=".xpath_field.IXPathWidget"
         layer="z3c.form.interfaces.IFormLayer"
         template="xpath_input.pt"
         />
 
     <z3c:widgetTemplate
         mode="display"
-        widget=".widget.IXPathWidget"
+        widget=".xpath_field.IXPathWidget"
         layer="z3c.form.interfaces.IFormLayer"
         template="xpath_display.pt"
         />
