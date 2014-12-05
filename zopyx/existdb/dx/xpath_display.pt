@@ -1,4 +1,5 @@
 <div class="xpath-widget" i18n:domain="zopyx.existdb">
     <label i18n:translate="">XPath expression:</label>
     <span tal:content="view/value" />
+    <span tal:content="view/xpath_to_value"/>
 </div>

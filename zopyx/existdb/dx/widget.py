@@ -34,8 +34,12 @@ class IXPathWidget(IWidget):
 
 
 class XPathWidget(text.TextWidget):
-    """Input type password widget implementation."""
+    """ Widget for XPath expressions."""
     zope.interface.implementsOnly(IXPathWidget)
+
+    def xpath_to_value(self):
+        print self.value
+        return 'foo'
 
 
 class XPathDataConverter(converter.FieldDataConverter):
