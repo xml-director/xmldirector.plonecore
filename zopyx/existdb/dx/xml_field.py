@@ -22,7 +22,6 @@ import zope.schema
 import zope.interface
 import zope.component
 from zope.schema import Text
-from zope.schema import TextLine
 from zope.schema.interfaces import IField
 from zope.component import getUtility
 from zope.security.interfaces import ForbiddenAttribute
