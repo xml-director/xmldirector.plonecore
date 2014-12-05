@@ -65,7 +65,7 @@
         mode="input"
         widget=".widget.IXPathWidget"
         layer="z3c.form.interfaces.IFormLayer"
-        template="input.pt"
+        template="xpath_input.pt"
         />
 
     <z3c:widgetTemplate
