@@ -97,8 +97,15 @@ class XMLImageDataManager(AttributeDataManager):
 
     def set(self, value):
         """See z3c.form.interfaces.IDataManager"""
+
+        handle = self.webdav_handle
+        storage_key = self.storage_key
+
         if not value:
+            handle.remove(self.storage_key)
+            handle.remove(self.storage_key + '.metadata.json')
             return
+    
         handle = self.webdav_handle
         storage_key = self.storage_key
         dirname = os.path.dirname(storage_key)

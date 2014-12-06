@@ -97,10 +97,15 @@ class XMLBinaryDataManager(AttributeDataManager):
 
     def set(self, value):
         """See z3c.form.interfaces.IDataManager"""
-        if not value:
-            return
+
         handle = self.webdav_handle
         storage_key = self.storage_key
+
+        if not value:
+            handle.remove(self.storage_key)
+            handle.remove(self.storage_key + '.metadata.json')
+            return
+
         dirname = os.path.dirname(storage_key)
         if not handle.exists(dirname):
             handle.makedir(dirname, True, True)
