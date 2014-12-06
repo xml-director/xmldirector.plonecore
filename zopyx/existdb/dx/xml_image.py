@@ -102,8 +102,9 @@ class XMLImageDataManager(AttributeDataManager):
         storage_key = self.storage_key
 
         if not value:
-            handle.remove(self.storage_key)
-            handle.remove(self.storage_key + '.metadata.json')
+            for name in (self.storage_key, self.storage_key + '.metadata.json'):
+                if handle.exists(name):
+                    handle.remove(name)
             return
     
         handle = self.webdav_handle
