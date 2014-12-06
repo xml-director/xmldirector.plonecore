@@ -25,6 +25,19 @@
 
     <adapter factory=".xml_field.XMLFieldDataManager" />
 
+    <!-- XML binary field -->
+    <utility
+        name=".xml_binary.XML"
+        component=".xml_binary.XMLBinaryFactory"
+    />
+
+    <utility
+        component=".xml_binary.XMLBinaryHandler"
+        name="zopyx.existdb.dx.xml_binary.XMLBinary"
+        />
+
+    <adapter factory=".xml_binary.XMLBinaryDataManager" />
+
     <!-- XML XPath field -->
     <utility
         name=".xpath_field.XMLXPath"

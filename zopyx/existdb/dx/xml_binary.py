@@ -54,7 +54,7 @@ XMLBinaryHandler = plone.supermodel.exportimport.BaseHandler(XMLBinary)
 
 
 
-class XMLBinaryDatamanager(DataManager):
+class XMLBinaryDataManager(DataManager):
     """Attribute field."""
     zope.component.adapts(
         zope.interface.Interface, IXMLBinary)
