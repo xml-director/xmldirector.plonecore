@@ -101,6 +101,10 @@ class XPathWidget(text.TextWidget):
             behavior_schema = behavior.interface
             fields.update((name, behavior_schema[name]) for name in behavior_schema)
 
+        if not self.value:
+            error = u'Empty XPath field specification'
+            return dict(errors=[error], data=None)
+
         # parse our mini language (fix this)
         parts = self.value.split(',', 1)
         fieldname = parts[0].split('=')[1]
