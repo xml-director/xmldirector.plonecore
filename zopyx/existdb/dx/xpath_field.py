@@ -6,34 +6,26 @@
 import plone.api
 import lxml.etree
 
-from zopyx.existdb.i18n import MessageFactory as _
-
-import plone.supermodel.exportimport
-from plone.schemaeditor.fields import FieldFactory
-
+from z3c.form.interfaces import IFormLayer
+from z3c.form.interfaces import IFieldWidget
+from z3c.form.browser import text
+from z3c.form.interfaces import IWidget
+from z3c.form.widget import FieldWidget
 import zope.schema
+import zope.schema.interfaces
 import zope.interface
 import zope.component
 from zope.schema import TextLine
 from zope.schema.interfaces import IField
-
-from z3c.form.widget import FieldWidget
-
-import lxml
-
-import zope.schema.interfaces
 import zope.i18nmessageid
-
-from z3c.form.interfaces import IFormLayer
-from z3c.form.interfaces import IFieldWidget
-from z3c.form.browser import text
 from zope.interface import implementer
 from zope.component import adapter
-
-
-from z3c.form.interfaces import IWidget
 from plone.dexterity.interfaces import IDexterityFTI
 from plone.behavior.interfaces import IBehaviorAssignable
+import plone.supermodel.exportimport
+from plone.schemaeditor.fields import FieldFactory
+
+from zopyx.existdb.i18n import MessageFactory as _
 
 
 ################################################################

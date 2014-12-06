@@ -10,13 +10,6 @@ import plone.api
 import lxml.etree
 from fs.contrib.davfs import DAVFS
 
-from zopyx.existdb.i18n import MessageFactory as _
-from zopyx.existdb.interfaces import IExistDBSettings
-
-import plone.supermodel.exportimport
-from plone.registry.interfaces import IRegistry
-from plone.schemaeditor.fields import FieldFactory
-
 import zope.schema
 import zope.interface
 import zope.component
@@ -24,6 +17,12 @@ from zope.schema import Text
 from zope.schema.interfaces import IField
 from zope.component import getUtility
 import z3c.form.datamanager
+import plone.supermodel.exportimport
+from plone.registry.interfaces import IRegistry
+from plone.schemaeditor.fields import FieldFactory
+
+from zopyx.existdb.i18n import MessageFactory as _
+from zopyx.existdb.interfaces import IExistDBSettings
 
 
 def normalize_xml(xml):

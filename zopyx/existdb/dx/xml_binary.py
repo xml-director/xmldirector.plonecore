@@ -10,21 +10,21 @@ import hashlib
 import plone.api
 from fs.contrib.davfs import DAVFS
 
-from zopyx.existdb.i18n import MessageFactory as _
-from zopyx.existdb.interfaces import IExistDBSettings
-
-import plone.supermodel.exportimport
-from plone.registry.interfaces import IRegistry
-from plone.schemaeditor.fields import FieldFactory
-
 import zope.schema
 import zope.interface
 import zope.component
 from zope.schema.interfaces import IField
 from zope.component import getUtility
 from z3c.form.datamanager import AttributeField as AttributeDataManager
+import plone.supermodel.exportimport
+from plone.registry.interfaces import IRegistry
+from plone.schemaeditor.fields import FieldFactory
 from plone.namedfile import NamedFile
 from plone.namedfile.field import NamedFile as NamedFileField
+
+from zopyx.existdb.i18n import MessageFactory as _
+from zopyx.existdb.interfaces import IExistDBSettings
+
 
 
 ################################################################
