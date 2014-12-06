@@ -115,6 +115,8 @@ class XPathWidget(text.TextWidget):
         adapter = XMLFieldDataManager(context=self.context, field=xml_field)
         xml = adapter.get()
         root = lxml.etree.fromstring(xml)
+
+        # apply xpath expression
         try:
             result = root.xpath(xpath_expr)
         except lxml.etree.XPathEvalError as e:
