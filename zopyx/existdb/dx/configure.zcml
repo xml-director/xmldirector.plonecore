@@ -38,6 +38,19 @@
 
     <adapter factory=".xml_binary.XMLBinaryDataManager" />
 
+    <!-- XML image field -->
+    <utility
+        name=".xml_image.XML"
+        component=".xml_image.XMLImageFactory"
+    />
+
+    <utility
+        component=".xml_image.XMLImageHandler"
+        name="zopyx.existdb.dx.xml_image.XMLImage"
+        />
+
+    <adapter factory=".xml_image.XMLImageDataManager" />
+
     <!-- XML XPath field -->
     <utility
         name=".xpath_field.XMLXPath"
