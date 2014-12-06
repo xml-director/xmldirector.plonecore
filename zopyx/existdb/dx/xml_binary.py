@@ -8,7 +8,6 @@ import os
 import uuid
 import hashlib
 import plone.api
-import lxml.etree
 from fs.contrib.davfs import DAVFS
 
 from zopyx.existdb.i18n import MessageFactory as _
@@ -17,18 +16,12 @@ from zopyx.existdb.interfaces import IExistDBSettings
 import plone.supermodel.exportimport
 from plone.registry.interfaces import IRegistry
 from plone.schemaeditor.fields import FieldFactory
-from plone.schemaeditor.interfaces import IFieldFactory
 
 import zope.schema
 import zope.interface
 import zope.component
-from zope.schema import Text
-from zope.schema import TextLine
 from zope.schema.interfaces import IField
 from zope.component import getUtility
-from zope.security.interfaces import ForbiddenAttribute
-from zope.security.checker import canAccess, canWrite, Proxy
-from z3c.form import interfaces
 from z3c.form.datamanager import AttributeField as AttributeDataManager
 from plone.namedfile import NamedFile
 from plone.namedfile.field import NamedFile as NamedFileField

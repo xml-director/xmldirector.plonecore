@@ -3,59 +3,32 @@
 # (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
-import os
-import uuid
-import hashlib
 import plone.api
 import lxml.etree
-from fs.contrib.davfs import DAVFS
 
 from zopyx.existdb.i18n import MessageFactory as _
-from zopyx.existdb.interfaces import IExistDBSettings
 
 import plone.supermodel.exportimport
-from plone.registry.interfaces import IRegistry
 from plone.schemaeditor.fields import FieldFactory
-from plone.schemaeditor.interfaces import IFieldFactory
 
 import zope.schema
 import zope.interface
 import zope.component
-from zope.schema import Text
 from zope.schema import TextLine
 from zope.schema.interfaces import IField
-from zope.component import getUtility
-from zope.security.interfaces import ForbiddenAttribute
-from zope.security.checker import canAccess, canWrite, Proxy
-from plone.namedfile.field import NamedBlobFile
-from z3c.form import interfaces
-from z3c.form.datamanager import DataManager
 
 from z3c.form.widget import FieldWidget
 
 import lxml
 
-import zope.component
-import zope.interface
-import zope.schema
 import zope.schema.interfaces
 import zope.i18nmessageid
 
-from z3c.form import widget
-
 from z3c.form.interfaces import IFormLayer
 from z3c.form.interfaces import IFieldWidget
-from z3c.form.interfaces import IValidator
-from z3c.form.interfaces import IValue
-from z3c.form.interfaces import IDataConverter
-from z3c.form.interfaces import IDataManager
-from z3c.form import widget
-from z3c.form import validator
-from z3c.form import converter
 from z3c.form.browser import text
-from zope.interface import implementsOnly, implementer
+from zope.interface import implementer
 from zope.component import adapter
-from zope.component import getUtility
 
 
 from z3c.form.interfaces import IWidget

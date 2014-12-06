@@ -16,7 +16,6 @@ from zopyx.existdb.interfaces import IExistDBSettings
 import plone.supermodel.exportimport
 from plone.registry.interfaces import IRegistry
 from plone.schemaeditor.fields import FieldFactory
-from plone.schemaeditor.interfaces import IFieldFactory
 
 import zope.schema
 import zope.interface
@@ -24,12 +23,7 @@ import zope.component
 from zope.schema import Text
 from zope.schema.interfaces import IField
 from zope.component import getUtility
-from zope.security.interfaces import ForbiddenAttribute
-from zope.security.checker import canAccess, canWrite, Proxy
-from plone.namedfile.field import NamedBlobFile
 import z3c.form
-from z3c.form import interfaces
-from z3c.form.datamanager import DataManager
 
 
 def normalize_xml(xml):
@@ -69,7 +63,7 @@ class XMLText(Text):
         """ Perform XML validation """
         if value:
             try:
-                root = lxml.etree.fromstring(normalize_xml(value))
+                lxml.etree.fromstring(normalize_xml(value))
             except lxml.etree.XMLSyntaxError as e:
                 raise zope.interface.Invalid(u'XML syntax error {}'.format(e))
         return super(XMLText, self).validate(value)
