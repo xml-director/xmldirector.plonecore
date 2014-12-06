@@ -31,7 +31,7 @@ from zope.security.checker import canAccess, canWrite, Proxy
 from z3c.form import interfaces
 from z3c.form.datamanager import AttributeField as AttributeDataManager
 from plone.namedfile import NamedImage
-from plone.namedfile.field import NamedBlobImage
+from plone.namedfile.field import NamedImage as NamedImageField
 
 
 ################################################################
@@ -43,7 +43,7 @@ class IXMLImage(IField):
     pass
 
 
-class XMLImage(NamedBlobImage):
+class XMLImage(NamedImageField):
     zope.interface.implements(IXMLImage)
 
     def validate(self, value):

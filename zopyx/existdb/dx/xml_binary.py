@@ -31,7 +31,7 @@ from zope.security.checker import canAccess, canWrite, Proxy
 from z3c.form import interfaces
 from z3c.form.datamanager import AttributeField as AttributeDataManager
 from plone.namedfile import NamedFile
-from plone.namedfile.field import NamedBlobFile
+from plone.namedfile.field import NamedFile as NamedFileField
 
 
 ################################################################
@@ -43,7 +43,7 @@ class IXMLBinary(IField):
     pass
 
 
-class XMLBinary(NamedBlobFile):
+class XMLBinary(NamedFileField):
     zope.interface.implements(IXMLBinary)
 
     def validate(self, value):
