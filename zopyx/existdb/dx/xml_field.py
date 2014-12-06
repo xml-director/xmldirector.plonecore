@@ -23,7 +23,7 @@ import zope.component
 from zope.schema import Text
 from zope.schema.interfaces import IField
 from zope.component import getUtility
-import z3c.form
+import z3c.form.datamanager
 
 
 def normalize_xml(xml):
