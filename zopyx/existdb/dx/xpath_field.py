@@ -107,15 +107,21 @@ class XPathWidget(text.TextWidget):
         xpath_expr = parts[1].split('=')[1]
         xml_field = fields.get(fieldname)
         if not xml_field: 
-            raise ValueError('No such field "{}"'.format(fieldname))
+            error = u'No such field "{}"'.format(fieldname)
+            return dict(errors=[error], data=None)
 
         # get the dedicated datamanager for the XMLText field
         # that knows how to pull data from the database
-        adapter = AttributeField(context=self.context, field=xml_field)
+        adapter = XMLFieldDataManager(context=self.context, field=xml_field)
         xml = adapter.get()
         root = lxml.etree.fromstring(xml)
-        result = root.xpath(xpath_expr)
-        return result
+        try:
+            result = root.xpath(xpath_expr)
+        except lxml.etree.XPathEvalError as e:
+            error = u'Invalid XPath expression "{}" (error: {})'.format(xpath_expr, e)
+            return dict(errors=[error], data=None)
+
+        return dict(errors=[], data=result)
 
 
 @implementer(IFieldWidget)

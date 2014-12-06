@@ -2,6 +2,19 @@
     <label i18n:translate="">XPath expression:</label>
     <span tal:content="view/value" />
     <br/>
-    <label i18n:translate="">XPath result:</label>
-    <span tal:content="view/xpath_to_value"/>
+
+    <tal:def define="result view/xpath_to_value">
+        <tal:if condition="result/errors">
+            <label i18n:translate="">Errors</label>
+            <ul> 
+                <li tal:repeat="error result/errors"
+                    tal:content="error"
+                />
+            </ul>
+        </tal:if>
+        <tal:if condition="not: result/errors">
+            <label i18n:translate="">XPath result:</label>
+            <span tal:content="result/data" />
+        </tal:if>
+    </tal:def>
 </div>

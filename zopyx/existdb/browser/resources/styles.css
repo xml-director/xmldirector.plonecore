@@ -135,3 +135,6 @@ a.file[href$='.docx']:before {
     background-image: url(++resource++zopyx.existdb/images/svg/docx.svg) !important;
 }
 
+input.xmlxpath-field {
+    width: 80% !important;
+}

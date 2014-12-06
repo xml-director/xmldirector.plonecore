@@ -1,10 +1,10 @@
 $(document).ready(function() {
-alert(1);
+
     var num_editors = 0;
     var editors = [];
 
     /* View mode */
-    $('#form .xmltext-field').each(function() {
+    $('.template-view .xmltext-field').each(function() {
 
         $(this).hide();
         var id = $(this).attr('id');
@@ -19,7 +19,7 @@ alert(1);
     });
 
     /* Edit mode */
-    $('#form .xmltext-field').each(function() {
+    $('.template-edit .xmltext-field').each(function() {
 
         $(this).hide();
 
