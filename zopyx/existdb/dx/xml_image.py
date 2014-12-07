@@ -77,7 +77,6 @@ class XMLImageDataManager(AttributeDataManager):
 
     def get(self):
         """See z3c.form.interfaces.IDataManager"""
-        print 'get'
         handle = self.webdav_handle
         storage_key = self.storage_key
         if handle.exists(storage_key):
@@ -91,7 +90,6 @@ class XMLImageDataManager(AttributeDataManager):
 
     def set(self, value):
         """See z3c.form.interfaces.IDataManager"""
-        print 'set'
         handle = self.webdav_handle
         storage_key = self.storage_key
 
