@@ -39,19 +39,17 @@ class IXMLBinary(IField):
 class XMLBinary(NamedFileField):
     zope.interface.implements(IXMLBinary)
 
-    def validate(self, value):
-        """ Perform validation """
-        return super(XMLBinary, self).validate(value)
 
 XMLBinaryFactory = FieldFactory(XMLBinary, _(u'label_xml_binary_field', default=u'XMLBinary'))
 XMLBinaryHandler = plone.supermodel.exportimport.BaseHandler(XMLBinary)
-
 
 
 class XMLBinaryDataManager(AttributeDataManager):
     """Attribute field."""
     zope.component.adapts(
         zope.interface.Interface, IXMLBinary)
+
+    suffix = '.bin'
 
     @property
     def webdav_handle(self):
@@ -73,7 +71,7 @@ class XMLBinaryDataManager(AttributeDataManager):
         if not context_id:
             context_id = self.context.__xml_storage_id__ = uuid.uuid4()
         field_id = self.field.__name__
-        return 'plone-data/{}/{}/{}.bin'.format(plone_uid, context_id, field_id)
+        return 'plone-data/{}/{}/{}{}'.format(plone_uid, context_id, field_id, self.suffix)
 
     def get(self):
         """See z3c.form.interfaces.IDataManager"""
