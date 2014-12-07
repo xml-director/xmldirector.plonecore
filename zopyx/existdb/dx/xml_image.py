@@ -87,7 +87,7 @@ class XMLImageDataManager(AttributeDataManager):
                     metadata = json.load(fp_metadata)
             return NamedImage(data, 
                             filename=metadata['filename'], 
-                            contentType=metadata['contenttype']) 
+                            contentType=str(metadata['contenttype']))
 
     def set(self, value):
         """See z3c.form.interfaces.IDataManager"""
