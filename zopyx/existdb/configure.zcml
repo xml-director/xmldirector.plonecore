@@ -22,9 +22,4 @@
         provides="Products.GenericSetup.interfaces.EXTENSION"
     />
 
-    <subscriber
-        for="*"
-        handler=".handler.handler"
-    />
-
 </configure>

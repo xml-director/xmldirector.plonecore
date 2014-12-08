@@ -89,4 +89,18 @@
         template="xpath_display.pt"
         />
 
+
+    <!-- event subscribers for copy & remove operations -->
+    <subscriber
+        for="* 
+             OFS.interfaces.IObjectWillBeRemovedEvent"
+        handler=".subscribers.removal_handler"
+    />
+
+    <subscriber
+        for="* 
+             zope.lifecycleevent.IObjectCopiedEvent"
+        handler=".subscribers.copied_handler"
+    />
+
 </configure>
