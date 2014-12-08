@@ -111,14 +111,6 @@ class Connector(Item):
 
         url = adapted.existdb_url or settings.existdb_url
 
-        if settings.existdb_emulation == 'existdb':
-            url = '{}/exist/webdav/db'.format(url)
-        elif settings.existdb_emulation == 'webdav':
-            pass
-        else:
-            raise ValueError(
-                'Unsupported emulation mode {}'.format(settings.existdb_emulation))
-
         if adapted.existdb_subpath:
             url += '/{}'.format(adapted.existdb_subpath)
 

@@ -72,14 +72,7 @@ XMLTextFactory = FieldFactory(XMLText, _(u'label_xml_field', default=u'XML'))
 XMLTextHandler = plone.supermodel.exportimport.BaseHandler(XMLText)
 
 
-class XMLFieldDataManager(z3c.form.datamanager.AttributeField):
-    """A dedicated manager for XMLText field."""
-    zope.component.adapts(
-        zope.interface.Interface, IXMLText)
-
-    def __init__(self, context, field):
-        self.context = context
-        self.field = field
+class WebdavMixin(object):
 
     @property
     def webdav_handle(self):
@@ -88,12 +81,21 @@ class XMLFieldDataManager(z3c.form.datamanager.AttributeField):
         settings = registry.forInterface(IExistDBSettings)
 
         url = settings.existdb_url
-        url = '{}/exist/webdav/db'.format(url)
         username = settings.existdb_username
         password = settings.existdb_password
-
         return DAVFS(url, credentials=dict(username=username,
                                            password=password))
+
+
+class XMLFieldDataManager(z3c.form.datamanager.AttributeField, WebdavMixin):
+    """A dedicated manager for XMLText field."""
+    zope.component.adapts(
+        zope.interface.Interface, IXMLText)
+
+    def __init__(self, context, field):
+        self.context = context
+        self.field = field
+
     @property
     def storage_key(self):
         plone_uid = plone.api.portal.get().getId()

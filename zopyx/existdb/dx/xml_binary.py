@@ -24,7 +24,7 @@ from plone.namedfile.field import NamedFile as NamedFileField
 
 from zopyx.existdb.i18n import MessageFactory as _
 from zopyx.existdb.interfaces import IExistDBSettings
-
+from zopyx.existdb.dx.xml_field import WebdavMixin
 
 
 ################################################################
@@ -44,26 +44,14 @@ XMLBinaryFactory = FieldFactory(XMLBinary, _(u'label_xml_binary_field', default=
 XMLBinaryHandler = plone.supermodel.exportimport.BaseHandler(XMLBinary)
 
 
-class XMLBinaryDataManager(AttributeDataManager):
+class XMLBinaryDataManager(AttributeDataManager, WebdavMixin):
     """Attribute field."""
     zope.component.adapts(
         zope.interface.Interface, IXMLBinary)
 
     suffix = '.bin'
+    return_class = NamedFile
 
-    @property
-    def webdav_handle(self):
-
-        registry = getUtility(IRegistry)
-        settings = registry.forInterface(IExistDBSettings)
-
-        url = settings.existdb_url
-        url = '{}/exist/webdav/db'.format(url)
-        username = settings.existdb_username
-        password = settings.existdb_password
-
-        return DAVFS(url, credentials=dict(username=username,
-                                           password=password))
     @property
     def storage_key(self):
         plone_uid = plone.api.portal.get().getId()
@@ -82,9 +70,10 @@ class XMLBinaryDataManager(AttributeDataManager):
                 with handle.open(storage_key + '.metadata.json', 'rb') as fp_metadata:
                     data = fp.read()
                     metadata = json.load(fp_metadata)
-            return NamedFile(data, 
-                            filename=metadata['filename'], 
-                            contentType=str(metadata['contenttype']))
+            return self.return_class(
+                data, 
+                filename=metadata['filename'], 
+                contentType=str(metadata['contenttype']))
 
     def set(self, value):
         """See z3c.form.interfaces.IDataManager"""

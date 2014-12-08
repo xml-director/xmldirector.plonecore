@@ -13,26 +13,11 @@ from zope.schema.vocabulary import SimpleVocabulary
 
 
 class IBrowserLayer(Interface):
-
     """A brower layer specific to my product """
 
 
-EMULATION_VOCABULARY = SimpleVocabulary([
-    SimpleTerm(u'existdb', u'existdb', u'eXist-db'),
-    SimpleTerm(u'webdav', u'webdav', u'WebDAV generic (BaseX, OwnCloud,...)'),
-])
-
-
 class IExistDBSettings(Interface):
-
     """ ExistDB settings """
-
-    existdb_emulation = schema.Choice(
-        title=_(u'eXist-db emulation mode'),
-        description=_(u'XML database emulation'),
-        vocabulary=EMULATION_VOCABULARY,
-        default=u'existdb'
-    )
 
     existdb_url = schema.TextLine(
         title=_(u'eXist-db server url'),

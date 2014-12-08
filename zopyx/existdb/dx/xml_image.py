@@ -22,6 +22,7 @@ from plone.namedfile.field import NamedImage as NamedImageField
 import plone.supermodel.exportimport
 from plone.registry.interfaces import IRegistry
 from plone.schemaeditor.fields import FieldFactory
+from plone.namedfile import NamedImage
 
 from zopyx.existdb.i18n import MessageFactory as _
 from zopyx.existdb.interfaces import IExistDBSettings
@@ -51,4 +52,4 @@ class XMLImageDataManager(XMLBinaryDataManager):
         zope.interface.Interface, IXMLImage)
 
     suffix = '.img'
-
+    return_class = NamedImage
