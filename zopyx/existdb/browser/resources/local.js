@@ -19,7 +19,7 @@ $(document).ready(function() {
     });
 
     /* Edit mode */
-    $('.template-edit .xmltext-field').each(function() {
+    $('textarea.xmltext-field').each(function() {
 
         $(this).hide();
 
