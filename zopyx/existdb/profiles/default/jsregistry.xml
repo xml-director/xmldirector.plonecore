@@ -7,11 +7,6 @@
     />
  <javascript cacheable="True" compression="none" cookable="True"
     enabled="True" 
-    id="++resource++zopyx.existdb/jqDnR.js"
-    expression=""
-    />
- <javascript cacheable="True" compression="none" cookable="True"
-    enabled="True" 
     id="++resource++zopyx.existdb/local.js"
     expression=""
     />
