@@ -42,8 +42,6 @@ $(document).ready(function() {
         });
         num_editors++;
 
-//        $('.ace_content').jqResize('.ace_content');
-
     });
 
     /* Push XML content from editors back to textarea fields before submit */    
