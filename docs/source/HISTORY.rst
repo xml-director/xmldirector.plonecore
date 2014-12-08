@@ -12,6 +12,7 @@ Changelog
     but with eXist-db as storage layer
 
 - removed ``emulation`` configuration option
+- added plone.app.dexterity as dependency
 
 0.2.12 (unreleased)
 -------------------
