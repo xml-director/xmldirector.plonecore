@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <metadata>
     <version>1</version>
-    <depedencies>
+    <dependencies>
         <dependency>profile-plone.app.dexterity:default</dependency>
     </dependencies>
 </metadata>

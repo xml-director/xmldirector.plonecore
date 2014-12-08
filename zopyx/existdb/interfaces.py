@@ -22,7 +22,7 @@ class IExistDBSettings(Interface):
     existdb_url = schema.TextLine(
         title=_(u'eXist-db server url'),
         description=_(u'eXist-db base url'),
-        default=u'http://localhost:6080',
+        default=u'http://localhost:6080/exist/webdav/db',
         required=True,
     )
 
