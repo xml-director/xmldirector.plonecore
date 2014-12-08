@@ -3,6 +3,7 @@
 # (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
+import re
 import plone.api
 import lxml.etree
 
@@ -28,6 +29,22 @@ from plone.schemaeditor.fields import FieldFactory
 from zopyx.existdb.i18n import MessageFactory as _
 
 
+regex = re.compile('field=([\w]*),xpath=(.*)', re.UNICODE)
+
+def parse_field_expression(value):
+    """ Parses a string like
+        field=xmlfield, xpath=/a/b/c
+    """
+    if not value:
+        return None
+
+    mo = regex.match(value)
+    if not mo:
+        return None
+    return mo.groups()
+
+
+
 ################################################################
 # XPath field
 ################################################################
@@ -39,6 +56,14 @@ class IXMLXPath(IField):
 
 class XMLXPath(TextLine):
     zope.interface.implements(IXMLXPath)
+
+    def validate(self, value):
+        
+        mo = parse_field_expression(value)
+        try:
+            fieldname, xpath_expr = mo
+        except TypeError:
+            raise zope.interface.Invalid(u'Invalid specification ({})'.format(value))
 
 
 XMLXPathFactory = FieldFactory(XMLXPath, _(u'label_xml_xpath_field', default=u'XMLPath'))
@@ -55,7 +80,6 @@ class XPathWidget(text.TextWidget):
     zope.interface.implementsOnly(IXPathWidget)
 
     def xpath_to_value(self):
-
         # collect all fields (schema and behavior fields)
         schema = zope.component.getUtility(
             IDexterityFTI, name=self.context.portal_type).lookupSchema()
@@ -70,22 +94,23 @@ class XPathWidget(text.TextWidget):
             error = u'Empty XPath field specification'
             return dict(errors=[error], data=None)
 
-        # parse our mini language (fix this)
-        parts = self.value.split(',', 1)
-        fieldname = parts[0].split('=')[1]
-        xpath_expr = parts[1].split('=')[1]
-        xml_field = fields.get(fieldname)
-        if not xml_field: 
-            error = u'No such field "{}"'.format(fieldname)
+        field_name, xpath_expr = parse_field_expression(self.value)
+        xml_field = fields.get(field_name)
+        if xml_field is None:
+            error = u'XML field "{}" does not exist'.format(field_name)
             return dict(errors=[error], data=None)
 
         # get the dedicated datamanager for the XMLText field
         # that knows how to pull data from the database
+
         adapter = XMLFieldDataManager(context=self.context, field=xml_field)
         xml = adapter.get()
-        root = lxml.etree.fromstring(xml)
+        if not xml:
+            error = u'XML field is empty'
+            return dict(errors=[error], data=None)
 
         # apply xpath expression
+        root = lxml.etree.fromstring(xml)
         try:
             result = root.xpath(xpath_expr)
         except lxml.etree.XPathEvalError as e:
