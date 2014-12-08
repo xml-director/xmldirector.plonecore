@@ -56,7 +56,7 @@ class XMLBinaryDataManager(AttributeDataManager, WebdavMixin):
         if not context_id:
             context_id = self.context.__xml_storage_id__ = uuid.uuid4()
         field_id = self.field.__name__
-        return 'plone-data/{}/{}/{}{}'.format(plone_uid, context_id, field_id, self.suffix)
+        return '{}/{}/{}{}'.format(plone_uid, context_id, field_id, self.suffix)
 
     def get(self):
         """See z3c.form.interfaces.IDataManager"""

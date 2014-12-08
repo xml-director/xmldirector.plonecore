@@ -7,6 +7,7 @@
 
 import uuid
 import plone.api
+import fs.errors
 from fs.contrib.davfs import DAVFS
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
@@ -18,11 +19,23 @@ def webdav_handle():
     registry = getUtility(IRegistry)
     settings = registry.forInterface(IExistDBSettings)
 
-    url = settings.existdb_url
+    root_url = settings.existdb_url
     username = settings.existdb_username
     password = settings.existdb_password
-    return DAVFS(url, credentials=dict(username=username,
-                                       password=password))
+    if settings.existdb_dexterity_subpath:
+        url = '{}/{}'.format(root_url, settings.existdb_dexterity_subpath)
+    else:
+        url = root_url
+    try:
+        return DAVFS(url, credentials=dict(username=username,
+                                           password=password))
+    except fs.errors.ResourceNotFoundError:
+        root_handle = DAVFS(root_url, credentials=dict(username=username,
+                                                       password=password))
+        root_handle.makedir(settings.existdb_dexterity_subpath, True, True)
+        return DAVFS(url, credentials=dict(username=username,
+                                           password=password))
+
 
 def removal_handler(obj, event):
 
@@ -33,7 +46,7 @@ def removal_handler(obj, event):
 
     handle = webdav_handle()
     plone_uid = plone.api.portal.get().getId()
-    storage_dir = 'plone-data/{}/{}'.format(plone_uid, event.object.__xml_storage_id__)
+    storage_dir = '{}/{}'.format(plone_uid, event.object.__xml_storage_id__)
     handle.removedir(storage_dir, False, True)
     return
 
@@ -53,6 +66,6 @@ def copied_handler(obj, event):
 
         handle = webdav_handle()
         plone_uid = plone.api.portal.get().getId()
-        storage_dir_old = 'plone-data/{}/{}'.format(plone_uid, old.__xml_storage_id__)
-        storage_dir_new = 'plone-data/{}/{}'.format(plone_uid, current.__xml_storage_id__)
+        storage_dir_old = '{}/{}'.format(plone_uid, old.__xml_storage_id__)
+        storage_dir_new = '{}/{}'.format(plone_uid, current.__xml_storage_id__)
         handle.copydir(storage_dir_old, storage_dir_new)

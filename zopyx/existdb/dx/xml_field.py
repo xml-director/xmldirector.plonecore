@@ -8,6 +8,7 @@ import uuid
 import hashlib
 import plone.api
 import lxml.etree
+import fs.errors
 from fs.contrib.davfs import DAVFS
 
 import zope.schema
@@ -80,11 +81,23 @@ class WebdavMixin(object):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(IExistDBSettings)
 
-        url = settings.existdb_url
+        root_url = settings.existdb_url
         username = settings.existdb_username
         password = settings.existdb_password
-        return DAVFS(url, credentials=dict(username=username,
-                                           password=password))
+        if settings.existdb_dexterity_subpath:
+            url = '{}/{}'.format(root_url, settings.existdb_dexterity_subpath)
+        else:
+            url = root_url
+        try:
+            return DAVFS(url, credentials=dict(username=username,
+                                               password=password))
+        except fs.errors.ResourceNotFoundError:
+            root_handle = DAVFS(root_url, credentials=dict(username=username,
+                                                           password=password))
+            root_handle.makedir(settings.existdb_dexterity_subpath, True, True)
+            return DAVFS(url, credentials=dict(username=username,
+                                               password=password))
+
 
 
 class XMLFieldDataManager(z3c.form.datamanager.AttributeField, WebdavMixin):
@@ -103,7 +116,7 @@ class XMLFieldDataManager(z3c.form.datamanager.AttributeField, WebdavMixin):
         if not context_id:
             context_id = self.context.__xml_storage_id__ = uuid.uuid4()
         field_id = self.field.__name__
-        return 'plone-data/{}/{}/{}.xml'.format(plone_uid, context_id, field_id)
+        return '{}/{}/{}.xml'.format(plone_uid, context_id, field_id)
 
     def get(self):
         """See z3c.form.interfaces.IDataManager"""

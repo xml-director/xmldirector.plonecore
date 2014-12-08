@@ -26,6 +26,13 @@ class IExistDBSettings(Interface):
         required=True,
     )
 
+    existdb_dexterity_subpath = schema.TextLine(
+        title=_(u'Dexterity eXist-db subpath'),
+        description=_(u'Subpath inside eXist-db for Dexterity content'),
+        default=u'',
+        required=False,
+    )
+
     existdb_username = schema.TextLine(
         title=_(u'eXist-db username '),
         description=_(u'eXist-db username'),
