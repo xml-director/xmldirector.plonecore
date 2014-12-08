@@ -55,7 +55,7 @@ Configuration
 Goto the Plone control panel and click on the ``Exist-DB`` configlet and
 configure the 
 
-- eXist-db server url e.g. ``http://localhost:6080``
+- eXist-db server webdav url e.g. ``http://localhost:6080/existdb/webdav/db``
 
   The eXist-db subpath ``/exist/webdav/db`` will be added internally.
 

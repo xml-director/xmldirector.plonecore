@@ -1,11 +1,23 @@
 Changelog
 =========
 
+0.3.0 (unreleased)
+------------------
+- experimental Dexterity support with four new fields:
+
+  - XMLText - for XML content
+  - XMLXPath - for referencing XMLText parts through an XPath 
+    expression
+  - XMLImage and XMLBinary - same as image and file fields in Dexterity
+    but with eXist-db as storage layer
+
+- removed ``emulation`` configuration option
+
 0.2.12 (unreleased)
 -------------------
 - added progressbar for zip_upload()
 - added support for importing a single file through the 
-  ZIP import form into the current subdirectory^
+  ZIP import form into the current subdirectory
 
 0.2.11 (2014-11-08)
 -------------------
