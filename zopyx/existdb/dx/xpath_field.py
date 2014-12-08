@@ -58,12 +58,14 @@ class XMLXPath(TextLine):
     zope.interface.implements(IXMLXPath)
 
     def validate(self, value):
-        
-        mo = parse_field_expression(value)
-        try:
-            fieldname, xpath_expr = mo
-        except TypeError:
-            raise zope.interface.Invalid(u'Invalid specification ({})'.format(value))
+
+        if value:
+            mo = parse_field_expression(value)
+            try:
+                fieldname, xpath_expr = mo
+            except TypeError:
+                raise zope.interface.Invalid(u'Invalid specification ({})'.format(value))
+        return super(XMLXPath, self).validate(value)
 
 
 XMLXPathFactory = FieldFactory(XMLXPath, _(u'label_xml_xpath_field', default=u'XMLPath'))
