@@ -13,6 +13,7 @@ Changelog
 
 - removed ``emulation`` configuration option
 - added plone.app.dexterity as dependency
+- upgraded to ACE editor V 1.1.8
 
 0.2.12 (unreleased)
 -------------------
