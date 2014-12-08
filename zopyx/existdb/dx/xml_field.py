@@ -8,22 +8,19 @@ import uuid
 import hashlib
 import plone.api
 import lxml.etree
-import fs.errors
-from fs.contrib.davfs import DAVFS
 
 import zope.schema
 import zope.interface
 import zope.component
 from zope.schema import Text
 from zope.schema.interfaces import IField
-from zope.component import getUtility
 import z3c.form.datamanager
 import plone.supermodel.exportimport
-from plone.registry.interfaces import IRegistry
 from plone.schemaeditor.fields import FieldFactory
 
 from zopyx.existdb.i18n import MessageFactory as _
 from zopyx.existdb.interfaces import IExistDBSettings
+from zopyx.existdb.dx import webdav
 
 
 def normalize_xml(xml):
@@ -77,27 +74,7 @@ class WebdavMixin(object):
 
     @property
     def webdav_handle(self):
-
-        registry = getUtility(IRegistry)
-        settings = registry.forInterface(IExistDBSettings)
-
-        root_url = settings.existdb_url
-        username = settings.existdb_username
-        password = settings.existdb_password
-        if settings.existdb_dexterity_subpath:
-            url = '{}/{}'.format(root_url, settings.existdb_dexterity_subpath)
-        else:
-            url = root_url
-        try:
-            return DAVFS(url, credentials=dict(username=username,
-                                               password=password))
-        except fs.errors.ResourceNotFoundError:
-            root_handle = DAVFS(root_url, credentials=dict(username=username,
-                                                           password=password))
-            root_handle.makedir(settings.existdb_dexterity_subpath, True, True)
-            return DAVFS(url, credentials=dict(username=username,
-                                               password=password))
-
+        return webdav.webdav_handle()
 
 
 class XMLFieldDataManager(z3c.form.datamanager.AttributeField, WebdavMixin):
