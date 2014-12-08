@@ -29,6 +29,7 @@ setup(name='zopyx.existdb',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'plone.app.dexterity',
           'plone.directives.form',
           'hurry.filesize',
           'humanize',
