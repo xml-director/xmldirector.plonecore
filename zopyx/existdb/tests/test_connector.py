@@ -53,7 +53,7 @@ class BasicTests(TestBase):
     def testCheckWebdavHandle(self):
         handle = self.portal.connector.webdav_handle()
         self.assertEqual(
-            handle.url, EXIST_DB_URL + '/exist/webdav/db/{}/'.format(PREFIX))
+            handle.url, EXIST_DB_URL + '/{}/'.format(PREFIX))
 
     def testFileCheck(self):
         handle = self.portal.connector.webdav_handle()
