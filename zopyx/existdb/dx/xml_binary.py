@@ -67,6 +67,10 @@ class XMLBinaryDataManager(AttributeDataManager, WebdavMixin):
                 with handle.open(storage_key + '.metadata.json', 'rb') as fp_metadata:
                     data = fp.read()
                     metadata = json.load(fp_metadata)
+
+            if hashlib.sha256(data).hexdigest() != metadata['sha256']:
+                raise ValueError('Invalid hash values for {}'.format(storage_key))
+
             return self.return_class(
                 data, 
                 filename=metadata['filename'], 
