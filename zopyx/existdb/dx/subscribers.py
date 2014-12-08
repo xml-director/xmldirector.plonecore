@@ -6,16 +6,10 @@
 ################################################################
 
 import uuid
-from five import grok
 import plone.api
 from fs.contrib.davfs import DAVFS
-from zope.lifecycleevent import IObjectCopiedEvent
 from zope.component import getUtility
-from OFS.interfaces import IObjectWillBeRemovedEvent
-
 from plone.registry.interfaces import IRegistry
-from plone.registry.interfaces import IRegistry
-
 from zopyx.existdb.interfaces import IExistDBSettings
 
 
