@@ -37,7 +37,7 @@ class XMLBinary(NamedFileField):
     zope.interface.implements(IXMLBinary)
 
 
-XMLBinaryFactory = FieldFactory(XMLBinary, _(u'label_xml_binary_field', default=u'XMLBinary'))
+XMLBinaryFactory = FieldFactory(XMLBinary, _(u'label_xml_binary_field', default=u'XML (binary data)'))
 XMLBinaryHandler = plone.supermodel.exportimport.BaseHandler(XMLBinary)
 
 

@@ -39,7 +39,7 @@ class XMLImage(NamedImageField):
     zope.interface.implements(IXMLImage)
 
 
-XMLImageFactory = FieldFactory(XMLImage, _(u'label_xml_Image_field', default=u'XMLImage'))
+XMLImageFactory = FieldFactory(XMLImage, _(u'label_xml_Image_field', default=u'XML (image)'))
 XMLImageHandler = plone.supermodel.exportimport.BaseHandler(XMLImage)
 
 
