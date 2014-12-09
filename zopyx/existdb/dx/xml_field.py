@@ -21,7 +21,6 @@ from plone.schemaeditor.fields import FieldFactory
 from zopyx.existdb.i18n import MessageFactory as _
 from zopyx.existdb.interfaces import IExistDBSettings
 from zopyx.existdb.interfaces import IWebdavHandle
-from zopyx.existdb.dx import webdav
 
 
 def normalize_xml(xml):

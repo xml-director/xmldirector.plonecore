@@ -7,7 +7,8 @@
 
 import uuid
 import plone.api
-from zopyx.existdb.dx import webdav
+from zope.component import getUtility
+from zopyx.existdb.interfaces import IWebdavHandle
 
 
 def removal_handler(obj, event):
@@ -20,7 +21,7 @@ def removal_handler(obj, event):
     except AttributeError:
         return
 
-    handle = webdav.webdav_handle()
+    handle = getUtility(IWebdavHandle).webdav_handle()
     plone_uid = plone.api.portal.get().getId()
     storage_dir = '{}/{}/{}'.format(plone_uid, event.object.__xml_storage_id__[-4:], event.object.__xml_storage_id__)
     storage_parent_dir = '{}/{}/{}'.format(plone_uid, event.object.__xml_storage_id__[-4:])
@@ -47,7 +48,7 @@ def copied_handler(obj, event):
         copied.__xml_storage_id__ = str(uuid.uuid4())
 
         # an copy over XML content from original content object
-        handle = webdav.webdav_handle()
+        handle = getUtility(IWebdavHandle).webdav_handle()
         plone_uid = plone.api.portal.get().getId()
         storage_dir_original = '{}/{}/{}'.format(plone_uid, original.__xml_storage_id__[-4:], original.__xml_storage_id__)
         storage_dir_copied = '{}/{}/{}'.format(plone_uid, copied.__xml_storage_id__[-4:], copied.__xml_storage_id__)
