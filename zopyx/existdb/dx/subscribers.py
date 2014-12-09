@@ -22,7 +22,7 @@ def removal_handler(obj, event):
 
     handle = webdav.webdav_handle()
     plone_uid = plone.api.portal.get().getId()
-    storage_dir = '{}/{}'.format(plone_uid, event.object.__xml_storage_id__)
+    storage_dir = '{}/{}/{}'.format(plone_uid, event.object.__xml_storage_id__[-4:], event.object.__xml_storage_id__)
     handle.removedir(storage_dir, False, True)
 
 
@@ -46,6 +46,8 @@ def copied_handler(obj, event):
         # an copy over XML content from original content object
         handle = webdav.webdav_handle()
         plone_uid = plone.api.portal.get().getId()
-        storage_dir_original = '{}/{}'.format(plone_uid, original.__xml_storage_id__)
-        storage_dir_copied = '{}/{}'.format(plone_uid, copied.__xml_storage_id__)
+        storage_dir_original = '{}/{}/{}'.format(plone_uid, original.__xml_storage_id__[-4:], original.__xml_storage_id__)
+        storage_dir_copied = '{}/{}/{}'.format(plone_uid, copied.__xml_storage_id__[-4:], copied.__xml_storage_id__)
+        storage_dir_copied_parent = '{}/{}'.format(plone_uid, copied.__xml_storage_id__[-4:])
+        handle.makedir(storage_dir_copied_parent, True, True)
         handle.copydir(storage_dir_original, storage_dir_copied)

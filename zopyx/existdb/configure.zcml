@@ -14,6 +14,11 @@
     <include package=".browser" />
     <include package=".dx" />
 
+    <utility
+        provides="zopyx.existdb.interfaces.IWebdavHandle"
+        component="zopyx.existdb.service.WebdavHandleUtility"
+    />
+
     <genericsetup:registerProfile
         name="default"
         title="zopyx.existdb"

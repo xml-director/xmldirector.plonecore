@@ -20,6 +20,7 @@ from plone.schemaeditor.fields import FieldFactory
 
 from zopyx.existdb.i18n import MessageFactory as _
 from zopyx.existdb.interfaces import IExistDBSettings
+from zopyx.existdb.interfaces import IWebdavHandle
 from zopyx.existdb.dx import webdav
 
 
@@ -70,14 +71,7 @@ XMLTextFactory = FieldFactory(XMLText, _(u'label_xml_field', default=u'XML (Text
 XMLTextHandler = plone.supermodel.exportimport.BaseHandler(XMLText)
 
 
-class WebdavMixin(object):
-
-    @property
-    def webdav_handle(self):
-        return webdav.webdav_handle()
-
-
-class XMLFieldDataManager(z3c.form.datamanager.AttributeField, WebdavMixin):
+class XMLFieldDataManager(z3c.form.datamanager.AttributeField):
     """A dedicated manager for XMLText field."""
     zope.component.adapts(
         zope.interface.Interface, IXMLText)
@@ -97,7 +91,8 @@ class XMLFieldDataManager(z3c.form.datamanager.AttributeField, WebdavMixin):
 
     def get(self):
         """See z3c.form.interfaces.IDataManager"""
-        handle = self.webdav_handle
+
+        handle = zope.component.getUtility(IWebdavHandle).webdav_handle()
         storage_key = self.storage_key
         if handle.exists(storage_key):
             with handle.open(storage_key, 'rb') as fp:
@@ -110,7 +105,8 @@ class XMLFieldDataManager(z3c.form.datamanager.AttributeField, WebdavMixin):
 
     def set(self, value):
         """See z3c.form.interfaces.IDataManager"""
-        handle = self.webdav_handle
+        
+        handle = zope.component.getUtility(IWebdavHandle).webdav_handle()
         storage_key = self.storage_key
         dirname = os.path.dirname(storage_key)
         if not handle.exists(dirname):

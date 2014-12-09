@@ -21,7 +21,7 @@ from plone.namedfile import NamedFile
 from plone.namedfile.field import NamedFile as NamedFileField
 
 from zopyx.existdb.i18n import MessageFactory as _
-from zopyx.existdb.dx.xml_field import WebdavMixin
+from zopyx.existdb.interfaces import IWebdavHandle
 
 
 ################################################################
@@ -41,7 +41,7 @@ XMLBinaryFactory = FieldFactory(XMLBinary, _(u'label_xml_binary_field', default=
 XMLBinaryHandler = plone.supermodel.exportimport.BaseHandler(XMLBinary)
 
 
-class XMLBinaryDataManager(AttributeDataManager, WebdavMixin):
+class XMLBinaryDataManager(AttributeDataManager):
     """Attribute field."""
     zope.component.adapts(
         zope.interface.Interface, IXMLBinary)
@@ -60,7 +60,8 @@ class XMLBinaryDataManager(AttributeDataManager, WebdavMixin):
 
     def get(self):
         """See z3c.form.interfaces.IDataManager"""
-        handle = self.webdav_handle
+
+        handle = zope.component.getUtility(IWebdavHandle).webdav_handle()
         storage_key = self.storage_key
         if handle.exists(storage_key):
             with handle.open(storage_key, 'rb') as fp:
@@ -79,7 +80,7 @@ class XMLBinaryDataManager(AttributeDataManager, WebdavMixin):
     def set(self, value):
         """See z3c.form.interfaces.IDataManager"""
 
-        handle = self.webdav_handle
+        handle = zope.component.getUtility(IWebdavHandle).webdav_handle()
         storage_key = self.storage_key
 
         if not value:

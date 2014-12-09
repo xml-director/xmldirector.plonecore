@@ -16,6 +16,11 @@ class IBrowserLayer(Interface):
     """A brower layer specific to my product """
 
 
+class IWebdavHandle(Interface):
+    """ Return a DAVFS handle for the system-wide configured
+        WebDav/database server """
+
+
 class IExistDBSettings(Interface):
     """ ExistDB settings """
 

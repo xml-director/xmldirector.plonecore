@@ -3,15 +3,6 @@
     xmlns:zcml="http://namespaces.zope.org/zcml"
     xmlns:browser="http://namespaces.zope.org/browser"
     >
-
-
-    <browser:page
-        for="*"
-        name="doc"
-        template="doc.pt"
-        permission="zope2.View"
-    />
-
     <!-- load permissions.zcml -->
     <include package="Products.CMFCore" />
 
