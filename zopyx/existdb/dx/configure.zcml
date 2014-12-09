@@ -103,4 +103,8 @@
         handler=".subscribers.copied_handler"
     />
 
+    <!-- Indexer adapter(s) -->
+
+    <adapter name="SearchableText" factory=".indexers.SearchableText" />
+
 </configure>

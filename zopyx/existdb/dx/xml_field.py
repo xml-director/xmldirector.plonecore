@@ -91,9 +91,9 @@ class XMLFieldDataManager(z3c.form.datamanager.AttributeField, WebdavMixin):
         plone_uid = plone.api.portal.get().getId()
         context_id = getattr(self.context, '__xml_storage_id__', None)
         if not context_id:
-            context_id = self.context.__xml_storage_id__ = uuid.uuid4()
+            context_id = self.context.__xml_storage_id__ = str(uuid.uuid4())
         field_id = self.field.__name__
-        return '{}/{}/{}.xml'.format(plone_uid, context_id, field_id)
+        return '{}/{}/{}/{}.xml'.format(plone_uid, context_id[-4:], context_id, field_id)
 
     def get(self):
         """See z3c.form.interfaces.IDataManager"""

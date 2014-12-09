@@ -44,6 +44,22 @@ def parse_field_expression(value):
     return mo.groups()
 
 
+def get_all_fields(context):
+    """ Return all fields (including behavior fields) of a context object 
+        as dict fieldname -> field.
+    """
+
+    schema = zope.component.getUtility(
+        IDexterityFTI, name=context.portal_type).lookupSchema()
+    fields = dict((fieldname, schema[fieldname]) for fieldname in schema)
+
+    assignable = IBehaviorAssignable(context)
+    for behavior in assignable.enumerateBehaviors():
+        behavior_schema = behavior.interface
+        fields.update((name, behavior_schema[name]) for name in behavior_schema)
+
+    return fields
+
 
 ################################################################
 # XPath field
@@ -82,20 +98,12 @@ class XPathWidget(text.TextWidget):
     zope.interface.implementsOnly(IXPathWidget)
 
     def xpath_to_value(self):
-        # collect all fields (schema and behavior fields)
-        schema = zope.component.getUtility(
-            IDexterityFTI, name=self.context.portal_type).lookupSchema()
-        fields = dict((fieldname, schema[fieldname]) for fieldname in schema)
-
-        assignable = IBehaviorAssignable(self.context)
-        for behavior in assignable.enumerateBehaviors():
-            behavior_schema = behavior.interface
-            fields.update((name, behavior_schema[name]) for name in behavior_schema)
 
         if not self.value:
             error = u'Empty XPath field specification'
             return dict(errors=[error], data=None)
 
+        fields = get_all_fields(self.context)
         field_name, xpath_expr = parse_field_expression(self.value)
         xml_field = fields.get(field_name)
         if xml_field is None:
