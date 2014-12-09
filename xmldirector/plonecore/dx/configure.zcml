@@ -1,0 +1,110 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:pp="http://namespaces.zopyx.com/pp"
+    xmlns:z3c="http://namespaces.zope.org/z3c"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="xmldirector.plonecore"
+    >
+
+    <include package="z3c.form" file="meta.zcml" />
+
+    <!-- XML content field -->
+    <utility
+        name=".xml_field.XML"
+        component=".xml_field.XMLTextFactory"
+    />
+
+    <utility
+        component=".xml_field.XMLTextHandler"
+        name="xmldirector.plonecore.dx.xml_field.XMLText"
+        />
+
+    <adapter factory=".xml_field.XMLFieldDataManager" />
+
+    <!-- XML binary field -->
+    <utility
+        name=".xml_binary.XML"
+        component=".xml_binary.XMLBinaryFactory"
+    />
+
+    <utility
+        component=".xml_binary.XMLBinaryHandler"
+        name="xmldirector.plonecore.dx.xml_binary.XMLBinary"
+        />
+
+    <adapter factory=".xml_binary.XMLBinaryDataManager" />
+
+    <!-- XML image field -->
+    <utility
+        name=".xml_image.XML"
+        component=".xml_image.XMLImageFactory"
+    />
+
+    <utility
+        component=".xml_image.XMLImageHandler"
+        name="xmldirector.plonecore.dx.xml_image.XMLImage"
+        />
+
+    <adapter factory=".xml_image.XMLImageDataManager" />
+
+    <!-- XML XPath field -->
+    <utility
+        name=".xpath_field.XMLXPath"
+        component=".xpath_field.XMLXPathFactory"
+    />
+
+    <utility
+        component=".xpath_field.XMLXPathHandler"
+        name="xmldirector.plonecore.dx.xpath_field.XMLXPath"
+    />
+
+    <adapter factory=".xpath_field.XPathFieldWidget"/>
+
+    <class class=".xpath_field.XPathWidget">
+        <require
+        permission="zope.Public"
+        interface=".xpath_field.IXPathWidget"
+        />
+    </class>
+
+    <class class=".xpath_field.XMLXPath">
+        <implements interface=".xpath_field.IXMLXPath"/>
+    </class>
+
+    <z3c:widgetTemplate
+        mode="input"
+        widget=".xpath_field.IXPathWidget"
+        layer="z3c.form.interfaces.IFormLayer"
+        template="xpath_input.pt"
+        />
+
+    <z3c:widgetTemplate
+        mode="display"
+        widget=".xpath_field.IXPathWidget"
+        layer="z3c.form.interfaces.IFormLayer"
+        template="xpath_display.pt"
+        />
+
+
+    <!-- event subscribers for copy & remove operations -->
+    <subscriber
+        for="* 
+             OFS.interfaces.IObjectWillBeRemovedEvent"
+        handler=".subscribers.removal_handler"
+    />
+
+    <subscriber
+        for="* 
+             zope.lifecycleevent.IObjectCopiedEvent"
+        handler=".subscribers.copied_handler"
+    />
+
+    <!-- Indexer adapter(s) -->
+
+    <adapter name="SearchableText" factory=".indexers.SearchableText" />
+
+</configure>

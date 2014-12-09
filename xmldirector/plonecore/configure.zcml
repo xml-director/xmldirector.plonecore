@@ -1,0 +1,30 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:pp="http://namespaces.zopyx.com/pp"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="xmldirector.plonecore"
+    >
+
+    <include package="plone.browserlayer" />
+    <include package="Products.CMFCore" file="permissions.zcml" />
+    <include package=".browser" />
+    <include package=".dx" />
+
+    <utility
+        provides="xmldirector.plonecore.interfaces.IWebdavHandle"
+        component="xmldirector.plonecore.service.WebdavHandleUtility"
+    />
+
+    <genericsetup:registerProfile
+        name="default"
+        title="xmldirector.plonecore"
+        directory="profiles/default"
+        description="ExistDB integration with Plone"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+    />
+
+</configure>

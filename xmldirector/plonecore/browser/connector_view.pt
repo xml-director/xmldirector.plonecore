@@ -1,0 +1,167 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="xmldirector.plonecore">
+<body>
+
+<metal:main fill-slot="content-core">
+  <metal:content-core define-macro="content-core">
+
+      <h2 i18n:translate="">Directories</h2>
+      <table class="listing">
+          <thead>
+              <tr>
+                  <th i18n:translate="">Directory</th>
+                  <th i18n:translate="">Last modified</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr>
+                  <td>                                     
+                      <a class="dir" tal:attributes="href python: u'{}/@@view/{}'.format(context.absolute_url(), '/'.join(view.subpath[:-1]))">..</a>
+                  </td>
+                  <td />
+              </tr>
+              <tr tal:repeat="item options/dirs">
+                  <td>
+                      <a class="dir" tal:attributes="href item/url">
+                          <span tal:content="item/title" />
+                      </a>
+                  </td>
+                  <td>
+                      <span tal:replace="item/modified" />
+                  </td>
+              </tr>
+          </tbody>
+          <tfoot>
+              <tr>
+                  <th colspan="2" class="actions">
+                      <a class="action" 
+                         id="action-create-collection">
+                          New collection
+                      </a>
+                      <a class="action" 
+                         i18n:translate=""
+                         id="action-remove-collection">
+                          Remove collection
+                      </a>
+                      <a class="action" 
+                         i18n:translate=""
+                         id="action-rename-collection">
+                          Rename collection
+                      </a>
+                      <form tal:attributes="action string:${context/absolute_url}/create-collection" method="post" id="create-collection-form" style="display: none">
+                          <label for="name" i18n:translate="">Create collection</label>
+                          <input type="text" name="name" size="20" />
+                          <input name="subpath" type="hidden" tal:attributes="value options/subpath" />
+                          <input type="submit" i18n:attributes="value" value="Create" />
+                      </form>
+                      <form tal:attributes="action string:${context/absolute_url}/remove-collection" method="post" id="remove-collection-form" style="display: none">
+                          <label for="name" i18n:translate="">Remove collection </label>
+                          <select name="name">
+                              <option tal:repeat="item options/dirs" 
+                                  tal:attributes="value item/title"
+                                  tal:content="item/title" />
+                          </select>
+                          <input name="subpath" type="hidden" tal:attributes="value options/subpath" />
+                          <input type="submit" i18n:attributes="value" value="Remove collection" />
+                      </form>
+                      <form tal:attributes="action string:${context/absolute_url}/rename-collection" method="post" id="rename-collection-form" style="display: none">
+                          <label for="name" i18n:translate="">Rename collection</label>
+                          <select name="name">
+                              <option tal:repeat="item options/dirs" 
+                                  tal:attributes="value item/title"
+                                  tal:content="item/title" />
+                          </select>
+                          <input name="subpath" type="hidden" tal:attributes="value options/subpath" />
+                          <label for="new_name" i18n:translate="">to</label>
+                          <input type="text" name="new_name" size="20" />
+                          <input type="submit" i18n:attributes="value" value="Rename" />
+                      </form>
+                  </th>
+              </tr>
+          </tfoot>
+      </table>
+
+      <h2 tal:condition="options/files" i18n:translate="">Files</h2>
+      <table class="listing" tal:condition="options/files">
+          <thead>
+              <tr>
+                  <th i18n:translate="">Filename</th>
+                  <th i18n:translate="">Last modified</th>
+                  <th i18n:translate="">Size</th>
+                  <th i18n:translate="">Action</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr tal:repeat="item options/files">
+                  <td>
+                      <a class="file" tal:attributes="href item/url">
+                          <span tal:content="item/title" />
+                      </a>
+                  </td>
+                  <td>
+                      <span tal:replace="item/modified" />
+                  </td>
+                  <td>
+                      <span tal:replace="item/size" />
+                  </td>
+                  <td>
+                      <a tal:condition="item/editable"
+                         tal:attributes="href item/edit_url"
+                         i18n:attributes="title"
+                         title="Edit"
+                          >
+                          <img src="++resource++xmldirector.plonecore/images/edit.png" />
+                      </a>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+
+      <div class="actions">
+          <ul>
+              <li>
+                  <a id="connector-zip-import" class="action" tal:attributes="href string:${context/absolute_url}/connector-zip-import?subpath=${options/subpath}" i18n:translate="">ZIP import</a>
+              </li>
+              <li>
+                  <a id="connector-zip-export" class="action" tal:attributes="href string:${context/absolute_url}/connector-zip-export" i18n:translate="">ZIP export</a>
+              </li>
+              <li>
+                  <a id="connector-reindex" class="action" tal:attributes="href string:${context/absolute_url}/connector-reindex" i18n:translate="">Reindex</a>
+              </li>
+              <li>
+                  <a id="connector-log" class="action" tal:attributes="href string:${context/absolute_url}/connector-log" i18n:translate="">Log</a>
+              </li>
+              <li>
+                  <a id="connector-log-clear" class="action" tal:attributes="href string:${context/absolute_url}/connector-log-clear" i18n:translate="">Clear log</a>
+              </li>
+          </ul>
+      </div>
+
+      <script type="text/javascript">
+          $(document).ready(function() {
+            $('#action-create-collection').click(function() {
+                $('.actions form').hide();
+                $('#create-collection-form').toggle();
+            });
+            $('#action-remove-collection').click(function() {
+                $('.actions form').hide();
+                $('#remove-collection-form').toggle();
+            });
+            $('#action-rename-collection').click(function() {
+                $('.actions form').hide();
+                $('#rename-collection-form').toggle();
+            });
+          });
+      </script>
+
+  </metal:content-core>
+</metal:main>
+
+</body>
+</html>
+

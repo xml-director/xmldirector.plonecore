@@ -3,9 +3,9 @@ from setuptools import setup, find_packages
 
 version = '0.2.11.1'
 
-setup(name='zopyx.existdb',
+setup(name='xmldirector.plonecore',
       version=version,
-      description="Plone-ExistDB integration",
+      description="XML-Director ",
       long_description=open(os.path.join("docs", "source", "README.rst")).read() + "\n" +
       open(os.path.join("docs", "source", "HISTORY.rst")).read(),
       # Get more strings from
@@ -18,13 +18,13 @@ setup(name='zopyx.existdb',
           "Framework :: Zope2",
           "Topic :: Software Development :: Libraries :: Python Modules",
       ],
-      keywords='exist-db basex existdb Plone XML Python WebDAV',
+      keywords='xml-director exist-db basex existdb Plone XML Python WebDAV',
       author='Andreas Jung',
       author_email='info@zopyx.com',
-      url='http://pypi.python.org/pypi/zopyx.existdb',
+      url='http://pypi.python.org/pypi/xmldirector.plonecore',
       license='GPL',
       packages=find_packages(exclude=['ez_setup']),
-      namespace_packages=['zopyx', 'zopyx.existdb'],
+      namespace_packages=['xmldirector', 'xmldirector.plonecore'],
       include_package_data=True,
       zip_safe=False,
       install_requires=[

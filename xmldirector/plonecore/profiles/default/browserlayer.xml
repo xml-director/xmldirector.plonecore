@@ -1,0 +1,4 @@
+<layers>
+    <layer name="xmldirector.plonecore"
+        interface="xmldirector.plonecore.interfaces.IBrowserLayer" />
+</layers>

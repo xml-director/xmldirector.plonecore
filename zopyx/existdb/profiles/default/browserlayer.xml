@@ -1,4 +1,0 @@
-<layers>
-    <layer name="zopyx.existdb"
-        interface="zopyx.existdb.interfaces.IBrowserLayer" />
-</layers>

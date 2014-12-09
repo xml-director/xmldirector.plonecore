@@ -1,0 +1,78 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="xmldirector.plonecore">
+<body>
+
+<metal:main fill-slot="content-core">
+  <metal:content-core define-macro="content-core">
+
+    <style type="text/css" media="screen">
+        #editor { 
+            position: relative;
+            width: 90%;
+            height: 500px;
+            margin-top: 1em;
+            margin-bottom: 1em;
+        }
+    </style>
+
+    <div id="editor" 
+        tal:attributes="data-url options/action_url"
+        tal:content="options/content" />
+
+    <div tal:condition="not: options/readonly">
+        <button id="ace-editor-save" i18n:translate="">
+            Save
+        </button>
+        <div id="ajax-result"></div>
+    </div>
+
+    <ul id="ace-editor-info">
+        <li>
+            <span i18n:translate="">Mode</span>: <span tal:content="options/ace_mode" />
+        </li>
+        <li>
+            <span i18n:translate="">Read-only</span>: <span tal:content="options/ace_readonly" />
+        </li>
+    </ul>
+
+
+    <script type="text/javascript" tal:content="string: ACE_MODE='${options/ace_mode}'"/>
+    <script type="text/javascript" tal:content="string: ACE_READONLY=${options/ace_readonly}"/>
+
+    <script type="text/javascript">
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/chrome");
+        editor.getSession().setMode("ace/mode/" + ACE_MODE);
+        editor.setShowPrintMargin(false);
+        editor.setReadOnly(ACE_READONLY);
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#ace-editor-save').on('click', function() {
+                var text = editor.getValue();
+                var url = $('#editor').data('url');
+                $.post(url, {
+                    data: text})
+                .done(function() {
+                    $('#ajax-result').html('<span class="status-ok">Content saved<span>').show().delay(2500).fadeOut(500);
+                })
+                .fail(function() {
+                    $('#ajax-result').html('<span class="status-error">Save failed</span>').show().delay(2500).fadeOut(500);
+                })
+
+            });        
+        });
+    </script>
+
+  </metal:content-core>
+</metal:main>
+
+</body>
+</html>
+

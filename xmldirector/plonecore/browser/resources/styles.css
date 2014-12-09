@@ -1,0 +1,140 @@
+#form-widgets-existdb_subpath {
+    width: 400px;
+}
+
+#logging .level-info {
+    color: green;
+}
+
+#logging .level-warn {
+    color: orange;
+}
+
+#logging .level-error {
+    color: red;
+    font-weight: bold;
+}
+
+#logging {
+    display: block;
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.status-ok {
+    color: green;
+    font-weight: bold;
+}
+
+.status-error {
+    color: red;
+    font-weight: bold;
+}
+
+#content .actions {
+    border-top: 1px solid #329fd7;
+    cursor: pointer;
+}
+
+#content .actions ul {
+    padding: 0;
+    margin: 0;
+}
+
+#content .actions li {
+    display: inline;
+    padding-right: 1em;
+    font-weight: bold;
+}
+
+#content .actions a {
+    text-decoration: none;
+    border: none;
+}
+
+
+#content .actions a:before {
+    content: '\00bb';
+    padding-right: 0.25em;
+}
+
+/* ACE editor  */
+
+#content #ace-editor-info {
+    padding-left: 0;
+    margin: 0;
+    margin-top: 1em;
+    border: 0;
+    border-top: 1px solid black;
+}
+
+#ace-editor-info li {
+    display: inline;
+}
+
+#ace-editor-info li:before {
+    content: "\00bb";
+    padding-right: 0.15em;
+}
+
+/* hide folder contents action */
+.portaltype-zopyx-existdb-connector #contentview-folderContents {
+    display: none;
+}
+
+/* mimetype icons */
+
+a.file span {
+    display: inline-block;
+}
+
+a.file:before {
+    content: '';
+    background-size: contain;
+    width: 32px;
+    height: 32px;
+    display: inline-block;
+    margin-right: 0.5em;
+    vertical-align: middle;
+}
+
+
+a.file[href$='.xml']:before {
+    background-image: url(++resource++xmldirector.plonecore/images/svg/xml5.svg) !important;
+}
+
+a.file[href$='.html']:before {
+    background-image: url(++resource++xmldirector.plonecore/images/svg/html9.svg) !important;
+}
+
+a.file[href$='.pdf']:before {
+    background-image: url(++resource++xmldirector.plonecore/images/svg/pdf19.svg) !important;
+}
+
+a.file[href$='.css']:before {
+    background-image: url(++resource++xmldirector.plonecore/images/svg/css5.svg) !important;
+}
+
+a.file[href$='.png']:before {
+    background-image: url(++resource++xmldirector.plonecore/images/svg/png3.svg) !important;
+}
+
+a.file[href$='.gif']:before {
+    background-image: url(++resource++xmldirector.plonecore/images/svg/gif3.svg) !important;
+}
+
+a.file[href$='.jpg']:before {
+    background-image: url(++resource++xmldirector.plonecore/images/svg/jpg3.svg) !important;
+}
+
+a.file[href$='.svg']:before {
+    background-image: url(++resource++xmldirector.plonecore/images/svg/svg1.svg) !important;
+}
+
+a.file[href$='.docx']:before {
+    background-image: url(++resource++xmldirector.plonecore/images/svg/docx.svg) !important;
+}
+
+input.xmlxpath-field {
+    width: 80% !important;
+}

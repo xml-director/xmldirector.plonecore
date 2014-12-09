@@ -1,0 +1,10 @@
+<tal:input i18n:domain="xmldirector.plonecore">
+    <input type="text"
+        tal:attributes="id view/id;
+                        name view/name;
+                        class view/klass;
+                        style view/style;
+                        value view/value;
+                        title view/title"
+    />
+</tal:input>
