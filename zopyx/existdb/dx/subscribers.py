@@ -23,7 +23,10 @@ def removal_handler(obj, event):
     handle = webdav.webdav_handle()
     plone_uid = plone.api.portal.get().getId()
     storage_dir = '{}/{}/{}'.format(plone_uid, event.object.__xml_storage_id__[-4:], event.object.__xml_storage_id__)
+    storage_parent_dir = '{}/{}/{}'.format(plone_uid, event.object.__xml_storage_id__[-4:])
     handle.removedir(storage_dir, False, True)
+    if handle.isdirempty(storage_parent_dir):
+        handle.removedir(storage_parent_dir, False, True)
 
 
 def copied_handler(obj, event):
