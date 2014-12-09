@@ -21,33 +21,33 @@ class IWebdavHandle(Interface):
         WebDav/database server """
 
 
-class IExistDBSettings(Interface):
+class IWebdavSettings(Interface):
     """ ExistDB settings """
 
-    existdb_url = schema.TextLine(
-        title=_(u'eXist-db server url'),
-        description=_(u'eXist-db base url'),
+    webdav_url = schema.TextLine(
+        title=_(u'WebDAV server url'),
+        description=_(u'WebDAV base url'),
         default=u'http://localhost:6080/exist/webdav/db',
         required=True,
     )
 
-    existdb_dexterity_subpath = schema.TextLine(
-        title=_(u'Dexterity eXist-db subpath'),
-        description=_(u'Subpath inside eXist-db for Dexterity content'),
+    webdav_dexterity_subpath = schema.TextLine(
+        title=_(u'Dexterity WebDAV subpath'),
+        description=_(u'Subpath inside WebDAV for Dexterity content'),
         default=u'',
         required=False,
     )
 
-    existdb_username = schema.TextLine(
-        title=_(u'eXist-db username '),
-        description=_(u'eXist-db username'),
+    webdav_username = schema.TextLine(
+        title=_(u'WebDAV username'),
+        description=_(u'WebDAV username'),
         default=u'admin',
         required=True,
     )
 
-    existdb_password = schema.Password(
-        title=_(u'eXist-db password'),
-        description=_(u'eXist-db password'),
+    webdav_password = schema.Password(
+        title=_(u'WebDAV password'),
+        description=_(u'WebDAV password'),
         default=u'',
         required=True,
     )

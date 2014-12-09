@@ -18,7 +18,7 @@ from plone.registry.interfaces import IRegistry
 from zope.annotation.interfaces import IAnnotations
 from persistent.list import PersistentList
 
-from xmldirector.plonecore.interfaces import IExistDBSettings
+from xmldirector.plonecore.interfaces import IWebdavSettings
 from xmldirector.plonecore.i18n import MessageFactory as _
 
 
@@ -27,18 +27,18 @@ LOG_KEY = 'xmldirector.plonecore.connector.log'
 
 class IConnector(model.Schema):
 
-    existdb_subpath = schema.TextLine(
+    webdav_subpath = schema.TextLine(
         title=_(u'Subdirectory in Exist-DB'),
         description=_(u'Subdirectory in Exist-DB'),
         required=False
     )
 
-    existdb_username = schema.TextLine(
+    webdav_username = schema.TextLine(
         title=_(u'(optional) username overriding the system settings'),
         required=False
     )
 
-    existdb_password = schema.TextLine(
+    webdav_password = schema.TextLine(
         title=_(u'(optional) password overriding the system settings'),
         required=False
     )
@@ -69,10 +69,10 @@ class Connector(Item):
 
     implements(IConnector)
 
-    existdb_url = None
-    existdb_username = None
-    existdb_password = None
-    existdb_subpath = None
+    webdav_url = None
+    webdav_username = None
+    webdav_password = None
+    webdav_subpath = None
 
 
     @property
@@ -101,30 +101,30 @@ class Connector(Item):
 
     def webdav_handle(self, subpath=None):
         """ Return WebDAV handle to root of configured connector object
-            including configured existdb_subpath.
+            including configured webdav_subpath.
         """
 
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(IExistDBSettings)
+        settings = registry.forInterface(IWebdavSettings)
 
         adapted = IConnector(self)
 
-        url = adapted.existdb_url or settings.existdb_url
+        url = adapted.webdav_url or settings.webdav_url
 
-        if adapted.existdb_subpath:
-            url += '/{}'.format(adapted.existdb_subpath)
+        if adapted.webdav_subpath:
+            url += '/{}'.format(adapted.webdav_subpath)
 
         if subpath:
             url += '/{}'.format(urllib.quote(subpath))
 
         # system-wide credentials
-        username = settings.existdb_username
-        password = settings.existdb_password
+        username = settings.webdav_username
+        password = settings.webdav_password
 
         # local credentials override the system credentials
-        if adapted.existdb_username and adapted.existdb_password:
-            username = adapted.existdb_username
-            password = adapted.existdb_password
+        if adapted.webdav_username and adapted.webdav_password:
+            username = adapted.webdav_username
+            password = adapted.webdav_password
 
         try:
             return DAVFS(url, credentials=dict(username=username,

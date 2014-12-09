@@ -27,10 +27,10 @@ class BasicTests(TestBase):
             fp.write('<html/>')
         with handle.open(PREFIX + '/foo/index.xml', 'wb') as fp:
             fp.write('<?xml version="1.0" ?>\n<hello>world</hello>')
-        self.portal.connector.existdb_subpath = PREFIX
+        self.portal.connector.webdav_subpath = PREFIX
 
     def tearDown(self):
-        self.portal.connector.existdb_subpath = None
+        self.portal.connector.webdav_subpath = None
         handle = self.portal.connector.webdav_handle()
         if handle.exists(PREFIX):
             handle.removedir(PREFIX, False, True)
@@ -140,11 +140,11 @@ class BasicTests(TestBase):
 
     def testRenderControlPanel(self):
         with self.assertRaises(zExceptions.Unauthorized):
-            view = self.portal.restrictedTraverse('@@existdb-settings')
+            view = self.portal.restrictedTraverse('@@xmldirector-core-settings')
             result = view()
 
         self.login('god')
-        view = self.portal.restrictedTraverse('@@existdb-settings')
+        view = self.portal.restrictedTraverse('@@xmldirector-core-settings')
         result = view()
 
 def test_suite():

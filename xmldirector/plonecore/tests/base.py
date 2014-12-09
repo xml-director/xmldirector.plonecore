@@ -19,7 +19,7 @@ from plone.registry.interfaces import IRegistry
 
 from zope.component import getUtility
 from zope.configuration import xmlconfig
-from xmldirector.plonecore.interfaces import IExistDBSettings
+from xmldirector.plonecore.interfaces import IWebdavSettings
 from AccessControl.SecurityManagement import newSecurityManager
 
 import xmldirector.plonecore
@@ -58,10 +58,10 @@ class PolicyFixture(PloneSandboxLayer):
         login(portal, 'god')
 
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(IExistDBSettings)
-        settings.existdb_username = unicode(EXIST_DB_USERNAME)
-        settings.existdb_password = unicode(EXIST_DB_PASSWORD)
-        settings.existdb_url = unicode(EXIST_DB_URL)
+        settings = registry.forInterface(IWebdavSettings)
+        settings.webdav_username = unicode(EXIST_DB_USERNAME)
+        settings.webdav_password = unicode(EXIST_DB_PASSWORD)
+        settings.webdav_url = unicode(EXIST_DB_URL)
 
         self.connector = plone.api.content.create(
             container=portal,

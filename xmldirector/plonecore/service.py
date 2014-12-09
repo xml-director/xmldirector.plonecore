@@ -9,7 +9,7 @@ from fs.contrib.davfs import DAVFS
 import zope.interface
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
-from xmldirector.plonecore.interfaces import IExistDBSettings
+from xmldirector.plonecore.interfaces import IWebdavSettings
 from xmldirector.plonecore.interfaces import IWebdavHandle
 
 
@@ -21,13 +21,13 @@ class WebdavHandle(object):
         """ Return WebDAV handle """
 
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(IExistDBSettings)
+        settings = registry.forInterface(IWebdavSettings)
 
-        root_url = settings.existdb_url
-        username = settings.existdb_username
-        password = settings.existdb_password
-        if settings.existdb_dexterity_subpath:
-            url = '{}/{}'.format(root_url, settings.existdb_dexterity_subpath)
+        root_url = settings.webdav_url
+        username = settings.webdav_username
+        password = settings.webdav_password
+        if settings.webdav_dexterity_subpath:
+            url = '{}/{}'.format(root_url, settings.webdav_dexterity_subpath)
         else:
             url = root_url
         try:
@@ -36,7 +36,7 @@ class WebdavHandle(object):
         except fs.errors.ResourceNotFoundError:
             root_handle = DAVFS(root_url, credentials=dict(username=username,
                                                            password=password))
-            root_handle.makedir(settings.existdb_dexterity_subpath, True, True)
+            root_handle.makedir(settings.webdav_dexterity_subpath, True, True)
             return DAVFS(url, credentials=dict(username=username,
                                                password=password))
 

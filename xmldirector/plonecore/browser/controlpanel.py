@@ -7,22 +7,22 @@
 
 from plone.app.registry.browser import controlpanel
 
-from xmldirector.plonecore.interfaces import IExistDBSettings
+from xmldirector.plonecore.interfaces import IWebdavSettings
 from xmldirector.plonecore.i18n import MessageFactory as _
 
 
-class ExistDBSettingsEditForm(controlpanel.RegistryEditForm):
+class DBSettingsEditForm(controlpanel.RegistryEditForm):
 
-    schema = IExistDBSettings
-    label = _(u'eXistdb settings')
+    schema = IWebdavSettings
+    label = _(u'XML Director core settings')
     description = _(u'')
 
     def updateFields(self):
-        super(ExistDBSettingsEditForm, self).updateFields()
+        super(DBSettingsEditForm, self).updateFields()
 
     def updateWidgets(self):
-        super(ExistDBSettingsEditForm, self).updateWidgets()
+        super(DBSettingsEditForm, self).updateWidgets()
 
 
-class ExistDBSettingsControlPanel(controlpanel.ControlPanelFormWrapper):
-    form = ExistDBSettingsEditForm
+class DBSettingsControlPanel(controlpanel.ControlPanelFormWrapper):
+    form = DBSettingsEditForm

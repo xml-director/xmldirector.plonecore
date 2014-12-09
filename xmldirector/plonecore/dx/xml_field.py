@@ -19,7 +19,7 @@ import plone.supermodel.exportimport
 from plone.schemaeditor.fields import FieldFactory
 
 from xmldirector.plonecore.i18n import MessageFactory as _
-from xmldirector.plonecore.interfaces import IExistDBSettings
+from xmldirector.plonecore.interfaces import IWebdavSettings
 from xmldirector.plonecore.interfaces import IWebdavHandle
 
 

@@ -1,4 +1,4 @@
-#form-widgets-existdb_subpath {
+#form-widgets-webdav_db_subpath {
     width: 400px;
 }
 
@@ -78,7 +78,7 @@
 }
 
 /* hide folder contents action */
-.portaltype-zopyx-existdb-connector #contentview-folderContents {
+.portaltype-xmldirector-plonecore-connector #contentview-folderContents {
     display: none;
 }
 

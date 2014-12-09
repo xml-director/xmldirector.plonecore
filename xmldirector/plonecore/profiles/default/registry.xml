@@ -2,5 +2,5 @@
 <registry 
     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
     i18n:domain="plone">
-    <records interface="xmldirector.plonecore.interfaces.IExistDBSettings" />
+    <records interface="xmldirector.plonecore.interfaces.IWebdavSettings" />
 </registry>

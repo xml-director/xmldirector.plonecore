@@ -15,10 +15,10 @@ from Products.Five.browser import BrowserView
 from zExceptions import Forbidden
 from zExceptions import NotFound
 
-from xmldirector.plonecore.interfaces import IExistDBSettings
+from xmldirector.plonecore.interfaces import IWebdavSettings
 
 
-class ExistDBError(Exception):
+class DBError(Exception):
     pass
 
 
@@ -42,15 +42,15 @@ class API(BrowserView):
                 'Unsupported output format "{}"'.format(output_format))
 
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(IExistDBSettings)
+        settings = registry.forInterface(IWebdavSettings)
         url = '{}/exist/restxq/{}.{}'.format(
-            settings.existdb_url, script_path, output_format)
+            settings.webdav_url, script_path, output_format)
         result = requests.get(url,
-                              auth=HTTPBasicAuth(settings.existdb_username,
-                                                 settings.existdb_password),
+                              auth=HTTPBasicAuth(settings.webdav_username,
+                                                 settings.webdav_password),
                               params=kw)
         if result.status_code != 200:
-            raise ExistDBError(
+            raise DBError(
                 'eXist-db return an response with HTTP code {} for {}'.format(result.status_code, url))
 
         if output_format == 'json':

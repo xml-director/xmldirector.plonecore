@@ -115,9 +115,9 @@
     />
 
     <browser:page
-        name="existdb-settings"
+        name="xmldirector-core-settings"
         for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-        class=".controlpanel.ExistDBSettingsControlPanel"
+        class=".controlpanel.DBSettingsControlPanel"
         permission="cmf.ManagePortal"
     />
 

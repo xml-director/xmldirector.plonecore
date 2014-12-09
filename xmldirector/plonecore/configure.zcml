@@ -23,7 +23,7 @@
         name="default"
         title="xmldirector.plonecore"
         directory="profiles/default"
-        description="ExistDB integration with Plone"
+        description="XML-Director core"
         provides="Products.GenericSetup.interfaces.EXTENSION"
     />
 

@@ -6,12 +6,12 @@
     purge="False">
 
     <configlet
-        title="eXistdb"
+        title="XML-Director core"
         action_id="xmldirector.plonecore"
         appId="xmldirector.plonecore"
         category="Products"
         condition_expr=""
-        url_expr="string:${portal_url}/@@existdb-settings"
+        url_expr="string:${portal_url}/@@xmldirector-core-settings"
         visible="True"
         i18n:attributes="title">
             <permission>Manage portal</permission>
