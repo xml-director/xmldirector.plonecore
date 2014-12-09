@@ -95,11 +95,11 @@ This package is published under the GNU Public License V2 (GPL 2)
 
 Source code
 -----------
-See https://bitbucket.org/onkopedia/xmldirector.plonecore
+See https://github.com/xml-director/xmldirector.plonecore
 
 Bugtracker
 ----------
-See https://bitbucket.org/onkopedia/xmldirector.plonecore
+See https://github.com/xml-director/xmldirector.plonecore/issues
 
 Credits
 -------
