@@ -1,4 +1,4 @@
-zopyx.existdb
+xmldirector.plonecore
 =============
 
 .. note:: This module  
@@ -10,7 +10,7 @@ zopyx.existdb
   - *is* an _experimental_ solution for mounting general WebDAV 
     services into Plone
 
-``zopyx.existdb`` integrates  Plone 4.3 and higher with 
+``xmldirector.plonecore`` integrates  Plone 4.3 and higher with 
 eXist-db providing the following features:
 
 - mounts an arbitary eXist-db collection into Plone
@@ -29,14 +29,14 @@ eXist-db providing the following features:
 - experimental support for mounting arbitrary WebDAV service into Plone (set
   the emulation mode to ``webdav`` in the eXist-db control panel of Plone)
 
-The primary usecase for ``zopyx.existdb`` is the integration of XML document
-collections into Plone using eXist-db as storage layer. ``zopyx.existdb`` is
+The primary usecase for ``xmldirector.plonecore`` is the integration of XML document
+collections into Plone using eXist-db as storage layer. ``xmldirector.plonecore`` is
 not storage layer for Plone content in the first place although it could be
 used in some way for storing primary Plone content (or parts of the content)
 inside eXist-db. There is no build-in support for mapping metadata as stored in
 XML documents to Plone metadata or vice versa. However this could be
 implemented easily in application specific code build on top of
-``zopyx.existdb``. The design goal of ``zopyx.existdb`` is to provide the basic
+``xmldirector.plonecore``. The design goal of ``xmldirector.plonecore`` is to provide the basic
 functionality for integrating Plone with eXist-db without implementing any
 further specific application requirements.  Additional functionality can be
 added through Dexterity behaviors, supplementary browser views, event lifecycle
@@ -45,7 +45,7 @@ subscribers and related technology.
 Installation
 ------------
 
-Add ``zopyx.existdb`` to the ``eggs`` and ``zcml`` options of your buildout
+Add ``xmldirector.plonecore`` to the ``eggs`` and ``zcml`` options of your buildout
 configuration, re-run buildout and install the connector through the add-ons
 management of Plone.
 
@@ -67,7 +67,7 @@ configure the
   arbitrary WebDAV services.
 
 
-Using zopyx.existdb
+Using xmldirector.plonecore
 -------------------
 The package provides a new content-types ``Connector`` that will include
 eXist-db into Plone - either from the top-level collection of your eXist-db
@@ -83,7 +83,7 @@ settings).
    WebDAV services like OwnCloud, BaseX (over WebDAV) or even other Plone
    serves (exposed through the Plone WebDAV source port) with Plone.
    This integration is highly experimental and not the primary purpose
-   of ``zopyx.existdb``. Use the functionality at your own risk.
+   of ``xmldirector.plonecore``. Use the functionality at your own risk.
    In order to use this module together with WebDAV services other than the
    XML database eXist-db: you have to set the emulation mode to ``webdav``
    inside the eXist-db control panel of Plone
@@ -94,15 +94,15 @@ This package is published under the GNU Public License V2 (GPL 2)
 
 Source code
 -----------
-See https://bitbucket.org/onkopedia/zopyx.existdb
+See https://bitbucket.org/onkopedia/xmldirector.plonecore
 
 Bugtracker
 ----------
-See https://bitbucket.org/onkopedia/zopyx.existdb
+See https://bitbucket.org/onkopedia/xmldirector.plonecore
 
 Credits
 -------
-The development of ``zopyx.existdb`` was funded as part of a customer project
+The development of ``xmldirector.plonecore`` was funded as part of a customer project
 by Deutsche Gesellschaft für Hämatologie und medizinische Onkologie (DGHO).
 
 
