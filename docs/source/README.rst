@@ -78,7 +78,16 @@ Configuration
 Goto the Plone control panel and click on the ``XML-Director Core`` configlet and
 configure the 
 
-- WebDAV URL of eXist-db or BaseX e.g. ``http://localhost:6080/existdb/webdav/db``
+- WebDAV URL of the XML database. 
+
+  For eXist-db you need something like::
+  
+    http://localhost:6080/existdb/webdav/db
+
+  For Base-X 8 you need::
+
+    http://localhost:8984/webdav
+  
 
 - WebDAV username
 
