@@ -14,7 +14,7 @@ then
     config=buildout-plone-5.0.cfg
 fi
 
-export WEBDAV_URL=http://dev1.veit-schiele.de:6080
+export WEBDAV_URL=http://dev1.veit-schiele.de:6080/exist/webdav/db
 
 virtualenv-2.7 .
 bin/pip install -U setuptools

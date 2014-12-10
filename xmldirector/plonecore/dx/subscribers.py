@@ -9,6 +9,7 @@ import uuid
 import plone.api
 from zope.component import getUtility
 from xmldirector.plonecore.interfaces import IWebdavHandle
+from xmldirector.plonecore.dx import util
 
 
 def removal_handler(obj, event):
@@ -16,15 +17,13 @@ def removal_handler(obj, event):
         is being deleted.
     """
 
-    try:
-        storage_key = event.object.__xml_storage_id__
-    except AttributeError:
+    if not util.is_xml_content(event.object):
         return
 
     handle = getUtility(IWebdavHandle).webdav_handle()
     plone_uid = plone.api.portal.get().getId()
-    storage_dir = '{}/{}/{}'.format(plone_uid, event.object.__xml_storage_id__[-4:], event.object.__xml_storage_id__)
-    storage_parent_dir = '{}/{}/{}'.format(plone_uid, event.object.__xml_storage_id__[-4:])
+    storage_dir = util.get_storage_path(event.object)
+    storage_parent_dir = util.get_storage_path_parent(event.object)
     handle.removedir(storage_dir, False, True)
     if handle.isdirempty(storage_parent_dir):
         handle.removedir(storage_parent_dir, False, True)
@@ -38,9 +37,7 @@ def copied_handler(obj, event):
     original = event.original
 
     # Is this Dexterity content object related to XML resources?
-    try:
-        copied.__xml_storage_id__
-    except AttributeError:
+    if not util.is_xml_content(copied):
         return
 
     # create a new storage id 
