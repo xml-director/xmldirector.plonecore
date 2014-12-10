@@ -3,8 +3,11 @@ language:  python
 python:
   - "2.7"
 
+env:
+  - PLONE_VERSION=plone-4.3
+
 script: 
-  -  "bash build_test.sh plone-4.3"
+  -  bash build_test.sh $PLONE_VERSION
 
 notifications:
   irc:
