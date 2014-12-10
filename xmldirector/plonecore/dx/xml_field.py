@@ -59,7 +59,7 @@ class XMLText(Text):
 
     def validate(self, value):
         """ Perform XML validation """
-        import pdb; pdb.set_trace() 
+
         if value:
             try:
                 lxml.etree.fromstring(normalize_xml(value))
@@ -83,13 +83,13 @@ class XMLFieldDataManager(z3c.form.datamanager.AttributeField):
 
     @property
     def storage_key(self):
-        import pdb; pdb.set_trace()     
+
         plone_uid = plone.api.portal.get().getId()
         context_id = util.get_storage_key(self.context)
         if not context_id:
             context_id = util.new_storage_key(self.context)
         field_id = self.field.__name__
-        return '{}/{}.xml'.format(util.get_storage_path(self.context), context_id, field_id)
+        return '{}/{}.xml'.format(util.get_storage_path(self.context), field_id)
 
     def get(self):
         """See z3c.form.interfaces.IDataManager"""
@@ -100,7 +100,7 @@ class XMLFieldDataManager(z3c.form.datamanager.AttributeField):
             with handle.open(storage_key, 'rb') as fp:
                 with handle.open(storage_key + '.metadata.json', 'rb') as fp_metadata:
                     xml = fp.read()
-                    metadata = json.load(fp_metadata.read())
+                    metadata = json.loads(fp_metadata.read())
             if xml_hash(xml) != metadata['sha256']:
                 raise ValueError('Hashes for {} differ'.format(storage_key))
             return xml
