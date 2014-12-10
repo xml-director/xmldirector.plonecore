@@ -4,7 +4,7 @@
 ################################################################
 
 import os
-import uuid
+import json
 import hashlib
 import plone.api
 import lxml.etree
@@ -59,6 +59,7 @@ class XMLText(Text):
 
     def validate(self, value):
         """ Perform XML validation """
+        import pdb; pdb.set_trace() 
         if value:
             try:
                 lxml.etree.fromstring(normalize_xml(value))
@@ -82,6 +83,7 @@ class XMLFieldDataManager(z3c.form.datamanager.AttributeField):
 
     @property
     def storage_key(self):
+        import pdb; pdb.set_trace()     
         plone_uid = plone.api.portal.get().getId()
         context_id = util.get_storage_key(self.context)
         if not context_id:
@@ -96,16 +98,16 @@ class XMLFieldDataManager(z3c.form.datamanager.AttributeField):
         storage_key = self.storage_key
         if handle.exists(storage_key):
             with handle.open(storage_key, 'rb') as fp:
-                with handle.open(storage_key + '.sha256', 'rb') as fp_sha:
+                with handle.open(storage_key + '.metadata.json', 'rb') as fp_metadata:
                     xml = fp.read()
-                    xml_sha256 = fp_sha.read()
-#            if xml_hash(xml) != xml_sha256:    
-#                raise ValueError('Hashes for {} differ'.format(storage_key))
+                    metadata = json.load(fp_metadata.read())
+            if xml_hash(xml) != metadata['sha256']:
+                raise ValueError('Hashes for {} differ'.format(storage_key))
             return xml
 
     def set(self, value):
         """See z3c.form.interfaces.IDataManager"""
-        
+
         handle = zope.component.getUtility(IWebdavHandle).webdav_handle()
         storage_key = self.storage_key
         dirname = os.path.dirname(storage_key)
@@ -114,7 +116,8 @@ class XMLFieldDataManager(z3c.form.datamanager.AttributeField):
         value_utf8 = normalize_xml(value)
         value_sha256 = xml_hash(value_utf8)
         with handle.open(storage_key, 'wb') as fp:
-            with handle.open(storage_key + '.sha256', 'wb') as fp_sha:
+            with handle.open(storage_key + '.metadata.json', 'wb') as fp_metadata:
                 fp.write(value_utf8)
-                fp_sha.write(value_sha256)
+                metadata = dict(sha256=value_sha256)
+                fp_metadata.write(json.dumps(metadata))
 
