@@ -29,9 +29,9 @@ def datamanager_for_field(context, fieldname, value=_marker):
     if isinstance(field, XMLText):
         dm_cls = XMLFieldDataManager
     elif isinstance(field, XMLBinary):
-        dm_cls = XMLFieldDataBinary
+        dm_cls = XMLBinaryDataManager
     elif isinstance(field, XMLImage):
-        dm_cls = XMLFieldDataImage
+        dm_cls = XMLImageDataManager
     return dm_cls(context=context, field=field)
 
 
