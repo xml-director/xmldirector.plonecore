@@ -140,6 +140,9 @@ In this case you would use:
 
     field=myxml,xpath=/doc/metadata/title/text()
 
+Note that the current syntax is very rigid and does not allow any whitespace
+characters expect within the <xpath expression>.
+
 
 XMLBinary, XMLImage
 +++++++++++++++++++
