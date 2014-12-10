@@ -74,7 +74,6 @@ class Connector(Item):
     webdav_password = None
     webdav_subpath = None
 
-
     @property
     def logger(self):
         annotations = IAnnotations(self)

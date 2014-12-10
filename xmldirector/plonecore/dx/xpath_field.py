@@ -31,6 +31,7 @@ from xmldirector.plonecore.i18n import MessageFactory as _
 
 regex = re.compile('field=([\w]*),xpath=(.*)', re.UNICODE)
 
+
 def parse_field_expression(value):
     """ Parses a string like
         field=xmlfield, xpath=/a/b/c
@@ -45,7 +46,7 @@ def parse_field_expression(value):
 
 
 def get_all_fields(context):
-    """ Return all fields (including behavior fields) of a context object 
+    """ Return all fields (including behavior fields) of a context object
         as dict fieldname -> field.
     """
 
@@ -56,7 +57,8 @@ def get_all_fields(context):
     assignable = IBehaviorAssignable(context)
     for behavior in assignable.enumerateBehaviors():
         behavior_schema = behavior.interface
-        fields.update((name, behavior_schema[name]) for name in behavior_schema)
+        fields.update((name, behavior_schema[name])
+                      for name in behavior_schema)
 
     return fields
 
@@ -66,6 +68,7 @@ def get_all_fields(context):
 ################################################################
 
 class IXMLXPath(IField):
+
     """ Marker for XML fields """
     pass
 
@@ -80,20 +83,24 @@ class XMLXPath(TextLine):
             try:
                 fieldname, xpath_expr = mo
             except TypeError:
-                raise zope.interface.Invalid(u'Invalid specification ({})'.format(value))
+                raise zope.interface.Invalid(
+                    u'Invalid specification ({})'.format(value))
         return super(XMLXPath, self).validate(value)
 
 
-XMLXPathFactory = FieldFactory(XMLXPath, _(u'label_xml_xpath_field', default=u'XML (extended XPath expression)'))
+XMLXPathFactory = FieldFactory(XMLXPath, _(
+    u'label_xml_xpath_field', default=u'XML (extended XPath expression)'))
 XMLXPathHandler = plone.supermodel.exportimport.BaseHandler(XMLXPath)
 
 from xmldirector.plonecore.dx.xml_field import XMLFieldDataManager
+
 
 class IXPathWidget(IWidget):
     pass
 
 
 class XPathWidget(text.TextWidget):
+
     """ Widget for XPath expressions."""
     zope.interface.implementsOnly(IXPathWidget)
 
@@ -124,7 +131,8 @@ class XPathWidget(text.TextWidget):
         try:
             result = root.xpath(xpath_expr)
         except lxml.etree.XPathEvalError as e:
-            error = u'Invalid XPath expression "{}" (error: {})'.format(xpath_expr, e)
+            error = u'Invalid XPath expression "{}" (error: {})'.format(
+                xpath_expr, e)
             return dict(errors=[error], data=None)
 
         return dict(errors=[], data=result)

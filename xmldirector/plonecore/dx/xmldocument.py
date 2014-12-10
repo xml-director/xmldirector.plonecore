@@ -5,7 +5,6 @@
 # (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
-from zope import schema
 from zope.interface import implements
 from plone.dexterity.content import Item
 from plone.supermodel import model

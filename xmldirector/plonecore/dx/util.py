@@ -22,6 +22,7 @@ def is_xml_content(context):
     except AttributeError:
         return False
 
+
 def new_storage_key(context):
     """ Set a new UUID on the given ``context`` object """
 

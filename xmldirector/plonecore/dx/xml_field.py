@@ -19,7 +19,6 @@ import plone.supermodel.exportimport
 from plone.schemaeditor.fields import FieldFactory
 
 from xmldirector.plonecore.i18n import MessageFactory as _
-from xmldirector.plonecore.interfaces import IWebdavSettings
 from xmldirector.plonecore.interfaces import IWebdavHandle
 from xmldirector.plonecore.dx import util
 
@@ -41,7 +40,7 @@ def xml_hash(xml):
     xml = normalize_xml(xml)
     # remove XML preamble
     if xml.startswith('<?xml'):
-        xml = xml[xml.find('?>')+2:]
+        xml = xml[xml.find('?>') + 2:]
         xml = xml.lstrip('\n')
     return hashlib.sha256(xml).hexdigest()
 
@@ -51,6 +50,7 @@ def xml_hash(xml):
 ################################################################
 
 class IXMLText(IField):
+
     """ Marker for XML fields """
 
 
@@ -68,11 +68,13 @@ class XMLText(Text):
         return super(XMLText, self).validate(value)
 
 
-XMLTextFactory = FieldFactory(XMLText, _(u'label_xml_field', default=u'XML (Text)'))
+XMLTextFactory = FieldFactory(
+    XMLText, _(u'label_xml_field', default=u'XML (Text)'))
 XMLTextHandler = plone.supermodel.exportimport.BaseHandler(XMLText)
 
 
 class XMLFieldDataManager(z3c.form.datamanager.AttributeField):
+
     """A dedicated manager for XMLText field."""
     zope.component.adapts(
         zope.interface.Interface, IXMLText)
@@ -84,7 +86,6 @@ class XMLFieldDataManager(z3c.form.datamanager.AttributeField):
     @property
     def storage_key(self):
 
-        plone_uid = plone.api.portal.get().getId()
         context_id = util.get_storage_key(self.context)
         if not context_id:
             context_id = util.new_storage_key(self.context)
@@ -120,4 +121,3 @@ class XMLFieldDataManager(z3c.form.datamanager.AttributeField):
                 fp.write(value_utf8)
                 metadata = dict(sha256=value_sha256)
                 fp_metadata.write(json.dumps(metadata))
-

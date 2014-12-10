@@ -8,7 +8,6 @@
 import lxml.etree
 import zope.interface
 from plone.indexer import indexer
-from Products.CMFCore.utils import getToolByName
 
 from xmldirector.plonecore.dx import util
 from xmldirector.plonecore.dx.xpath_field import get_all_fields
@@ -21,9 +20,7 @@ def SearchableText(obj):
     """ Index XML """
 
     if not util.is_xml_content(obj):
-        return 
-
-    fields = get_all_fields(obj)
+        return
 
     # Throw all XML content of all fields into the huge SearchableText bag
     for xml_field in [field for field in get_all_fields(obj).values() if isinstance(field, XMLText)]:

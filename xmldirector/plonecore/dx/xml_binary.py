@@ -5,7 +5,6 @@
 
 import json
 import os
-import uuid
 import hashlib
 import plone.api
 
@@ -13,7 +12,6 @@ import zope.schema
 import zope.interface
 import zope.component
 from zope.schema.interfaces import IField
-from zope.component import getUtility
 from z3c.form.datamanager import AttributeField as AttributeDataManager
 import plone.supermodel.exportimport
 from plone.schemaeditor.fields import FieldFactory
@@ -30,6 +28,7 @@ from xmldirector.plonecore.dx import util
 ################################################################
 
 class IXMLBinary(IField):
+
     """ Marker for XML fields """
     pass
 
@@ -38,11 +37,13 @@ class XMLBinary(NamedFileField):
     zope.interface.implements(IXMLBinary)
 
 
-XMLBinaryFactory = FieldFactory(XMLBinary, _(u'label_xml_binary_field', default=u'XML (binary data)'))
+XMLBinaryFactory = FieldFactory(
+    XMLBinary, _(u'label_xml_binary_field', default=u'XML (binary data)'))
 XMLBinaryHandler = plone.supermodel.exportimport.BaseHandler(XMLBinary)
 
 
 class XMLBinaryDataManager(AttributeDataManager):
+
     """Attribute field."""
     zope.component.adapts(
         zope.interface.Interface, IXMLBinary)
@@ -52,7 +53,6 @@ class XMLBinaryDataManager(AttributeDataManager):
 
     @property
     def storage_key(self):
-        plone_uid = plone.api.portal.get().getId()
         context_id = util.get_storage_key(self.context)
         if not context_id:
             context_id = util.new_storage_key(self.context)
@@ -71,11 +71,12 @@ class XMLBinaryDataManager(AttributeDataManager):
                     metadata = json.load(fp_metadata)
 
             if hashlib.sha256(data).hexdigest() != metadata['sha256']:
-                raise ValueError('Invalid hash values for {}'.format(storage_key))
+                raise ValueError(
+                    'Invalid hash values for {}'.format(storage_key))
 
             return self.return_class(
-                data, 
-                filename=metadata['filename'], 
+                data,
+                filename=metadata['filename'],
                 contentType=str(metadata['contenttype']))
 
     def set(self, value):
@@ -100,4 +101,3 @@ class XMLBinaryDataManager(AttributeDataManager):
             with handle.open(storage_key + '.metadata.json', 'wb') as fp_metadata:
                 fp.write(value.data)
                 fp_metadata.write(json.dumps(metadata))
-

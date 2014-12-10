@@ -141,11 +141,12 @@ class BasicTests(TestBase):
     def testRenderControlPanel(self):
         with self.assertRaises(zExceptions.Unauthorized):
             view = self.portal.restrictedTraverse('@@xmldirector-core-settings')
-            result = view()
+            view()
 
         self.login('god')
         view = self.portal.restrictedTraverse('@@xmldirector-core-settings')
-        result = view()
+        view()
+
 
 def test_suite():
     from unittest2 import TestSuite, makeSuite

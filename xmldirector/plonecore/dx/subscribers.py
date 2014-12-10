@@ -5,8 +5,6 @@
 # (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
-import uuid
-import plone.api
 from zope.component import getUtility
 from xmldirector.plonecore.interfaces import IWebdavHandle
 from xmldirector.plonecore.dx import util
@@ -21,7 +19,6 @@ def removal_handler(obj, event):
         return
 
     handle = getUtility(IWebdavHandle).webdav_handle()
-    plone_uid = plone.api.portal.get().getId()
     storage_dir = util.get_storage_path(event.object)
     storage_parent_dir = util.get_storage_path_parent(event.object)
     handle.removedir(storage_dir, False, True)
@@ -40,13 +37,12 @@ def copied_handler(obj, event):
     if not util.is_xml_content(copied):
         return
 
-    # create a new storage id 
+    # create a new storage id
     if util.get_storage_key(original) == util.get_storage_key(copied):
         util.new_storage_key(copied)
 
         # an copy over XML content from original content object
         handle = getUtility(IWebdavHandle).webdav_handle()
-        plone_uid = plone.api.portal.get().getId()
         storage_dir_original = util.get_storage_path(original)
         storage_dir_copied = util.get_storage_path(copied)
         storage_dir_copied_parent = util.get_storage_path_parent(copied)

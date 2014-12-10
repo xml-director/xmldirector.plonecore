@@ -335,7 +335,8 @@ class Connector(BrowserView):
                 self.context.log(u'Subdirectory cleared (ZIP import)')
 
                 # setup progressbar
-                widgets = ['ZIP import: ', Percentage(), ' ', Bar(marker=RotatingMarker()), ' ', ETA(), ' ']
+                widgets = ['ZIP import: ', Percentage(), ' ', Bar(
+                    marker=RotatingMarker()), ' ', ETA(), ' ']
                 files = list(zip_handle.walkfiles())
                 pbar = ProgressBar(widgets=widgets, maxval=len(files)).start()
 
@@ -353,7 +354,7 @@ class Connector(BrowserView):
                             'Failed creating {} failed ({})'.format(dirname, e))
 
                     LOG.info('ZIP filename({})'.format(name))
-                    
+
                     out_fp = handle.open(name.lstrip('/'), 'wb')
                     zip_fp = zip_handle.open(name, 'rb')
                     out_fp.write(zip_fp.read())
