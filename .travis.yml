@@ -3,8 +3,20 @@ language:  python
 python:
   - "2.7"
 
+env:
+  - PLONE_VERSION=plone-4.3
+
+matrix:
+  include:
+    - python: 2.7
+      env: PLONE_VERSION=plone-5.0
+
 script: 
-  -  "bash build_test.sh plone-4.3"
+  -  bash build_test.sh $PLONE_VERSION
+
+#after_success:
+#  - pip install coveralls
+#  - coveralls
 
 notifications:
   irc:
