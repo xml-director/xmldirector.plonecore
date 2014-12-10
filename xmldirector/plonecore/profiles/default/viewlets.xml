@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<object>
+  <order manager="plone.belowcontentbody">
+    <viewlet name="xmldirector.plonecore.xml_debug" insert-after="*" />
+  </order>
+</object>
