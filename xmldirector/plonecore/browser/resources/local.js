@@ -78,10 +78,10 @@ $(document).ready(function() {
             try {
                 $.parseXML(xml);
                 var msg = 'XML is OK';
-                $(this).siblings('.xml-editor-validation-msg').text(msg).addClass('status-ok');
+                $(this).siblings('.xml-editor-validation-msg').text(msg).removeClass('status-error').addClass('status-ok');
             } catch(e) {
                 var msg = 'Error in XML';
-                $(this).siblings('.xml-editor-validation-msg').text(msg).addClass('status-error');
+                $(this).siblings('.xml-editor-validation-msg').text(msg).removeClass('status-ok').addClass('status-error');
             }
 
     });
