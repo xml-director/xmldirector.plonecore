@@ -84,6 +84,15 @@ class BasicTests(TestBase):
         copy_doc = self.portal['copy_of_dok']
         assert util.get_storage_key(self.doc) != util.get_storage_key(copy_doc)
 
+    def test_remove(self):
+
+        xml = u'<?xml version="1.0" encoding="UTF-8"?>\n<hello>world</hello>'
+        self.doc.xml_set('xml_content', xml)
+
+        cb = self.portal.manage_delObjects(self.doc.getId())
+        self.assertEqual('dok' not in self.portal.objectIds(), True)
+
+
 def test_suite():
     from unittest2 import TestSuite, makeSuite
     suite = TestSuite()
