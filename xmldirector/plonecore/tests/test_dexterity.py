@@ -9,6 +9,7 @@ import os
 import plone.api
 from .base import TestBase
 
+from xmldirector.plonecore.dx import util
 from xmldirector.plonecore.dx.xpath_field import get_all_fields
 
 class BasicTests(TestBase):
@@ -73,6 +74,12 @@ class BasicTests(TestBase):
         self.assertEqual(named_file2.filename, u'test.jpg')
         self.assertEqual(named_file2.contentType, 'image/jpg')
 
+    def test_copy_paste(self):
+
+        cb = self.portal.manage_copyObjects(self.doc.getId())
+        self.portal.manage_pasteObjects(cb)
+        copy_doc = self.portal['copy_of_dok']
+        assert util.get_storage_key(self.doc) != util.get_storage_key(copy_doc)
 
 def test_suite():
     from unittest2 import TestSuite, makeSuite
