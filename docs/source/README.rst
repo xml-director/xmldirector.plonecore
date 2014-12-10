@@ -159,6 +159,14 @@ Bugtracker
 ----------
 See https://bitbucket.org/onkopedia/xmldirector.plonecore
 
+Travis-CI
+---------
+
+See https://travis-ci.org/xml-director/xmldirector.plonecore
+
+.. image:: https://travis-ci.org/xml-director/xmldirector.plonecore.svg?branch=master
+    :target: https://travis-ci.org/xml-director/xmldirector.plonecore
+
 Credits
 -------
 The development of ``xmldirector.plonecore`` was funded as part of a customer project
