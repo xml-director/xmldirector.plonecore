@@ -1,15 +1,16 @@
-
 xmldirector.plonecore
 =====================
 
 .. note:: This module  
 
-  - *is not* a replacement for the ZODB or any other Plone storage (never was, never will)
-  - *is not* a storage layer for Archetypes or Dexterity content (never was, never will)
   - *is* a solution for mounting XML databases like eXist-db or
     BaseX into Plone through their WebDAV port
+  - *is* a solution for construction Dexterity content-types programmatically
+    or through-the-web with XML related fields where the content is stored
+    in BaseX or eXist-db
   - *is* an _experimental_ solution for mounting general WebDAV 
     services into Plone
+  - *is not* a replacement for the ZODB or any other Plone storage (never was, never will)
 
 ``xmldirector.plonecore`` integrates  Plone 4.3 and higher with 
 eXist-db providing the following features:
@@ -29,6 +30,18 @@ eXist-db providing the following features:
 - small and extensible
 - experimental support for mounting arbitrary WebDAV service into Plone (set
   the emulation mode to ``webdav`` in the eXist-db control panel of Plone)
+- Dexerity fields:
+
+  - ``XMLText`` - a field for storing XML content in BaseX or eXist-db
+
+  - ``XPathField`` - for retrieving parts of XML content stored within a 
+    ``XMLText`` field through an XPath expression (e.g. for extracting
+    and displaying metadata from XML content)
+
+  - ``XMLBinary`` and ``XMLImage`` fields for storing binary data and images
+    in BaseX or eXist-db. The functionality is identical with the standard
+    Dexterity file and image fields (except for the different storage layer)
+ 
 
 The primary usecase for ``xmldirector.plonecore`` is the integration of XML document
 collections into Plone using eXist-db as storage layer. ``xmldirector.plonecore`` is
@@ -53,23 +66,19 @@ management of Plone.
 Configuration
 -------------
 
-Goto the Plone control panel and click on the ``Exist-DB`` configlet and
+Goto the Plone control panel and click on the ``XML-Director Core`` configlet and
 configure the 
 
-- eXist-db server webdav url e.g. ``http://localhost:6080/existdb/webdav/db``
+- WebDAV URL of eXist-db or BaseX e.g. ``http://localhost:6080/existdb/webdav/db``
 
-  The eXist-db subpath ``/exist/webdav/db`` will be added internally.
+- WebDAV username
 
-- eXist-db username
-
-- eXist-db password
-
-- eXist-db emulation mode. Set the emulation mode to ``webdav`` for the integration of
-  arbitrary WebDAV services.
+- WebDAV password
 
 
 Using xmldirector.plonecore
--------------------
+---------------------------
+
 The package provides a new content-types ``Connector`` that will include
 eXist-db into Plone - either from the top-level collection of your eXist-db
 database or from a subcollection. You can browse and traverse into
@@ -89,17 +98,66 @@ settings).
    XML database eXist-db: you have to set the emulation mode to ``webdav``
    inside the eXist-db control panel of Plone
 
+Dexterity fields
+----------------
+
+``xmldirector.core`` comes with the following Dexterity fields that
+can be either used programmatically in your own field schema or through-the-web.
+
+XMLText
++++++++
+The ``XMLText`` can be used to store *valid* XML content. The field is rendered
+without Plone using the ACE editor. You can perform a client-side XML validation
+within the edit mode of a document by clicking on the ``Validate XML`` button.
+A document with invalid XML content can not be submitted or saved. Invalid XML
+will be rejected with an error message through the edit form.
+
+XMLXPath
+++++++++
+
+The ``XMLXPath`` field can be used to reference an ``XMLText`` field in order
+to display a part of the XML content using an XPath expression.
+
+Example
+
+An ``XMLPath`` field with field name ``myxml`` might contain the following XML
+content::
+
+    <?xml version="1.0"?>
+    <doc>
+        <metadata>
+            <title>This is a text</title>
+        </metdata>
+        <body>....</body>
+    </doc>
+
+In order to extract and display the <title> text within a dedicated Dexterity field
+you can use the following extended expression:
+
+    field=<fieldname>,xpath=<xpath expression>
+
+In this case you would use:
+
+    field=myxml,xpath=/doc/metadata/title/text()
+
+
+XMLBinary, XMLImage
++++++++++++++++++++
+Same as file and image field in Plone but with BaseX or eXist-db as
+storage layer.
+
+
 License
 -------
 This package is published under the GNU Public License V2 (GPL 2)
 
 Source code
 -----------
-See https://github.com/xml-director/xmldirector.plonecore
+See https://bitbucket.org/onkopedia/xmldirector.plonecore
 
 Bugtracker
 ----------
-See https://github.com/xml-director/xmldirector.plonecore/issues
+See https://bitbucket.org/onkopedia/xmldirector.plonecore
 
 Credits
 -------
