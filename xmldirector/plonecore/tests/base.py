@@ -26,9 +26,9 @@ import xmldirector.plonecore
 import plone.app.dexterity
 
 
-EXIST_DB_URL = os.environ.get('EXIST_DB_URL', 'http://localhost:6080/exist/webdav/db')
-EXIST_DB_USERNAME = os.environ.get('EXIST_DB_USERNAME', 'admin')
-EXIST_DB_PASSWORD = os.environ.get('EXIST_DB_PASSWORD', 'admin')
+WEBDAV_URL = os.environ.get('WEBDAV_URL', 'http://localhost:6080/exist/webdav/db')
+WEBDAV_USERNAME = os.environ.get('WEBDAV_USERNAME', 'admin')
+WEBDAV_PASSWORD = os.environ.get('WEBDAV_PASSWORD', 'admin')
 
 
 class PolicyFixture(PloneSandboxLayer):
@@ -59,9 +59,9 @@ class PolicyFixture(PloneSandboxLayer):
 
         registry = getUtility(IRegistry)
         settings = registry.forInterface(IWebdavSettings)
-        settings.webdav_username = unicode(EXIST_DB_USERNAME)
-        settings.webdav_password = unicode(EXIST_DB_PASSWORD)
-        settings.webdav_url = unicode(EXIST_DB_URL)
+        settings.webdav_username = unicode(WEBDAV_USERNAME)
+        settings.webdav_password = unicode(WEBDAV_PASSWORD)
+        settings.webdav_url = unicode(WEBDAV_URL)
 
         self.connector = plone.api.content.create(
             container=portal,

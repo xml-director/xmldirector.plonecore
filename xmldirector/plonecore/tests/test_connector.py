@@ -9,7 +9,7 @@ import os
 import datetime
 from zipfile import ZipFile
 from .base import TestBase
-from .base import EXIST_DB_URL
+from .base import WEBDAV_URL
 import zExceptions
 
 PREFIX = 'testing'
@@ -53,7 +53,7 @@ class BasicTests(TestBase):
     def testCheckWebdavHandle(self):
         handle = self.portal.connector.webdav_handle()
         self.assertEqual(
-            handle.url, EXIST_DB_URL + '/{}/'.format(PREFIX))
+            handle.url, WEBDAV_URL + '/{}/'.format(PREFIX))
 
     def testFileCheck(self):
         handle = self.portal.connector.webdav_handle()
