@@ -39,6 +39,7 @@ setup(name='xmldirector.plonecore',
           'requests',
           'progressbar',
           'fs',
+          'dexml'
           # -*- Extra requirements: -*-
       ],
       tests_require=['zope.testing'],
