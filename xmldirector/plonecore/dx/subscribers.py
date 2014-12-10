@@ -41,14 +41,14 @@ def copied_handler(obj, event):
         return
 
     # create a new storage id 
-    if original.__xml_storage_id__ == copied.__xml_storage_id__:
-        copied.__xml_storage_id__ = str(uuid.uuid4())
+    if util.get_storage_key(original) == util.get_storage_key(copied):
+        util.new_storage_key(copied)
 
         # an copy over XML content from original content object
         handle = getUtility(IWebdavHandle).webdav_handle()
         plone_uid = plone.api.portal.get().getId()
-        storage_dir_original = '{}/{}/{}'.format(plone_uid, original.__xml_storage_id__[-4:], original.__xml_storage_id__)
-        storage_dir_copied = '{}/{}/{}'.format(plone_uid, copied.__xml_storage_id__[-4:], copied.__xml_storage_id__)
-        storage_dir_copied_parent = '{}/{}'.format(plone_uid, copied.__xml_storage_id__[-4:])
+        storage_dir_original = util.get_storage_path(original)
+        storage_dir_copied = util.get_storage_path(copied)
+        storage_dir_copied_parent = util.get_storage_path_parent(copied)
         handle.makedir(storage_dir_copied_parent, True, True)
         handle.copydir(storage_dir_original, storage_dir_copied)

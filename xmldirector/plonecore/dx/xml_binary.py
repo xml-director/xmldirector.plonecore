@@ -22,6 +22,7 @@ from plone.namedfile.field import NamedFile as NamedFileField
 
 from xmldirector.plonecore.i18n import MessageFactory as _
 from xmldirector.plonecore.interfaces import IWebdavHandle
+from xmldirector.plonecore.dx import util
 
 
 ################################################################
@@ -52,11 +53,11 @@ class XMLBinaryDataManager(AttributeDataManager):
     @property
     def storage_key(self):
         plone_uid = plone.api.portal.get().getId()
-        context_id = getattr(self.context, '__xml_storage_id__', None)
+        context_id = util.get_storage_key(self.context)
         if not context_id:
-            context_id = self.context.__xml_storage_id__ = str(uuid.uuid4())
+            context_id = util.new_storage_key(self.context)
         field_id = self.field.__name__
-        return '{}/{}/{}/{}{}'.format(plone_uid, context_id[-4:], context_id, field_id, self.suffix)
+        return '{}/{}{}'.format(util.get_storage_path(self.context), field_id, self.suffix)
 
     def get(self):
         """See z3c.form.interfaces.IDataManager"""

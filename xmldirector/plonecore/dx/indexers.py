@@ -10,6 +10,7 @@ import zope.interface
 from plone.indexer import indexer
 from Products.CMFCore.utils import getToolByName
 
+from xmldirector.plonecore.dx import util
 from xmldirector.plonecore.dx.xpath_field import get_all_fields
 from xmldirector.plonecore.dx.xml_field import XMLFieldDataManager
 from xmldirector.plonecore.dx.xml_field import XMLText
@@ -19,10 +20,8 @@ from xmldirector.plonecore.dx.xml_field import XMLText
 def SearchableText(obj):
     """ Index XML """
 
-    try:
-        obj.__xml_storage_id__
-    except AttributeError:
-        return
+    if not util.is_xml_content(obj):
+        return 
 
     fields = get_all_fields(obj)
 
