@@ -52,5 +52,7 @@ See https://travis-ci.org/xml-director/xmldirector.plonecore
     :target: https://travis-ci.org/xml-director/xmldirector.plonecore
 
 Full documentation 
-.. include:: docs/source/README.rst
+------------------
+
+See https://github.com/xml-director/xmldirector.plonecore/tree/master/docs/source
 
