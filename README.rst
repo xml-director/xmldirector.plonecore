@@ -1,6 +1,14 @@
 xmldirector.plonecore
 =====================
 
+Build status
+------------
+
+See https://travis-ci.org/xml-director/xmldirector.plonecore
+
+.. image:: https://travis-ci.org/xml-director/xmldirector.plonecore.svg?branch=master
+    :target: https://travis-ci.org/xml-director/xmldirector.plonecore
+
 .. note:: This module  
 
   - *is* a solution for mounting XML databases like eXist-db or
@@ -43,13 +51,6 @@ eXist-db providing the following features:
     Dexterity file and image fields (except for the different storage layer)
 
 
-Build status
-------------
-
-See https://travis-ci.org/xml-director/xmldirector.plonecore
-
-.. image:: https://travis-ci.org/xml-director/xmldirector.plonecore.svg?branch=master
-    :target: https://travis-ci.org/xml-director/xmldirector.plonecore
 
 Full documentation 
 ------------------
