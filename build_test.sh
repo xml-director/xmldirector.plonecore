@@ -21,3 +21,4 @@ bin/pip install -U setuptools
 bin/python bootstrap.py -c $config
 bin/buildout -c $config
 bin/test -s xmldirector
+#bin/coverage run bin/test
