@@ -21,8 +21,9 @@ def removal_handler(obj, event):
     handle = getUtility(IWebdavHandle).webdav_handle()
     storage_dir = util.get_storage_path(event.object)
     storage_parent_dir = util.get_storage_path_parent(event.object)
-    handle.removedir(storage_dir, False, True)
-    if handle.isdirempty(storage_parent_dir):
+    if handle.exists(storage_dir):
+        handle.removedir(storage_dir, False, True)
+    if handle.exists(storage_parent_dir) and handle.isdirempty(storage_parent_dir):
         handle.removedir(storage_parent_dir, False, True)
 
 
