@@ -29,7 +29,7 @@ def removal_handler(obj, event):
 
 def copied_handler(obj, event):
     """ Copy XML resources to new object """
-
+    
     # original and copied Dexterity object
     copied = event.object
     original = event.original

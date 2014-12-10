@@ -76,6 +76,9 @@ class BasicTests(TestBase):
 
     def test_copy_paste(self):
 
+        xml = u'<?xml version="1.0" encoding="UTF-8"?>\n<hello>world</hello>'
+        self.doc.xml_set('xml_content', xml)
+
         cb = self.portal.manage_copyObjects(self.doc.getId())
         self.portal.manage_pasteObjects(cb)
         copy_doc = self.portal['copy_of_dok']
