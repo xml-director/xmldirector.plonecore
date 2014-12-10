@@ -56,6 +56,15 @@ further specific application requirements.  Additional functionality can be
 added through Dexterity behaviors, supplementary browser views, event lifecycle
 subscribers and related technology.
 
+
+Requirements
+------------
+
+- Plone 4.3 (Plone 5.0 support in progres)
+- eXist-db 2.2 or higher
+- or Base-X 8.0 beta (no support for V 7.X due to WebDAV
+  bugs)  
+
 Installation
 ------------
 
