@@ -5,7 +5,9 @@
 # (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
+
 import os
+import uuid
 import datetime
 from zipfile import ZipFile
 from .base import TestBase
