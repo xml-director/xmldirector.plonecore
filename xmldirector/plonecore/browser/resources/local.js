@@ -88,14 +88,17 @@ $(document).ready(function() {
 
     // Test connection button for XML Director controlpanel
     var button = $('.template-xmldirector-core-settings #form-buttons-save');
-    var button2 = button.clone();
-    button2.attr('value', 'Test connection');
-    button2.attr('name', 'form-button-test-connection');
-    button2.attr('id', 'form-button-test-connection');
-    button2.attr('type', 'button');
-    button2.insertAfter(button);
-    button2.on('click', function() {
-        window.location.href = '@@xmldirector-connection-test'; 
-    });
-            
+    if (button.length > 0) {
+        var button2 = button.clone();
+        var cancel_button = $('#form-buttons-cancel');
+        button2.attr('value', 'Test connection');
+        button2.attr('name', 'form-button-test-connection');
+        button2.attr('id', 'form-button-test-connection');
+        button2.attr('type', 'button');
+        button2.attr('style', 'margin-left: 1em');
+        button2.insertAfter(cancel_button);
+        button2.on('click', function() {
+            window.location.href = '@@xmldirector-connection-test'; 
+        });
+    }            
 });
