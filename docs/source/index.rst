@@ -1,5 +1,5 @@
-Produce & Publish Plone Client Connector
-========================================
+XML-Director xmldirector.plonecore
+==================================
 
 Contents:
 
