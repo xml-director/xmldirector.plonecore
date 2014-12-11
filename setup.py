@@ -1,7 +1,7 @@
 import os
 from setuptools import setup, find_packages
 
-version = '0.2.11.1'
+version = '0.3.0'
 
 setup(name='xmldirector.plonecore',
       version=version,
@@ -18,7 +18,7 @@ setup(name='xmldirector.plonecore',
           "Framework :: Zope2",
           "Topic :: Software Development :: Libraries :: Python Modules",
       ],
-      keywords='xml-director exist-db basex existdb Plone XML Python WebDAV',
+      keywords='xml-director exist-db basex owncloud alfresco existdb Plone XML Python WebDAV',
       author='Andreas Jung',
       author_email='info@zopyx.com',
       url='http://pypi.python.org/pypi/xmldirector.plonecore',

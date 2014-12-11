@@ -1,8 +1,10 @@
 Changelog
 =========
 
-0.3.0 (unreleased)
+0.3.0 (2014-12-11)
 ------------------
+
+- renamed zopyx.existdb to xmldirector.plonecore
 - experimental Dexterity support with four new fields:
 
   - XMLText - for XML content
@@ -14,10 +16,6 @@ Changelog
 - removed ``emulation`` configuration option
 - added plone.app.dexterity as dependency
 - upgraded to ACE editor V 1.1.8
-
-
-0.2.12 (unreleased)
--------------------
 - added progressbar for zip_upload()
 - added support for importing a single file through the 
   ZIP import form into the current subdirectory
