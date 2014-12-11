@@ -4,6 +4,8 @@ Changelog
 0.3.1 (unreleased)
 ------------------
 - added ``Test connection`` button to controlpanel
+- moved test content type into a dedicated profile
+  ``democontent``
 
 0.3.0 (2014-12-11)
 ------------------
