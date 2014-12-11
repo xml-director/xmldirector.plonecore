@@ -10,11 +10,12 @@ from xmldirector.plonecore.dx.xml_field import XMLText
 from xmldirector.plonecore.dx.xml_field import XMLFieldDataManager
 from xmldirector.plonecore.dx.xml_image import XMLImage
 from xmldirector.plonecore.dx.xml_image import XMLImageDataManager
-from xmldirector.plonecore.dx.xml_binary  import XMLBinary
-from xmldirector.plonecore.dx.xml_binary  import XMLBinaryDataManager
+from xmldirector.plonecore.dx.xml_binary import XMLBinary
+from xmldirector.plonecore.dx.xml_binary import XMLBinaryDataManager
 
 
 _marker = object
+
 
 def datamanager_for_field(context, fieldname, value=_marker):
 

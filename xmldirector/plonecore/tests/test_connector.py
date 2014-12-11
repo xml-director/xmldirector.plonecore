@@ -57,7 +57,6 @@ class BasicTests(TestBase):
 
     def testFileCheck(self):
         handle = self.portal.connector.webdav_handle()
-        import pdb; pdb.set_trace() 
         self.assertEqual(handle.exists('foo/index.html'), True)
         self.assertEqual(handle.exists('foo/index.xml'), True)
         self.assertEqual(handle.exists('foo/xxxx.html'), False)

@@ -12,6 +12,7 @@ from .base import TestBase
 from xmldirector.plonecore.dx import util
 from xmldirector.plonecore.dx.xpath_field import get_all_fields
 
+
 class BasicTests(TestBase):
 
     def setUp(self):
@@ -25,7 +26,7 @@ class BasicTests(TestBase):
         self.assertEqual('xml_binary' in fields, True)
         self.assertEqual('xml_image' in fields, True)
 
-    def test_set_with_valid_xml(self): 
+    def test_set_with_valid_xml(self):
         xml = u'<?xml version="1.0" encoding="UTF-8"?>\n<hello>world</hello>'
         self.doc.xml_set('xml_content', xml)
         xml2 = self.doc.xml_get('xml_content')
@@ -53,7 +54,7 @@ class BasicTests(TestBase):
         named_image.contentType = 'image/jpg'
         self.doc.xml_set('xml_image', named_image)
 
-        named_image2= self.doc.xml_get('xml_image')
+        named_image2 = self.doc.xml_get('xml_image')
         self.assertEqual(named_image2.data, img_data)
         self.assertEqual(named_image2.filename, u'test.jpg')
         self.assertEqual(named_image2.contentType, 'image/jpg')
@@ -63,7 +64,7 @@ class BasicTests(TestBase):
         from plone.namedfile import NamedFile
 
         img_data = open(os.path.join(os.path.dirname(__file__), 'sample.jpg'), 'rb').read()
-        named_file= NamedFile()
+        named_file = NamedFile()
         named_file.data = img_data
         named_file.filename = u'test.jpg'
         named_file.contentType = 'image/jpg'
@@ -89,7 +90,7 @@ class BasicTests(TestBase):
         xml = u'<?xml version="1.0" encoding="UTF-8"?>\n<hello>world</hello>'
         self.doc.xml_set('xml_content', xml)
 
-        cb = self.portal.manage_delObjects(self.doc.getId())
+        self.portal.manage_delObjects(self.doc.getId())
         self.assertEqual('dok' not in self.portal.objectIds(), True)
 
 
