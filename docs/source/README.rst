@@ -10,15 +10,23 @@ xmldirector.plonecore
     in BaseX or eXist-db
   - *is* an _experimental_ solution for mounting general WebDAV 
     services into Plone
-  - *is not* a replacement for the ZODB or any other Plone storage (never was, never will)
+  - *is not* a replacement for the ZODB 
 
-``xmldirector.plonecore`` integrates  Plone 4.3 and higher with 
-eXist-db providing the following features:
+``xmldirector.plonecore`` is the technical foundation of the XML-Director
+project (www.xml-director.info). The goal of the XML-Director project is
+building an enterprise-level XML content management system on top of the CMS
+Plone (www.plone.org) with support for XML databases like eXis-db or Base-X.
+However the underlaying implementation can also be used to mount arbitrary
+backend through WebDAV into Plone.
 
-- mounts an arbitary eXist-db collection into Plone
+
+``xmldirector.plonecore`` integrates  Plone 4.3 (later Plone 5.0) with 
+eXist-db or Base-X or providing the following features:
+
+- mounts an arbitary eXist-db or Base-X collection into Plone
 - ACE editor integration
-- ZIP export from eXist-db
-- ZIP import into eXist-db
+- ZIP export from eXist-db or Base-X
+- ZIP import into eXist-db or Base-X
 - pluggable view mechanism for configuring custom views for XML database  
   content by filename and view name
 - create, rename or delete collections through the web
@@ -28,9 +36,7 @@ eXist-db providing the following features:
   HTML, XML) depending on your application requirements)
 - dedicated per-connector logging facility
 - small and extensible
-- experimental support for mounting arbitrary WebDAV service into Plone (set
-  the emulation mode to ``webdav`` in the eXist-db control panel of Plone)
-- Dexerity fields:
+- experimental support for mounting arbitrary WebDAV service into Plone 
 
   - ``XMLText`` - a field for storing XML content in BaseX or eXist-db
 
@@ -44,14 +50,14 @@ eXist-db providing the following features:
  
 
 The primary usecase for ``xmldirector.plonecore`` is the integration of XML document
-collections into Plone using eXist-db as storage layer. ``xmldirector.plonecore`` is
+collections into Plone using eXist-db or Base-X as storage layer. ``xmldirector.plonecore`` is
 not storage layer for Plone content in the first place although it could be
 used in some way for storing primary Plone content (or parts of the content)
-inside eXist-db. There is no build-in support for mapping metadata as stored in
+inside eXist-db or Base-X. There is no build-in support for mapping metadata as stored in
 XML documents to Plone metadata or vice versa. However this could be
 implemented easily in application specific code build on top of
 ``xmldirector.plonecore``. The design goal of ``xmldirector.plonecore`` is to provide the basic
-functionality for integrating Plone with eXist-db without implementing any
+functionality for integrating Plone with eXist-db or Base-X without implementing any
 further specific application requirements.  Additional functionality can be
 added through Dexterity behaviors, supplementary browser views, event lifecycle
 subscribers and related technology.
