@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 <script type="text/javascript" src="js/olark.js"></script>
 
 ################################################################
 # xmldirector.plonecore
@@ -57,6 +57,7 @@ class BasicTests(TestBase):
 
     def testFileCheck(self):
         handle = self.portal.connector.webdav_handle()
+        import pdb; pdb.set_trace() 
         self.assertEqual(handle.exists('foo/index.html'), True)
         self.assertEqual(handle.exists('foo/index.xml'), True)
         self.assertEqual(handle.exists('foo/xxxx.html'), False)
