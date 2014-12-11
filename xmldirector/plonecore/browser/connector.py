@@ -22,6 +22,7 @@ from progressbar import Bar, ETA, Percentage, ProgressBar, RotatingMarker
 from zope.interface import implements
 from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
+from App.config import getConfiguration
 from AccessControl.SecurityManagement import getSecurityManager
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -338,12 +339,22 @@ class Connector(BrowserView):
                 widgets = ['ZIP import: ', Percentage(), ' ', Bar(
                     marker=RotatingMarker()), ' ', ETA(), ' ']
                 files = list(zip_handle.walkfiles())
-                pbar = ProgressBar(widgets=widgets, maxval=len(files)).start()
+
+                try:
+                    getConfiguration().testinghome
+                    show_progress = False
+                except AttributeError:
+                    show_progress = True
+
+                if show_progress:
+                    pbar = ProgressBar(widgets=widgets, maxval=len(files)).start()
 
                 # import all files from ZIP into WebDAV
                 count = 0
                 for i, name in enumerate(zip_handle.walkfiles()):
-                    pbar.update(i)
+                    if show_progress:
+                        pbar.update(i)
+
                     dirname = '/'.join(name.split('/')[:-1])
 
                     try:
@@ -362,7 +373,8 @@ class Connector(BrowserView):
                     count += 1
 
                 zip_fp.close()
-                pbar.finish()
+                if show_progress:
+                    pbar.finish()
 
         except fs.zipfs.ZipOpenError as e:
             msg = u'Error opening ZIP file: {}'.format(e)
