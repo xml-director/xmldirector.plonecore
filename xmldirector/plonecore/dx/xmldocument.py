@@ -33,6 +33,7 @@ class IXMLDocument(model.Schema):
 
     xml_xpath = XMLXPath(
         title=_(u'XML XPath expression'),
+        description=_(u'Format: field=<fieldname>,xpath=<xpath expression>'),
         required=False
     )
 
