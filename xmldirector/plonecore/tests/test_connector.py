@@ -12,7 +12,7 @@ from .base import TestBase
 from .base import WEBDAV_URL
 import zExceptions
 
-PREFIX = 'testing'
+PREFIX = 'testing-{}'.format(uuid.uuid4())
 
 
 class BasicTests(TestBase):
