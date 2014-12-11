@@ -67,9 +67,18 @@ Requirements
 ------------
 
 - Plone 4.3 (Plone 5.0 support in progres)
-- eXist-db 2.2 or higher
-- or Base-X 8.0 beta (no support for V 7.X due to WebDAV
-  bugs)  
+
+- Supported XML backends:
+
+    - eXist-db 2.2 or higher
+
+    - or Base-X 8.0 beta (no support for V 7.X due to WebDAV bugs)  
+
+- (un)supported/experimental WebDAV backends:
+
+    - OwnCloud
+    
+    - Alfresco
 
 Installation
 ------------
@@ -104,7 +113,7 @@ Using xmldirector.plonecore
 ---------------------------
 
 The package provides a new content-types ``Connector`` that will include
-eXist-db into Plone - either from the top-level collection of your eXist-db
+eXist-db or Base-X into Plone - either from the top-level collection of your eXist-db/Base-X
 database or from a subcollection. You can browse and traverse into
 subcollections, view single documents or edit text-ish content through the web
 (using the build-in ACE editor integration).
