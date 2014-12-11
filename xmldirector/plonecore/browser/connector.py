@@ -31,7 +31,7 @@ from xmldirector.plonecore.i18n import MessageFactory as _
 
 from .view_registry import precondition_registry
 
-from . import connector_views  # needed to initalize the registry
+from . import connector_views  # NOQA - needed to initalize the registry
 from . import config
 
 LOG = logging.getLogger('xmldirector.plonecore')

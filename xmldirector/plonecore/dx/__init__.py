@@ -1,3 +1,3 @@
 # placeholder
 
-import xmldocument
+import xmldocument  # NOQA
