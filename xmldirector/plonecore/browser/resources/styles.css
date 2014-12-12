@@ -138,3 +138,13 @@ a.file[href$='.docx']:before {
 input.xmlxpath-field {
     width: 80% !important;
 }
+
+#connection-test .info {
+    color: green;
+    font-weight: bold;
+}
+
+#connection-test .error {
+    color: red;
+    font-weight: bold;
+}
