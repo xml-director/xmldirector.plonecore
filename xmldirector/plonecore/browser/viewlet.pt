@@ -1,5 +1,5 @@
 <tal:def define="info view/info">
-    <div tal:condition="info">
+    <div tal:condition="info" style="color: #bbb">
         <hr/>
         <ul tal:define="info view/info">
             <li>Storage key: <span tal:content="info/storage_key" /></li>
