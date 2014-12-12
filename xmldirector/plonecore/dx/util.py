@@ -4,8 +4,10 @@
 # (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
+
 import uuid
 import plone.api
+from datetime import datetime
 from Acquisition import aq_base, aq_inner
 
 
@@ -55,3 +57,19 @@ def get_storage_path_parent(context):
     storage_key = get_storage_key(context)
     plone_uid = plone.api.portal.get().getId()
     return '{}/{}'.format(plone_uid, storage_key[-4:])
+
+
+def metadata_to_xml(metadata):
+
+    xml = [u'<xmldirector-metadata>',
+           u'<value name="modified" type="iso8601">{}</value>'.format(datetime.utcnow().isoformat())]
+    for k, v in metadata.items():
+        if k == 'sha256':
+            xml.append(u'<value name="sha256" type="sha256">{}</value>'.format(v))
+        elif k in ('filename', 'contenttype'):
+            xml.append(u'<value name="{}" type="{}">{}</value>'.format(k, k, v))
+
+    xml.append(u'<xmldirector-metadata>')
+    import pdb; pdb.set_trace() 
+    return u'\n'.join(xml)
+
