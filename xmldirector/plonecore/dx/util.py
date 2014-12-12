@@ -4,8 +4,9 @@
 # (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
-
 import uuid
+import lxml.etree
+import dateutil
 import plone.api
 from datetime import datetime
 from Acquisition import aq_base, aq_inner
@@ -60,6 +61,7 @@ def get_storage_path_parent(context):
 
 
 def metadata_to_xml(context, metadata):
+    """ Convert dict with metadata into a metadata.xml file """
 
     xml = [u'<xmldirector-metadata>',
            u'<value name="modified" type="iso8601">{}</value>'.format(datetime.utcnow().isoformat()),
@@ -74,3 +76,17 @@ def metadata_to_xml(context, metadata):
     xml.append(u'</xmldirector-metadata>')
     return u'\n'.join(xml)
 
+
+def xml_to_metadata(xml):
+    """ Convert metadata.xml back to a dict """
+
+    root = lxml.etree.fromstring(xml)
+    result = {}
+    for node in root.xpath('//value'):
+        name = node.attrib['name']
+        node_type= node.attrib['type']
+        if name =='modified':
+            result[name] = dateutil.parser.parse(node.text)
+        else:
+            result[name] = unicode(node.text)
+    return result

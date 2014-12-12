@@ -6,6 +6,9 @@ Changelog
 - added ``Test connection`` button to controlpanel
 - moved test content type into a dedicated profile
   ``democontent``
+- Moved metadata handling from JSON to XML on the storage
+  layer in order to let the underlaying database index
+  the .metadata.xml files as well
 
 0.3.0 (2014-12-11)
 ------------------

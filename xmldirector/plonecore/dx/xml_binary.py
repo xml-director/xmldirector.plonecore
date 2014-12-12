@@ -67,7 +67,7 @@ class XMLBinaryDataManager(AttributeDataManager):
             with handle.open(storage_key, 'rb') as fp:
                 with handle.open(storage_key + '.metadata.xml', 'rb') as fp_metadata:
                     data = fp.read()
-                    metadata = util.xml_to_metadata(fp_metadata)
+                    metadata = util.xml_to_metadata(fp_metadata.read())
 
             if hashlib.sha256(data).hexdigest() != metadata['sha256']:
                 raise ValueError(

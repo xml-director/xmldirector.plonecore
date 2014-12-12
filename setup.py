@@ -38,6 +38,7 @@ setup(name='xmldirector.plonecore',
           'plone.api',
           'requests',
           'progressbar',
+          'dateutil',
           'fs',
           'dexml'
           # -*- Extra requirements: -*-
