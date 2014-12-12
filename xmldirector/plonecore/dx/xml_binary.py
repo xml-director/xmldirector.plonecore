@@ -3,7 +3,6 @@
 # (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
-import json
 import os
 import hashlib
 import plone.api
@@ -66,9 +65,9 @@ class XMLBinaryDataManager(AttributeDataManager):
         storage_key = self.storage_key
         if handle.exists(storage_key):
             with handle.open(storage_key, 'rb') as fp:
-                with handle.open(storage_key + '.metadata.json', 'rb') as fp_metadata:
+                with handle.open(storage_key + '.metadata.xml', 'rb') as fp_metadata:
                     data = fp.read()
-                    metadata = json.load(fp_metadata)
+                    metadata = util.xml_to_metadata(fp_metadata)
 
             if hashlib.sha256(data).hexdigest() != metadata['sha256']:
                 raise ValueError(
@@ -98,6 +97,6 @@ class XMLBinaryDataManager(AttributeDataManager):
                         filename=value.filename,
                         contenttype=value.contentType)
         with handle.open(storage_key, 'wb') as fp:
-            with handle.open(storage_key + '.metadata.json', 'wb') as fp_metadata:
+            with handle.open(storage_key + '.metadata.xml', 'wb') as fp_metadata:
                 fp.write(value.data)
-                fp_metadata.write(json.dumps(metadata))
+                fp_metadata.write(util.metadata_to_xml(context=self.context, metadata=metadata))

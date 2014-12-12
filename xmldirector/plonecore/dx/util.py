@@ -59,17 +59,18 @@ def get_storage_path_parent(context):
     return '{}/{}'.format(plone_uid, storage_key[-4:])
 
 
-def metadata_to_xml(metadata):
+def metadata_to_xml(context, metadata):
 
     xml = [u'<xmldirector-metadata>',
-           u'<value name="modified" type="iso8601">{}</value>'.format(datetime.utcnow().isoformat())]
+           u'<value name="modified" type="iso8601">{}</value>'.format(datetime.utcnow().isoformat()),
+           u'<value name="plone-path" type="string">{}</value>'.format('/'.join(context.getPhysicalPath())),
+           u'<value name="plone-uid" type="string">{}</value>'.format(context.UID()),
+           ]
     for k, v in metadata.items():
         if k == 'sha256':
             xml.append(u'<value name="sha256" type="sha256">{}</value>'.format(v))
         elif k in ('filename', 'contenttype'):
             xml.append(u'<value name="{}" type="{}">{}</value>'.format(k, k, v))
-
-    xml.append(u'<xmldirector-metadata>')
-    import pdb; pdb.set_trace() 
+    xml.append(u'</xmldirector-metadata>')
     return u'\n'.join(xml)
 

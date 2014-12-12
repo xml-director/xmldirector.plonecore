@@ -4,7 +4,6 @@
 ################################################################
 
 import os
-import json
 import hashlib
 import plone.api
 import lxml.etree
@@ -99,9 +98,9 @@ class XMLFieldDataManager(z3c.form.datamanager.AttributeField):
         storage_key = self.storage_key
         if handle.exists(storage_key):
             with handle.open(storage_key, 'rb') as fp:
-                with handle.open(storage_key + '.metadata.json', 'rb') as fp_metadata:
+                with handle.open(storage_key + '.metadata.xml', 'rb') as fp_metadata:
                     xml = fp.read()
-                    metadata = json.loads(fp_metadata.read())
+                    metadata = util.xml_to_metadata(fp_metadata.read())
             if xml_hash(xml) != metadata['sha256']:
                 raise ValueError('Hashes for {} differ'.format(storage_key))
             return xml
@@ -117,9 +116,7 @@ class XMLFieldDataManager(z3c.form.datamanager.AttributeField):
         value_utf8 = normalize_xml(value)
         value_sha256 = xml_hash(value_utf8)
         with handle.open(storage_key, 'wb') as fp:
-            with handle.open(storage_key + '.metadata.json', 'wb') as fp_metadata:
-                with handle.open(storage_key + '.metadata.xml', 'wb') as fp_metadata_xml:
-                    fp.write(value_utf8)
-                    metadata = dict(sha256=value_sha256)
-                    fp_metadata.write(json.dumps(metadata))
-                    fp_metadata_xml.write(util.metadata_to_xml(metadata))
+            with handle.open(storage_key + '.metadata.xml', 'wb') as fp_metadata_xml:
+                fp.write(value_utf8)
+                metadata = dict(sha256=value_sha256)
+                fp_metadata_xml.write(util.metadata_to_xml(context=self.context, metadata=metadata))
