@@ -29,26 +29,32 @@ class IWebdavSettings(Interface):
         title=_(u'WebDAV server url'),
         description=_(u'WebDAV base url'),
         default=u'http://localhost:6080/exist/webdav/db',
-        required=True,
+        required=True
     )
 
     webdav_dexterity_subpath = schema.TextLine(
         title=_(u'Dexterity WebDAV subpath'),
         description=_(u'Subpath inside WebDAV for Dexterity content'),
         default=u'',
-        required=False,
+        required=False
     )
 
     webdav_username = schema.TextLine(
         title=_(u'WebDAV username'),
         description=_(u'WebDAV username'),
         default=u'admin',
-        required=True,
+        required=True
     )
 
     webdav_password = schema.Password(
         title=_(u'WebDAV password'),
         description=_(u'WebDAV password'),
         default=u'',
-        required=True,
+        required=True
+    )
+    
+    versioning_enabled = schema.Bool(
+        title=_(u'Versioning enabled'),
+        description=_(u'Versioning enabled'),
+        default=False
     )

@@ -11,6 +11,7 @@ from .base import TestBase
 
 from xmldirector.plonecore.dx import util
 from xmldirector.plonecore.dx.xpath_field import get_all_fields
+from xmldirector.plonecore.dx.xpath_field import get_all_xml_fields
 
 
 class BasicTests(TestBase):
@@ -25,6 +26,12 @@ class BasicTests(TestBase):
         self.assertEqual('xml_xpath' in fields, True)
         self.assertEqual('xml_binary' in fields, True)
         self.assertEqual('xml_image' in fields, True)
+
+        xml_fields = get_all_xml_fields(self.doc)
+        field_names = set(f.getName() for f in xml_fields)
+        self.assertEqual('xml_binary' in field_names, True)
+        self.assertEqual('xml_content' in field_names, True)
+        self.assertEqual('xml_image' in field_names, True)
 
     def test_set_with_valid_xml(self):
         xml = u'<?xml version="1.0" encoding="UTF-8"?>\n<hello>world</hello>'

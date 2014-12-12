@@ -103,7 +103,11 @@
         handler=".subscribers.copied_handler"
     />
 
-    <!-- Indexer adapter(s) -->
+    <subscriber
+        for="* 
+             zope.lifecycleevent.IObjectModifiedEvent"
+        handler=".subscribers.version_handler"
+    />
 
     <adapter name="SearchableText" factory=".indexers.SearchableText" />
 

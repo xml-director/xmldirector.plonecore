@@ -6,8 +6,14 @@
 ################################################################
 
 from zope.component import getUtility
-from xmldirector.plonecore.interfaces import IWebdavHandle
+from plone.registry.interfaces import IRegistry
 from xmldirector.plonecore.dx import util
+from xmldirector.plonecore.dx.xpath_field import get_all_xml_fields
+from xmldirector.plonecore.dx.dexterity_base import xml_get
+from xmldirector.plonecore.dx.dexterity_base import xml_set
+from xmldirector.plonecore.interfaces import IWebdavSettings
+from xmldirector.plonecore.interfaces import IWebdavHandle
+
 
 
 def removal_handler(obj, event):
@@ -49,3 +55,26 @@ def copied_handler(obj, event):
         storage_dir_copied_parent = util.get_storage_path_parent(copied)
         handle.makedir(storage_dir_copied_parent, True, True)
         handle.copydir(storage_dir_original, storage_dir_copied)
+
+
+def version_handler(obj, event):
+    """ Copy XML resources to new object """
+
+    # Is this Dexterity content object related to XML resources?
+    if not util.is_xml_content(event.object):
+        return
+
+    registry = getUtility(IRegistry)
+    settings = registry.forInterface(IWebdavSettings)
+    if not settings.versioning_enabled:
+        return
+
+    context = event.object
+    handle = getUtility(IWebdavHandle).webdav_handle()
+    storage_path = util.get_storage_path(context)
+
+    for field in get_all_xml_fields(context):
+        content = xml_get(context, field.getName())
+        print field
+        print content
+

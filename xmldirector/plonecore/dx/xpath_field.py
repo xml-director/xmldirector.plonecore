@@ -27,6 +27,9 @@ import plone.supermodel.exportimport
 from plone.schemaeditor.fields import FieldFactory
 
 from xmldirector.plonecore.i18n import MessageFactory as _
+from xmldirector.plonecore.dx.xml_field import XMLText
+from xmldirector.plonecore.dx.xml_image import XMLImage
+from xmldirector.plonecore.dx.xml_binary import XMLBinary
 
 
 regex = re.compile('field=([\w]*),xpath=(.*)', re.UNICODE)
@@ -61,6 +64,12 @@ def get_all_fields(context):
                       for name in behavior_schema)
 
     return fields
+
+def get_all_xml_fields(context):
+    """ Return all XML-ish field of given context object """
+
+    fields = get_all_fields(context)
+    return [field for field in fields.values() if isinstance(field, (XMLText, XMLBinary, XMLImage))]
 
 
 ################################################################
