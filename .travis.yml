@@ -25,3 +25,9 @@ notifications:
     - irc.freenode.org#sprint
     template:
     - '%{repository}/#%{build_number}/%{branch} (%{author}): %{message} %{build_url}'
+
+after_script:
+- ls $HOME
+- ls -la $HOME/.buildout
+- ls -la $HOME/.buildout/eggs
+
