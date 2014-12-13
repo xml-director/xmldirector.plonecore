@@ -1,27 +1,27 @@
 sudo: false
-language:  python
-
+language: python
 python:
-  - "2.7"
-
+- '2.7'
 env:
+  matrix:
   - PLONE_VERSION=plone-4.3
+  global:
+    secure: W2O1Nhru3ZqgoUZuKf1NxnOfsmM4GzD+xSadM4HhetN1V3oNWrJ4gYnIaJ7wK3qWv8zcwKcWj0KtXETnSOIfyEEn3RS+5Y3l1Ltl3AnRz2vdwKWjeJut+xHcyEfLpUaouIp2JTu96xnMcO8qvWGKnX5jHDTXaIHNq5BKUZtQi/U=
+
+
+cache:
+  directories:
+    - .buildout
 
 matrix:
   include:
-    - python: 2.7
-      env: PLONE_VERSION=plone-5.0
-
-script: 
-  -  bash build_test.sh $PLONE_VERSION
-
-#after_success:
-#  - pip install coveralls
-#  - coveralls
-
+  - python: 2.7
+    env: PLONE_VERSION=plone-5.0
+script:
+- bash build_test.sh $PLONE_VERSION
 notifications:
   irc:
     channels:
-      - "irc.freenode.org#sprint"
+    - irc.freenode.org#sprint
     template:
-      - "%{repository}/#%{build_number}/%{branch} (%{author}): %{message} %{build_url}"
+    - '%{repository}/#%{build_number}/%{branch} (%{author}): %{message} %{build_url}'
