@@ -4,9 +4,14 @@ export PATH=\
 /opt/buildout.python/bin:\
 $PATH:
 
+mkdir -p ../.buildout/eggs
+mkdir -p ../.buildout/cache
+mkdir -p ../.buildout/downloads
+
 if [[ "$1" = "plone-4.3" ]]
 then
     config=buildout-plone-4.3.cfg
+    config=travis.cfg
 fi
 
 if [[ "$1" = "plone-5.0" ]]
