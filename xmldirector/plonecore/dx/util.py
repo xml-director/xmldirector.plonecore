@@ -63,10 +63,15 @@ def get_storage_path_parent(context):
 def metadata_to_xml(context, metadata):
     """ Convert dict with metadata into a metadata.xml file """
 
+    try:
+        uid = context.UID()
+    except TypeError: 
+        uid = ''
+
     xml = [u'<xmldirector-metadata>',
            u'<value name="modified" type="iso8601">{}</value>'.format(datetime.utcnow().isoformat()),
            u'<value name="plone-path" type="string">{}</value>'.format('/'.join(context.getPhysicalPath())),
-           u'<value name="plone-uid" type="string">{}</value>'.format(context.UID()),
+           u'<value name="plone-uid" type="string">{}</value>'.format(uid),
            ]
     for k, v in metadata.items():
         if k == 'sha256':
