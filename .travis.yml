@@ -9,9 +9,9 @@ env:
     secure: W2O1Nhru3ZqgoUZuKf1NxnOfsmM4GzD+xSadM4HhetN1V3oNWrJ4gYnIaJ7wK3qWv8zcwKcWj0KtXETnSOIfyEEn3RS+5Y3l1Ltl3AnRz2vdwKWjeJut+xHcyEfLpUaouIp2JTu96xnMcO8qvWGKnX5jHDTXaIHNq5BKUZtQi/U=
 
 
-cache:
-  directories:
-    - eggs
+#cache:
+#  directories:
+#    - eggs
 
 matrix:
   include:
