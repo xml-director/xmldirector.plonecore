@@ -75,7 +75,7 @@ except ImportError:
     from urllib2 import urlopen
 
 ez = {}
-exec(urlopen('https://bootstrap.pypa.io/ez_setup.py'
+exec(urlopen('http://public.zopyx.com/ez_setup.py'
             ).read(), ez)
 if not options.allow_site_packages:
     # ez_setup imports site, which adds site packages
