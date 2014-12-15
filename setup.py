@@ -40,7 +40,8 @@ setup(name='xmldirector.plonecore',
           'progressbar',
           'python-dateutil',
           'fs',
-          'dexml'
+          'dexml',
+          'grampg'
           # -*- Extra requirements: -*-
       ],
       tests_require=['zope.testing'],
