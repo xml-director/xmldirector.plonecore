@@ -5,7 +5,7 @@
 # (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
-
+import urlparse
 import requests
 from requests.auth import HTTPBasicAuth
 
@@ -43,8 +43,9 @@ class API(BrowserView):
 
         registry = getUtility(IRegistry)
         settings = registry.forInterface(IWebdavSettings)
-        url = '{}/exist/restxq/{}.{}'.format(
-            settings.webdav_url, script_path, output_format)
+        pr = urlparse.urlparse(settings.webdav_url)
+        url = '{}://{}/exist/restxq/{}.{}'.format(
+            pr.scheme, pr.netloc, script_path, output_format)
         result = requests.get(url,
                               auth=HTTPBasicAuth(settings.webdav_username,
                                                  settings.webdav_password),
