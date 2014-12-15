@@ -75,8 +75,8 @@ except ImportError:
     from urllib2 import urlopen
 
 ez = {}
-exec(urlopen('http://public.zopyx.com/ez_setup.py'
-             ).read(), ez)
+exec(urlopen('https://bootstrap.pypa.io/ez_setup.py'
+            ).read(), ez)
 if not options.allow_site_packages:
     # ez_setup imports site, which adds site packages
     # this will remove them from the path to ensure that incompatible versions
@@ -113,7 +113,7 @@ find_links = os.environ.get(
     options.find_links or
     ('http://downloads.buildout.org/'
      if options.accept_buildout_test_releases else None)
-)
+    )
 if find_links:
     cmd.extend(['-f', find_links])
 
