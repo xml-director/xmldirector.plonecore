@@ -36,12 +36,9 @@ def normalize_xml(xml):
 
 def xml_hash(xml):
     """ Get a stable SHA256 hash from XML string """
-    xml = normalize_xml(xml)
-    # remove XML preamble
-    if xml.startswith('<?xml'):
-        xml = xml[xml.find('?>') + 2:]
-        xml = xml.lstrip('\n')
-    return hashlib.sha256(xml).hexdigest()
+    root = lxml.etree.fromstring(xml)
+    nodes = [unicode(node.tag) for node in root.iter()]
+    return hashlib.sha256(u''.join(nodes)).hexdigest()
 
 
 ################################################################

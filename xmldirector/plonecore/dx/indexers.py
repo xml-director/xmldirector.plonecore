@@ -32,5 +32,7 @@ def SearchableText(obj):
             for node in root.iter():
                 text = node.text.strip()
                 if text:
+                    if not isinstance(text, unicode):
+                        text = unicode(text, 'utf8')
                     result.append(text)
-            return unicode(' '.join(result), 'utf-8')
+            return u' '.join(result)
