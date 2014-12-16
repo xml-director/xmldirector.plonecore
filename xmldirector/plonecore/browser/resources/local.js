@@ -27,7 +27,7 @@ $(document).ready(function() {
         $(this).after('<div class="xml-editor-chars" id="' + id + '-chars"></div>');
         $(this).after('<span  class="xml-editor-validation-msg" id="' + id + '-validate" data-index="' + num_editors + '"></span>');
         $(this).after('<a class="xml-editor-validate-server" id="' + id + '-validate-server" data-index="' + num_editors + '"><button class="xml-editor">Validate XML (Server)</button></a>');
-        $(this).after('<a class="xml-editor-validate" id="' + id + '-validate" data-index="' + num_editors + '"><button class="xml-editor">Validate XML</button></a>');
+        $(this).after('<a class="xml-editor-validate" id="' + id + '-validate" data-index="' + num_editors + '"><button class="xml-editor">Validate XML (Client)</button></a>');
         $(this).after('<a class="xml-editor-clear" id="' + id + '-clear" data-index="' + num_editors + '"><button class="xml-editor">Clear content </button></a>');
         $(this).after('<div class="xml-editor" id="' + id + '-editor" style="width: 80%; min-height: 200px; height: 400px; max-height: 400px"></div>')
         var editor = ace.edit(id + '-editor');

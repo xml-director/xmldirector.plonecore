@@ -11,6 +11,7 @@ Changelog
   the .metadata.xml files as well
 - SHA256 calculation for xml content now generated in 
   a more stable way (but possibly much slower way)
+- API for service-side XML validation
 
 0.3.0 (2014-12-11)
 ------------------
