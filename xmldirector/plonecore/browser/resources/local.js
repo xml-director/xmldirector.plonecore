@@ -26,6 +26,7 @@ $(document).ready(function() {
         var id = $(this).attr('id');
         $(this).after('<div class="xml-editor-chars" id="' + id + '-chars"></div>');
         $(this).after('<span  class="xml-editor-validation-msg" id="' + id + '-validate" data-index="' + num_editors + '"></span>');
+        $(this).after('<a class="xml-editor-validate-server" id="' + id + '-validate-server" data-index="' + num_editors + '"><button class="xml-editor">Validate XML (Server)</button></a>');
         $(this).after('<a class="xml-editor-validate" id="' + id + '-validate" data-index="' + num_editors + '"><button class="xml-editor">Validate XML</button></a>');
         $(this).after('<a class="xml-editor-clear" id="' + id + '-clear" data-index="' + num_editors + '"><button class="xml-editor">Clear content </button></a>');
         $(this).after('<div class="xml-editor" id="' + id + '-editor" style="width: 80%; min-height: 200px; height: 400px; max-height: 400px"></div>')
@@ -72,28 +73,46 @@ $(document).ready(function() {
     }
 
     $('.xml-editor-validate').on('click', function(e) {
-            e.preventDefault();
-            var index = $(this).data('index');
-            var editor = editors[index];
-            var xml = editor.getSession().getValue();
-            try {
-                $.parseXML(xml);
+        e.preventDefault();
+        var index = $(this).data('index');
+        var editor = editors[index];
+        var xml = editor.getSession().getValue();
+        try {
+            $.parseXML(xml);
+            var msg = 'XML is OK';
+            $(this).siblings('.xml-editor-validation-msg').text(msg).removeClass('status-error').addClass('status-ok');
+        } catch(e) {
+            var msg = 'Error in XML';
+            $(this).siblings('.xml-editor-validation-msg').text(msg).removeClass('status-ok').addClass('status-error');
+        }
+    });
+
+    $('.xml-editor-validate-server').on('click', function(e) {
+        e.preventDefault();
+        var this_clicked = $(this);
+        var index = $(this).data('index');
+        var editor = editors[index];
+        var xml = editor.getSession().getValue();
+        $.post('@@api-validate-xml', {xml: xml}, function(data, textStatus, jqXHR) {
+            var result = $.parseJSON(data);
+            if (result.length == 0) {
                 var msg = 'XML is OK';
-                $(this).siblings('.xml-editor-validation-msg').text(msg).removeClass('status-error').addClass('status-ok');
-            } catch(e) {
-                var msg = 'Error in XML';
-                $(this).siblings('.xml-editor-validation-msg').text(msg).removeClass('status-ok').addClass('status-error');
+                this_clicked.siblings('.xml-editor-validation-msg').text(msg).removeClass('status-error').addClass('status-ok');
+            } else {
+                var msg = 'Error in XML (' + data + ')';
+                this_clicked.siblings('.xml-editor-validation-msg').text(msg).removeClass('status-ok').addClass('status-error');
             }
+        }); 
     });
 
     $('.xml-editor-clear').on('click', function(e) {
-            e.preventDefault();
-            var index = $(this).data('index');
-            var editor = editors[index];
-            var xml = editor.getSession().getValue();
-            if (confirm('Do you really to remove the XML content')) {
-                editor.setValue('');
-            }
+        e.preventDefault();
+        var index = $(this).data('index');
+        var editor = editors[index];
+        var xml = editor.getSession().getValue();
+        if (confirm('Do you really to remove the XML content')) {
+            editor.setValue('');
+        }
     });
 
     // Test connection button for XML Director controlpanel

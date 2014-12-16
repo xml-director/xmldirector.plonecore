@@ -157,6 +157,14 @@
         attribute="generic_query"
     />
 
+    <browser:page
+        name="api-validate-xml"
+        for="*"
+        permission="zope2.View"
+        class=".api.Validation"
+        attribute="validate"
+    />
+
     <browser:resourceDirectory
         name="xmldirector.plonecore"
         directory="resources"

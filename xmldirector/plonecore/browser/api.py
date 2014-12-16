@@ -5,6 +5,8 @@
 # (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
+import json
+import lxml.etree
 import urlparse
 import requests
 from requests.auth import HTTPBasicAuth
@@ -72,3 +74,16 @@ class API(BrowserView):
                 'content-type', 'text/{}'.format(output_format))
             self.request.response.setHeader('content-length', len(data))
             return data
+
+
+class Validation(BrowserView):
+
+    def validate(self, xml):
+        """ Perform server-side XML validation """
+
+        errors = []
+        try:
+            root = lxml.etree.fromstring(xml)
+        except lxml.etree.ParseError as e:
+            errors.append(u'Parse error {}'.format(e))
+        return json.dumps(errors)
