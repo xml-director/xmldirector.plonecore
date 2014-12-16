@@ -77,6 +77,14 @@
     padding-right: 0.15em;
 }
 
+button.xml-editor {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: 10px;
+    font-size: 1.2em;
+    padding: 4px;
+}
+
 /* hide folder contents action */
 .portaltype-xmldirector-plonecore-connector #contentview-folderContents {
     display: none;

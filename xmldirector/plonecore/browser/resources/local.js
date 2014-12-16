@@ -26,7 +26,8 @@ $(document).ready(function() {
         var id = $(this).attr('id');
         $(this).after('<div class="xml-editor-chars" id="' + id + '-chars"></div>');
         $(this).after('<span  class="xml-editor-validation-msg" id="' + id + '-validate" data-index="' + num_editors + '"></span>');
-        $(this).after('<a class="xml-editor-validate" id="' + id + '-validate" data-index="' + num_editors + '"><button>Validate XML</button></a>');
+        $(this).after('<a class="xml-editor-validate" id="' + id + '-validate" data-index="' + num_editors + '"><button class="xml-editor">Validate XML</button></a>');
+        $(this).after('<a class="xml-editor-clear" id="' + id + '-clear" data-index="' + num_editors + '"><button class="xml-editor">Clear content </button></a>');
         $(this).after('<div class="xml-editor" id="' + id + '-editor" style="width: 80%; min-height: 200px; height: 400px; max-height: 400px"></div>')
         var editor = ace.edit(id + '-editor');
         editors.push(editor);
@@ -83,7 +84,16 @@ $(document).ready(function() {
                 var msg = 'Error in XML';
                 $(this).siblings('.xml-editor-validation-msg').text(msg).removeClass('status-ok').addClass('status-error');
             }
+    });
 
+    $('.xml-editor-clear').on('click', function(e) {
+            e.preventDefault();
+            var index = $(this).data('index');
+            var editor = editors[index];
+            var xml = editor.getSession().getValue();
+            if (confirm('Do you really to remove the XML content')) {
+                editor.setValue('');
+            }
     });
 
     // Test connection button for XML Director controlpanel
