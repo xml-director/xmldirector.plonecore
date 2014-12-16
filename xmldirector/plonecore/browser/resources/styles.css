@@ -156,3 +156,7 @@ input.xmlxpath-field {
     color: red;
     font-weight: bold;
 }
+
+.xml-editor-validation-msg {
+    display: block;
+}
