@@ -85,7 +85,7 @@ class XMLBinaryDataManager(AttributeDataManager):
         storage_key = self.storage_key
 
         if not value:
-            for name in (self.storage_key, self.storage_key + '.metadata.json'):
+            for name in (self.storage_key, self.storage_key + '.metadata.xml'):
                 if handle.exists(name):
                     handle.remove(name)
             return
@@ -99,4 +99,5 @@ class XMLBinaryDataManager(AttributeDataManager):
         with handle.open(storage_key, 'wb') as fp:
             with handle.open(storage_key + '.metadata.xml', 'wb') as fp_metadata:
                 fp.write(value.data)
-                fp_metadata.write(util.metadata_to_xml(context=self.context, metadata=metadata))
+                fp_metadata.write(
+                    util.metadata_to_xml(context=self.context, metadata=metadata))

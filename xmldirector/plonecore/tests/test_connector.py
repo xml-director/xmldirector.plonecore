@@ -142,7 +142,8 @@ class BasicTests(TestBase):
 
     def testRenderControlPanel(self):
         with self.assertRaises(zExceptions.Unauthorized):
-            view = self.portal.restrictedTraverse('@@xmldirector-core-settings')
+            view = self.portal.restrictedTraverse(
+                '@@xmldirector-core-settings')
             view()
 
         self.login('god')

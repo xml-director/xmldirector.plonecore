@@ -38,6 +38,7 @@ def xml_hash(xml):
     """ Get a stable SHA256 hash from XML string """
     root = lxml.etree.fromstring(xml)
     nodes = [unicode(node.tag) for node in root.iter()]
+    nodes.extend([unicode(node.text) for node in root.iter()])
     return hashlib.sha256(u''.join(nodes)).hexdigest()
 
 
@@ -116,4 +117,5 @@ class XMLFieldDataManager(z3c.form.datamanager.AttributeField):
             with handle.open(storage_key + '.metadata.xml', 'wb') as fp_metadata_xml:
                 fp.write(value_utf8)
                 metadata = dict(sha256=value_sha256)
-                fp_metadata_xml.write(util.metadata_to_xml(context=self.context, metadata=metadata))
+                fp_metadata_xml.write(
+                    util.metadata_to_xml(context=self.context, metadata=metadata))

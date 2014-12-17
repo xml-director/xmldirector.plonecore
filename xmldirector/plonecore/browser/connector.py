@@ -347,7 +347,8 @@ class Connector(BrowserView):
                     show_progress = True
 
                 if show_progress:
-                    pbar = ProgressBar(widgets=widgets, maxval=len(files)).start()
+                    pbar = ProgressBar(
+                        widgets=widgets, maxval=len(files)).start()
 
                 # import all files from ZIP into WebDAV
                 count = 0

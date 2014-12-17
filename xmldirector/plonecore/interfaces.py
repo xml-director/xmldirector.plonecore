@@ -52,7 +52,7 @@ class IWebdavSettings(Interface):
         default=u'',
         required=True
     )
-    
+
     versioning_enabled = schema.Bool(
         title=_(u'Versioning enabled'),
         description=_(u'Versioning enabled'),

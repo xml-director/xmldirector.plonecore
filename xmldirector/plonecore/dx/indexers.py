@@ -50,6 +50,6 @@ def _SearchableText(obj):
                         if not isinstance(text, unicode):
                             text = unicode(text, 'utf8')
                         result.append(text)
-   
+
     if result:
         return u' '.join(result)
