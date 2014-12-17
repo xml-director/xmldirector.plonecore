@@ -1,6 +1,14 @@
 Changelog
 =========
 
+0.3.2 (unreleased)
+------------------
+
+- SHA256 calculation for xml content now generated in 
+  a more stable way (but possibly much slower way)
+- API for service-side XML validation
+- added Docker support
+
 0.3.1 (2014-12-12)
 ------------------
 - added ``Test connection`` button to controlpanel
@@ -9,9 +17,6 @@ Changelog
 - Moved metadata handling from JSON to XML on the storage
   layer in order to let the underlaying database index
   the .metadata.xml files as well
-- SHA256 calculation for xml content now generated in 
-  a more stable way (but possibly much slower way)
-- API for service-side XML validation
 
 0.3.0 (2014-12-11)
 ------------------
