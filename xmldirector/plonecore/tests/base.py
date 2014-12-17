@@ -26,7 +26,8 @@ import xmldirector.plonecore
 import plone.app.dexterity
 
 
-WEBDAV_URL = os.environ.get('WEBDAV_URL', 'http://localhost:6080/exist/webdav/db')
+WEBDAV_URL = os.environ.get(
+    'WEBDAV_URL', 'http://localhost:6080/exist/webdav/db')
 WEBDAV_USERNAME = os.environ.get('WEBDAV_USERNAME', 'admin')
 WEBDAV_PASSWORD = os.environ.get('WEBDAV_PASSWORD', 'admin')
 

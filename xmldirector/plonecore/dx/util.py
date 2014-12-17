@@ -65,19 +65,23 @@ def metadata_to_xml(context, metadata):
 
     try:
         uid = context.UID()
-    except TypeError: 
+    except TypeError:
         uid = ''
 
     xml = [u'<xmldirector-metadata>',
-           u'<value name="modified" type="iso8601">{}</value>'.format(datetime.utcnow().isoformat()),
-           u'<value name="plone-path" type="string">{}</value>'.format('/'.join(context.getPhysicalPath())),
+           u'<value name="modified" type="iso8601">{}</value>'.format(
+               datetime.utcnow().isoformat()),
+           u'<value name="plone-path" type="string">{}</value>'.format(
+               '/'.join(context.getPhysicalPath())),
            u'<value name="plone-uid" type="string">{}</value>'.format(uid),
            ]
     for k, v in metadata.items():
         if k == 'sha256':
-            xml.append(u'<value name="sha256" type="sha256">{}</value>'.format(v))
+            xml.append(
+                u'<value name="sha256" type="sha256">{}</value>'.format(v))
         elif k in ('filename', 'contenttype'):
-            xml.append(u'<value name="{}" type="{}">{}</value>'.format(k, k, v))
+            xml.append(
+                u'<value name="{}" type="{}">{}</value>'.format(k, k, v))
     xml.append(u'</xmldirector-metadata>')
     return u'\n'.join(xml)
 
@@ -89,8 +93,8 @@ def xml_to_metadata(xml):
     result = {}
     for node in root.xpath('//value'):
         name = node.attrib['name']
-        node_type= node.attrib['type']
-        if name =='modified':
+        node_type = node.attrib['type']
+        if name == 'modified':
             result[name] = dateutil.parser.parse(node.text)
         else:
             result[name] = unicode(node.text)

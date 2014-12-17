@@ -18,7 +18,8 @@ class BasicTests(TestBase):
 
     def setUp(self):
         self.login('god')
-        self.doc = plone.api.content.create(type='xmldirector.plonecore.xmldocument', container=self.portal, id='dok')
+        self.doc = plone.api.content.create(
+            type='xmldirector.plonecore.xmldocument', container=self.portal, id='dok')
 
     def test_xmldocument(self):
         fields = get_all_fields(self.doc)
@@ -54,7 +55,8 @@ class BasicTests(TestBase):
 
         from plone.namedfile import NamedImage
 
-        img_data = open(os.path.join(os.path.dirname(__file__), 'sample.jpg'), 'rb').read()
+        img_data = open(
+            os.path.join(os.path.dirname(__file__), 'sample.jpg'), 'rb').read()
         named_image = NamedImage()
         named_image.data = img_data
         named_image.filename = u'test.jpg'
@@ -70,7 +72,8 @@ class BasicTests(TestBase):
 
         from plone.namedfile import NamedFile
 
-        img_data = open(os.path.join(os.path.dirname(__file__), 'sample.jpg'), 'rb').read()
+        img_data = open(
+            os.path.join(os.path.dirname(__file__), 'sample.jpg'), 'rb').read()
         named_file = NamedFile()
         named_file.data = img_data
         named_file.filename = u'test.jpg'

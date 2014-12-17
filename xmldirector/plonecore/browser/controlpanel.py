@@ -37,12 +37,14 @@ class DBSettingsControlPanel(controlpanel.ControlPanelFormWrapper):
         errors = []
 
         try:
-            handle = service.webdav_handle()
+            service.webdav_handle()
         except fs.errors.PermissionDeniedError as e:
-            errors.append(u'Permission denied error - improper credentials? ({})'.format(e))
+            errors.append(
+                u'Permission denied error - improper credentials? ({})'.format(e))
             return errors
         except fs.errors.ResourceNotFoundError as e:
-            errors.append(u'Resource not found - local webdav path correct? ({})'.format(e))
+            errors.append(
+                u'Resource not found - local webdav path correct? ({})'.format(e))
             return errors
         except fs.errors.RemoteConnectionError as e:
             errors.append(u'WebDAV URL incorrect! ({})'.format(str(e)))

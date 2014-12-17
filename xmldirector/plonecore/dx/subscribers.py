@@ -15,7 +15,6 @@ from xmldirector.plonecore.interfaces import IWebdavSettings
 from xmldirector.plonecore.interfaces import IWebdavHandle
 
 
-
 def removal_handler(obj, event):
     """ Remove related XML content if a Dexterity content object
         is being deleted.
@@ -77,4 +76,3 @@ def version_handler(obj, event):
         content = xml_get(context, field.getName())
         print field
         print content
-

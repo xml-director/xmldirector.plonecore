@@ -52,6 +52,7 @@ def xml_set(context, fieldname, value):
 
 
 class Mixin(object):
+
     """ A mix-in class for Dexterity content XML fields in order
         to provide a consistent API for getting and setting content/data
         from application code.
