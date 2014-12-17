@@ -39,7 +39,7 @@ def xml_hash(xml):
     root = lxml.etree.fromstring(xml)
     nodes = [unicode(node.tag) for node in root.iter()]
     nodes.extend([unicode(node.text) for node in root.iter()])
-    return hashlib.sha256(u''.join(nodes)).hexdigest()
+    return hashlib.sha256((u''.join(nodes)).encode('utf8')).hexdigest()
 
 
 ################################################################
