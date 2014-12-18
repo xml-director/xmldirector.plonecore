@@ -24,6 +24,7 @@
   <property name="default_view">view</property>
   <property name="view_methods">
    <element value="@@view"/>
+   <element value="@@xmldocument_view"/>
   </property>
   <property name="default_view_fallback">False</property>
   <property name="add_permission">cmf.AddPortalContent</property>
