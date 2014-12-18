@@ -1,219 +1,193 @@
-<xsl:stylesheet 
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    exclude-result-prefixes="xs"
-    version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	<xsl:output method="html" encoding="UTF-8"/>
+	<xsl:template match="/">
+		<html>
+			<xsl:apply-templates/>		
+		</html>
+	</xsl:template>
 
-<!-- parameter "dir" must be set from the command line: it represents the output directory -->
+	<xsl:template match="play">
+		<xsl:variable name="title">			
+			<xsl:apply-templates select="title"/>
+		</xsl:variable>
+		<head>
+			<title>
+				<xsl:value-of select="$title"/>
+			</title>
+		</head>
+		<body>
+			<h1>
+				<xsl:value-of select="$title"/>
+			</h1>
+			<h2>
+				<xsl:value-of select="playwright"/>
+			</h2>			
+			<h4>
+				<xsl:value-of select="edition"/>
+			</h4>
 
-<xsl:variable name="backcolor" select="'#FFFFCC'" />
-<xsl:variable name="panelcolor" select="'#88FF88'" />
+			<xsl:apply-templates select="personae"/>
+			
+			<xsl:apply-templates select="act"/>
+			
+			<xsl:apply-templates select="sourcedetails"/>
+		</body>
+	</xsl:template>
+	
+	<xsl:template match="title">
+		<xsl:apply-templates/>
+	</xsl:template>
 
+	<xsl:template match="lb">
+		<xsl:text>&#10;</xsl:text>
+	</xsl:template>
 
-<xsl:output name="play" method="html"/>
-<xsl:output name="scene" method="html"/>
+	<xsl:template match="personae">
+		<div>
+			<h6>
+				<xsl:value-of select="@playtitle"/>
+			</h6>
+			<ul>
+				<xsl:for-each select="persona">
+					<li>
+						<span>
+							<xsl:value-of select="persname/@short"/>
+							<xsl:text> - </xsl:text>
+							<xsl:value-of select="persname/text()"/>
 
-<xsl:template match="play">
-    <html>
-      <head>
-        <title><xsl:apply-templates select="TITLE"/></title>
-      </head>
-      <body bgcolor='{$backcolor}'>
-        <center>
-            <h1><xsl:value-of select="TITLE"/></h1>
-            <h3><xsl:apply-templates select="PLAYSUBT"/></h3>
-            <i><xsl:apply-templates select="SCNDESCR"/></i>
-        </center>
-        <br/><br/>
-        <table>
-          <tr>
-            <td width='350' valign='top' bgcolor='{$panelcolor}'>
-              <xsl:apply-templates select="PERSONAE"/>
-            </td>
-            <td width='30'></td>
-            <td valign='top'>
-              <xsl:apply-templates select="PROLOGUE | ACT | EPILOGUE"/>
-            </td>
-          </tr>
-        </table>
-        <hr/>
-      </body>
-    </html>
-    </xsl:result-document>
-</xsl:template>
+							<xsl:text> ( </xsl:text>
+							<xsl:for-each select="persaliases/persname">
+								<xsl:value-of select="@short"/>
+								<xsl:if test="position() != last()">
+									<xsl:text>, </xsl:text>
+								</xsl:if>
+							</xsl:for-each>
+							<xsl:text> ) </xsl:text>
 
-<xsl:template match="act/title">
-    <center>
-      <h3>
-	    <xsl:apply-templates/>
-      </h3>
-    </center>
-</xsl:template>
+							<xsl:text> - </xsl:text>
+							<xsl:value-of select="@gender"/>
 
-<xsl:template match="playsubt">
-	<xsl:apply-templates/>
-</xsl:template>
+						</span>
+					</li>
+				</xsl:for-each>
+			</ul>
+		</div>
+	</xsl:template>
 
-<xsl:template match="personae">
-	<xsl:apply-templates/>
-</xsl:template>
+	<xsl:template match="act">
+		<div>
+			<xsl:attribute name="id" select="concat('act_', position())"/>
+			<h2 style="color:Blue;">
+				<xsl:value-of select="acttitle"/>
+			</h2>
+			<xsl:apply-templates select="scene"/>			
+		</div>
+	</xsl:template>
 
-<xsl:template match="personae/title">
-    <center>
-      <h3>
-	    <xsl:apply-templates/>
-      </h3>
-    </center>
-</xsl:template>
+	<xsl:template match="scene">
+		<div>
+			<xsl:attribute name="id" select="concat('scene_', parent::act/position(),'_',position())"/>
+			<h5 style="color:red;">
+				<xsl:value-of select="scenetitle"/>
+			</h5>
+			
+			<xsl:apply-templates select="* "/>	
+			<hr/>		
+		</div>
+	</xsl:template>
 
-<xsl:template match="personae/persona">
-    <table>
-      <tr>
-        <td valign="top">
-	      <xsl:apply-templates/>
-        </td>
-      </tr>
-    </table>
-</xsl:template>
+	<xsl:template match="stagedir">		
+		<h6 style="color:green;">
+			<xsl:value-of select="text()"/>
+		</h6>
+	</xsl:template>
 
-<xsl:template match="pgroup">
-    <table>
-      <tr>
-        <td width="160" valign="top">
-	      <xsl:apply-templates select="PERSONA"/>
-	    </td>
-	    <td width="20"></td>
-	    <td valign="bottom">
-	      <i>
-	        <xsl:apply-templates select="GRPDESCR"/>
-	      </i>
-	    </td>
-	  </tr>
-	</table>
-</xsl:template>
+	<xsl:template match="speech">		
+		<p style="color:black;">
+				<xsl:value-of select="speaker"/>
+				<xsl:text>: </xsl:text>
+		</p>
+		<xsl:for-each select="* ">			
+			<xsl:apply-templates select="."/>
+		</xsl:for-each>
+	</xsl:template>
 
-<xsl:template match="pgroup/persona">
-    <xsl:apply-templates/>
-    <br/>
-</xsl:template>
+	<xsl:template match="line">
+		<p style="margin:10px;">
+			<xsl:apply-templates/>
+		</p>
+	</xsl:template>
 
-<xsl:template match="pgroup/grpdescr">
-    <xsl:apply-templates/>
-    <br/>
-</xsl:template>
+	<xsl:template match="dropcap">
+		<span class="dropcap">
+			<xsl:value-of select="."/>
+		</span>
+	</xsl:template>
+	
+	<xsl:template match="nameref">
+		<span class="nameref">
+			<xsl:value-of select="."/>
+		</span>
+	</xsl:template>
 
-<xsl:template match="scndescr">
-	<xsl:apply-templates/>
-</xsl:template>
+	<xsl:template match="finis">
+		<h3 id="finish">
+			<xsl:value-of select="finistitle"/>
+		</h3>
+	</xsl:template>
+	
+	<xsl:template match="sourcedetails">
+		<div id="details">
+			<p>
+				<xsl:value-of select="source"/>
+			</p>
+			<p>
+				<xsl:value-of select="sourceurl"/>
+			</p>
+			<p>
+				<xsl:value-of select="copyright"/>
+			</p>
+			<p>
+				<xsl:value-of select="version"/>
+			</p>
+			<p>
+				<xsl:value-of select="license"/>
+			</p>
+			<p>
+				<xsl:value-of select="licenseurl"/>
+			</p>
+			<p>
+				<xsl:value-of select="termsurl"/>
+			</p>			
+		</div>
+	</xsl:template>
+</xsl:stylesheet><!-- Stylus Studio meta-information - (c) 2004-2009. Progress Software Corporation. All rights reserved.
 
-<xsl:template match="act">
-    <hr/>
-	<xsl:apply-templates/>
-    <xsl:if test="position()=last()"><hr/></xsl:if>
-</xsl:template>
-
-<xsl:template match="scene|prologue|epilogue">
-    <xsl:variable name="NR"><xsl:number count="SCENE|PROLOGUE|EPILOGUE" level="any"/></xsl:variable>
-    <xsl:variable name="play"><xsl:value-of select="ancestor::PLAY/TITLE"/></xsl:variable>
-    <xsl:variable name="act"><xsl:value-of select="ancestor::ACT/TITLE"/></xsl:variable>
-
-    <a href="scene{$NR}.html">
-        <xsl:value-of select="TITLE" />
-    </a>
-    <br/>
-
-    <xsl:result-document href="{$dir}/scene{$NR}.html" format="scene">
-      <html>
-        <head>
-          <title>
-            <xsl:value-of select="concat($play, ' ', $act, ': ', TITLE)"/>
-          </title>
-        </head>
-        <body bgcolor='{$backcolor}'>
-          <p>
-            <a href="play.html"><xsl:value-of select="$play"/></a>
-            <br/>
-            <b><xsl:value-of select="$act"/></b>
-            <br/>
-          </p>
-          <xsl:apply-templates/>
-        </body>
-      </html>
-    </xsl:result-document>
-</xsl:template>
-
-<xsl:template match="scene/title | prologue/title | epilogue/title">
-    <h1>
-      <center>
-	    <xsl:apply-templates/>
-	  </center>
-	</h1>
-	<hr/>
-</xsl:template>
-
-<xsl:template match="speech">
-    <table>
-      <tr>
-        <td width="160" valign="top">
-	      <xsl:apply-templates select="SPEAKER"/>
-        </td>
-        <td table="top">
-          <xsl:apply-templates select="STAGEDIR|LINE"/>
-        </td>
-	  </tr>
-	</table>
-</xsl:template>
-
-<xsl:template match="speaker">
-    <b>
-      <xsl:apply-templates/>
-      <xsl:if test="not(position()=last())"><br/></xsl:if>
-    </b>
-</xsl:template>
-
-<xsl:template match="scene/stagedir">
-    <center>
-      <h3>
-	    <xsl:apply-templates/>
-	  </h3>
-	</center>
-</xsl:template>
-
-<xsl:template match="speech/stagedir">
-    <p>
-      <i>
-	    <xsl:apply-templates/>
-	  </i>
-	</p>
-</xsl:template>
-
-<xsl:template match="line/stagedir">
-    <xsl:text> [ </xsl:text>
-    <i>
-	  <xsl:apply-templates/>
-	</i>
-	<xsl:text> ] </xsl:text>
-</xsl:template>
-
-<xsl:template match="scene/subhead">
-    <center>
-      <h3>
-	    <xsl:apply-templates/>
-	  </h3>
-	</center>
-</xsl:template>
-
-<xsl:template match="speech/subhead">
-    <p>
-      <b>
-	    <xsl:apply-templates/>
-	  </b>
-	</p>
-</xsl:template>
-
-<xsl:template match="line">
-	<xsl:apply-templates/>
-	<br/>
-</xsl:template>
-
-</xsl:stylesheet>	
+<metaInformation>
+	<scenarios>
+		<scenario default="yes" name="Scenario1" userelativepaths="yes" externalpreview="no" url="hamlet_ff.xml" htmlbaseurl="" outputurl="result.html" processortype="saxon8" useresolver="yes" profilemode="0" profiledepth="" profilelength=""
+		          urlprofilexml="" commandline="" additionalpath="" additionalclasspath="" postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal"
+		          customvalidator="">
+			<advancedProp name="sInitialMode" value=""/>
+			<advancedProp name="bXsltOneIsOkay" value="true"/>
+			<advancedProp name="bSchemaAware" value="true"/>
+			<advancedProp name="bXml11" value="false"/>
+			<advancedProp name="iValidation" value="0"/>
+			<advancedProp name="bExtensions" value="true"/>
+			<advancedProp name="iWhitespace" value="0"/>
+			<advancedProp name="sInitialTemplate" value=""/>
+			<advancedProp name="bTinyTree" value="true"/>
+			<advancedProp name="bWarnings" value="true"/>
+			<advancedProp name="bUseDTD" value="false"/>
+			<advancedProp name="iErrorHandling" value="fatal"/>
+		</scenario>
+	</scenarios>
+	<MapperMetaTag>
+		<MapperInfo srcSchemaPathIsRelative="yes" srcSchemaInterpretAsXML="no" destSchemaPath="" destSchemaRoot="" destSchemaPathIsRelative="yes" destSchemaInterpretAsXML="no"/>
+		<MapperBlockPosition></MapperBlockPosition>
+		<TemplateContext></TemplateContext>
+		<MapperFilter side="source"></MapperFilter>
+	</MapperMetaTag>
+</metaInformation>
+-->
