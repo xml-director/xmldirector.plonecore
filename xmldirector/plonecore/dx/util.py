@@ -93,7 +93,6 @@ def xml_to_metadata(xml):
     result = {}
     for node in root.xpath('//value'):
         name = node.attrib['name']
-        node_type = node.attrib['type']
         if name == 'modified':
             result[name] = dateutil.parser.parse(node.text)
         else:

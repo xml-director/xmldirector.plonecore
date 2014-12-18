@@ -83,7 +83,7 @@ class Validation(BrowserView):
 
         errors = []
         try:
-            root = lxml.etree.fromstring(xml)
+            lxml.etree.fromstring(xml)
         except lxml.etree.ParseError as e:
             errors.append(u'Parse error {}'.format(e))
         return json.dumps(errors)
