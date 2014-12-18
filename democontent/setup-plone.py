@@ -1,4 +1,5 @@
 import os
+import lxml.etree
 import plone.api
 import grampg
 import transaction
@@ -26,7 +27,7 @@ pr.addMember('demo', 'demo', roles=('Site Administrator',))
 
 registry = getUtility(IRegistry)
 settings = registry.forInterface(IWebdavSettings)
-settings.webdav_url = u'http://localhost:8080/exist/webdav/db'
+settings.webdav_url = u'http://localhost:6080/exist/webdav/db'
 settings.webdav_username = u'admin'
 settings.webdav_password = u'admin'
 
@@ -34,15 +35,17 @@ folder = plone.api.content.create(type='Folder', container=site, id='shakespeare
 import_dir = os.path.join(os.getcwd(), 'democontent', 'shakespeare')
 for name in os.listdir(import_dir):
     fname = os.path.join(import_dir, name)
-    dok = plone.api.content.create(
-            type='xmldirector.plonecore.xmldocument',
-            container=folder,
-            id=name,
-            title=name)
     with open(fname, 'rb') as fp:
         print fname
         xml = unicode(fp.read(), 'utf8')
+        root = lxml.etree.fromstring(xml.encode('utf8'))
+        title = root.xpath('//title')[0].text
+        dok = plone.api.content.create(
+                type='xmldirector.plonecore.xmldocument',
+                container=folder,
+                id=name,
+                title=title)
         dok.xml_set('xml_content', xml)
-    dok.reindexObject()
+        dok.reindexObject()
 
 transaction.commit()

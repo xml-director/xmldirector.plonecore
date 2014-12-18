@@ -7,6 +7,11 @@
     />
  <javascript cacheable="True" compression="none" cookable="True"
     enabled="True" 
+    id="++resource++xmldirector.plonecore/interact-1.1.3.min.js"
+    expression=""
+    />
+ <javascript cacheable="True" compression="none" cookable="True"
+    enabled="True" 
     id="++resource++xmldirector.plonecore/local.js"
     expression=""
     />
