@@ -50,7 +50,7 @@ for name in os.listdir(import_dir):
                 title=title)
 
         dok.xml_set('xml_content', xml)
-        dok.xml_xpath = u'field=xml_content,xpath=/title/text()'
+        dok.xml_xpath = u'field=xml_content,xpath=//title/text()'
         dok.reindexObject()
 
 transaction.commit()
