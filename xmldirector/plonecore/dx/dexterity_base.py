@@ -33,6 +33,8 @@ def datamanager_for_field(context, fieldname, value=_marker):
         dm_cls = XMLBinaryDataManager
     elif isinstance(field, XMLImage):
         dm_cls = XMLImageDataManager
+    else:
+        raise ValueError('No datamanager found ({})'.format(fieldname))
     return dm_cls(context=context, field=field)
 
 
