@@ -22,10 +22,11 @@
 			</h1>
 			<h2>
 				<xsl:value-of select="playwright"/>
-			</h2>			
-			<h4>
+            </h2>			
+
+			<div>
 				<xsl:value-of select="edition"/>
-			</h4>
+			</div>
 
 			<xsl:apply-templates select="personae"/>
 			
@@ -104,10 +105,10 @@
 	</xsl:template>
 
 	<xsl:template match="speech">		
-		<p style="color:black;">
-				<xsl:value-of select="speaker"/>
+        <div>
+            <b>  <xsl:value-of select="speaker"/></b>
 				<xsl:text>: </xsl:text>
-		</p>
+		</div>
 		<xsl:for-each select="* ">			
 			<xsl:apply-templates select="."/>
 		</xsl:for-each>
