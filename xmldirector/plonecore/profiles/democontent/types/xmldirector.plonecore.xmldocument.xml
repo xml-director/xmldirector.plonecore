@@ -15,8 +15,8 @@
   <property name="allow_discussion">False</property>
 
   <!-- schema and class used for content items -->
-  <property name="schema">xmldirector.plonecore.dx.xmldocument.IXMLDocument</property>
-  <property name="klass">xmldirector.plonecore.dx.xmldocument.XMLDocument</property>
+  <property name="schema">xmldirector.plonecore.demo.xmldocument.IXMLDocument</property>
+  <property name="klass">xmldirector.plonecore.demo.xmldocument.XMLDocument</property>
 
   <!-- View information -->
   <property name="link_target"></property>
@@ -39,6 +39,10 @@
   <!-- Actions -->
   <action title="View" action_id="view" category="object" condition_expr=""
     url_expr="string:${object_url}/" visible="True">
+    <permission value="View" />
+  </action>
+  <action title="XSLT View" action_id="xslt-view" category="object" condition_expr=""
+    url_expr="string:${object_url}/@@xmldocument_view" visible="True">
     <permission value="View" />
   </action>
   <action title="Edit" action_id="edit" category="object" condition_expr=""

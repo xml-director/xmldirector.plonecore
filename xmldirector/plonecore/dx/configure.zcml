@@ -111,13 +111,4 @@
 
     <adapter name="SearchableText" factory=".indexers.SearchableText" />
 
-    <!-- XMLDocument demo content -->
-    <browser:page
-        for=".xmldocument.IXMLDocument"
-        name="xmldocument_view"
-        permission="zope2.View"
-        class=".xmldocument_view.XMLDocument"
-        template="xmldocument_view.pt"
-    />
-
 </configure>

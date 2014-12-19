@@ -8,6 +8,8 @@ Changelog
   a more stable way (but possibly much slower way)
 - API for service-side XML validation
 - added Docker support
+- added XSLT registry
+- added Shakespeare XML data for XMLDocument demo content-type
 
 0.3.1 (2014-12-12)
 ------------------

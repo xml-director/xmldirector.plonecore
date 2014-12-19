@@ -13,6 +13,7 @@
     <include package="Products.CMFCore" file="permissions.zcml" />
     <include package=".browser" />
     <include package=".dx" />
+    <include package=".demo" />
 
     <utility
         provides="xmldirector.plonecore.interfaces.IWebdavHandle"

@@ -12,7 +12,7 @@
 
       <h2 i18n:translate="">XML Document content-type custom view (using XSLT)</h2>
 
-      <div tal:content="structure python: view.xslt_transform('xml_content', 'play.xsl')" />
+      <div tal:content="structure python: view.xslt_transform('xml_content', 'demo', 'play.xsl')" />
 
   </metal:content-core>
 </metal:main>
