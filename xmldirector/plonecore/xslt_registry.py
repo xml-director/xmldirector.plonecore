@@ -6,9 +6,10 @@
 
 import os
 import lxml.etree
+from zope.interface import implements
+from xmldirector.plonecore.interfaces import IXSLTRegistry
+from xmldirector.plonecore.logger import LOG
 
-
-XSLT_REGISTRY = {}
 
 # The XSLT registries stores pre-compiled XSLT transformations as a dictionary
 # where the keys are composed of a tuple (family, stylesheet_name).  ``family``
@@ -16,40 +17,48 @@ XSLT_REGISTRY = {}
 # ``stylesheet_name`` would represent the name of the XSLT transformation.
 # Both ``family`` and ``stylesheet_name`` are completey arbitrary.
 
+class XSLTRegistry(object):
 
-def register_stylesheet(family, stylesheet_name, stylesheet_path):
-    """ Register a Stylesheet as tuple (family, stylesheet_name) """
+    implements(IXSLTRegistry)
 
-    key = '{}::{}'.format(family, stylesheet_name)
-    if key in XSLT_REGISTRY:
-        raise ValueError(
-            'Stylesheet {}/{} already registered'.format(family, stylesheet_name))
+    xslt_registry = {}
 
-    if not os.path.exists(stylesheet_path):
-        raise ValueError(
-            'Stylesheet {}/{} not found ({})'.format(family, stylesheet_name, stylesheet_path))
+    def register_stylesheet(self, family, stylesheet_name, stylesheet_path):
+        """ Register a Stylesheet as tuple (family, stylesheet_name) """
 
-    with open(stylesheet_path, 'rb') as fp:
-        try:
-            xslt = lxml.etree.XML(fp.read())
-        except lxml.etree.XMLSyntaxError as e:
+        key = '{}::{}'.format(family, stylesheet_name)
+        if key in self.xslt_registry:
             raise ValueError(
-                'Stylesheet {}/{} could not be parsed ({}, {})'.format(family, stylesheet_name, e, stylesheet_path))
+                'Stylesheet {}/{} already registered'.format(family, stylesheet_name))
 
-        try:
-            transform = lxml.etree.XSLT(xslt)
-        except lxml.etree.XSLTParseError as e:
+        if not os.path.exists(stylesheet_path):
             raise ValueError(
-                'Stylesheet {}/{} could not be parsed ({}, {})'.format(family, stylesheet_name, e, stylesheet_path))
+                'Stylesheet {}/{} not found ({})'.format(family, stylesheet_name, stylesheet_path))
 
-        XSLT_REGISTRY[key] = transform
+        with open(stylesheet_path, 'rb') as fp:
+            try:
+                xslt = lxml.etree.XML(fp.read())
+            except lxml.etree.XMLSyntaxError as e:
+                raise ValueError(
+                    'Stylesheet {}/{} could not be parsed ({}, {})'.format(family, stylesheet_name, e, stylesheet_path))
+
+            try:
+                transform = lxml.etree.XSLT(xslt)
+            except lxml.etree.XSLTParseError as e:
+                raise ValueError(
+                    'Stylesheet {}/{} could not be parsed ({}, {})'.format(family, stylesheet_name, e, stylesheet_path))
+
+            self.xslt_registry[key] = transform
+            LOG.info('XSLT registred ({}, {})'.format(key, stylesheet_path))
+
+    def get_stylesheet(self, family, stylesheet_name):
+        """ Return a pre-compiled XSLT transformation by (family, stylesheet_name) """
+
+        key = '{}::{}'.format(family, stylesheet_name)
+        if key not in self.xslt_registry:
+            raise ValueError(
+                'Stylesheet {}/{} not registered'.format(family, stylesheet_name))
+        return self.xslt_registry[key]
 
 
-def get_stylesheet(family, stylesheet_name):
-    """ Return a pre-compiled XSLT transformation by (family, stylesheet_name) """
-
-    key = '{}::{}'.format(family, stylesheet_name)
-    if key not in XSLT_REGISTRY:
-        raise ValueError(
-            'Stylesheet {}/{} not registered'.format(family, stylesheet_name))
-    return XSLT_REGISTRY[key]
+XSLTRegistryUtility = XSLTRegistry()

@@ -7,19 +7,20 @@
 
 import os
 import unittest2
-from xmldirector.plonecore import xslt_registry
+from xmldirector.plonecore.xslt_registry import XSLTRegistry
 
 cwd = os.path.dirname(__file__)
 
 
 class BasicTests(unittest2.TestCase):
 
-    def _register_one(self):
-        xslt_registry.register_stylesheet(
-            'demo', 'play.xsl', os.path.join(cwd, 'play.xsl'))
-
     def setUp(self):
-        xslt_registry.XSLT_REGISTRY.clear()
+        self.xslt_registry = XSLTRegistry()
+        self.xslt_registry.xslt_registry.clear()
+
+    def _register_one(self):
+        self.xslt_registry.register_stylesheet(
+            'demo', 'play.xsl', os.path.join(cwd, 'play.xsl'))
 
     def test_register(self):
         self._register_one()
@@ -31,12 +32,12 @@ class BasicTests(unittest2.TestCase):
 
     def test_registery_get_existing_xslt(self):
         self._register_one()
-        xslt_registry.get_stylesheet('demo', 'play.xsl')
+        self.xslt_registry.get_stylesheet('demo', 'play.xsl')
 
     def test_registery_get_nonexisting_xslt(self):
         self._register_one()
         with self.assertRaises(ValueError):
-            xslt_registry.get_stylesheet('xxx', 'xxx')
+            self.xslt_registry.get_stylesheet('xxx', 'xxx')
 
 
 def test_suite():

@@ -9,16 +9,21 @@
     i18n_domain="xmldirector.plonecore"
     >
 
+    <utility
+        provides="xmldirector.plonecore.interfaces.IWebdavHandle"
+        component="xmldirector.plonecore.service.WebdavHandleUtility"
+    />
+
+    <utility
+        provides="xmldirector.plonecore.interfaces.IXSLTRegistry"
+        component="xmldirector.plonecore.xslt_registry.XSLTRegistryUtility"
+    />
+
     <include package="plone.browserlayer" />
     <include package="Products.CMFCore" file="permissions.zcml" />
     <include package=".browser" />
     <include package=".dx" />
     <include package=".demo" />
-
-    <utility
-        provides="xmldirector.plonecore.interfaces.IWebdavHandle"
-        component="xmldirector.plonecore.service.WebdavHandleUtility"
-    />
 
     <genericsetup:registerProfile
         name="default"

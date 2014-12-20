@@ -4,10 +4,11 @@
 ################################################################
 
 import os
-from xmldirector.plonecore import xslt_registry
+from zope.component import getUtility
+from xmldirector.plonecore.xslt_registry import XSLTRegistryUtility
 
 import xmldocument  # NOQA
 
 cwd = os.path.dirname(__file__)
-xslt_registry.register_stylesheet(
+XSLTRegistryUtility.register_stylesheet(
     'demo', 'play.xsl', os.path.join(cwd, 'play.xsl'))

@@ -21,6 +21,10 @@ class IWebdavHandle(Interface):
         WebDav/database server """
 
 
+class IXSLTRegistry(Interface):
+    """ Marker interface for XSLTRegistry """
+
+
 class IWebdavSettings(Interface):
 
     """ ExistDB settings """
