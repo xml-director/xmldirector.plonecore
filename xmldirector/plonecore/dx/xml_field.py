@@ -1,4 +1,4 @@
-################################################################
+
 # xmldirector.plonecore
 # (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
@@ -108,6 +108,13 @@ class XMLFieldDataManager(z3c.form.datamanager.AttributeField):
         handle = zope.component.getUtility(IWebdavHandle).webdav_handle()
         storage_key = self.storage_key
         dirname = os.path.dirname(storage_key)
+
+        if not value:
+            for name in (storage_key, storage_key + 'metadata.xml'):
+                if handle.exists(name):
+                    handle.remove(name)
+            return
+
         if not handle.exists(dirname):
             handle.makedir(dirname, True, True)
         value_utf8 = normalize_xml(value)

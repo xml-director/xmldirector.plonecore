@@ -40,6 +40,16 @@ class BasicTests(TestBase):
         xml2 = self.doc.xml_get('xml_content')
         self.assertEqual(xml, xml2)
 
+    def test_set_reset_with_None(self):
+        xml = u'<?xml version="1.0" encoding="UTF-8"?>\n<hello>world</hello>'
+        self.doc.xml_set('xml_content', xml)
+        self.doc.xml_set('xml_content', None)
+        self.assertEqual(self.doc.xml_get('xml_content'), None)
+
+    def test_set_with_None(self):
+        self.doc.xml_set('xml_content', None)
+        self.assertEqual(self.doc.xml_get('xml_content'), None)
+
     def test_with_invalid_fieldname(self):
         with self.assertRaises(ValueError):
             self.doc.xml_get('unknown')
