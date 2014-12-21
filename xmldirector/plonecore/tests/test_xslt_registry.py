@@ -30,6 +30,11 @@ class BasicTests(unittest2.TestCase):
         with self.assertRaises(ValueError):
             self._register_one()
 
+    def test_registry_clear(self):
+        self._register_one()
+        self.xslt_registry.clear()
+        self.assertEqual(len(self.xslt_registry), 0)
+
     def test_registery_get_existing_xslt(self):
         self._register_one()
         self.xslt_registry.get_stylesheet('demo', 'play.xsl')
