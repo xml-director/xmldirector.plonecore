@@ -53,7 +53,7 @@ class XSLTRegistry(object):
                     transform=transform,
                     path=stylesheet_path,
                     registered=datetime.datetime.utcnow())
-            LOG.info('XSLT registred ({}, {})'.format(key, stylesheet_path))
+            LOG.info('XSLT registered ({}, {})'.format(key, stylesheet_path))
 
     def get_stylesheet(self, family, stylesheet_name):
         """ Return a pre-compiled XSLT transformation by (family, stylesheet_name) """
@@ -71,7 +71,6 @@ class XSLTRegistry(object):
     def __len__(self):
         """ Return number of registered transformations """
         return len(self.xslt_registry)
-
 
 
 XSLTRegistryUtility = XSLTRegistry()
