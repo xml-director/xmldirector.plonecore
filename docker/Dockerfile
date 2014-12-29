@@ -1,4 +1,4 @@
-FROM xmlio/jdk7-oracle
+FROM dockerfile/java:oracle-java7
 
 MAINTAINER Andreas Jung <info@zopyx.com>
 
@@ -23,7 +23,8 @@ RUN apt-get install -y \
     python-dev \
     libxml2-dev \
     libxslt1-dev \
-    git-core
+    git-core  
+
 
 RUN useradd -ms /bin/bash plone
 

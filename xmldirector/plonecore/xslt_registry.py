@@ -5,6 +5,7 @@
 
 
 import os
+import datetime
 import lxml.etree
 from zope.interface import implements
 from xmldirector.plonecore.interfaces import IXSLTRegistry
@@ -48,8 +49,11 @@ class XSLTRegistry(object):
                 raise ValueError(
                     'Stylesheet {}/{} could not be parsed ({}, {})'.format(family, stylesheet_name, e, stylesheet_path))
 
-            self.xslt_registry[key] = transform
-            LOG.info('XSLT registred ({}, {})'.format(key, stylesheet_path))
+            self.xslt_registry[key] = dict(
+                    transform=transform,
+                    path=stylesheet_path,
+                    registered=datetime.datetime.utcnow())
+            LOG.info('XSLT registered ({}, {})'.format(key, stylesheet_path))
 
     def get_stylesheet(self, family, stylesheet_name):
         """ Return a pre-compiled XSLT transformation by (family, stylesheet_name) """
@@ -58,7 +62,15 @@ class XSLTRegistry(object):
         if key not in self.xslt_registry:
             raise ValueError(
                 'Stylesheet {}/{} not registered'.format(family, stylesheet_name))
-        return self.xslt_registry[key]
+        return self.xslt_registry[key]['transform']
+
+    def clear(self):
+        """ Remove all entries """
+        self.xslt_registry.clear()
+
+    def __len__(self):
+        """ Return number of registered transformations """
+        return len(self.xslt_registry)
 
 
 XSLTRegistryUtility = XSLTRegistry()

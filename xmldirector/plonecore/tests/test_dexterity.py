@@ -38,7 +38,7 @@ class BasicTests(TestBase):
         xml = u'<?xml version="1.0" encoding="UTF-8"?>\n<hello>world</hello>'
         self.doc.xml_set('xml_content', xml)
         xml2 = self.doc.xml_get('xml_content')
-        self.assertEqual(xml, xml2)
+        self.assertEqual(xml2.endswith('<hello>world</hello>'), True)
 
     def test_set_reset_with_None(self):
         xml = u'<?xml version="1.0" encoding="UTF-8"?>\n<hello>world</hello>'
