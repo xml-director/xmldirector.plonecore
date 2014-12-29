@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <?xml-stylesheet type="text/xsl" href="../../plays.xsl"?>
-
+<?xml-stylesheet type="text/xsl" href="transform_2.xsl"?>
 <play numberOfScenes="24" numberOfCharacters="27" genre="comedy">
 <title short="As You Like It">As You Like It</title>
 <playwright>William Shakespeare</playwright>
