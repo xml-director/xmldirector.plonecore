@@ -10,6 +10,8 @@ Changelog
 - added Docker support
 - added XSLT registry
 - added Shakespeare XML data for XMLDocument demo content-type
+- added 'test_all.sh' script for running tests against BaseX 
+  and eXist-db Docker containers 
 
 0.3.1 (2014-12-12)
 ------------------
