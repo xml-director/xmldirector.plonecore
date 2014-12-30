@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.3.3 (unreleased)
+------------------
+- running the tests should not leave any testing directory
+  traces within the XML databases 
+
+
 0.3.2 (2014-12-30)
 ------------------
 

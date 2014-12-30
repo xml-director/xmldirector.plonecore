@@ -6,8 +6,10 @@
 ################################################################
 
 import os
+import uuid
 import unittest2
 import plone.api
+from fs.contrib.davfs import DAVFS
 from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import applyProfile
 from plone.app.testing import PLONE_FIXTURE
@@ -63,6 +65,7 @@ class PolicyFixture(PloneSandboxLayer):
         settings.webdav_username = unicode(WEBDAV_USERNAME)
         settings.webdav_password = unicode(WEBDAV_PASSWORD)
         settings.webdav_url = unicode(WEBDAV_URL)
+        self.testing_directory = settings.webdav_dexterity_subpath = u'testing-dexterity-{}'.format(uuid.uuid4())
 
         self.connector = plone.api.content.create(
             container=portal,
@@ -70,7 +73,11 @@ class PolicyFixture(PloneSandboxLayer):
             id='connector')
 
     def tearDownZope(self, app):
-        # Uninstall product
+
+        handle = DAVFS(WEBDAV_URL, credentials=dict(username=WEBDAV_USERNAME,
+                                                    password=WEBDAV_PASSWORD))
+        if handle.exists(self.testing_directory):
+            handle.removedir(self.testing_directory, recursive=True, force=True)
         z2.uninstallProduct(app, 'xmldirector.plonecore')
 
 
