@@ -1,5 +1,8 @@
 # Test xmldirector.plonecore against all supported database backend
-# The specified webdav endpoint are based on Docker containers
+# The specified webdav endpoint are based on Docker containers:
+#
+# docker run zopyx/existdb-2.2
+# docker run zopyx/basex-80
 
 export WEBDAV_USERNAME=admin
 export WEBDAV_PASSWORD=admin
