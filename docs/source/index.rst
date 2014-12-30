@@ -8,4 +8,5 @@ Contents:
 
    README.rst
    xslt-registry.rst
+   testing.rst
    HISTORY.rst
