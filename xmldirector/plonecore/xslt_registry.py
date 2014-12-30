@@ -50,9 +50,9 @@ class XSLTRegistry(object):
                     'Stylesheet {}/{} could not be parsed ({}, {})'.format(family, stylesheet_name, e, stylesheet_path))
 
             self.xslt_registry[key] = dict(
-                    transform=transform,
-                    path=stylesheet_path,
-                    registered=datetime.datetime.utcnow())
+                transform=transform,
+                path=stylesheet_path,
+                registered=datetime.datetime.utcnow())
             LOG.info('XSLT registered ({}, {})'.format(key, stylesheet_path))
 
     def get_stylesheet(self, family, stylesheet_name):

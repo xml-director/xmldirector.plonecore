@@ -4,7 +4,6 @@
 ################################################################
 
 import os
-from zope.component import getUtility
 from xmldirector.plonecore.xslt_registry import XSLTRegistryUtility
 
 import xmldocument  # NOQA
