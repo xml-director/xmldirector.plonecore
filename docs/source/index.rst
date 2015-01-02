@@ -7,4 +7,6 @@ Contents:
    :maxdepth: 2
 
    README.rst
+   xslt-registry.rst
+   testing.rst
    HISTORY.rst
