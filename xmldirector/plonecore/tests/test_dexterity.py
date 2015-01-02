@@ -95,6 +95,11 @@ class BasicTests(TestBase):
         self.assertEqual(named_file2.filename, u'test.jpg')
         self.assertEqual(named_file2.contentType, 'image/jpg')
 
+    def test_xml_binary_set_None(self):
+        self.doc.xml_set('xml_binary', None)
+        result = self.doc.xml_get('xml_binary')
+        self.assertEqual(result, None)
+
     def test_copy_paste(self):
 
         xml = u'<?xml version="1.0" encoding="UTF-8"?>\n<hello>world</hello>'

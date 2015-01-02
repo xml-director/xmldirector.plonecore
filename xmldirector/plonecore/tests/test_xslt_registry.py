@@ -60,8 +60,21 @@ class BasicTests(unittest2.TestCase):
             self.xslt_registry.get_stylesheet('xxx', 'xxx')
 
 
+class OtherTests(unittest2.TestCase):
+
+    def test_parse_field_expression(self): 
+
+        from xmldirector.plonecore.dx.xpath_field import parse_field_expression as pfe
+        self.assertEqual(pfe('field=xxxx,xpath=/a/bc'), ('xxxx', '/a/bc'))
+        self.assertEqual(pfe('field=xxxx , xpath=/a/bc'), None)
+        self.assertEqual(pfe(None), None)
+        self.assertEqual(pfe(''), None)
+        self.assertEqual(pfe('field,xpath'), None)
+
+
 def test_suite():
     from unittest2 import TestSuite, makeSuite
     suite = TestSuite()
     suite.addTest(makeSuite(BasicTests))
+    suite.addTest(makeSuite(OtherTests))
     return suite
