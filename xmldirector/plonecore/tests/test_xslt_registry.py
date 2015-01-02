@@ -30,6 +30,21 @@ class BasicTests(unittest2.TestCase):
         with self.assertRaises(ValueError):
             self._register_one()
 
+    def test_register_invalid_xml_stylesheet(self):
+        with self.assertRaises(ValueError):
+            self.xslt_registry.register_stylesheet(
+                'demo', 'play.xsl', os.path.join(cwd, 'play-invalid-xml.xsl'))
+
+    def test_register_invalid_xslt_stylesheet(self):
+        with self.assertRaises(ValueError):
+            self.xslt_registry.register_stylesheet(
+                'demo', 'play.xsl', os.path.join(cwd, 'play-invalid-xslt.xsl'))
+
+    def test_register_nonexisting_stylesheet(self):
+        with self.assertRaises(ValueError):
+            self.xslt_registry.register_stylesheet(
+                'demo', 'play.xsl', 'does.not.exist.xsl')
+
     def test_registry_clear(self):
         self._register_one()
         self.xslt_registry.clear()
