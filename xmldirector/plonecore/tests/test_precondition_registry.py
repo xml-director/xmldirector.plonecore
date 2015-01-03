@@ -22,12 +22,6 @@ class PreconditionRegistryTests(unittest2.TestCase):
 
     def test_precondition_arguments(self):
 
-        with self.assertRaises(ValueError):
-            Precondition()
-
-        with self.assertRaises(ValueError):
-            Precondition(suffixes=[], view_names=[])
-
         with self.assertRaises(TypeError):
             Precondition(suffixes='xxxx', view_names=['view'])
 
@@ -39,6 +33,15 @@ class PreconditionRegistryTests(unittest2.TestCase):
         self.assertEqual(p.can_handle('test.html', 'htmlview'), True)
         self.assertEqual(p.can_handle('test.html', 'xxxxxx'), False)
         self.assertEqual(p.can_handle('test.xxx', 'htmlview'), False)
+
+    def test_precondition_handle_view(self):
+        p = Precondition(suffixes=('.html',), view_names = ['htmlview'], view_handler=view_handler)
+        result = p.handle_view(webdav_handle=None,
+                filename='test.html',
+                view_name='view',
+                request=None)
+        self.assertEqual(result, u'hello world')
+
 
 def test_suite():
     from unittest2 import TestSuite, makeSuite

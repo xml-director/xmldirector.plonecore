@@ -15,12 +15,8 @@ class Precondition(object):
 
         if not isinstance(suffixes, (list, tuple)):
             raise TypeError('"suffixes" must be list or tuple')
-        if not suffixes:
-            raise ValueError('"suffixes" must not be empty')
         if not isinstance(view_names, (list, tuple)):
             raise TypeError('"view_names" must be list or tuple')
-        if not view_names:
-            raise ValueError('"view_names" must not be empty')
 
         self.view_names = view_names
         self.view_handler = view_handler
