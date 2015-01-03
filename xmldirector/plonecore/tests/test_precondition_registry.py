@@ -37,17 +37,19 @@ class PreconditionTests(unittest2.TestCase):
             Precondition(suffixes=['.a'], view_names='xxxx')
 
     def test_precondition(self):
-        p = Precondition(suffixes=('.html',), view_names = ['htmlview'], view_handler=view_handler)
+        p = Precondition(
+            suffixes=('.html',), view_names = ['htmlview'], view_handler=view_handler)
         self.assertEqual(p.can_handle('test.html', 'htmlview'), True)
         self.assertEqual(p.can_handle('test.html', 'xxxxxx'), False)
         self.assertEqual(p.can_handle('test.xxx', 'htmlview'), False)
 
     def test_precondition_handle_view(self):
-        p = Precondition(suffixes=('.html',), view_names = ['htmlview'], view_handler=view_handler)
+        p = Precondition(
+            suffixes=('.html',), view_names = ['htmlview'], view_handler=view_handler)
         result = p.handle_view(webdav_handle=None,
-                filename='test.html',
-                view_name='view',
-                request=None)
+                               filename='test.html',
+                               view_name='view',
+                               request=None)
         self.assertEqual(result, u'hello world')
 
 
@@ -60,27 +62,34 @@ class PreconditionRegistryTests(unittest2.TestCase):
         self.assertEqual(len(self.registry), 0)
         with self.assertRaises(ValueError):
             # nothing registered
-            self.registry.dispatch(webdav_handle=None, filename='test.html', view_name='htmlview', request=None)
+            self.registry.dispatch(
+                webdav_handle=None, filename='test.html', view_name='htmlview', request=None)
 
     def test_correct_entries(self):
-        p = Precondition(suffixes=('.html',), view_names=['htmlview'], view_handler=view_handler)
+        p = Precondition(
+            suffixes=('.html',), view_names=['htmlview'], view_handler=view_handler)
         self.registry.register(p)
-        p = Precondition(suffixes=('.xml',), view_names=['xmlview'], view_handler=view_handler2)
+        p = Precondition(
+            suffixes=('.xml',), view_names=['xmlview'], view_handler=view_handler2)
         self.registry.register(p)
 
-        result = self.registry.dispatch(webdav_handle=None, filename='test.html', view_name='htmlview', request=None)
+        result = self.registry.dispatch(
+            webdav_handle=None, filename='test.html', view_name='htmlview', request=None)
         self.assertEqual(result, u'hello world')
 
-        result = self.registry.dispatch(webdav_handle=None, filename='test.xml', view_name='xmlview', request=None)
+        result = self.registry.dispatch(
+            webdav_handle=None, filename='test.xml', view_name='xmlview', request=None)
         self.assertEqual(result, u'world hello')
 
         with self.assertRaises(ValueError):
-            self.registry.dispatch(webdav_handle=None, filename='test.xml', view_name='htmlview', request=None)
+            self.registry.dispatch(
+                webdav_handle=None, filename='test.xml', view_name='htmlview', request=None)
 
     def test_default_fallback(self):
 
         self.registry.set_default(Precondition(view_handler=default_handler))
-        result = self.registry.dispatch(webdav_handle=None, filename='xxxxx', view_name='xxxxxx', request=None)
+        result = self.registry.dispatch(
+            webdav_handle=None, filename='xxxxx', view_name='xxxxxx', request=None)
         self.assertEqual(result, u'default handler')
 
 

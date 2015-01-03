@@ -11,4 +11,4 @@ test:
 	bin/test xmldirector
 
 test-coverage:
-	bin/test --coverage=${PWD}/coverage xmldirector | tee coverage.txt
+	unbuffer bin/test --coverage=${PWD}/coverage xmldirector | tee coverage.txt

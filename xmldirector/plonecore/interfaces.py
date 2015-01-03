@@ -22,6 +22,7 @@ class IWebdavHandle(Interface):
 
 
 class IXSLTRegistry(Interface):
+
     """ Marker interface for XSLTRegistry """
 
 

@@ -62,7 +62,7 @@ class BasicTests(unittest2.TestCase):
 
 class OtherTests(unittest2.TestCase):
 
-    def test_parse_field_expression(self): 
+    def test_parse_field_expression(self):
 
         from xmldirector.plonecore.dx.xpath_field import parse_field_expression as pfe
         self.assertEqual(pfe('field=xxxx,xpath=/a/bc'), ('xxxx', '/a/bc'))

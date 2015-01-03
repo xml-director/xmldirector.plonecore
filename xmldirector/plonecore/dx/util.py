@@ -96,7 +96,7 @@ def xml_to_metadata(xml):
         if name == 'modified':
             result[name] = dateutil.parser.parse(node.text)
         else:
-            if not node.text: 
+            if not node.text:
                 result[name] = None
             else:
                 result[name] = unicode(node.text)

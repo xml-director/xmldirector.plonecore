@@ -127,6 +127,7 @@ class BasicTests(TestBase):
         self.assertEqual(metadata['plone-path'], '/plone')
         self.assertEqual(metadata['plone-uid'], None)
 
+
 def test_suite():
     from unittest2 import TestSuite, makeSuite
     suite = TestSuite()
