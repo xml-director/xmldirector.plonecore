@@ -58,6 +58,9 @@ class PreconditionRegistry(object):
         self._p = list()
         self._p_default = None
 
+    def __len__(self):
+        return len(self._p)
+
     def register(self, precondition, position=_marker):
         if not isinstance(precondition, Precondition):
             raise TypeError('"precondition" must be instance of Precondition')

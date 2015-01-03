@@ -18,7 +18,11 @@ def view_handler(webdav_handle, filename, view_name, request):
     return u'hello world'
 
 
-class PreconditionRegistryTests(unittest2.TestCase):
+def view_handler2(webdav_handle, filename, view_name, request):
+    return u'world hello'
+
+
+class PreconditionTests(unittest2.TestCase):
 
     def test_precondition_arguments(self):
 
@@ -43,8 +47,36 @@ class PreconditionRegistryTests(unittest2.TestCase):
         self.assertEqual(result, u'hello world')
 
 
+class PreconditionRegistryTests(unittest2.TestCase):
+
+    def setUp(self):
+        self.registry = PreconditionRegistry()
+
+    def test_registry(self):
+        self.assertEqual(len(self.registry), 0)
+        with self.assertRaises(ValueError):
+            # nothing registered
+            self.registry.dispatch(webdav_handle=None, filename='test.html', view_name='htmlview', request=None)
+
+    def test_correct_entries(self):
+        p = Precondition(suffixes=('.html',), view_names=['htmlview'], view_handler=view_handler)
+        self.registry.register(p)
+        p = Precondition(suffixes=('.xml',), view_names=['xmlview'], view_handler=view_handler2)
+        self.registry.register(p)
+
+        result = self.registry.dispatch(webdav_handle=None, filename='test.html', view_name='htmlview', request=None)
+        self.assertEqual(result, u'hello world')
+
+        result = self.registry.dispatch(webdav_handle=None, filename='test.xml', view_name='xmlview', request=None)
+        self.assertEqual(result, u'world hello')
+
+        with self.assertRaises(ValueError):
+            self.registry.dispatch(webdav_handle=None, filename='test.xml', view_name='htmlview', request=None)
+
+
 def test_suite():
     from unittest2 import TestSuite, makeSuite
     suite = TestSuite()
+    suite.addTest(makeSuite(PreconditionTests))
     suite.addTest(makeSuite(PreconditionRegistryTests))
     return suite
