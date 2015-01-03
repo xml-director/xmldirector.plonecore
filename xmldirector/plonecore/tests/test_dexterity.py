@@ -118,6 +118,14 @@ class BasicTests(TestBase):
         self.portal.manage_delObjects(self.doc.getId())
         self.assertEqual('dok' not in self.portal.objectIds(), True)
 
+    def test_metadata_to_xml_plone_root(self):
+
+        from xmldirector.plonecore.dx import util
+
+        xml = util.metadata_to_xml(self.portal)
+        metadata = util.xml_to_metadata(xml)
+        self.assertEqual(metadata['plone-path'], '/plone')
+        self.assertEqual(metadata['plone-uid'], None)
 
 def test_suite():
     from unittest2 import TestSuite, makeSuite
