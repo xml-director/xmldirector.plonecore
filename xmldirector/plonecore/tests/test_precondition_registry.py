@@ -22,6 +22,10 @@ def view_handler2(webdav_handle, filename, view_name, request):
     return u'world hello'
 
 
+def default_handler(webdav_handle, filename, view_name, request):
+    return u'default handler'
+
+
 class PreconditionTests(unittest2.TestCase):
 
     def test_precondition_arguments(self):
@@ -72,6 +76,12 @@ class PreconditionRegistryTests(unittest2.TestCase):
 
         with self.assertRaises(ValueError):
             self.registry.dispatch(webdav_handle=None, filename='test.xml', view_name='htmlview', request=None)
+
+    def test_default_fallback(self):
+
+        self.registry.set_default(Precondition(view_handler=default_handler))
+        result = self.registry.dispatch(webdav_handle=None, filename='xxxxx', view_name='xxxxxx', request=None)
+        self.assertEqual(result, u'default handler')
 
 
 def test_suite():
