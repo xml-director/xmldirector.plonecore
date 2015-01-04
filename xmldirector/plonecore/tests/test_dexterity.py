@@ -95,6 +95,29 @@ class BasicTests(TestBase):
         self.assertEqual(named_file2.filename, u'test.jpg')
         self.assertEqual(named_file2.contentType, 'image/jpg')
 
+    def test_xml_binary_set_None(self):
+        self.doc.xml_set('xml_binary', None)
+        result = self.doc.xml_get('xml_binary')
+        self.assertEqual(result, None)
+
+    def test_xpath_field(self):
+        self.doc.xml_set(
+            'xml_content', u'<root><a>hello</a><a>world</a></root>')
+        self.doc.xml_set('xml_xpath', u'field=xml_content,xpath=//a/text()')
+        result = self.doc.xml_get('xml_xpath')
+        self.assertEqual(result, [u'hello', u'world'])
+        self.assertEqual(
+            self.doc.xml_xpath, u'field=xml_content,xpath=//a/text()')
+
+    def test_xpath_field_improper_spec(self):
+        spec = u'xx'
+        with self.assertRaises(ValueError):
+            spec = u'xx'
+            self.doc.xml_set('xml_xpath', spec)
+        with self.assertRaises(ValueError):
+            spec = u'field=abc, xpath=ööööö'
+            self.doc.xml_set('xml_xpath', spec)
+
     def test_copy_paste(self):
 
         xml = u'<?xml version="1.0" encoding="UTF-8"?>\n<hello>world</hello>'
@@ -112,6 +135,15 @@ class BasicTests(TestBase):
 
         self.portal.manage_delObjects(self.doc.getId())
         self.assertEqual('dok' not in self.portal.objectIds(), True)
+
+    def test_metadata_to_xml_plone_root(self):
+
+        from xmldirector.plonecore.dx import util
+
+        xml = util.metadata_to_xml(self.portal)
+        metadata = util.xml_to_metadata(xml)
+        self.assertEqual(metadata['plone-path'], '/plone')
+        self.assertEqual(metadata['plone-uid'], None)
 
 
 def test_suite():

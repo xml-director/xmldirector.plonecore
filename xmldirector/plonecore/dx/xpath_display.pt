@@ -1,9 +1,8 @@
 <div class="xpath-widget" i18n:domain="xmldirector.plonecore">
     <label i18n:translate="">XPath expression:</label>
-    <span tal:content="view/value" />
+    <span tal:content="view/xpath_expression" />
     <br/>
-
-    <tal:def define="result view/xpath_to_value">
+    <tal:def define="result view/xpath_evaluated">
         <tal:if condition="result/errors">
             <label i18n:translate="">Errors</label>
             <ul> 
@@ -18,3 +17,4 @@
         </tal:if>
     </tal:def>
 </div>
+

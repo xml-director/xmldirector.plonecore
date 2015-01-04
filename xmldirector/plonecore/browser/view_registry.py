@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 ################################################################
 # xmldirector.plonecore
 # (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
@@ -12,6 +14,12 @@ _marker = object
 class Precondition(object):
 
     def __init__(self, suffixes=[], view_names=[], view_handler=None):
+
+        if not isinstance(suffixes, (list, tuple)):
+            raise TypeError('"suffixes" must be list or tuple')
+        if not isinstance(view_names, (list, tuple)):
+            raise TypeError('"view_names" must be list or tuple')
+
         self.view_names = view_names
         self.view_handler = view_handler
         self.suffixes = []
@@ -52,7 +60,12 @@ class PreconditionRegistry(object):
         self._p = list()
         self._p_default = None
 
+    def __len__(self):
+        return len(self._p)
+
     def register(self, precondition, position=_marker):
+        if not isinstance(precondition, Precondition):
+            raise TypeError('"precondition" must be instance of Precondition')
         if position is not _marker:
             self._p.insert(position, precondition)
         else:

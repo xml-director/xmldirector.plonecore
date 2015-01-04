@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 ################################################################
 # xmldirector.plonecore
 # (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
@@ -25,6 +27,7 @@ from plone.dexterity.interfaces import IDexterityFTI
 from plone.behavior.interfaces import IBehaviorAssignable
 import plone.supermodel.exportimport
 from plone.schemaeditor.fields import FieldFactory
+from z3c.form.datamanager import AttributeField as AttributeDataManager
 
 from xmldirector.plonecore.i18n import MessageFactory as _
 from xmldirector.plonecore.dx.xml_field import XMLText
@@ -114,14 +117,33 @@ class XPathWidget(text.TextWidget):
     """ Widget for XPath expressions."""
     zope.interface.implementsOnly(IXPathWidget)
 
-    def xpath_to_value(self):
+    def xpath_evaluated(self):
+        dm = XMLXPathDataManager(context=self.context, field=self.field)
+        return dm.xpath_to_value()
 
-        if not self.value:
+    def xpath_expression(self):
+        return getattr(self.context, self.field.getName(), None)
+
+
+class XMLXPathDataManager(AttributeDataManager):
+
+    """Attribute field."""
+    zope.component.adapts(
+        zope.interface.Interface, IXMLXPath)
+
+    @property
+    def fieldname(self):
+        return self.field.getName()
+
+    def xpath_to_value(self, raw=False):
+
+        xpath_expr = getattr(self.context, self.fieldname, None)
+        if not xpath_expr:
             error = u'Empty XPath field specification'
             return dict(errors=[error], data=None)
 
         fields = get_all_fields(self.context)
-        field_name, xpath_expr = parse_field_expression(self.value)
+        field_name, xpath_expr = parse_field_expression(xpath_expr)
         xml_field = fields.get(field_name)
         if xml_field is None:
             error = u'XML field "{}" does not exist'.format(field_name)
@@ -146,6 +168,18 @@ class XPathWidget(text.TextWidget):
             return dict(errors=[error], data=None)
 
         return dict(errors=[], data=result)
+
+    def get(self):
+        """See z3c.form.interfaces.IDataManager"""
+
+        result = self.xpath_to_value()
+        if not result['errors']:
+            return result['data']
+        raise ValueError(result['errors'])
+
+    def set(self, value):
+        """See z3c.form.interfaces.IDataManager"""
+        setattr(self.context, self.fieldname, value)
 
 
 @implementer(IFieldWidget)
