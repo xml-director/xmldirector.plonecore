@@ -145,6 +145,9 @@ class BasicTests(TestBase):
         self.assertEqual(metadata['plone-path'], '/plone')
         self.assertEqual(metadata['plone-uid'], None)
 
+    def test_view(self):
+        html = self.doc.restrictedTraverse('@@view')()
+        html = self.doc.restrictedTraverse('@@edit')()
 
 def test_suite():
     from unittest2 import TestSuite, makeSuite
