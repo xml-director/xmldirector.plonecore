@@ -134,7 +134,7 @@ settings).
 Dexterity fields
 ----------------
 
-``xmldirector.core`` comes with the following Dexterity fields that
+``xmldirector.plonecore`` comes with the following Dexterity fields that
 can be either used programmatically in your own field schema or through-the-web.
 
 XMLText
