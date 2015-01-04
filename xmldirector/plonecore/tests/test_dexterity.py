@@ -100,6 +100,22 @@ class BasicTests(TestBase):
         result = self.doc.xml_get('xml_binary')
         self.assertEqual(result, None)
 
+    def test_xpath_field(self):
+        self.doc.xml_set('xml_content', u'<root><a>hello</a><a>world</a></root>')
+        self.doc.xml_set('xml_xpath', u'field=xml_content,xpath=//a/text()')
+        result = self.doc.xml_get('xml_xpath')
+        self.assertEqual(result, [u'hello', u'world'])
+        self.assertEqual(self.doc.xml_xpath, u'field=xml_content,xpath=//a/text()')
+
+    def test_xpath_field_improper_spec(self):
+        spec = u'xx'
+        with self.assertRaises(ValueError):
+            spec = u'xx'
+            self.doc.xml_set('xml_xpath', spec)
+        with self.assertRaises(ValueError):
+            spec = u'field=abc, xpath=ööööö'
+            self.doc.xml_set('xml_xpath', spec)
+
     def test_copy_paste(self):
 
         xml = u'<?xml version="1.0" encoding="UTF-8"?>\n<hello>world</hello>'
