@@ -106,8 +106,8 @@ a consistent and explicit API it was necessary to invent our own API for the XML
 ``xmldirector.plonecore``.
 
 
-Manipulating XMLText field
-++++++++++++++++++++++++++
+Manipulating XMLText fields
++++++++++++++++++++++++++++
 
 Storing XML data and retriving is pretty trivial. And XML string to be stored must
 be either given as UTF-8 encoded byte string or as Python unicode string (without
@@ -123,8 +123,8 @@ the XML premable)::
     xml2 = my_doc.xml_get('xml_content')
 
 
-Manipulating XMLPath field 
-++++++++++++++++++++++++++
+Manipulating XMLPath fields
++++++++++++++++++++++++++++
 
 The following example shows how to retrieve parts of an XML document
 through an XPath field::
