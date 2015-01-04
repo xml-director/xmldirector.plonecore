@@ -101,7 +101,6 @@ class XMLXPath(TextLine):
         return super(XMLXPath, self).validate(value)
 
 
-
 XMLXPathFactory = FieldFactory(XMLXPath, _(
     u'label_xml_xpath_field', default=u'XML (extended XPath expression)'))
 XMLXPathHandler = plone.supermodel.exportimport.BaseHandler(XMLXPath)

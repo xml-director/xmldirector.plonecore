@@ -101,11 +101,13 @@ class BasicTests(TestBase):
         self.assertEqual(result, None)
 
     def test_xpath_field(self):
-        self.doc.xml_set('xml_content', u'<root><a>hello</a><a>world</a></root>')
+        self.doc.xml_set(
+            'xml_content', u'<root><a>hello</a><a>world</a></root>')
         self.doc.xml_set('xml_xpath', u'field=xml_content,xpath=//a/text()')
         result = self.doc.xml_get('xml_xpath')
         self.assertEqual(result, [u'hello', u'world'])
-        self.assertEqual(self.doc.xml_xpath, u'field=xml_content,xpath=//a/text()')
+        self.assertEqual(
+            self.doc.xml_xpath, u'field=xml_content,xpath=//a/text()')
 
     def test_xpath_field_improper_spec(self):
         spec = u'xx'
