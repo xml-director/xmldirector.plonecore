@@ -8,6 +8,7 @@ from AccessControl.SecurityManagement import newSecurityManager
 from xmldirector.plonecore.interfaces import IWebdavSettings
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
+import pdb; pdb.set_trace() 
 
 admin_pw = grampg.PasswordGenerator().of().between(100, 200, 'letters').done().generate()
 
@@ -24,12 +25,12 @@ addPloneSite(app, 'xml-director', create_userfolder=True, extension_ids=['plonet
 site = app['xml-director']
 pr = site.portal_registration
 pr.addMember('demo', 'demo', roles=('Site Administrator',))
-
 registry = getUtility(IRegistry)
 settings = registry.forInterface(IWebdavSettings)
 settings.webdav_url = u'http://localhost:8080/exist/webdav/db'
 settings.webdav_username = u'admin'
 settings.webdav_password = u'admin'
+print settings.webdav_url
 
 folder = plone.api.content.create(type='Folder', container=site, id='shakespeare', title='Shakespeare XML')
 import_dir = os.path.join(os.getcwd(), 'democontent', 'shakespeare')
