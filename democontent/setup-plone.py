@@ -8,7 +8,7 @@ from AccessControl.SecurityManagement import newSecurityManager
 from xmldirector.plonecore.interfaces import IWebdavSettings
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
-import pdb; pdb.set_trace() 
+
 
 admin_pw = grampg.PasswordGenerator().of().between(100, 200, 'letters').done().generate()
 
@@ -17,11 +17,13 @@ user = uf.getUser('admin')
 
 #uf._doChangeUser('admin', admin_pw, ('Manager',), ())
 newSecurityManager(None, user.__of__(uf))
-
+print 1
 if 'xml-director' in app.objectIds():
     app.manage_delObjects('xml-director')
+print 2
 
 addPloneSite(app, 'xml-director', create_userfolder=True, extension_ids=['plonetheme.sunburst:default', 'xmldirector.plonecore:democontent'])
+print 'created'
 site = app['xml-director']
 pr = site.portal_registration
 pr.addMember('demo', 'demo', roles=('Site Administrator',))
@@ -53,5 +55,5 @@ for name in os.listdir(import_dir):
         dok.xml_set('xml_content', xml)
         dok.xml_xpath = u'field=xml_content,xpath=//title/text()'
         dok.reindexObject()
-
+print 'commited'
 transaction.commit()
