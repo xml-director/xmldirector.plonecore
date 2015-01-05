@@ -26,6 +26,12 @@ def default_handler(webdav_handle, filename, view_name, request):
     return u'default handler'
 
 
+class class_view_handler(object):
+
+    def __call__(self, webdav_handle, filename, view_name, request):
+        return 'i am a class view handler'
+
+
 class PreconditionTests(unittest2.TestCase):
 
     def test_precondition_arguments(self):
@@ -45,7 +51,7 @@ class PreconditionTests(unittest2.TestCase):
 
     def test_precondition_handle_view(self):
         p = Precondition(
-            suffixes=('.html',), view_names = ['htmlview'], view_handler=view_handler)
+            suffixes=('html',), view_names = ['htmlview'], view_handler=view_handler)
         result = p.handle_view(webdav_handle=None,
                                filename='test.html',
                                view_name='view',
@@ -86,11 +92,16 @@ class PreconditionRegistryTests(unittest2.TestCase):
                 webdav_handle=None, filename='test.xml', view_name='htmlview', request=None)
 
     def test_default_fallback(self):
-
         self.registry.set_default(Precondition(view_handler=default_handler))
         result = self.registry.dispatch(
             webdav_handle=None, filename='xxxxx', view_name='xxxxxx', request=None)
         self.assertEqual(result, u'default handler')
+
+    def test_class_as_view_handler(self):
+        self.registry.set_default(Precondition(view_handler=class_view_handler))
+        result = self.registry.dispatch(
+            webdav_handle=None, filename='xxxxx', view_name='xxxxxx', request=None)
+        self.assertEqual(result, u'i am a class view handler')
 
 
 def test_suite():
