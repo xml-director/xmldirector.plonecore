@@ -149,6 +149,7 @@ class BasicTests(TestBase):
         self.doc.restrictedTraverse('@@view')()
         self.doc.restrictedTraverse('@@edit')()
 
+
 def test_suite():
     from unittest2 import TestSuite, makeSuite
     suite = TestSuite()

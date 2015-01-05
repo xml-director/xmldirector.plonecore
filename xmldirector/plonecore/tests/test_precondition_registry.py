@@ -48,7 +48,7 @@ class PreconditionTests(unittest2.TestCase):
         self.assertEqual(p.can_handle('test.html', 'htmlview'), True)
         self.assertEqual(p.can_handle('test.html', 'xxxxxx'), False)
         self.assertEqual(p.can_handle('test.xxx', 'htmlview'), False)
-        str_representation = str(p)
+        str(p)
 
     def test_precondition_handle_view(self):
         p = Precondition(
