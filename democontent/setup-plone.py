@@ -27,7 +27,7 @@ pr.addMember('demo', 'demo', roles=('Site Administrator',))
 
 registry = getUtility(IRegistry)
 settings = registry.forInterface(IWebdavSettings)
-settings.webdav_url = u'http://localhost:6080/exist/webdav/db'
+settings.webdav_url = u'http://localhost:8080/exist/webdav/db'
 settings.webdav_username = u'admin'
 settings.webdav_password = u'admin'
 
