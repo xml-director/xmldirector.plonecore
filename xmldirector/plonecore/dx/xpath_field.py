@@ -169,15 +169,19 @@ class XMLXPathDataManager(AttributeDataManager):
 
         return dict(errors=[], data=result)
 
-    def get(self):
+    def get(self, raw=True):
         """See z3c.form.interfaces.IDataManager"""
-    
+
         xpath_expression = getattr(self.context, self.fieldname, None)
-        if xpath_expression:
-            result = self.xpath_to_value()
-            if not result['errors']:
-                return result['data']
-            raise ValueError(result['errors'])
+
+        if raw:
+            return xpath_expression
+        else:
+            if xpath_expression:
+                result = self.xpath_to_value()
+                if not result['errors']:
+                    return result['data']
+                raise ValueError(result['errors'])
 
     def set(self, value):
         """See z3c.form.interfaces.IDataManager"""

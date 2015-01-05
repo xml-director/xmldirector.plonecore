@@ -104,7 +104,7 @@ class BasicTests(TestBase):
         self.doc.xml_set(
             'xml_content', u'<root><a>hello</a><a>world</a></root>')
         self.doc.xml_set('xml_xpath', u'field=xml_content,xpath=//a/text()')
-        result = self.doc.xml_get('xml_xpath')
+        result = self.doc.xml_get('xml_xpath', raw=False)
         self.assertEqual(result, [u'hello', u'world'])
         self.assertEqual(
             self.doc.xml_xpath, u'field=xml_content,xpath=//a/text()')

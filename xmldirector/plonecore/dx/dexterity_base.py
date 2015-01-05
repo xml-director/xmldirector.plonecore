@@ -44,10 +44,13 @@ def datamanager_for_field(context, fieldname, value=_marker):
     return dm_cls(context=context, field=field)
 
 
-def xml_get(context, fieldname):
+def xml_get(context, fieldname, raw=True):
 
     dm = datamanager_for_field(context, fieldname)
-    return dm.get()
+    try:
+        return dm.get(raw=raw)
+    except TypeError:
+        return dm.get()
 
 
 def xml_set(context, fieldname, value):
@@ -66,8 +69,8 @@ class Mixin(object):
         from application code.
     """
 
-    def xml_get(self, fieldname):
-        return xml_get(self, fieldname)
+    def xml_get(self, fieldname, raw=True):
+        return xml_get(self, fieldname, raw)
 
     def xml_set(self, fieldname, value):
         return xml_set(self, fieldname, value)
