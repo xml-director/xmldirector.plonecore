@@ -48,6 +48,7 @@ class PreconditionTests(unittest2.TestCase):
         self.assertEqual(p.can_handle('test.html', 'htmlview'), True)
         self.assertEqual(p.can_handle('test.html', 'xxxxxx'), False)
         self.assertEqual(p.can_handle('test.xxx', 'htmlview'), False)
+        str_representation = str(p)
 
     def test_precondition_handle_view(self):
         p = Precondition(
@@ -102,6 +103,10 @@ class PreconditionRegistryTests(unittest2.TestCase):
         result = self.registry.dispatch(
             webdav_handle=None, filename='xxxxx', view_name='xxxxxx', request=None)
         self.assertEqual(result, u'i am a class view handler')
+
+    def test_register_improper_tyoe(self):
+        with self.assertRaises(TypeError):
+            self.registry.register(None)
 
 
 def test_suite():
