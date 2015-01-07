@@ -17,14 +17,12 @@ user = uf.getUser('admin')
 
 #uf._doChangeUser('admin', admin_pw, ('Manager',), ())
 newSecurityManager(None, user.__of__(uf))
-print 1
 if 'xml-director' in app.objectIds():
     app.manage_delObjects('xml-director')
-print 2
 
 addPloneSite(app, 'xml-director', create_userfolder=True, extension_ids=['plonetheme.sunburst:default', 'xmldirector.plonecore:democontent'])
-print 'created'
 site = app['xml-director']
+site.manage_delObjects(['events', 'news'])
 pr = site.portal_registration
 pr.addMember('demo', 'demo', roles=('Site Administrator',))
 registry = getUtility(IRegistry)
