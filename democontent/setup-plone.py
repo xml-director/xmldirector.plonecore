@@ -22,7 +22,7 @@ if 'xml-director' in app.objectIds():
 
 addPloneSite(app, 'xml-director', create_userfolder=True, extension_ids=['plonetheme.sunburst:default', 'xmldirector.plonecore:democontent'])
 site = app['xml-director']
-site.manage_delObjects(['events', 'news'])
+site.manage_delObjects(['events', 'news', 'Members'])
 pr = site.portal_registration
 pr.addMember('demo', 'demo', roles=('Site Administrator',))
 registry = getUtility(IRegistry)
