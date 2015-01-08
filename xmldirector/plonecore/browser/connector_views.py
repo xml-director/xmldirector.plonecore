@@ -104,14 +104,15 @@ def ace_editor_readonly(webdav_handle, filename, view_name,
 
 def default_view_handler(webdav_handle, filename, view_name, request):
     """ Default handler for images and other binary resources """
-    
+
     info = webdav_handle.getinfo('.')
     mt, encoding = mimetypes.guess_type(filename)
     if not mt:
         mt = 'application/octet-stream'
     request.response.setHeader('Content-Type', mt)
     if 'filename' in request:
-        request.response.setHeader('Content-Disposition', 'attachment;filename={}'.format(request['filename']))
+        request.response.setHeader(
+            'Content-Disposition', 'attachment;filename={}'.format(request['filename']))
     if 'size' in info:
         request.response.setHeader('Content-Length', info['size'])
         return webdav_iterator(webdav_handle)
