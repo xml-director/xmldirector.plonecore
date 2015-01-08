@@ -8,6 +8,8 @@
 import os
 import inspect
 
+from Products.Five.browser import BrowserView
+
 _marker = object
 
 
@@ -44,7 +46,10 @@ class Precondition(object):
             return self.view_handler(
                 webdav_handle, filename, view_name, request)
         elif inspect.isclass(self.view_handler):
-            return self.view_handler()(webdav_handle, filename, view_name, request)
+            if issubclass(self.view_handler, BrowserView):
+                return self.view_handler(webdav_handle, filename, view_name, request)()
+            else:
+                return self.view_handler()(webdav_handle, filename, view_name, request)
         raise TypeError(
             'Unsupported kind of view_handler {}'.format(self.view_handler))
 

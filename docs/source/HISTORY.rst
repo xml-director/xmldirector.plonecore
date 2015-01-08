@@ -6,6 +6,7 @@ Changelog
 
 - default view handler accept a custom request/filename
   argument in order to override the name of downloaded file
+- fixed bug in view registry with BrowserView as view handler
 
 0.3.3 (2015-01-05)
 ------------------
