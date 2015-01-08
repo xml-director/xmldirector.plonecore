@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 
 ################################################################
 # xmldirector.plonecore
@@ -14,6 +14,8 @@ from xmldirector.plonecore.dx.xml_image import XMLImage
 from xmldirector.plonecore.dx.xml_image import XMLImageDataManager
 from xmldirector.plonecore.dx.xml_binary import XMLBinary
 from xmldirector.plonecore.dx.xml_binary import XMLBinaryDataManager
+from xmldirector.plonecore.dx.xpath_field import XMLXPath
+from xmldirector.plonecore.dx.xpath_field import XMLXPathDataManager
 
 
 _marker = object
@@ -35,15 +37,20 @@ def datamanager_for_field(context, fieldname, value=_marker):
         dm_cls = XMLBinaryDataManager
     elif isinstance(field, XMLImage):
         dm_cls = XMLImageDataManager
+    elif isinstance(field, XMLXPath):
+        dm_cls = XMLXPathDataManager
     else:
         raise ValueError('No datamanager found ({})'.format(fieldname))
     return dm_cls(context=context, field=field)
 
 
-def xml_get(context, fieldname):
+def xml_get(context, fieldname, raw=True):
 
     dm = datamanager_for_field(context, fieldname)
-    return dm.get()
+    try:
+        return dm.get(raw=raw)
+    except TypeError:
+        return dm.get()
 
 
 def xml_set(context, fieldname, value):
@@ -62,8 +69,8 @@ class Mixin(object):
         from application code.
     """
 
-    def xml_get(self, fieldname):
-        return xml_get(self, fieldname)
+    def xml_get(self, fieldname, raw=True):
+        return xml_get(self, fieldname, raw)
 
     def xml_set(self, fieldname, value):
         return xml_set(self, fieldname, value)

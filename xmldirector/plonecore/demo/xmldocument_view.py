@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-  
+# -*- coding: utf-8 -*-
 
 ################################################################
 # xmldirector.plonecore
@@ -8,8 +8,9 @@
 
 import lxml.etree
 import lxml.html.clean
+import zope.component
 from Products.Five.browser import BrowserView
-from xmldirector.plonecore import xslt_registry
+from xmldirector.plonecore.interfaces import IXSLTRegistry
 
 
 class XMLDocument(BrowserView):
@@ -19,8 +20,9 @@ class XMLDocument(BrowserView):
             context object under a given registered XSLT transformation.
         """
 
+        registry = zope.component.getUtility(IXSLTRegistry)
         xml = self.context.xml_get(fieldname)
-        transform = xslt_registry.get_stylesheet(family, stylesheet_name)
+        transform = registry.get_stylesheet(family, stylesheet_name)
         doc_root = lxml.etree.fromstring(xml)
         result = transform(doc_root)
         html = lxml.etree.tostring(result.getroot(), encoding=unicode)

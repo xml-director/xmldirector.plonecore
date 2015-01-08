@@ -62,6 +62,8 @@
         name="xmldirector.plonecore.dx.xpath_field.XMLXPath"
     />
 
+    <adapter factory=".xpath_field.XMLXPathDataManager" />
+
     <adapter factory=".xpath_field.XPathFieldWidget"/>
 
     <class class=".xpath_field.XPathWidget">

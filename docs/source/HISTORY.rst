@@ -1,11 +1,14 @@
 Changelog
 =========
 
-0.3.3 (unreleased)
+0.3.3 (2015-01-05)
 ------------------
+
 - running the tests should not leave any testing directory
   traces within the XML databases 
-
+- almost 100% test coverage for the core functionality
+- more tests
+- added documentation on content-types
 
 0.3.2 (2014-12-30)
 ------------------

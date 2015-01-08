@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 
 ################################################################
 # xmldirector.plonecore
@@ -74,7 +74,8 @@ def metadata_to_xml(context, metadata={}):
                datetime.utcnow().isoformat()),
            u'<value name="plone-path" type="string">{}</value>'.format(
                '/'.join(context.getPhysicalPath())),
-           u'<value name="plone-uid" type="string">{}</value>'.format(uid or ''),
+           u'<value name="plone-uid" type="string">{}</value>'.format(
+               uid or ''),
            ]
     for k, v in metadata.items():
         if k == 'sha256':

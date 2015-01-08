@@ -9,6 +9,7 @@ from xmldirector.plonecore.interfaces import IWebdavSettings
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
 
+
 admin_pw = grampg.PasswordGenerator().of().between(100, 200, 'letters').done().generate()
 
 uf = app.acl_users
@@ -16,20 +17,20 @@ user = uf.getUser('admin')
 
 #uf._doChangeUser('admin', admin_pw, ('Manager',), ())
 newSecurityManager(None, user.__of__(uf))
-
 if 'xml-director' in app.objectIds():
     app.manage_delObjects('xml-director')
 
 addPloneSite(app, 'xml-director', create_userfolder=True, extension_ids=['plonetheme.sunburst:default', 'xmldirector.plonecore:democontent'])
 site = app['xml-director']
+site.manage_delObjects(['events', 'news'])
 pr = site.portal_registration
 pr.addMember('demo', 'demo', roles=('Site Administrator',))
-
 registry = getUtility(IRegistry)
 settings = registry.forInterface(IWebdavSettings)
 settings.webdav_url = u'http://localhost:8080/exist/webdav/db'
 settings.webdav_username = u'admin'
 settings.webdav_password = u'admin'
+print settings.webdav_url
 
 folder = plone.api.content.create(type='Folder', container=site, id='shakespeare', title='Shakespeare XML')
 import_dir = os.path.join(os.getcwd(), 'democontent', 'shakespeare')
@@ -52,5 +53,5 @@ for name in os.listdir(import_dir):
         dok.xml_set('xml_content', xml)
         dok.xml_xpath = u'field=xml_content,xpath=//title/text()'
         dok.reindexObject()
-
+print 'commited'
 transaction.commit()
