@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.3.4 (unreleased)
+------------------
+
+- default view handler accept a custom request/filename
+  argument in order to override the name of downloaded file
+
 0.3.3 (2015-01-05)
 ------------------
 
