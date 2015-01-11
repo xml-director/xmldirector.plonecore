@@ -82,8 +82,9 @@ class Validation(BrowserView):
         """ Perform server-side XML validation """
 
         errors = []
-        try:
-            lxml.etree.fromstring(xml)
-        except lxml.etree.ParseError as e:
-            errors.append(u'Parse error {}'.format(e))
+        if xml:
+            try:
+                lxml.etree.fromstring(xml)
+            except lxml.etree.ParseError as e:
+                errors.append(u'Parse error {}'.format(e))
         return json.dumps(errors)
