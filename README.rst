@@ -56,4 +56,3 @@ Full documentation
 ------------------
 
 See https://github.com/xml-director/xmldirector.plonecore/tree/master/docs/source
-
