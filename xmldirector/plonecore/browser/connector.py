@@ -31,6 +31,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore import permissions
 from plone.app.layout.globals.interfaces import IViewView
 from xmldirector.plonecore.i18n import MessageFactory as _
+from xmldirector.plonecore.logger import IPersistentLogger
 
 from .view_registry import precondition_registry
 
@@ -94,6 +95,10 @@ class Connector(BrowserView):
                     self.wrapped_meta = None
                 return self
         raise zExceptions.NotFound('not found: {}'.format(entryname))
+
+    @property
+    def logger(self):
+        return IPersistentLogger(self.context)
 
     def webdav_handle(self, subpath=None, root=False):
         """ Returns a webdav handle for the current subpath """
@@ -202,7 +207,7 @@ class Connector(BrowserView):
         else:
             handle.makedir(name)
             msg = u'Collection created'
-            self.context.log('Created {} (subpath: {})'.format(name, subpath))
+            self.logger.log('Created {} (subpath: {})'.format(name, subpath))
             self.context.plone_utils.addPortalMessage(msg)
         return self.request.response.redirect(
             '{}/@@view/{}'.format(self.context.absolute_url(), subpath))
@@ -214,7 +219,7 @@ class Connector(BrowserView):
         if handle.exists(name):
             handle.removedir(name, force=True)
             msg = u'Collection removed'
-            self.context.log('Removed {} (subpath: {})'.format(name, subpath))
+            self.logger.log('Removed {} (subpath: {})'.format(name, subpath))
             self.context.plone_utils.addPortalMessage(msg)
         else:
             msg = u'Collection does not exist'
@@ -229,7 +234,7 @@ class Connector(BrowserView):
         if handle.exists(name):
             handle.rename(name, new_name)
             msg = u'Collection renamed'
-            self.context.log(
+            self.logger.log(
                 'Renamed {}  to {} (subpath: {})'.format(name, new_name, subpath))
             self.context.plone_utils.addPortalMessage(msg)
         else:
@@ -239,9 +244,9 @@ class Connector(BrowserView):
             '{}/@@view/{}'.format(self.context.absolute_url(), subpath))
 
     def reindex(self):
-        """ Reindex current connector """
+        """ Reindex curnrent connector """
         self.context.reindexObject()
-        self.context.log('Reindexed')
+        self.logger.log('Reindexed')
         return self.redirect(u'Reindexing successfully')
 
     def datetime_tz(self, dt):
@@ -322,7 +327,7 @@ class Connector(BrowserView):
                 fp.write(zip_file.read())
 
             msg = u'File "{}" imported'.format(zip_filename)
-            self.context.log(msg)
+            self.logger.log(msg)
             return self.redirect(_(msg))
 
         try:
@@ -335,7 +340,7 @@ class Connector(BrowserView):
                         handle.remove(name)
                     else:
                         handle.removedir(name, force=True, recursive=False)
-                self.context.log(u'Subdirectory cleared (ZIP import)')
+                self.logger.log(u'Subdirectory cleared (ZIP import)')
 
                 # setup progressbar
                 widgets = ['ZIP import: ', Percentage(), ' ', Bar(
@@ -383,7 +388,7 @@ class Connector(BrowserView):
             msg = u'Error opening ZIP file: {}'.format(e)
             return self.redirect(msg, 'error')
 
-        self.context.log(
+        self.logger.log(
             u'ZIP file imported ({}, {} files)'.format(zip_filename, count))
         return self.redirect(_(u'Uploaded ZIP archive imported'))
 

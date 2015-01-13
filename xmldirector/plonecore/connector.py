@@ -15,14 +15,10 @@ from zope.component import getUtility
 from plone.dexterity.content import Item
 from plone.supermodel import model
 from plone.registry.interfaces import IRegistry
-from zope.annotation.interfaces import IAnnotations
 from persistent.list import PersistentList
 
 from xmldirector.plonecore.interfaces import IWebdavSettings
 from xmldirector.plonecore.i18n import MessageFactory as _
-
-
-LOG_KEY = 'xmldirector.plonecore.connector.log'
 
 
 class IConnector(model.Schema):
@@ -73,30 +69,6 @@ class Connector(Item):
     webdav_username = None
     webdav_password = None
     webdav_subpath = None
-
-    @property
-    def logger(self):
-        annotations = IAnnotations(self)
-        if LOG_KEY not in annotations:
-            annotations[LOG_KEY] = PersistentList()
-        return annotations[LOG_KEY]
-
-    def log(self, comment, level='info', details=None):
-        """ Add a log entry """
-
-        logger = self.logger
-        entry = dict(date=datetime.datetime.utcnow(),
-                     username=plone.api.user.get_current().getUserName(),
-                     level=level,
-                     details=details,
-                     comment=comment)
-        logger.append(entry)
-        logger._p_changed = 1
-
-    def log_clear(self):
-        """ Clear all logger entries """
-        annotations = IAnnotations(self)
-        annotations[LOG_KEY] = PersistentList()
 
     def webdav_handle(self, subpath=None):
         """ Return WebDAV handle to root of configured connector object
