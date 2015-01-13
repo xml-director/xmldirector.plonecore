@@ -45,3 +45,8 @@ Usage::
         adapter.log(u'this is an error message', level='error')
         adapter.log(u'this is an error message', level='error', details='....')
 
+The logs can be view through-the-web through the URL http://host/path/to/object/@@connector-log.
+The logs can be clear using the URL http://host/path/to/object/@@connector-log-clear.
+Both URLs require the permission of modify the related object.
+
+
