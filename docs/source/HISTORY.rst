@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.3.4 (unreleased)
+0.3.4 (2015-01-13)
 ------------------
 
 - default view handler accept a custom request/filename
