@@ -20,5 +20,6 @@ Contents:
    README.rst
    content-types.rst
    xslt-registry.rst
+   logging.rst
    testing.rst
    HISTORY.rst
