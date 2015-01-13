@@ -12,7 +12,7 @@
         tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime">
 
       <h2 i18n:translate="">Connector logfile</h2>
-      <tal:def define="rows context/logger"> 
+      <tal:def define="rows view/entries"> 
 
           <div class="warning" i18n:translate="" tal:condition="not: rows">
               No logger entries found

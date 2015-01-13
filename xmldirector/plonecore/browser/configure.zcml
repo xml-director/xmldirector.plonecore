@@ -66,9 +66,9 @@
         attribute="clear_contents"
         permission="cmf.ModifyPortalContent"
     />
-
+    
     <browser:page
-        for="xmldirector.plonecore.connector.IConnector"
+        for="*"
         name="connector-log"
         class=".connector.Logging"
         template="connector_log.pt"
@@ -76,7 +76,7 @@
     />
 
     <browser:page
-        for="xmldirector.plonecore.connector.IConnector"
+        for="*"
         name="connector-log-clear"
         class=".connector.Logging"
         attribute="log_clear"

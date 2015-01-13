@@ -58,5 +58,5 @@ class PersistentLoggerAdapter(object):
 
     def log_clear(self):
         """ Clear all logger entries """
-        annotations = IAnnotations(self)
+        annotations = IAnnotations(self.context)
         annotations[LOG_KEY] = PersistentList()

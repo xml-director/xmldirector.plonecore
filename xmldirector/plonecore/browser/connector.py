@@ -408,17 +408,22 @@ class AceEditorReadonly(Connector):
     view_name = 'view-editor-readonly'
 
 
+from xmldirector.plonecore.logger import IPersistentLogger
+
 class Logging(BrowserView):
 
     template = ViewPageTemplateFile('connector_log.pt')
 
+    def entries(self):
+        return IPersistentLogger(self.context).logger
+
     def log_clear(self):
         """ Clear connector persistent log """
-        self.context.log_clear()
+        IPersistentLogger(self.context).log_clear()
         msg = u'Log entries cleared'
         self.context.plone_utils.addPortalMessage(msg)
         return self.request.response.redirect(
-            '{}/@@view'.format(self.context.absolute_url()))
+            '{}/connector-log'.format(self.context.absolute_url()))
 
     def __call__(self):
         return self.template()
