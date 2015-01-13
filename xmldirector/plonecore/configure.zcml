@@ -25,6 +25,12 @@
     <include package=".dx" />
     <include package=".demo" />
 
+    <adapter
+        factory="xmldirector.plonecore.logger.PersistentLoggerAdapter"
+        provides="xmldirector.plonecore.logger.IPersistentLogger"
+        for="*"
+    />
+
     <genericsetup:registerProfile
         name="default"
         title="XML-Director plonecore - default profile"

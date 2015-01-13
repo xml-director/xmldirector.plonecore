@@ -7,6 +7,9 @@ Changelog
 - default view handler accept a custom request/filename
   argument in order to override the name of downloaded file
 - fixed bug in view registry with BrowserView as view handler
+- added PersistentLoggerAdapter for adopting arbitrary
+  persistent objects for persistent logging through a Zope
+  annotation  
 
 0.3.3 (2015-01-05)
 ------------------
