@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.3.5 (unreleased)
+------------------
+- rewritten persistent logger internals: now uses an OOBTree
+  for holding all logging entries instead of a persistent list
+  in order to support filtering of log entries by min-max 
+  values
+
 0.3.4 (2015-01-13)
 ------------------
 
