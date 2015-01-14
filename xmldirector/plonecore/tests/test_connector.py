@@ -121,12 +121,12 @@ class BasicTests(TestBase):
 
         c = self.portal.connector
         logger = IPersistentLogger(c)
-        self.assertEqual(len(logger.logger), 0)
+        self.assertEqual(len(logger), 0)
         logger.log(u'error', 'error')
         logger.log(u'info', 'info')
-        self.assertEqual(len(logger.logger), 2)
-        logger.log_clear()
-        self.assertEqual(len(logger.logger), 0)
+        self.assertEqual(len(logger), 2)
+        logger.clear()
+        self.assertEqual(len(logger), 0)
 
     def testTraversalExistingPath(self):
         path = 'connector/@@view/foo/index.html'

@@ -420,11 +420,11 @@ class Logging(BrowserView):
     template = ViewPageTemplateFile('connector_log.pt')
 
     def entries(self):
-        return IPersistentLogger(self.context).logger
+        return IPersistentLogger(self.context).entries
 
     def log_clear(self):
         """ Clear connector persistent log """
-        IPersistentLogger(self.context).log_clear()
+        IPersistentLogger(self.context).clear()
         msg = u'Log entries cleared'
         self.context.plone_utils.addPortalMessage(msg)
         return self.request.response.redirect(

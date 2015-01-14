@@ -13,6 +13,7 @@ import plone.api
 import zope.interface
 from persistent.list import PersistentList
 from zope.annotation.interfaces import IAnnotations
+from BTrees.OOBTree import OOBTree
 
 LOG = logging.getLogger('onkopedia.policy')
 
@@ -40,27 +41,41 @@ class PersistentLoggerAdapter(object):
         self.context = context
 
     @property
-    def logger(self):
-        annotations = IAnnotations(self.context)
-        if LOG_KEY not in annotations:
-            annotations[LOG_KEY] = PersistentList()
-        return annotations[LOG_KEY]
+    def entries(self, min_datetime=None, max_datetime=None):
+        return self.annotations.values(min_datetime, max_datetime)
+
+    def __len__(self):
+        return len(self.entries)
+
+    @property
+    def annotations(self):
+        all_annotations = IAnnotations(self.context)
+        if LOG_KEY not in all_annotations:
+            all_annotations[LOG_KEY] = OOBTree()
+        else:
+            annotations = all_annotations[LOG_KEY]
+            if isinstance(annotations, PersistentList):
+                tree = OOBTree()
+                for d in annotations:
+                    tree[d['date']] = d
+                all_annotations[LOG_KEY] = tree
+        return all_annotations[LOG_KEY] 
 
     def log(self, comment, level='info', details=None):
         """ Add a log entry """
-        logger = self.logger
+        annotations = self.annotations
         if details:
             if not isinstance(details, basestring):
                 details = pprint.pformat(details)
-        entry = dict(date=datetime.datetime.utcnow(),
-                     username=plone.api.user.get_current().getUserName(),
-                     level=level,
-                     details=details,
-                     comment=comment)
-        logger.append(entry)
-        logger._p_changed = 1
+        d = dict(date=datetime.datetime.utcnow(),
+                 username=plone.api.user.get_current().getUserName(),
+                 level=level,
+                 details=details,
+                 comment=comment)
+        annotations[d['date']] = d
+        annotations._p_changed = 1
 
-    def log_clear(self):
+    def clear(self):
         """ Clear all logger entries """
         annotations = IAnnotations(self.context)
-        annotations[LOG_KEY] = PersistentList()
+        annotations[LOG_KEY] = OOBTree()
