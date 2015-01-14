@@ -1,4 +1,4 @@
-FROM zopyx/xmldirectorbase
+FROM zopyx/xmldirector-base
 
 MAINTAINER Andreas Jung <info@zopyx.com>
 
