@@ -116,13 +116,17 @@ class BasicTests(TestBase):
         self.assertEqual(result, '976 KB')
 
     def testLogger(self):
+
+        from xmldirector.plonecore.logger import IPersistentLogger
+
         c = self.portal.connector
-        self.assertEqual(len(c.logger), 0)
-        c.log(u'error', 'error')
-        c.log(u'info', 'info')
-        self.assertEqual(len(c.logger), 2)
-        c.log_clear()
-        self.assertEqual(len(c.logger), 0)
+        logger = IPersistentLogger(c)
+        self.assertEqual(len(logger.logger), 0)
+        logger.log(u'error', 'error')
+        logger.log(u'info', 'info')
+        self.assertEqual(len(logger.logger), 2)
+        logger.log_clear()
+        self.assertEqual(len(logger.logger), 0)
 
     def testTraversalExistingPath(self):
         path = 'connector/@@view/foo/index.html'
