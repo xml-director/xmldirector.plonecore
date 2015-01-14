@@ -7,6 +7,7 @@
 
 import logging
 import datetime
+import pprint
 
 import plone.api
 import zope.interface
@@ -48,6 +49,9 @@ class PersistentLoggerAdapter(object):
     def log(self, comment, level='info', details=None):
         """ Add a log entry """
         logger = self.logger
+        if details:
+            if not isinstance(details, basestring):
+                details = print.pformat(details)
         entry = dict(date=datetime.datetime.utcnow(),
                      username=plone.api.user.get_current().getUserName(),
                      level=level,
