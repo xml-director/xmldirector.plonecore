@@ -51,7 +51,7 @@ class PersistentLoggerAdapter(object):
         logger = self.logger
         if details:
             if not isinstance(details, basestring):
-                details = print.pformat(details)
+                details = pprint.pformat(details)
         entry = dict(date=datetime.datetime.utcnow(),
                      username=plone.api.user.get_current().getUserName(),
                      level=level,
