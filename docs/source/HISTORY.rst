@@ -7,6 +7,7 @@ Changelog
   for holding all logging entries instead of a persistent list
   in order to support filtering of log entries by min-max 
   values
+- logger table now uses a paginated view with searchable columns
 
 0.3.4 (2015-01-13)
 ------------------
