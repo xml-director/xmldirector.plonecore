@@ -34,15 +34,15 @@
                       <td tal:content="row/username" />
                       <td>
                           <span tal:content="row/comment" />
-                          <a class="action"
-                              tal:condition="row/details | nothing" 
-                              i18n:translate="">
-                              Details
-                          </a>
-                          <pre tal:condition="row/details | nothing" 
-                              class="details" 
-                              style="display: none"
-                              tal:content="row/details" />
+                          <tal:if condition="row/details | nothing"> 
+                              (<a class="action"
+                                  i18n:translate="">
+                                  Details
+                              </a>)
+                              <pre class="details" 
+                                  style="display: none"
+                                  tal:content="row/details" />
+                          </tal:if>
                   </tr>
               </tbody>
           </table>
