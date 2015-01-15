@@ -55,4 +55,6 @@ eXist-db providing the following features:
 Full documentation 
 ------------------
 
-See https://github.com/xml-director/xmldirector.plonecore/tree/master/docs/source
+See https://pythonhosted.org/xmldirector.plonecore/
+
+
