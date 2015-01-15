@@ -1,0 +1,42 @@
+{
+    "name": "tableutils",
+    "title": "tableutils - A jQuery plugin for fixing the header, client-side and server-side pagination, sorting and searching the tables",
+    "description": "A jQuery plugin for HTML tables. You can - Fix Table Headers with both Vertical and Horizontal Scrolling support, Add master CheckBox, Enable Sorting, Filtering, Client-side and Server-side Numeric, Alphabetic and Alphanumeric Pagination, Addition of new rows to the table, Deletion of exiting rows, Editing of existing rows.",
+    "keywords": [        
+		"table",
+        "horizontal-scrolling",
+		"row-selection",
+      	"fix-header",
+    	"sort",
+    	"filter",
+    	"new-row",    		
+    	"addition",
+    	"delete",
+    	"edit",
+    	"update",
+    	"master-checkbox",    		
+    	"pagination",
+    	"client-side",
+    	"server-side",
+		"dynamic-tables"
+    ],
+    "version": "1.1.2",
+	"homepage": "http://kolgepratik.github.com/tableutils/",
+	"docs": "https://github.com/kolgepratik/tableutils/wiki/tableutils-Documentation", 
+	"demo": "http://kolgepratik.github.com/tableutils/demo.html",
+	"bugs": "https://github.com/kolgepratik/tableutils/issues",
+    "author": {
+        "name": "Kolge Pratik",
+        "url": "http://kolgepratik.wordpress.com/"
+    },    
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "http://www.opensource.org/licenses/mit-license.php"
+        }
+    ],    
+    "dependencies": {
+        "jquery": ">=1.6",
+		    "jqueryUI": ">=1.6"
+    }
+}

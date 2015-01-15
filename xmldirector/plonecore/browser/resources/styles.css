@@ -15,12 +15,6 @@
     font-weight: bold;
 }
 
-#logging {
-    display: block;
-    max-height: 600px;
-    overflow-y: auto;
-}
-
 .status-ok {
     color: green;
     font-weight: bold;

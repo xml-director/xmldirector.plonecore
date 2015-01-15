@@ -7,6 +7,12 @@
       i18n:domain="xmldirector.plonecore">
 <body>
 
+
+<metal:main fill-slot="javascript_head_slot">
+    <script type="text/javascript" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/tableutils/js/tableutils.js"></script>
+    <link rel="stylesheet" type="text/html" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/tableutils/css/tableutils.css"/>
+</metal:main>
+
 <metal:main fill-slot="content-core">
     <metal:content-core define-macro="content-core"
         tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime">
@@ -52,6 +58,18 @@
                   $('.action').click(function() {
                           $(this).siblings('pre').fadeToggle('fast');
                   });
+                  $('table').tableutils( {
+                                filter:true,
+                                fixHeader: { width: '100%', height: 600 },                 
+                                paginate: { type: 'numeric', pageSize: 20 },             
+                                availablePageSizes: [10, 20, 50, 100, 500],
+                                columns: [                     
+                                       { label: 'Date' },
+                                       { label: 'Level' },
+                                       { label: 'Username' },
+                                       { label: 'Comment' }
+                                ]
+                });
               });
           </script>
 

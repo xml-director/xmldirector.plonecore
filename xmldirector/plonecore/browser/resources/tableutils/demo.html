@@ -1,0 +1,719 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script src="js/tableutils.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="css/tableutils.css" media="screen" />
+	
+	<style>
+		pre.code {			
+			width: 1000px;
+			overflow: auto;
+			padding: 10px 0px;
+			background-color: lightblue;
+			color: black;
+			font-family: monospace;
+			font-size: large;
+			font-weight: bold;						
+		}
+		
+		li {
+			border-bottom: 2px solid black;
+			padding: 20px 0px;
+		}		
+		
+		button.customButton {
+			color: white;
+			background-color: #07911A;
+			border: none;
+			padding: 5px;
+			font-weight: bold;		
+			vertical-align: middle;			
+		}
+		
+		button.customButton2 {
+			color: white;
+			background-color: #D41128;
+			border: none;
+			padding: 5px;
+			font-weight: bold;		
+			vertical-align: middle;
+		}
+		
+		h3 {
+			text-decoration: underline;
+			font-style: oblique;
+		}
+		
+		h1 {
+			align: center;
+			font-family: cursive;
+			color: green;
+		}
+		
+		h4.question {
+			color: green;
+		}		
+		
+		div.demoInfoDIV {
+			width: 99%;
+			height: 150px;
+			overflow: none;
+			padding: 10px;
+			background-color: orange;
+			color: white;
+			border-bottom: 3px solid gray;
+			font-family: monospace;
+			font-size: x-large;
+			z-index: 2;
+			position: fixed;
+			top: 0px;
+			left: 0px;
+		}
+		
+		div.demoContentDIV {
+			width: 99%;
+			padding-top: 150px;
+		}
+		
+		div.questionsHeader {
+			width: 99%;
+			padding: 10px;
+			background-color: orange;
+			color: white;
+			border-bottom: 3px solid gray;
+			font-family: monospace;
+			font-size: x-large;
+		}
+		
+		div.justification {
+			color: gray;
+		}
+		
+	</style>
+	
+	<script type="text/javascript">
+		
+		$(document).ready(function() {
+			$('#allDemos').find('li').each(function(index, demoItem) {
+				var $this = $(this);
+				
+				$this.find('button.show').click(function() {
+					$(this).closest('li').find('pre').show();
+					$(this).closest('li').find('button.hide').show();
+					$(this).hide();
+				});
+				
+				$this.find('button.hide').click(function() {
+					$(this).closest('li').find('pre').hide();
+					$(this).closest('li').find('button.show').show();
+					$(this).hide();
+				});
+			});
+		});
+	
+		function fixHeader() {
+			$('#fixMyHeader').tableutils( {
+				fixHeader: { width: 1000, height: 200 }
+			} );
+			
+			$('#fixHeader').hide();
+		}
+		
+		function sortRecords() {
+			$('#sortMe').tableutils( {
+				fixHeader: { width: 1000, height: 200 }, 				 
+				sort: { type: [ 'alphanumeric', 'alphanumeric' , 'alphanumeric', 'numeric', 'alphanumeric'] }, 
+				columns: [ 					   
+					   { label: 'First Name' },
+			           { label: 'Last Name' },
+			           { label: 'Concept' }, 
+			           { label: 'Rating' },
+			           { label: 'AKA' }
+		        	]
+			} );
+			
+			$('#sortRecords').hide();
+		}
+		
+		function searchRecords() {
+			$('#searchMe').tableutils( {
+				fixHeader: { width: 1000, height: 200 }, 				 
+				filter: true, 
+				columns: [ 					   
+					   { label: 'First Name' },
+			           { label: 'Last Name' },
+			           { label: 'Concept' }, 
+			           { label: 'Rating' },
+			           { label: 'AKA' }
+		        	]
+			} );
+			
+			$('#searchRecords').hide();
+		}
+		
+		function selectRecords() {
+			$('#selectMyRecords').tableutils( {
+				fixHeader: { width: 1000, height: 200 }, 				 
+				masterCheckBox: { columnNumber: 1 },  
+				rowSelect: { columnIndex: 1 }, 
+				columns: [ 
+				       { label: 'ID' }, 
+					   { label: 'First Name' },
+			           { label: 'Last Name' },
+			           { label: 'Concept' }, 
+			           { label: 'Rating' },
+			           { label: 'AKA' }
+		        	]
+			} );
+			
+			$('#selectRecords').hide();
+		}
+		
+		function paginate() {
+			$('#paginateMe').tableutils( {
+				fixHeader: { width: 1000, height: 200 }, 				 
+				paginate: { type: 'numeric', pageSize: 2 },				
+				columns: [ 				       
+					   { label: 'First Name' },
+			           { label: 'Last Name' },
+			           { label: 'Concept' }, 
+			           { label: 'Rating' },
+			           { label: 'AKA' }
+		        	]
+			} );
+			
+			$('#paginate').hide();
+		}
+</script>
+</head>
+<body>
+	<div style="align: center;" class="demoInfoDiv">
+		<b><a style="color: green;" target="_blank" href="http://kolgepratik.github.com/tableutils">tableutils demo</a> (version 1.1.2)</b><br>
+		Try out the following demos. Use them seperately or club them together. Refer the <a style="color: blue;" target="_blank" href="https://github.com/kolgepratik/tableutils/wiki/tableutils-Documentation">Updated documentation</a> for detailed information about usage and all the available options.<br>
+		See the <a style="color: blue;" target="_blank" href="https://github.com/kolgepratik/tableutils/wiki/Change-log">Change log</a> for this version.<br>
+		Read the <a style="color: blue;" target="_blank" href="https://github.com/kolgepratik/tableutils/wiki/FAQs">FAQs for Tips and Tricks</a>.<br>
+		See the <a style="color: blue;" target="_blank" href="https://github.com/kolgepratik/tableutils/wiki">latest news</a> about tableutils.<br>
+		Track or report your <a style="color: blue;" target="_blank" href="https://github.com/kolgepratik/tableutils/issues">issues</a>.		
+	</div>	
+	<div class="demoContentDIV">
+		<ul id="allDemos" style="list-style-type: none;">
+			<li id="fixHeaderContent">
+				<h3>Fix the header</h3><button id="fixHeader" class="customButton2" type="button" onclick="fixHeader()">Transform</button><button type="button" class="show customButton">Code</button><button type="button" class="hide customButton" style="display: none;">Hide code</button>
+				<table id="fixMyHeader" width="1200px">
+					<thead>
+						<tr>
+							<th width="20%">First Name</th>
+							<th width="20%">Last Name</th>
+							<th width="10%">Dept</th>
+							<th width="10%">Age</th>
+							<th width="40%">Address</th>
+						</tr>
+					</thead>
+					<tbody>						
+						<tr>
+							<td width="20%">Pratik</td>
+							<td width="20%">Kolge</td>
+							<td width="10%">IT</td>
+							<td width="10%">23</td>
+							<td width="40%">Pune, India</td>
+						</tr>
+						<tr>
+							<td width="20%">Pratik</td>
+							<td width="20%">Kolge</td>
+							<td width="10%">IT</td>
+							<td width="10%">23</td>
+							<td width="40%">Pune, India</td>
+						</tr>
+						<tr>
+							<td width="20%">Pratik</td>
+							<td width="20%">Kolge</td>
+							<td width="10%">IT</td>
+							<td width="10%">23</td>
+							<td width="40%">Pune, India</td>
+						</tr>
+						<tr>
+							<td width="20%">Pratik</td>
+							<td width="20%">Kolge</td>
+							<td width="10%">IT</td>
+							<td width="10%">23</td>
+							<td width="40%">Pune, India</td>
+						</tr>
+						<tr>
+							<td width="20%">Pratik</td>
+							<td width="20%">Kolge</td>
+							<td width="10%">IT</td>
+							<td width="10%">23</td>
+							<td width="40%">Pune, India</td>
+						</tr>
+						<tr>
+							<td width="20%">Pratik</td>
+							<td width="20%">Kolge</td>
+							<td width="10%">IT</td>
+							<td width="10%">23</td>
+							<td width="40%">Pune, India</td>
+						</tr>
+						<tr>
+							<td width="20%">Pratik</td>
+							<td width="20%">Kolge</td>
+							<td width="10%">IT</td>
+							<td width="10%">23</td>
+							<td width="40%">Pune, India</td>
+						</tr>
+						<tr>
+							<td width="20%">Pratik</td>
+							<td width="20%">Kolge</td>
+							<td width="10%">IT</td>
+							<td width="10%">23</td>
+							<td width="40%">Pune, India</td>
+						</tr>
+						<tr>
+							<td width="20%">Pratik</td>
+							<td width="20%">Kolge</td>
+							<td width="10%">IT</td>
+							<td width="10%">23</td>
+							<td width="40%">Pune, India</td>
+						</tr>
+						<tr>
+							<td width="20%">Pratik</td>
+							<td width="20%">Kolge</td>
+							<td width="10%">IT</td>
+							<td width="10%">23</td>
+							<td width="40%">Pune, India</td>
+						</tr>						
+					</tbody>
+				</table>				
+				<pre class="code" style="display:none; height: 100px;">
+	$('#fixMyHeader').tableutils( {
+		fixHeader: { width: 1000, height: 200 }
+	} );
+				</pre>
+			</li>
+			<li id="sortContent">
+				<h3>Sort your table's data</h3><button id="sortRecords" class="customButton2" type="button" onclick="sortRecords()">Transform</button><button type="button" class="show customButton">Code</button><button type="button" class="hide customButton" style="display: none;">Hide code</button>
+				<table id="sortMe" width="980px">
+					<thead>
+						<tr>
+							<th width="20%">First Name</th>
+							<th width="20%">Last Name</th>
+							<th width="10%">Concept</th>
+							<th width="10%">Rating</th>
+							<th width="40%">AKA</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td width="20%">Tony</td>
+							<td width="20%">Stark</td>
+							<td width="10%">Marvel</td>
+							<td width="10%">42</td>
+							<td width="40%">Iron Man</td>
+						</tr>    
+						<tr>
+							<td width="20%">Jack</td>
+							<td width="20%">Sparrow</td>
+							<td width="10%">Disney</td>
+							<td width="10%">40</td>
+							<td width="40%">Pirate</td>
+						</tr>				
+						<tr>
+							<td width="20%">Bruce</td>
+							<td width="20%">Banner</td>
+							<td width="10%">Marvel</td>
+							<td width="10%">38</td>
+							<td width="40%">The Hulk</td>
+						</tr>
+						<tr>
+							<td width="20%">Clarke</td>
+							<td width="20%">Kent</td>
+							<td width="10%">DC</td>
+							<td width="10%">35</td>
+							<td width="40%">Man of Steel</td>
+						</tr>
+						<tr>
+							<td width="20%">Bruce</td>
+							<td width="20%">Wayne</td>
+							<td width="10%">DC</td>
+							<td width="10%">34</td>
+							<td width="40%">The Dark Knight</td>
+						</tr>
+						<tr>
+							<td width="20%">Sherlock</td>
+							<td width="20%">Holmes</td>
+							<td width="10%">Doyle</td>
+							<td width="10%">37</td>
+							<td width="40%">Ingenious</td>
+						</tr>
+						<tr>
+							<td width="20%">Captain</td>
+							<td width="20%">America</td>
+							<td width="10%">Marvel</td>
+							<td width="10%">39</td>
+							<td width="40%">Captain America</td>
+						</tr>
+						<tr>
+							<td width="20%">Peter</td>
+							<td width="20%">Parkar</td>
+							<td width="10%">Marvel</td>
+							<td width="10%">43</td>
+							<td width="40%">Spidy</td>
+						</tr>
+						<tr>
+							<td width="20%">Sherlock</td>
+							<td width="20%">Holmes</td>
+							<td width="10%">Doyle</td>
+							<td width="10%">37</td>
+							<td width="40%">Ingenious</td>
+						</tr>										
+					</tbody>
+				</table>
+				<pre class="code" style="display:none; height: 250px;">
+	$('#sortMe').tableutils( {
+		fixHeader: { width: 1000, height: 200 }, 				 
+		sort: { type: [ 'alphanumeric', 'alphanumeric' , 'alphanumeric', 'numeric', 'alphanumeric'] }, 
+		columns: [ 					   
+			   { label: 'First Name' },
+	           { label: 'Last Name' },
+	           { label: 'Concept' }, 
+	           { label: 'Rating' },
+	           { label: 'AKA' }
+	       	]
+	} );
+				</pre>
+			</li>
+			<li id="searchContent">
+				<h3>Search through your table</h3><button id="searchRecords" class="customButton2" type="button" onclick="searchRecords()">Transform</button><button type="button" class="show customButton">Code</button><button type="button" class="hide customButton" style="display: none;">Hide code</button>
+				<table id="searchMe" width="980px">
+					<thead>
+						<tr>
+							<th width="20%">First Name</th>
+							<th width="20%">Last Name</th>
+							<th width="10%">Concept</th>
+							<th width="10%">Rating</th>
+							<th width="40%">AKA</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td width="20%">Tony</td>
+							<td width="20%">Stark</td>
+							<td width="10%">Marvel</td>
+							<td width="10%">42</td>
+							<td width="40%">Iron Man</td>
+						</tr>    
+						<tr>
+							<td width="20%">Jack</td>
+							<td width="20%">Sparrow</td>
+							<td width="10%">Disney</td>
+							<td width="10%">40</td>
+							<td width="40%">Pirate</td>
+						</tr>				
+						<tr>
+							<td width="20%">Bruce</td>
+							<td width="20%">Banner</td>
+							<td width="10%">Marvel</td>
+							<td width="10%">38</td>
+							<td width="40%">The Hulk</td>
+						</tr>
+						<tr>
+							<td width="20%">Clarke</td>
+							<td width="20%">Kent</td>
+							<td width="10%">DC</td>
+							<td width="10%">35</td>
+							<td width="40%">Man of Steel</td>
+						</tr>
+						<tr>
+							<td width="20%">Bruce</td>
+							<td width="20%">Wayne</td>
+							<td width="10%">DC</td>
+							<td width="10%">34</td>
+							<td width="40%">The Dark Knight</td>
+						</tr>
+						<tr>
+							<td width="20%">Sherlock</td>
+							<td width="20%">Holmes</td>
+							<td width="10%">Doyle</td>
+							<td width="10%">37</td>
+							<td width="40%">Ingenious</td>
+						</tr>
+						<tr>
+							<td width="20%">Captain</td>
+							<td width="20%">America</td>
+							<td width="10%">Marvel</td>
+							<td width="10%">39</td>
+							<td width="40%">Captain America</td>
+						</tr>
+						<tr>
+							<td width="20%">Peter</td>
+							<td width="20%">Parkar</td>
+							<td width="10%">Marvel</td>
+							<td width="10%">43</td>
+							<td width="40%">Spidy</td>
+						</tr>										
+					</tbody>
+				</table>
+				<pre class="code" style="display:none; height: 250px;">
+	$('#searchMe').tableutils( {
+		fixHeader: { width: 1000, height: 200 }, 				 
+		filter: true, 
+		columns: [ 					   
+			   { label: 'First Name' },
+	           { label: 'Last Name' },
+	           { label: 'Concept' }, 
+	           { label: 'Rating' },
+	           { label: 'AKA' }
+        	]
+	} );
+				</pre>
+			</li>
+			<li id="selectContent">
+				<h3>Select records easily</h3><button id="selectRecords" class="customButton2" type="button" onclick="selectRecords()">Transform</button><button type="button" class="show customButton">Code</button><button type="button" class="hide customButton" style="display: none;">Hide code</button>
+				<table id="selectMyRecords" width="980px">
+					<thead>
+						<tr>
+							<th width="5%"></th>
+							<th width="20%">First Name</th>
+							<th width="20%">Last Name</th>
+							<th width="10%">Concept</th>
+							<th width="10%">Rating</th>
+							<th width="35%">AKA</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td width="5%"><input type="checkbox"></td>
+							<td width="20%">Tony</td>
+							<td width="20%">Stark</td>
+							<td width="10%">Marvel</td>
+							<td width="10%">42</td>
+							<td width="35%">Iron Man</td>
+						</tr>    
+						<tr>
+							<td width="5%"><input type="checkbox"></td>
+							<td width="20%">Sherlock</td>
+							<td width="20%">Holmes</td>
+							<td width="10%">Doyle</td>
+							<td width="10%">37</td>
+							<td width="35%">Ingenious</td>
+						</tr>
+						<tr>
+							<td width="5%"><input type="checkbox"></td>
+							<td width="20%">Captain</td>
+							<td width="20%">America</td>
+							<td width="10%">Marvel</td>
+							<td width="10%">39</td>
+							<td width="35%">Captain America</td>
+						</tr>
+						<tr>
+							<td width="5%"><input type="checkbox"></td>
+							<td width="20%">Peter</td>
+							<td width="20%">Parkar</td>
+							<td width="10%">Marvel</td>
+							<td width="10%">43</td>
+							<td width="35%">Spidy</td>
+						</tr>
+						<tr>
+							<td width="5%"><input type="checkbox"></td>
+							<td width="20%">Sherlock</td>
+							<td width="20%">Holmes</td>
+							<td width="10%">Doyle</td>
+							<td width="10%">37</td>
+							<td width="35%">Ingenious</td>
+						</tr>
+						<tr>
+							<td width="5%"><input type="checkbox"></td>
+							<td width="20%">Captain</td>
+							<td width="20%">America</td>
+							<td width="10%">Marvel</td>
+							<td width="10%">39</td>
+							<td width="35%">Captain America</td>
+						</tr>
+						<tr>
+							<td width="5%"><input type="checkbox"></td>
+							<td width="20%">Peter</td>
+							<td width="20%">Parkar</td>
+							<td width="10%">Marvel</td>
+							<td width="10%">43</td>
+							<td width="35%">Spidy</td>
+						</tr>    
+						<tr>
+							<td width="5%"><input type="checkbox"></td>
+							<td width="20%">Tony</td>
+							<td width="20%">Stark</td>
+							<td width="10%">Marvel</td>
+							<td width="10%">42</td>
+							<td width="35%">Iron Man</td>
+						</tr>										
+					</tbody>
+				</table>
+				<pre class="code" style="display:none; height: 250px;">
+	$('#selectMyRecords').tableutils( {
+		fixHeader: { width: 1000, height: 200 }, 				 
+		masterCheckBox: { columnIndex: 1 },  
+		rowSelect: { columnIndex: 1 }, 
+		columns: [ 
+		       { label: 'ID' }, 
+			   { label: 'First Name' },
+	           { label: 'Last Name' },
+	           { label: 'Concept' }, 
+	           { label: 'Rating' },
+	           { label: 'AKA' }
+	       	]
+	} );
+				</pre>
+			</li>
+			<li id="paginationContent">
+				<h3>Split your data into pages; Paginate your table.</h3><button id="paginate" class="customButton2" type="button" onclick="paginate()">Transform</button><button type="button" class="show customButton">Code</button><button type="button" class="hide customButton" style="display: none;">Hide code</button>
+				<table id="paginateMe" width="980px">
+					<thead>
+						<tr>
+							<th width="20%">First Name</th>
+							<th width="20%">Last Name</th>
+							<th width="10%">Concept</th>
+							<th width="10%">Rating</th>
+							<th width="40%">AKA</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td width="20%">Tony</td>
+							<td width="20%">Stark</td>
+							<td width="10%">Marvel</td>
+							<td width="10%">42</td>
+							<td width="40%">Iron Man</td>
+						</tr>    
+						<tr>
+							<td width="20%">Sherlock</td>
+							<td width="20%">Holmes</td>
+							<td width="10%">Doyle</td>
+							<td width="10%">37</td>
+							<td width="40%">Ingenious</td>
+						</tr>
+						<tr>
+							<td width="20%">Captain</td>
+							<td width="20%">America</td>
+							<td width="10%">Marvel</td>
+							<td width="10%">39</td>
+							<td width="40%">Captain America</td>
+						</tr>
+						<tr>
+							<td width="20%">Peter</td>
+							<td width="20%">Parkar</td>
+							<td width="10%">Marvel</td>
+							<td width="10%">43</td>
+							<td width="40%">Spidy</td>
+						</tr>
+						<tr>
+							<td width="20%">Sherlock</td>
+							<td width="20%">Holmes</td>
+							<td width="10%">Doyle</td>
+							<td width="10%">37</td>
+							<td width="40%">Ingenious</td>
+						</tr>
+						<tr>
+							<td width="20%">Captain</td>
+							<td width="20%">America</td>
+							<td width="10%">Marvel</td>
+							<td width="10%">39</td>
+							<td width="40%">Captain America</td>
+						</tr>
+						<tr>
+							<td width="20%">Peter</td>
+							<td width="20%">Parkar</td>
+							<td width="10%">Marvel</td>
+							<td width="10%">43</td>
+							<td width="40%">Spidy</td>
+						</tr>    
+						<tr>
+							<td width="20%">Tony</td>
+							<td width="20%">Stark</td>
+							<td width="10%">Marvel</td>
+							<td width="10%">42</td>
+							<td width="40%">Iron Man</td>
+						</tr>
+						<tr>
+							<td width="20%">Sherlock</td>
+							<td width="20%">Holmes</td>
+							<td width="10%">Doyle</td>
+							<td width="10%">37</td>
+							<td width="40%">Ingenious</td>
+						</tr>										
+					</tbody>
+				</table>
+				<pre class="code" style="display:none; height: 100px;">
+	$('#paginateMe').tableutils( {
+		fixHeader: { width: 1000, height: 200 }, 				 
+		paginate: { type: 'numeric', pageSize: 2 },				
+		columns: [ 				       
+			   { label: 'First Name' },
+			   { label: 'Last Name' },
+			   { label: 'Concept' }, 
+			   { label: 'Rating' },
+			   { label: 'AKA' }
+			]
+	} );
+				</pre>
+			</li>
+		</ul>		
+	</div>
+	
+	<br><br>
+	
+	<div class="moreInfoDIV">
+		<div class="questionsHeader">You may have some questions, like: </div>
+		<ul style="list-style-type: none;">
+			<li>
+				<h4 class="question">What if I want to use multiple features at once for a table ?</h4>
+				<div class="justification">
+					Sure, you can use all of the features in a single table simultaneously. Refer the <a target="_blank" href="https://github.com/kolgepratik/tableutils/wiki/tableutils-Documentation">Documentation</a> for the same.  
+				</div>
+			</li>
+			
+			<li>
+				<h4 class="question">I don't like the colors and styling of these tables. What do I do about it ?</h4>
+				<div class="justification">
+					Hmm, neither do I; but hey i have kept this nice and simple. All you have to do is go to the tableutils.css file and change the styling of the table as per your requirement. This ensures you get something that matches the look and feel of your application. Great, isn't it ? 
+				</div>
+			</li>
+			
+			<li>
+				<h4 class="question">Where should I download the plugin from ?</h4>
+				<div class="justification">
+					You can download the plugin from <a target="_blank" href="http://plugins.jquery.com/tableutils/">here</a>  
+				</div>
+			</li>
+		</ul>
+	</div>
+	
+	<br><br>
+	
+	<div class="moreInfoDIV">
+		<div class="questionsHeader">
+			Reach me at: 
+		</div>
+		<ul style="list-style-type: none;">
+			<li>
+				<div class="justification">
+					kolge.pratik@gmail.com, kolgepratik.wordpress.com  
+				</div>
+			</li>
+		</ul>
+	</div>
+	
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		try {
+			var pageTracker = _gat._getTracker("UA-39180731-1");
+			pageTracker._trackPageview();
+		} catch(err) {}
+	</script>
+	
+</body>
+</html>
