@@ -22,6 +22,8 @@ class XMLDocument(BrowserView):
 
         registry = zope.component.getUtility(IXSLTRegistry)
         xml = self.context.xml_get(fieldname)
+        if not xml:
+            return u''
         transform = registry.get_stylesheet(family, stylesheet_name)
         doc_root = lxml.etree.fromstring(xml)
         result = transform(doc_root)
