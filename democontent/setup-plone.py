@@ -1,3 +1,5 @@
+
+import sys
 import os
 import lxml.etree
 import plone.api
@@ -6,8 +8,19 @@ import transaction
 from Products.CMFPlone.factory import addPloneSite
 from AccessControl.SecurityManagement import newSecurityManager
 from xmldirector.plonecore.interfaces import IWebdavSettings
+from pp.client.plone.interfaces import IPPClientPloneSettings
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
+
+
+
+mode = sys.argv[-1]
+if mode == 'docker':
+    webdav_url = u'http://localhost:8080/exist/webdav/db'
+elif mode == 'local':
+    webdav_url = u'http://localhost:6080/exist/webdav/db'
+else:
+    raise ValueError('mode must be "local" or "docker"')
 
 
 admin_pw = grampg.PasswordGenerator().of().between(100, 200, 'letters').done().generate()
@@ -20,17 +33,22 @@ newSecurityManager(None, user.__of__(uf))
 if 'xml-director' in app.objectIds():
     app.manage_delObjects('xml-director')
 
-addPloneSite(app, 'xml-director', create_userfolder=True, extension_ids=['plonetheme.sunburst:default', 'xmldirector.plonecore:democontent'])
+addPloneSite(app, 'xml-director', create_userfolder=True, extension_ids=['plonetheme.sunburst:default', 'xmldirector.plonecore:democontent', 'pp.client-plone:default'])
 site = app['xml-director']
 site.manage_delObjects(['events', 'news', 'Members'])
 pr = site.portal_registration
 pr.addMember('demo', 'demo', roles=('Site Administrator',))
+
 registry = getUtility(IRegistry)
 settings = registry.forInterface(IWebdavSettings)
-settings.webdav_url = u'http://localhost:8080/exist/webdav/db'
+settings.webdav_url = webdav_url
 settings.webdav_username = u'admin'
 settings.webdav_password = u'admin'
-print settings.webdav_url
+
+settings = registry.forInterface(IPPClientPloneSettings)
+setting.server_url = 'http://pdf.pysv.org'
+setting.username = 'demo'
+setting.password = 'demo'
 
 folder = plone.api.content.create(type='Folder', container=site, id='shakespeare', title='Shakespeare XML')
 import_dir = os.path.join(os.getcwd(), 'democontent', 'shakespeare')

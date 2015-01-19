@@ -4,6 +4,6 @@ echo starting existdb
 netstat -nap
 cd /home/plone/xmldirector.plonecore
 echo setting up plone
-bin/instance run democontent/setup-plone.py
+bin/instance run democontent/setup-plone.py docker
 echo starting plone
 bin/instance fg

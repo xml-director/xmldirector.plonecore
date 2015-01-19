@@ -14,6 +14,8 @@
 
       <div tal:content="structure python: view.xslt_transform('xml_content', 'demo', 'play.xsl')" />
 
+      <a tal:attributes="href string:${context/absolute_url}/demo-pdf">PDF</a>
+
   </metal:content-core>
 </metal:main>
 
