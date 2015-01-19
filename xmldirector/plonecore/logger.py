@@ -11,6 +11,7 @@ import pprint
 
 import plone.api
 import zope.interface
+from DateTime import DateTime
 from persistent.list import PersistentList
 from zope.annotation.interfaces import IAnnotations
 from BTrees.OOBTree import OOBTree
@@ -74,6 +75,7 @@ class PersistentLoggerAdapter(object):
                  comment=comment)
         annotations[d['date']] = d
         annotations._p_changed = 1
+        self.context.setModificationDate(DateTime())
 
     def clear(self):
         """ Clear all logger entries """
