@@ -413,8 +413,6 @@ class AceEditorReadonly(Connector):
     view_name = 'view-editor-readonly'
 
 
-from xmldirector.plonecore.logger import IPersistentLogger
-
 class Logging(BrowserView):
 
     template = ViewPageTemplateFile('connector_log.pt')
