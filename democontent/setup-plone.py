@@ -17,8 +17,10 @@ from zope.component import getUtility
 mode = sys.argv[-1]
 if mode == 'docker':
     webdav_url = u'http://localhost:8080/exist/webdav/db'
-else:
+elif mode == 'local':
     webdav_url = u'http://localhost:6080/exist/webdav/db'
+else:
+    raise ValueError('mode must be "local" or "docker"')
 
 
 admin_pw = grampg.PasswordGenerator().of().between(100, 200, 'letters').done().generate()
