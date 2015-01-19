@@ -1,3 +1,13 @@
+build:
+	virtualenv-2.7 .
+	bin/python bootstrap.py -c base.cfg
+	bin/buildout -c buildout-plone-4.3.cfg
+
+build5:
+	virtualenv-2.7 .
+	bin/python bootstrap.py -c base.cfg
+	bin/buildout -c buildout-plone-5.0.cfg
+
 release:
 	mkrelease -p -d pypi
 

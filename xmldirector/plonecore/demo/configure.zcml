@@ -19,4 +19,13 @@
         template="xmldocument_view.pt"
     />
 
+
+    <browser:page
+        for=".xmldocument.IXMLDocument"
+        name="asHTML"
+        permission="zope2.View"
+        class=".xmldocument_view.XMLDocument"
+        attribute="asHTML"
+    />
+
 </configure>

@@ -22,9 +22,16 @@ class XMLDocument(BrowserView):
 
         registry = zope.component.getUtility(IXSLTRegistry)
         xml = self.context.xml_get(fieldname)
+        if not xml:
+            return u''
         transform = registry.get_stylesheet(family, stylesheet_name)
         doc_root = lxml.etree.fromstring(xml)
         result = transform(doc_root)
         html = lxml.etree.tostring(result.getroot(), encoding=unicode)
         cleaner = lxml.html.clean.Cleaner()
         return cleaner.clean_html(html)
+
+    def asHTML(self):
+        """ Generate a demo PDF """
+        return self.xslt_transform('xml_content', 'demo', 'play.xsl')
+
