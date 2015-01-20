@@ -44,6 +44,7 @@ RUN git clone https://github.com/xml-director/xmldirector.plonecore.git
 WORKDIR xmldirector.plonecore
 RUN git pull
 RUN ../bin/python bootstrap.py --setuptools-version=7.0 --version=2.2.5 -c buildout-plone-4.3.cfg
+RUN echo
 RUN bin/buildout -c demo.cfg
 
 EXPOSE 8080 8443 12020
