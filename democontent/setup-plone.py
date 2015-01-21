@@ -46,9 +46,9 @@ settings.webdav_username = u'admin'
 settings.webdav_password = u'admin'
 
 settings = registry.forInterface(IPPClientPloneSettings)
-setting.server_url = 'http://pdf.pysv.org'
-setting.username = 'demo'
-setting.password = 'demo'
+settings.server_url = u'http://pdf.pysv.org'
+settings.username = u'demo'
+settings.password = u'demo'
 
 folder = plone.api.content.create(type='Folder', container=site, id='shakespeare', title='Shakespeare XML')
 import_dir = os.path.join(os.getcwd(), 'democontent', 'shakespeare')
