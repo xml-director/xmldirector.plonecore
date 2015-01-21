@@ -33,7 +33,7 @@ newSecurityManager(None, user.__of__(uf))
 if 'xml-director' in app.objectIds():
     app.manage_delObjects('xml-director')
 
-addPloneSite(app, 'xml-director', create_userfolder=True, extension_ids=['plonetheme.sunburst:default', 'xmldirector.plonecore:democontent', 'pp.client-plone:default'])
+addPloneSite(app, 'xml-director', create_userfolder=True, extension_ids=['plonetheme.sunburst:default', 'xmldirector.plonecore:democontent', 'pp.client.plone:default'])
 site = app['xml-director']
 site.manage_delObjects(['events', 'news', 'Members'])
 pr = site.portal_registration
