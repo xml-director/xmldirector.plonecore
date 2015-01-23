@@ -52,7 +52,7 @@ settings.server_password = u'demo'
 
 folder = plone.api.content.create(type='Folder', container=site, id='shakespeare', title='Shakespeare XML')
 import_dir = os.path.join(os.getcwd(), 'democontent', 'shakespeare')
-for name in os.listdir(import_dir):
+for name in sorted(os.listdir(import_dir)):
 
     if not name.endswith('.xml'):
         continue
