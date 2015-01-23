@@ -12,9 +12,11 @@
 
       <h2 i18n:translate="">XML Document content-type custom view (using XSLT)</h2>
 
-      <a tal:attributes="href string:${context/absolute_url}/@@asPDF">
-          <button style="width: 100px; height: 40px; margin: 1em">PDF</button>
-      </a>
+      <div>
+          <a tal:attributes="href string:${context/absolute_url}/@@asPDF" style="border: none">
+              <button style="width: 100px; height: 40px; margin: 1em">PDF</button>
+          </a>
+      </div>
 
       <div tal:content="structure python: view.xslt_transform('xml_content', 'demo', 'play.xsl')" />
 
