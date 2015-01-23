@@ -42,6 +42,10 @@ class PolicyFixture(PloneSandboxLayer):
     def setUpZope(self, app, configurationContext):
 
         #        xmlconfig.file('meta.zcml', z3c.jbot, context=configurationContext)
+        for mod in [pp.client.plone,
+                    ]:
+            xmlconfig.file('meta.zcml', mod, context=configurationContext)
+        
         for mod in [plone.app.dexterity,
                     xmldirector.plonecore,
                     pp.client.plone,
