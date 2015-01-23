@@ -28,4 +28,9 @@
         attribute="asHTML"
     />
 
+    <pp:resourceDirectory
+        name="shakespeare"
+        directory="resources_pdf"
+        />
+
 </configure>
