@@ -7,14 +7,14 @@
 export WEBDAV_USERNAME=admin
 export WEBDAV_PASSWORD=admin
 
-export WEBDAV_URL=http://docker.zopyx.com:22081/exist/webdav/db
+export WEBDAV_URL=http://demo.xml-director.info:22081/exist/webdav/db
 echo '######################################################'
 echo Tests against EXISTDB
 echo $WEBDAV_URL
 echo '######################################################'
 bin/test xmldirector
 
-export WEBDAV_URL=http://docker.zopyx.com:22080/webdav
+export WEBDAV_URL=http://demo.xml-director.info:22080/webdav
 echo '######################################################'
 echo Tests against BASEX
 echo $WEBDAV_URL
