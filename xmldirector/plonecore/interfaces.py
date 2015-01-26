@@ -55,7 +55,7 @@ class IWebdavSettings(Interface):
         title=_(u'WebDAV password'),
         description=_(u'WebDAV password'),
         default=u'',
-        required=True
+        required=False
     )
 
     versioning_enabled = schema.Bool(

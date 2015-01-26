@@ -8,6 +8,8 @@ Changelog
   in order to support filtering of log entries by min-max 
   values
 - logger table now uses a paginated view with searchable columns
+- webdav password setting is no longer required (empty password allowed)
+- fixed Webdav authentication issue with empty passwords
 
 0.3.4 (2015-01-13)
 ------------------
