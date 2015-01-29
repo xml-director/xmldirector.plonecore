@@ -90,12 +90,12 @@ class Connector(Item):
 
         # system-wide credentials
         username = settings.webdav_username
-        password = settings.webdav_password
+        password = settings.webdav_password or ''
 
         # local credentials override the system credentials
         if adapted.webdav_username and adapted.webdav_password:
             username = adapted.webdav_username
-            password = adapted.webdav_password
+            password = adapted.webdav_password or ''
 
         try:
             return DAVFS(url, credentials=dict(username=username,

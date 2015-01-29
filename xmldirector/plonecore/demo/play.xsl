@@ -17,14 +17,14 @@
 			</title>
 		</head>
 		<body>
-			<h1>
+			<h1 class="title">
 				<xsl:value-of select="$title"/>
 			</h1>
-			<h2>
+			<h2 class="playwright">
 				<xsl:value-of select="playwright"/>
             </h2>			
 
-			<div>
+			<div class="edition">
 				<xsl:value-of select="edition"/>
 			</div>
 
@@ -77,7 +77,7 @@
 	</xsl:template>
 
 	<xsl:template match="act">
-		<div>
+		<div class="act">
 			<xsl:attribute name="id" select="concat('act_', position())"/>
 			<h2 style="color:Blue;">
 				<xsl:value-of select="acttitle"/>
@@ -87,7 +87,7 @@
 	</xsl:template>
 
 	<xsl:template match="scene">
-		<div>
+		<div class="scene">
 			<xsl:attribute name="id" select="concat('scene_', parent::act/position(),'_',position())"/>
 			<h5 style="color:red;">
 				<xsl:value-of select="scenetitle"/>
@@ -105,7 +105,7 @@
 	</xsl:template>
 
 	<xsl:template match="speech">		
-        <div>
+        <div class="speech">
             <b>  <xsl:value-of select="speaker"/></b>
 				<xsl:text>: </xsl:text>
 		</div>

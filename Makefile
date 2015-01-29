@@ -8,6 +8,10 @@ build5:
 	bin/python bootstrap.py -c base.cfg
 	bin/buildout -c buildout-plone-5.0.cfg
 
+
+test-demo-local:
+	bin/instance run democontent/setup-plone.py local
+
 release:
 	mkrelease -p -d pypi
 

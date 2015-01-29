@@ -1,4 +1,6 @@
 #!/bin/bash 
+git pull
+bin/develop update
 echo starting existdb
 /home/plone/exist/tools/wrapper/bin/exist.sh start 
 netstat -nap

@@ -50,7 +50,7 @@ class API(BrowserView):
             pr.scheme, pr.netloc, script_path, output_format)
         result = requests.get(url,
                               auth=HTTPBasicAuth(settings.webdav_username,
-                                                 settings.webdav_password),
+                                                 settings.webdav_password or ''),
                               params=kw)
         if result.status_code != 200:
             raise DBError(

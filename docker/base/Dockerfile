@@ -43,6 +43,7 @@ RUN bin/pip install grampg
 RUN git clone https://github.com/xml-director/xmldirector.plonecore.git  
 WORKDIR xmldirector.plonecore
 RUN git pull
+RUN echo
 RUN ../bin/python bootstrap.py --setuptools-version=7.0 --version=2.2.5 -c buildout-plone-4.3.cfg
 RUN bin/buildout -c demo.cfg
 

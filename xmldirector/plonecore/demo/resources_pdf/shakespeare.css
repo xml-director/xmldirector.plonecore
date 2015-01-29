@@ -1,0 +1,27 @@
+.act {
+    page-break-before: always;
+    column-count: 3;
+    font-size: 0.8em;
+    line-height: 1.0em;
+}
+
+#details {
+    page-break-before: always;
+}
+
+h1 {
+    font-size: 2em;
+}
+
+h1.title {
+    font-size: 3em !important;
+}
+
+h2 {
+    font-size: 1.6em;
+    color: red;
+}
+
+h3 {
+    font-size: 1.4em;
+}

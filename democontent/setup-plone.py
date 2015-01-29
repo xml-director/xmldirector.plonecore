@@ -33,7 +33,7 @@ newSecurityManager(None, user.__of__(uf))
 if 'xml-director' in app.objectIds():
     app.manage_delObjects('xml-director')
 
-addPloneSite(app, 'xml-director', create_userfolder=True, extension_ids=['plonetheme.sunburst:default', 'xmldirector.plonecore:democontent', 'pp.client-plone:default'])
+addPloneSite(app, 'xml-director', create_userfolder=True, extension_ids=['plonetheme.sunburst:default', 'xmldirector.plonecore:democontent', 'pp.client.plone:default'])
 site = app['xml-director']
 site.manage_delObjects(['events', 'news', 'Members'])
 pr = site.portal_registration
@@ -46,13 +46,13 @@ settings.webdav_username = u'admin'
 settings.webdav_password = u'admin'
 
 settings = registry.forInterface(IPPClientPloneSettings)
-setting.server_url = 'http://pdf.pysv.org'
-setting.username = 'demo'
-setting.password = 'demo'
+settings.server_url = u'http://pdf.pysv.org'
+settings.server_username = u'demo'
+settings.server_password = u'demo'
 
 folder = plone.api.content.create(type='Folder', container=site, id='shakespeare', title='Shakespeare XML')
 import_dir = os.path.join(os.getcwd(), 'democontent', 'shakespeare')
-for name in os.listdir(import_dir):
+for name in sorted(os.listdir(import_dir)):
 
     if not name.endswith('.xml'):
         continue
