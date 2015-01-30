@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.3.5 (unreleased)
+0.3.5 (2015-01-30)
 ------------------
 - rewritten persistent logger internals: now uses an OOBTree
   for holding all logging entries instead of a persistent list
