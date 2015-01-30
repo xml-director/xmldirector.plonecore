@@ -20,5 +20,5 @@ virtualenv-2.7 .
 bin/pip install -U setuptools==7.0  
 bin/python bootstrap.py -c $config --setuptools-version 7.0 --version 2.2.5
 bin/buildout -c $config
-bin/test -s xmldirector
+bin/test -s xmldirector.plonecore
 ##bin/coverage run bin/test
