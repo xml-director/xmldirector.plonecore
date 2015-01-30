@@ -23,7 +23,6 @@
     <include package="Products.CMFCore" file="permissions.zcml" />
     <include package=".browser" />
     <include package=".dx" />
-    <include package=".demo" />
 
     <adapter
         factory="xmldirector.plonecore.logger.PersistentLoggerAdapter"
@@ -36,14 +35,6 @@
         title="XML-Director plonecore - default profile"
         directory="profiles/default"
         description="XML-Director core"
-        provides="Products.GenericSetup.interfaces.EXTENSION"
-    />
-
-    <genericsetup:registerProfile
-        name="democontent"
-        title="XML-Director plonecore - Demo Content"
-        directory="profiles/democontent"
-        description="XML-Director XML Demo Content Type"
         provides="Products.GenericSetup.interfaces.EXTENSION"
     />
 

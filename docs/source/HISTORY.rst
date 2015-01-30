@@ -10,6 +10,7 @@ Changelog
 - logger table now uses a paginated view with searchable columns
 - webdav password setting is no longer required (empty password allowed)
 - fixed Webdav authentication issue with empty passwords
+- moved demo related code into a dedicated package xmldirector.demo
 
 0.3.4 (2015-01-13)
 ------------------
