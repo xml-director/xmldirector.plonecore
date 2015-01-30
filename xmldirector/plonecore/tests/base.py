@@ -26,7 +26,6 @@ from AccessControl.SecurityManagement import newSecurityManager
 
 import xmldirector.plonecore
 import plone.app.dexterity
-import pp.client.plone
 
 
 WEBDAV_URL = os.environ.get(
@@ -40,7 +39,6 @@ class PolicyFixture(PloneSandboxLayer):
     defaultBases = (PLONE_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
-
         #        xmlconfig.file('meta.zcml', z3c.jbot, context=configurationContext)
 
         for mod in [plone.app.dexterity,
