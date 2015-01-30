@@ -34,7 +34,7 @@ class PersistentLoggerAdapter(object):
     """ An adapter for storing logging information as an annotation
         on a persistent object.
     """
-     
+
     zope.interface.implements(IPersistentLogger)
 
     def __init__(self, context):
@@ -59,7 +59,7 @@ class PersistentLoggerAdapter(object):
                 for d in annotations:
                     tree[d['date']] = d
                 all_annotations[LOG_KEY] = tree
-        return all_annotations[LOG_KEY] 
+        return all_annotations[LOG_KEY]
 
     def log(self, comment, level='info', details=None):
         """ Add a log entry """

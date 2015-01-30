@@ -57,4 +57,3 @@ class IWebdavSettings(Interface):
         default=u'',
         required=False
     )
-
