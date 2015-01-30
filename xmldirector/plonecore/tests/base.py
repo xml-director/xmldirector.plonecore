@@ -45,7 +45,7 @@ class PolicyFixture(PloneSandboxLayer):
         for mod in [pp.client.plone,
                     ]:
             xmlconfig.file('meta.zcml', mod, context=configurationContext)
-        
+
         for mod in [plone.app.dexterity,
                     xmldirector.plonecore,
                     pp.client.plone,
