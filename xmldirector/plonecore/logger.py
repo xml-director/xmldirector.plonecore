@@ -15,7 +15,7 @@ from persistent.list import PersistentList
 from zope.annotation.interfaces import IAnnotations
 from BTrees.OOBTree import OOBTree
 
-LOG = logging.getLogger('onkopedia.policy')
+LOG = logging.getLogger('xmldirector.plonecore')
 
 requests_log = logging.getLogger("requests")
 requests_log.setLevel(logging.WARNING)
