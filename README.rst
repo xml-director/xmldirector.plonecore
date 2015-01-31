@@ -68,4 +68,3 @@ Full documentation
 
 See https://pythonhosted.org/xmldirector.plonecore/
 
-
