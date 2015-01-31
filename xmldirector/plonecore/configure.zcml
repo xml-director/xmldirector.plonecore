@@ -38,4 +38,12 @@
         provides="Products.GenericSetup.interfaces.EXTENSION"
     />
 
+    <genericsetup:registerProfile
+        name="testing"
+        title="XML-Director plonecore - testing profile"
+        directory="profiles/testing"
+        description="XML-Director core (testing)"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+    />
+
 </configure>
