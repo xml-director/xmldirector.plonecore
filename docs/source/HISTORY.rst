@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.3.6 (unreleased)
+------------------
+- readded Dexterity tests
+
 0.3.5 (2015-01-30)
 ------------------
 - rewritten persistent logger internals: now uses an OOBTree
