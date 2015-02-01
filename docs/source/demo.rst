@@ -24,7 +24,7 @@ The demo site currently provides some basic demos:
 
 Running the XML Director demo yourself using Docker
 ---------------------------------------------------
-The functionality of hosted XML Director demo is also available as Docker image
+The functionality of hosted the XML Director demo is also available as Docker image
 that you can run yourself on your own host. The following command can be used
 to run the image and access the XML Director installation with your browser on the URL
 http://your-host:12020/xml-director::
