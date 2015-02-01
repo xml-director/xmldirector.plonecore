@@ -39,7 +39,7 @@ You can build XML Director (which is based on the CMS Plone) on any Linux system
 
     git clone https://github.com/xml-director/xmldirector.plonecore.git
     cd xmldirector.plonecore
-    make build
+    make build-demo
     bin/instance fg
 
 - Login into the site http://your-host:12020/manage using username ``admin`` and password ``admin``
