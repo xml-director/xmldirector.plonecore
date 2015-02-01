@@ -22,4 +22,5 @@ Contents:
    xslt-registry.rst
    logging.rst
    testing.rst
+   demo.rst
    HISTORY.rst
