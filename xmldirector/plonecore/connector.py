@@ -6,8 +6,6 @@
 ################################################################
 
 import urllib
-import plone.api
-import datetime
 from fs.contrib.davfs import DAVFS
 from zope import schema
 from zope.interface import implements
@@ -15,7 +13,6 @@ from zope.component import getUtility
 from plone.dexterity.content import Item
 from plone.supermodel import model
 from plone.registry.interfaces import IRegistry
-from persistent.list import PersistentList
 
 from xmldirector.plonecore.interfaces import IWebdavSettings
 from xmldirector.plonecore.i18n import MessageFactory as _

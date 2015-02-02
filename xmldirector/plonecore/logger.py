@@ -16,7 +16,7 @@ from persistent.list import PersistentList
 from zope.annotation.interfaces import IAnnotations
 from BTrees.OOBTree import OOBTree
 
-LOG = logging.getLogger('onkopedia.policy')
+LOG = logging.getLogger('xmldirector.plonecore')
 
 requests_log = logging.getLogger("requests")
 requests_log.setLevel(logging.WARNING)
@@ -35,7 +35,7 @@ class PersistentLoggerAdapter(object):
     """ An adapter for storing logging information as an annotation
         on a persistent object.
     """
-     
+
     zope.interface.implements(IPersistentLogger)
 
     def __init__(self, context):
@@ -60,7 +60,7 @@ class PersistentLoggerAdapter(object):
                 for d in annotations:
                     tree[d['date']] = d
                 all_annotations[LOG_KEY] = tree
-        return all_annotations[LOG_KEY] 
+        return all_annotations[LOG_KEY]
 
     def log(self, comment, level='info', details=None):
         """ Add a log entry """

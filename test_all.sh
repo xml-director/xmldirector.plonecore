@@ -12,11 +12,11 @@ echo '######################################################'
 echo Tests against EXISTDB
 echo $WEBDAV_URL
 echo '######################################################'
-bin/test xmldirector
+bin/test xmldirector.plonecore
 
 export WEBDAV_URL=http://demo.xml-director.info:22080/webdav
 echo '######################################################'
 echo Tests against BASEX
 echo $WEBDAV_URL
 echo '######################################################'
-bin/test xmldirector
+bin/test xmldirector.plone

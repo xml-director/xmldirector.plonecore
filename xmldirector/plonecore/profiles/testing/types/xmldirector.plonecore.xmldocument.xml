@@ -8,15 +8,15 @@
   <property name="description"
     i18n:translate="">xmldocument</property>
   <property name="icon_expr">string:${portal_url}/++resource++xmldirector.plonecore/images/connector_icon.png</property>
-  <property name="factory">xmldirector.plonecore.xmldocument</property>
+  <property name="factory">xmldirector.plonecore.tests.xmldocument</property>
   <property name="global_allow">True</property>
   <property name="filter_content_types">False</property>
   <property name="allowed_content_types" />
   <property name="allow_discussion">False</property>
 
   <!-- schema and class used for content items -->
-  <property name="schema">xmldirector.plonecore.demo.xmldocument.IXMLDocument</property>
-  <property name="klass">xmldirector.plonecore.demo.xmldocument.XMLDocument</property>
+  <property name="schema">xmldirector.plonecore.tests.xmldocument.IXMLDocument</property>
+  <property name="klass">xmldirector.plonecore.tests.xmldocument.XMLDocument</property>
 
   <!-- View information -->
   <property name="link_target"></property>

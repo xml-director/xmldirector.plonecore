@@ -3,6 +3,11 @@ build:
 	bin/python bootstrap.py -c base.cfg
 	bin/buildout -c buildout-plone-4.3.cfg
 
+build-demo:
+	virtualenv-2.7 .
+	bin/python bootstrap.py -c base.cfg
+	bin/buildout -c demo.cfg
+
 build5:
 	virtualenv-2.7 .
 	bin/python bootstrap.py -c base.cfg
