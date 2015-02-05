@@ -1,0 +1,10 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<this is not xml
+    xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation = "http://lucas.ucs.ed.ac.uk/xml-schema/xmlns/simple.xsd"
+   >
+	<ABC>Bog Hopper</ABC>
+	<nickname>Wee Beastie</nickname>
+	<nickname>Count Zero</nickname>
+</vehicles>

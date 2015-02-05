@@ -95,6 +95,9 @@ class ValidationResult(object):
     def __nonzero__(self):
         return not self.errors
 
+    def __str__(self):
+        return '{}, errors: {}'.format(self.__class__, self.errors)
+
 
 class Validator(object):
     """ Encapsulates a DTD/schema validator """

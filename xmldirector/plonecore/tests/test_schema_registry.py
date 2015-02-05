@@ -49,9 +49,14 @@ class BasicTests(unittest2.TestCase):
     def test_validator_with_DTD(self):
         validator = self.registry.get_validator('testing', 'simple.dtd')
         xml = open(os.path.join(cwd, 'simple_dtd.xml'), 'rb').read()
-        import pdb; pdb.set_trace() 
         result = validator.validate(xml)
         self.assertEqual(bool(result), True)
+
+    def test_validator_invalid_xml(self):
+        validator = self.registry.get_validator('testing', 'simple.dtd')
+        xml = open(os.path.join(cwd, 'simple_invalid.xml'), 'rb').read()
+        result = validator.validate(xml)
+        self.assertEqual(bool(result), False)
 
     def test_get_schema(self):
         validator = self.registry.get_schema('testing', 'DGHO_Webcontent_20150202.dtd')
