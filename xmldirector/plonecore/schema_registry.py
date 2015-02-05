@@ -35,7 +35,7 @@ class SchemaRegistry(object):
                     validator = lxml.etree.DTD(fp)
             elif ext == '.xsd':
                 with open(fullname, 'rb') as fp:
-                    schema_doc = lxml.etree(fp)
+                    schema_doc = lxml.etree.XML(fp.read())
                     validator = lxml.etree.XMLSchema(schema_doc)
             else:
                 continue
@@ -108,7 +108,7 @@ class Validator(object):
             try:
                 root = lxml.etree.fromstring(xml)
             except lxml.etree.XMLSyntaxError as e:
-                return ValidationResult([_(u'Invalid XML {}').format(e)])
+                return ValidationResult([u'Invalid XML ({})'.format(e)])
 
         elif isinstance(xml, lxml.etree.Element):
             root = xml

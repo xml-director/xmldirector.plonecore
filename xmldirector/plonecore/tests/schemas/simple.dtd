@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT DatabaseInventory (DatabaseName+)>
+<!ELEMENT DatabaseName (   GlobalDatabaseName
+                         , OracleSID
+                         , DatabaseDomain
+                         , Administrator+
+                         , DatabaseAttributes
+                         , Comments)
+>
+<!ELEMENT GlobalDatabaseName (#PCDATA)>
+<!ELEMENT OracleSID          (#PCDATA)>
+<!ELEMENT DatabaseDomain     (#PCDATA)>
+<!ELEMENT Administrator      (#PCDATA)>
+<!ELEMENT DatabaseAttributes EMPTY>
+<!ELEMENT Comments           (#PCDATA)>
+
+<!ATTLIST Administrator       EmailAlias CDATA #REQUIRED>
+<!ATTLIST Administrator       Extension  CDATA #IMPLIED>
+<!ATTLIST DatabaseAttributes  Type       (Production|Development|Testing) #REQUIRED>
+<!ATTLIST DatabaseAttributes  Version    (7|8|8i|9i) "9i">
+
+<!ENTITY AUTHOR "Jeffrey Hunter">
+<!ENTITY WEB    "www.iDevelopment.info">
+<!ENTITY EMAIL  "jhunter@iDevelopment.info">
