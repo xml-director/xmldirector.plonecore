@@ -58,6 +58,10 @@ class SchemaRegistry(object):
                 'Schema/DTD {}/{} not registered'.format(family, name))
         return self.schema_registry[key]['validation']
 
+    def get_validator(self, family, name):
+        schema = self.get_schema(family, name)
+        return Validator(schema)
+
     def __getitem__(self, name_or_tuple):
         if isinstance(name_or_tuple, tuple):
             return self.get_schema(*name_or_tuple)
@@ -80,3 +84,39 @@ class SchemaRegistry(object):
 
 
 SchemaRegistryUtility = SchemaRegistry()
+
+
+class ValidationResult(object):
+    errors = []
+
+    def __init__(self, errors=[]):
+        self.errors = errors
+
+    def __nonzero__(self):
+        return not self.errors
+
+
+class Validator(object):
+
+    def __init__(self, schema):
+        self.schema = schema
+
+    def validate(self, xml):
+
+        if isinstance(xml, basestring):
+
+            try:
+                root = lxml.etree.fromstring(xml)
+            except lxml.etree.XMLSyntaxError as e:
+                return ValidationResult([_(u'Invalid XML {}').format(e)])
+
+        elif isinstance(xml, lxml.etree.Element):
+            root = xml
+        else:
+            raise TypeError('Unsupported type {}'.format(type(xml)))
+
+        validation_result = self.schema.validate(root)
+        if not validation_result:
+            return ValidationResult([self.schema.error_log])
+        else:
+            return ValidationResult()
