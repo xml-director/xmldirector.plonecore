@@ -1,0 +1,72 @@
+# -*- coding: utf-8 -*-
+
+################################################################
+# xmldirector.plonecore
+# (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
+################################################################
+
+
+import os
+import datetime
+import lxml.etree
+from zope.interface import implements
+from xmldirector.plonecore.interfaces import ISchemaRegistry
+from xmldirector.plonecore.logger import LOG
+
+
+class SchemaRegistry(object):
+
+    implements(ISchemaRegistry)
+
+    xslt_registry = {}
+
+    def register_stylesheet(self, family, stylesheet_name, stylesheet_path):
+        """ Register a Stylesheet as tuple (family, stylesheet_name) """
+
+        key = '{}::{}'.format(family, stylesheet_name)
+        if key in self.xslt_registry:
+            raise ValueError(
+                'Stylesheet {}/{} already registered'.format(family, stylesheet_name))
+
+        if not os.path.exists(stylesheet_path):
+            raise ValueError(
+                'Stylesheet {}/{} not found ({})'.format(family, stylesheet_name, stylesheet_path))
+
+        with open(stylesheet_path, 'rb') as fp:
+            try:
+                xslt = lxml.etree.XML(fp.read())
+            except lxml.etree.XMLSyntaxError as e:
+                raise ValueError(
+                    'Stylesheet {}/{} could not be parsed ({}, {})'.format(family, stylesheet_name, e, stylesheet_path))
+
+            try:
+                transform = lxml.etree.XSLT(xslt)
+            except lxml.etree.XSLTParseError as e:
+                raise ValueError(
+                    'Stylesheet {}/{} could not be parsed ({}, {})'.format(family, stylesheet_name, e, stylesheet_path))
+
+            self.xslt_registry[key] = dict(
+                transform=transform,
+                path=stylesheet_path,
+                registered=datetime.datetime.utcnow())
+            LOG.info('XSLT registered ({}, {})'.format(key, stylesheet_path))
+
+    def get_stylesheet(self, family, stylesheet_name):
+        """ Return a pre-compiled XSLT transformation by (family, stylesheet_name) """
+
+        key = '{}::{}'.format(family, stylesheet_name)
+        if key not in self.xslt_registry:
+            raise ValueError(
+                'Stylesheet {}/{} not registered'.format(family, stylesheet_name))
+        return self.xslt_registry[key]['transform']
+
+    def clear(self):
+        """ Remove all entries """
+        self.xslt_registry.clear()
+
+    def __len__(self):
+        """ Return number of registered transformations """
+        return len(self.xslt_registry)
+
+
+SchemaRegistryUtility = SchemaRegistry()
