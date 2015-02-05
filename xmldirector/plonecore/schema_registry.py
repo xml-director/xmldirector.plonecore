@@ -87,7 +87,7 @@ SchemaRegistryUtility = SchemaRegistry()
 
 
 class ValidationResult(object):
-    errors = []
+    """ Encapsulates DTD/schema validation results """
 
     def __init__(self, errors=[]):
         self.errors = errors
@@ -97,6 +97,7 @@ class ValidationResult(object):
 
 
 class Validator(object):
+    """ Encapsulates a DTD/schema validator """
 
     def __init__(self, schema):
         self.schema = schema
@@ -104,7 +105,6 @@ class Validator(object):
     def validate(self, xml):
 
         if isinstance(xml, basestring):
-
             try:
                 root = lxml.etree.fromstring(xml)
             except lxml.etree.XMLSyntaxError as e:
