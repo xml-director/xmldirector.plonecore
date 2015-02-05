@@ -28,8 +28,8 @@
               <thead>
                   <tr>
                       <th width="15%" i18n:translate="">Date</th>
-                      <th width="10%"i18n:translate="">Level</th>
-                      <th width="10%"i18n:translate="">Username</th>
+                      <th width="10%" i18n:translate="">Level</th>
+                      <th width="10%" i18n:translate="">Username</th>
                       <th i18n:translate="">Comment</th>
                   </tr>
               </thead>
