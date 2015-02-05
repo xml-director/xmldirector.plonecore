@@ -18,55 +18,53 @@ class SchemaRegistry(object):
 
     implements(ISchemaRegistry)
 
-    xslt_registry = {}
+    schema_registry = {}
 
-    def register_stylesheet(self, family, stylesheet_name, stylesheet_path):
-        """ Register a Stylesheet as tuple (family, stylesheet_name) """
+    def parse_folder(self, family, directory):
+        
+        if not os.path.exists(directory):
+            raise IOError(u'Schema/DTD directory "{}" does not exist'.format(directory))
 
-        key = '{}::{}'.format(family, stylesheet_name)
-        if key in self.xslt_registry:
-            raise ValueError(
-                'Stylesheet {}/{} already registered'.format(family, stylesheet_name))
+        for name in os.listdir(directory):
+            fullname = os.path.join(directory, name)
+            base, ext = os.path.splitext(name)
 
-        if not os.path.exists(stylesheet_path):
-            raise ValueError(
-                'Stylesheet {}/{} not found ({})'.format(family, stylesheet_name, stylesheet_path))
+            key = '{}::{}'.format(family, name)
+            if ext == '.dtd':
+                with open(fullname, 'rb') as fp:
+                    validator = lxml.etree.DTD(fp)
+            elif ext == '.xsd':
+                with open(fullname, 'rb') as fp:
+                    schema_doc = lxml.etree(fp)
+                    validator = lxml.etree.XMLSchema(schema_doc)
+            else:
+                continue
 
-        with open(stylesheet_path, 'rb') as fp:
-            try:
-                xslt = lxml.etree.XML(fp.read())
-            except lxml.etree.XMLSyntaxError as e:
-                raise ValueError(
-                    'Stylesheet {}/{} could not be parsed ({}, {})'.format(family, stylesheet_name, e, stylesheet_path))
+            if key in self.schema_registry:
+                raise ValueError('{} already registered'.format(key))
 
-            try:
-                transform = lxml.etree.XSLT(xslt)
-            except lxml.etree.XSLTParseError as e:
-                raise ValueError(
-                    'Stylesheet {}/{} could not be parsed ({}, {})'.format(family, stylesheet_name, e, stylesheet_path))
-
-            self.xslt_registry[key] = dict(
-                transform=transform,
-                path=stylesheet_path,
+            self.schema_registry[key] = dict(
+                validation=validator,
+                path=fullname,
                 registered=datetime.datetime.utcnow())
-            LOG.info('XSLT registered ({}, {})'.format(key, stylesheet_path))
+            LOG.info('Schema/DTD registered ({}, {})'.format(key, fullname))
 
-    def get_stylesheet(self, family, stylesheet_name):
-        """ Return a pre-compiled XSLT transformation by (family, stylesheet_name) """
+    def get_schema(self, family, name):
+        """ Return a pre-validator DTD/schema """
 
-        key = '{}::{}'.format(family, stylesheet_name)
-        if key not in self.xslt_registry:
+        key = '{}::{}'.format(family, name)
+        if key not in self.schema_registry:
             raise ValueError(
-                'Stylesheet {}/{} not registered'.format(family, stylesheet_name))
-        return self.xslt_registry[key]['transform']
+                'Schema/DTD {}/{} not registered'.format(family, name))
+        return self.schema_registry[key]['validation']
 
     def clear(self):
         """ Remove all entries """
-        self.xslt_registry.clear()
+        self.schema_registry.clear()
 
     def __len__(self):
         """ Return number of registered transformations """
-        return len(self.xslt_registry)
+        return len(self.schema_registry)
 
 
 SchemaRegistryUtility = SchemaRegistry()

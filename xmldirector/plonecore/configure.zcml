@@ -19,6 +19,11 @@
         component="xmldirector.plonecore.xslt_registry.XSLTRegistryUtility"
     />
 
+    <utility
+        provides="xmldirector.plonecore.interfaces.ISchemaRegistry"
+        component="xmldirector.plonecore.schema_registry.SchemaRegistryUtility"
+    />
+
     <include package="plone.browserlayer" />
     <include package="Products.CMFCore" file="permissions.zcml" />
     <include package=".browser" />

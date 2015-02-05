@@ -26,6 +26,11 @@ class IXSLTRegistry(Interface):
     """ Marker interface for XSLTRegistry """
 
 
+class ISchemaRegistry(Interface):
+
+    """ Marker interface for SchemaRegistry """
+
+
 class IWebdavSettings(Interface):
 
     """ ExistDB settings """

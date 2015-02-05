@@ -3,7 +3,8 @@ Changelog
 
 0.3.6 (unreleased)
 ------------------
-- readded Dexterity tests
+- re-added Dexterity tests
+- added DTD/Schema registry
 
 0.3.5 (2015-01-30)
 ------------------
