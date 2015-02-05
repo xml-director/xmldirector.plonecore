@@ -29,7 +29,10 @@ class BasicTests(unittest2.TestCase):
 
     def test_registry(self):
         self.assertEquals(len(self.registry), 1)
-        self.assertEqual('testing::DGHO_Webcontent_20150202.dtd' in self.registry.schema_registry.keys(), True) 
+        validator1 = self.registry[('testing', 'DGHO_Webcontent_20150202.dtd')]
+        validator2 = self.registry['testing::DGHO_Webcontent_20150202.dtd']
+        self.assertEqual(validator1, validator2)
+        self.assertEqual(('testing', 'DGHO_Webcontent_20150202.dtd') in self.registry, True)
 
     def test_get_schema(self):
         validator = self.registry.get_schema('testing', 'DGHO_Webcontent_20150202.dtd')

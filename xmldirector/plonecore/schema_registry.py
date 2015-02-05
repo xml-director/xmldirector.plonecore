@@ -58,6 +58,18 @@ class SchemaRegistry(object):
                 'Schema/DTD {}/{} not registered'.format(family, name))
         return self.schema_registry[key]['validation']
 
+    def __getitem__(self, name_or_tuple):
+        if isinstance(name_or_tuple, tuple):
+            return self.get_schema(*name_or_tuple)
+        family, name = name_or_tuple.split('::')
+        return self.get_schema(family, name)
+
+    def __contains__(self, name_or_tuple):
+        if isinstance(name_or_tuple, tuple):
+            return self.get_schema(*name_or_tuple)
+        family, name = name_or_tuple.split('::')
+        return self.get_schema(family, name)
+
     def clear(self):
         """ Remove all entries """
         self.schema_registry.clear()
