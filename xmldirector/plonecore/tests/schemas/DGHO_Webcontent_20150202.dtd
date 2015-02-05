@@ -1,0 +1,689 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+DOCTYPE  
+
+SYSTEM "DGHO_Webcontent_V1.dtd"
+-->
+
+<!-- 
+Dokument-Strukturdefinition für DGHO-Webcontent-Projekt
+Bearbeiter: Ute Mitschke
+Bearbeitungsstand: 26.06.2014
+
+Änderungshistorie:
+Datum, Bearbeiter, Bemerkung
+-->
+
+<!-- 
+Die Semantik des Content wird nicht in den Elementnamen widergespiegelt.
+Damit kann die Struktur erweitert werden, 
+ohne dass in bestehenden Dokumenten die Struktur ungültig werden würde. 
+
+Basis der Struktur bildet das Inhaltsmodell von xhtml.
+Das erleichtert sowohl die Interpretation der Inhalte aus Word
+und erfordert keine aufwändige Anpassung für die Darstellung im Web.
+Die Attribute können genutzt werden, um die Darstellung der Inhalte zu steuern
+und die Inhalte gezielt zu durchsuchen.
+-->
+
+<!-- =========== Definition der Attribute und Metadaten: ================
+1. Attribute für alle Text-enthaltenden Elemente (optional):
+Zuordnung zur Semantik						"dgho-cont-class" (Auswahlliste), 
+Zuordnung zu speziellen Formaten 	"dgho-form-class" (Auswahlliste),
+
+2. Attribute für Abschnitte=sections (abgeleitet aus Überschriften)
+dgho-sect-num	Enthält die Nummer der Überschrift
+dgho-sect-label	Enthält den (vordefinierten?) Text der Überschrift
+plone-url				Attribut für die mögliche Verlinkung zu <section> in Plone
+
+3. Metadaten eines Dokuments (erforderlich)
+Zuordnung der Identität eines Dokuments:
+Metadaten werden in speziell benannten <meta>-Elementen abgelegt.
+
+"dgho-thema" für die Themen-ID (Vordefinierte ID, siehe EXCEL-Tabelle)
+"dgho-id" einzigartige ID (laufende ID, einzigartig für jede Version eines Dokuments) 
+"version" Nummer, die angibt, in welcher Fassung ein Dokument aktuell vorliegt
+"ploneurl" Platz für die URL zur Plone-Zuordnung des Dokuments
+"status" Angabe über den Status: aktuell | archiviert
+
+
+changed 2015-01-15 / maw / pi
+- added tab element for tabulators
+
+-->
+<!-- ====== Labeln von Attribut-Typ-Definitionen ===== -->
+
+<!-- media type -->
+<!ENTITY % ContentType "CDATA">
+
+<!-- a character encoding -->
+<!ENTITY % Charset "CDATA">
+
+<!-- a language code -->
+<!ENTITY % LanguageCode "NMTOKEN">
+
+<!-- a single character -->
+<!ENTITY % Character "CDATA">
+
+<!-- one or more digits -->
+<!ENTITY % Number "CDATA">
+
+<!-- space-separated list of link types -->
+<!ENTITY % LinkTypes "CDATA">
+
+<!-- single or comma-separated list of media descriptors -->
+<!ENTITY % MediaDesc "CDATA">
+
+<!-- a Uniform Resource Identifier -->
+<!ENTITY % URI "CDATA">
+
+<!-- style sheet data -->
+<!ENTITY % StyleSheet "CDATA">
+
+<!-- used for titles etc. -->
+<!ENTITY % Text "CDATA">
+
+<!-- nn for pixels or nn% for percentage length -->
+<!ENTITY % Length "CDATA">
+
+<!-- pixel, percentage, or relative -->
+<!ENTITY % MultiLength "CDATA">
+
+<!-- integer representing length in pixels -->
+<!ENTITY % Pixels "CDATA">
+
+<!-- render in this frame -->
+<!ENTITY % FrameTarget "NMTOKEN">
+
+<!ENTITY % Shape "(rect|circle|poly|default)">
+
+<!-- comma separated list of lengths -->
+<!ENTITY % Coords "CDATA">
+
+<!-- used for object, applet, img, input and iframe -->
+<!ENTITY % ImgAlign "(top|middle|bottom|left|right)">
+
+<!ENTITY % Color "CDATA">
+
+<!-- internationalization attributes
+  lang        language code (backwards compatible)
+  xmllang    language code (as per XML 1.0 spec)
+  dir         direction for weak/neutral text
+-->
+<!ENTITY % i18n
+	"lang 			%LanguageCode; #IMPLIED
+	xmllang 		%LanguageCode; #IMPLIED
+	dir				(ltr|rtl) #IMPLIED"
+>
+
+<!-- =========================================== -->
+<!-- ======== DGHO-Spezifische Attribute ============== -->
+<!-- =========================================== -->
+
+<!-- Attributwerte für DGHO-spezifische Semantic vom Content 
+Semantische Zuordnung zu den Inhalten. 
+Es besteht eine 1:n-Zuordnung von Formatvorlagen zur
+inhaltlichen Bedeutung des Content der Elemente.
+Diese Zuordnung wird außerhalb der Strukturdefinition festgelegt.
+-->
+<!ENTITY % dghocontclass 
+"(aaa | bbb | ccc)"
+>
+
+<!-- Attributwerte für DGHO-spezifische Formate vom Content 
+Hier werden die Namen der Formatvorlagen hinterlegt,
+um sicher zu stellen, dass jede durch Formate eingebrachte
+Kennzeichnung auch bewahrt wird.
+-->
+<!ENTITY % dghoformclass "CDATA">
+
+<!-- Attributwerte für DGHO-spezifische Farben vom Content 
+Hier werden die speziell bestimmten Inhalten zugeordneten Farben
+abgelegt. 
+Es besteht eine 1:n Zuordnung von Farbwerten aus den 
+Word-Dokumenten zu den Begriffen der Auswahlliste
+Diese Zuordnung wird außerhalb der Strukturdefinition festgelegt.
+-->
+<!ENTITY % dghocolor "(linkcolor)" >
+
+<!-- Attribute für Abschnitte=sections (abgeleitet aus Überschriften)
+Enthält die Nummer der Überschrift:	 					dgho-sect-num
+Enthält den vordefinierten Text der Überschrift:		dgho-sect-label 
+
+dgho-sect-label evtl. als Auswahlliste möglich
+entsprechend der Liste der Überschriften von Dr. Wörmann
+-->
+<!ENTITY % dghosectlabel "CDATA">
+
+<!ENTITY % sectionattrs
+	"dgho-sect-num	CDATA					#IMPLIED
+	dgho-sect-label	%dghosectlabel;		#IMPLIED
+	plone-url				%URI;						#IMPLIED"
+>
+
+<!-- core attributes common to most elements
+  id							document-wide unique id
+  class						space separated list of classes
+  style						associated style info
+  title						advisory title/amplification
+  dgho-alt					alternativer Text zur Konkretisierung von Inhalt
+  dgho-cont-class		Content-Klasse, semantische Zuordnung
+  dgho-form-class	Format-Klasse, 
+-->
+
+<!ENTITY % coreattrs
+	"id						ID								#IMPLIED
+	class					CDATA					#IMPLIED
+	style						CDATA					#IMPLIED
+	title						CDATA					#IMPLIED
+	dgho-alt				CDATA					#IMPLIED
+	dgho-cont-class	%dghocontclass;		#IMPLIED
+	dgho-form-class	%dghoformclass;		#IMPLIED
+	dgho-color			%dghocolor;			#IMPLIED"
+>
+
+<!-- Verknüpfung mit den Sprachenattributen, 
+falls fremdsprachliche Begriffe auftauchen sollten, 
+die speziell gekennzeichnet werden müssen -->
+<!ENTITY % attrs "%coreattrs; %i18n;">
+
+<!-- ========================================= -->
+<!-- ========= Text Elements ===================== -->
+<!-- 
+Definition der Inline-Elemente:
+======================
+
+Hoch- und Tiefstellung: 		<sup>, <sub>
+Hervorhebung: 					<strong ...>, <i....> <u ...,
+Inline-Grafik: 						<img ...>
+Zeilenumbruch: 					<br/>, <wbr/>
+Verknüpfung/Link:				<a ...>
+
+-->
+<!ELEMENT litrefgroup (litref+) >
+<!ELEMENT litref (#PCDATA)>
+<!ATTLIST litref
+    idref CDATA #REQUIRED
+>
+
+
+<!ENTITY % special  "br | wbr | img | litrefgroup | old | new | important | oldtherapie | newtherapie">
+
+<!ENTITY % phrase "strong | i | u | sub | sup">
+
+<!ENTITY % inline "fn | xref | tab | %special; | %phrase;">
+
+<!ENTITY % Inline "(#PCDATA | %inline;)*">
+
+<!-- ============== Inline-Element-Definition =================  -->
+<!ELEMENT tab EMPTY>   <!--  tabulator  -->
+<!ELEMENT br EMPTY>   <!-- forced line break -->
+
+<!ELEMENT wbr (#PCDATA | %phrase;)*>   <!-- Word Break Opportunity -->
+
+<!ELEMENT strong %Inline;>   <!-- strong emphasis -->
+<!ATTLIST strong %attrs;>
+
+<!ELEMENT i %Inline;>   <!-- italic -->
+<!ATTLIST i %attrs;>
+
+<!ELEMENT u %Inline;>   <!-- underline -->
+<!ATTLIST u %attrs;>
+
+<!ELEMENT old %Inline;>   <!-- old (red) -->
+<!ATTLIST old %attrs;>
+
+<!ELEMENT new %Inline;>   <!--  new (green) -->
+<!ATTLIST new %attrs;>
+
+<!ELEMENT important %Inline;>   <!-- important -->
+<!ATTLIST important %attrs;>
+
+<!ELEMENT sub %Inline;> <!-- subscript -->
+<!ATTLIST sub %attrs;>
+
+<!ELEMENT sup %Inline;> <!-- superscript -->
+<!ATTLIST sup %attrs;>
+
+<!ELEMENT newtherapie %Inline;>   <!-- important -->
+<!ATTLIST newtherapie %attrs;>
+
+<!ELEMENT oldtherapie %Inline;>   <!-- important -->
+<!ATTLIST oldtherapie %attrs;>
+
+<!-- ========= Block level elements =====================-->
+
+<!-- Zusammenfassung der Listentypen -->
+<!ENTITY % lists "ul | ol">
+
+<!-- Zusammenfassung der Inhalts-Elemente unterhalb von Heading -->
+<!-- maw/pi 27.06.2014 - img aus liste der block-elemente herausgenommen, da img inline und mit absatzgrafiken mit figure abgebildet werden -->
+<!-- maw/pi 27.06.2014 - section aus liste der block-elemente herausgenommen, da kind von section in sectioncontent  -->
+<!ENTITY % block "p | %lists; | figure">
+
+<!--  maw/mp 27.06.2014 - div als container innerhalb einer section definiert, der alle Blöcke aufnimmt -->
+<!ELEMENT div (heading?,(literaturlist | table | %block;)+) >
+<!ATTLIST div %attrs; >
+
+<!-- Flow ist die Zusammenfassung aller Inhaltselemente einer Section -->
+<!ENTITY % Flow "heading, div*, section*">
+
+<!-- =================== Figure & Images ======================== -->
+<!ELEMENT figure  (figcaption?, img, figcaption?, legend?) >
+<!ATTLIST figure 
+%attrs; 
+>
+
+<!ELEMENT figcaption %Inline; >
+<!ATTLIST figcaption 
+%attrs; 
+>
+
+<!ELEMENT legend (legendentry)+ >
+<!ATTLIST legend
+%attrs; 
+>
+<!ELEMENT legendentry (position, description) >
+<!ATTLIST legendentry
+%attrs; 
+>
+
+
+<!ELEMENT position %Inline;>
+<!ATTLIST position %attrs; >
+
+<!ELEMENT description %Inline; >
+<!ATTLIST description %attrs; >
+
+
+<!ELEMENT img EMPTY>
+<!ATTLIST img
+  %attrs;
+  src         %URI;          #REQUIRED
+  svg         %URI;          #IMPLIED
+  view         %URI;          #IMPLIED
+  alt         %Text;         #REQUIRED
+  name        NMTOKEN        #IMPLIED
+  longdesc    %URI;          #IMPLIED
+  height      %Length;       #IMPLIED
+  width       %Length;       #IMPLIED
+  align       %ImgAlign;     #IMPLIED
+  border      %Length;       #IMPLIED
+  hspace      %Pixels;       #IMPLIED
+  vspace      %Pixels;       #IMPLIED
+  extension CDATA           #REQUIRED
+  >
+
+<!-- ========= Paragraph ===================== -->
+<!ELEMENT p %Inline;>
+<!ATTLIST p
+  %attrs;
+>
+
+<!-- ========= Heading - Überschriften ============= -->
+<!ELEMENT heading  %Inline;>
+<!ATTLIST heading
+  %attrs;
+>
+
+<!--=================== Lists ============================================-->
+<!-- Unordered list -->
+<!ELEMENT ul (p?, li+)>
+<!ATTLIST ul
+  %attrs;
+  >
+  
+<!-- Ordered list numbering style
+    1   arabic numbers      1, 2, 3, ...
+    a   lower alpha         a, b, c, ...
+    A   upper alpha         A, B, C, ...
+    i   lower roman         i, ii, iii, ...
+    I   upper roman         I, II, III, ...
+
+    The style is applied to the sequence number which by default
+    is reset to 1 for the first list item in an ordered list.
+-->
+<!ENTITY % OLStyle "CDATA">
+
+<!-- Ordered (numbered) list -->
+<!ELEMENT ol (p?, li+)>
+<!ATTLIST ol
+  %attrs;
+  type        %OLStyle;      #IMPLIED
+  start       %Number;       #IMPLIED
+  >
+
+<!ELEMENT li (%block;)*>
+<!ATTLIST li 
+  %attrs;
+  value       %Number;       #IMPLIED
+  >
+
+<!--================== The footnote Element ================================-->
+
+<!ELEMENT fn (p+) >
+<!ATTLIST fn
+    type (footnote | endnote) "footnote"
+>
+
+<!--================== The xref Element ================================-->
+
+<!ELEMENT xref %Inline;>
+<!ATTLIST xref
+    href    %URI; #REQUIRED
+    type    (PMID | DOI | table | figure | web) "web"
+    scope (internal | external) "external" 
+    format (html | pdf)  "html"
+    target      %FrameTarget;  #IMPLIED
+>
+
+<!--======================= Tables =======================================-->
+
+<!ELEMENT table (title?, tgroup,legend?)>
+
+<!ATTLIST table
+	role	CDATA	#IMPLIED
+	label	CDATA	#IMPLIED
+	tabstyle	CDATA	#IMPLIED
+	floatstyle	CDATA	#IMPLIED
+	orient	(land|port)	#IMPLIED
+	colsep	(0|1)	#IMPLIED
+	rowsep	(0|1)	#IMPLIED
+	frame	(all|bottom|none|sides|top|topbot|void|above|below|hsides|lhs|rhs|vsides|box|border)	#IMPLIED
+	pgwide	(0|1)	#IMPLIED
+	rowheader	(firstcol|norowheader)	#IMPLIED
+	class	CDATA	#IMPLIED
+	style	CDATA	#IMPLIED
+	title	CDATA	#IMPLIED
+	lang	CDATA	#IMPLIED
+	width	CDATA	#IMPLIED
+	border	NMTOKEN	#IMPLIED
+	rules	(none|groups|rows|cols|all)	#IMPLIED
+	cellspacing	CDATA	#IMPLIED
+	cellpadding	CDATA	#IMPLIED
+
+>
+
+<!ELEMENT tgroup ((colspec)*, (spanspec)*, (thead)?, (tfoot)?, tbody)>
+
+<!ATTLIST tgroup
+	xmlns	CDATA	#FIXED	"http://docbook.org/ns/docbook"
+	role	CDATA	#IMPLIED
+	char	CDATA	#IMPLIED
+	charoff	CDATA	#IMPLIED
+	tgroupstyle	CDATA	#IMPLIED
+	cols	NMTOKEN	#REQUIRED
+	colsep	(0|1)	#IMPLIED
+	rowsep	(0|1)	#IMPLIED
+	align	(center|char|justify|left|right)	#IMPLIED
+
+>
+
+<!ELEMENT colspec EMPTY>
+
+<!ATTLIST colspec
+	role	CDATA	#IMPLIED
+	colnum	NMTOKEN	#IMPLIED
+	char	CDATA	#IMPLIED
+	colsep	(0|1)	#IMPLIED
+	colwidth	CDATA	#IMPLIED
+	charoff	CDATA	#IMPLIED
+	colname	CDATA	#IMPLIED
+	rowsep	(0|1)	#IMPLIED
+	align	(center|char|justify|left|right)	#IMPLIED
+
+>
+
+<!ELEMENT spanspec EMPTY>
+
+<!ATTLIST spanspec
+	role	CDATA	#IMPLIED
+	spanname	CDATA	#REQUIRED
+	namest	CDATA	#REQUIRED
+	nameend	CDATA	#REQUIRED
+	char	CDATA	#IMPLIED
+	colsep	(0|1)	#IMPLIED
+	charoff	CDATA	#IMPLIED
+	rowsep	(0|1)	#IMPLIED
+	align	(center|char|justify|left|right)	#IMPLIED
+
+>
+
+<!ELEMENT thead ((colspec)*, (row+))>
+
+<!ATTLIST thead
+	role	CDATA	#IMPLIED
+	valign	(bottom|middle|top|baseline)	#IMPLIED
+	class	CDATA	#IMPLIED
+	style	CDATA	#IMPLIED
+	title	CDATA	#IMPLIED
+	lang	CDATA	#IMPLIED
+	align	(left|center|right|justify|char)	#IMPLIED
+	char	CDATA	#IMPLIED
+	charoff	CDATA	#IMPLIED
+
+>
+
+<!ELEMENT tfoot ((colspec)*, (row+))>
+
+<!ATTLIST tfoot
+	role	CDATA	#IMPLIED
+	valign	(bottom|middle|top|baseline)	#IMPLIED
+	class	CDATA	#IMPLIED
+	style	CDATA	#IMPLIED
+	title	CDATA	#IMPLIED
+	lang	CDATA	#IMPLIED
+	align	(left|center|right|justify|char)	#IMPLIED
+	char	CDATA	#IMPLIED
+	charoff	CDATA	#IMPLIED
+>
+
+<!ELEMENT tbody (row+)>
+
+<!ATTLIST tbody
+	role	CDATA	#IMPLIED
+	valign	(bottom|middle|top|baseline)	#IMPLIED
+	class	CDATA	#IMPLIED
+	style	CDATA	#IMPLIED
+	title	CDATA	#IMPLIED
+	lang	CDATA	#IMPLIED
+	align	(left|center|right|justify|char)	#IMPLIED
+	char	CDATA	#IMPLIED
+	charoff	CDATA	#IMPLIED
+
+>
+
+<!ELEMENT row (entry+)>
+
+<!ATTLIST row
+	role	CDATA	#IMPLIED
+	rowsep	(0|1)	#IMPLIED
+	valign	(bottom|middle|top)	#IMPLIED
+
+>
+
+<!ELEMENT entry (p|figure|ol|ul)*>
+
+<!ATTLIST entry
+	valign	(bottom|middle|top)	#IMPLIED
+	char	CDATA	#IMPLIED
+	colsep	(0|1)	#IMPLIED
+	charoff	CDATA	#IMPLIED
+	morerows	NMTOKEN	#IMPLIED
+	colname	CDATA	#IMPLIED
+	namest	CDATA	#IMPLIED
+	spanname	CDATA	#IMPLIED
+	nameend	CDATA	#IMPLIED
+	rowsep	(0|1)	#IMPLIED
+	rotate	(0|1)	#IMPLIED
+	align	(center|char|justify|left|right)	#IMPLIED
+	background-color CDATA #IMPLIED
+	border-top-width %Pixels; #IMPLIED
+	border-bottom-width %Pixels; #IMPLIED
+	border-left-width %Pixels; #IMPLIED
+	border-right-width %Pixels; #IMPLIED
+	border-top-style CDATA #IMPLIED
+	border-bottom-style CDATA #IMPLIED
+	border-left-style CDATA #IMPLIED
+	border-right-style CDATA #IMPLIED
+	border-top-color CDATA #IMPLIED
+	border-bottom-color CDATA #IMPLIED
+	border-left-color CDATA #IMPLIED
+	border-right-color CDATA #IMPLIED
+>
+
+<!--================ Document Structure ==================================-->
+<!ELEMENT dghodoc (head, body)>
+<!ATTLIST dghodoc 
+     %i18n;
+	version					CDATA					#IMPLIED
+>
+<!--================ Document Head =======================================-->
+
+<!ELEMENT metadata (meta+)>
+
+<!ELEMENT head (title, metadata, authoraddresses)>
+<!ATTLIST head
+  %i18n;
+  profile     %URI;          #IMPLIED
+  >
+
+<!ELEMENT title %Inline;>
+<!ATTLIST  title
+    %attrs;
+>
+
+<!-- In Meta-Elementen werden alle Metadaten des Dokuments abgelegt.
+Zur Identifizierung werden konkrete Namen festgelegt, die dann die Zuordnung
+eindeutig definieren.
+-->
+<!ELEMENT meta (value*)>
+<!ATTLIST meta
+ name        (Autoren | Sprache | Bereich | Status | Klassifizierung | Fachgesellschaften | DokumentTyp | LLThema | Zulassungsland | Titel | GuidelineID | PloneUUID)          #REQUIRED
+ >
+<!ELEMENT value (#PCDATA)>
+<!ATTLIST value
+ title        CDATA          #IMPLIED
+ >
+
+<!--=================== Document Body ====================================-->
+<!--
+ A body is
+ - a header, an article within a sequence of sections 
+ with optional aside element ("blog layout")
+- and sections with exactly one heading and subsections ("book-like structure")
+-->
+
+<!ELEMENT body  (header, article) >
+<!ATTLIST body
+  %attrs;
+  background  %URI;          #IMPLIED
+  bgcolor     %Color;        #IMPLIED
+  text        %Color;        #IMPLIED
+  link        %Color;        #IMPLIED
+  vlink       %Color;        #IMPLIED
+  alink       %Color;        #IMPLIED
+  >
+
+<!-- article ist für den eigentlichen Dokument-Inhalt gedacht -->
+<!ELEMENT article (section)+>
+<!ATTLIST article
+  %attrs;
+>
+
+<!-- Block zur Aufnahme aller Inhalte, die außerhalb der Artikelstruktur liegen, 
+wie Liste der Autoren, ein evtl. summary, was zur Anzeige im IVZ dient usw.
+-->
+<!--  maw/mp 27.06.2014 - block-Verweis auf div geändert-->
+<!ELEMENT header (maintitle, (summary | div)*) >
+<!ATTLIST header
+  %attrs;
+  >
+
+<!-- Haupt-Überschrift des Dokuments -->
+<!ELEMENT maintitle %Inline; >
+<!ATTLIST maintitle
+  %attrs;
+  >
+
+<!-- summary dient zur Aufnahme einer Kurzzusammenfassung
+Optional, kann dafür genutzt werden, in Seiten mit Verweis angezeigt zu werden
+-->
+<!ELEMENT summary (%block;)>
+<!ATTLIST summary
+  %attrs;
+  >
+
+<!ELEMENT section (%Flow;)>  
+<!ATTLIST section
+  %attrs;
+ %sectionattrs;
+  >
+  
+  <!--======== Literaturlist ====================-->
+<!-- Liste der Autorennamen, angeführt vom Hauptautor -->
+<!ELEMENT literaturlist (lititem+)>
+<!ATTLIST literaturlist
+  %attrs;
+  >
+
+  <!ELEMENT lititem (p+)>
+<!ATTLIST lititem
+  %attrs;
+  refnum       %Number;       #IMPLIED
+  >
+
+
+<!--======== Autorendaten ====================-->
+<!ELEMENT authoraddresses (author*)>
+<!ATTLIST authoraddresses
+  %attrs;
+  >
+
+<!ELEMENT author (firstname | lastname | address)*>
+<!ATTLIST author
+author-ID  CDATA #IMPLIED
+  %attrs;
+  >
+
+<!ELEMENT firstname (#PCDATA)>
+<!ATTLIST firstname %attrs; >
+
+<!ELEMENT lastname (#PCDATA)>
+<!ATTLIST lastname %attrs; >
+
+<!ELEMENT salutation (#PCDATA)>
+<!ATTLIST salutation
+    language CDATA #IMPLIED
+>
+
+<!ELEMENT address (salutation | company | phone | fax | email | street | zip | city | country | state )*>
+<!ATTLIST address %attrs; >
+
+<!ELEMENT phone (#PCDATA)>
+<!ATTLIST phone %attrs; >
+
+<!ELEMENT company (#PCDATA | br)*>
+<!ATTLIST company %attrs; >
+
+<!ELEMENT fax (#PCDATA)>
+<!ATTLIST fax %attrs; >
+
+<!ELEMENT email (#PCDATA)>
+<!ATTLIST email %attrs; >
+
+<!ELEMENT street (#PCDATA)>
+<!ATTLIST street %attrs; >
+
+<!ELEMENT  zip (#PCDATA)>
+<!ATTLIST  zip %attrs; >
+
+<!ELEMENT city (#PCDATA)>
+<!ATTLIST city %attrs; >
+
+<!ELEMENT country (#PCDATA)>
+<!ATTLIST country %attrs; >
+
+<!ELEMENT state (#PCDATA)>
+<!ATTLIST state %attrs; >
