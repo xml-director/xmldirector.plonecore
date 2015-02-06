@@ -20,8 +20,8 @@
     />
 
     <utility
-        provides="xmldirector.plonecore.interfaces.ISchemaRegistry"
-        component="xmldirector.plonecore.schema_registry.SchemaRegistryUtility"
+        provides="xmldirector.plonecore.interfaces.IValidatorRegistry"
+        component="xmldirector.plonecore.validator_registry.ValidatorRegistryUtility"
     />
 
     <include package="plone.browserlayer" />

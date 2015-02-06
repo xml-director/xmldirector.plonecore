@@ -11,23 +11,29 @@ import datetime
 import lxml.etree
 import lxml.isoschematron
 from zope.interface import implements
-from xmldirector.plonecore.interfaces import ISchemaRegistry
+from xmldirector.plonecore.interfaces import IValidatorRegistry
 from xmldirector.plonecore.logger import LOG
 
+# The schema registry holds references for the following XML validation
+# methods:
+#
+# - XML Schema (.xsd)
+# - Document Type Definitions (DTD) (.dtd)
+# - RelaxNG schema (.rng)
+# - Schematron (.schematron)
 
-# The schema registrie stores DTD or schema as s dictionary
-# where the keys are composed of a tuple (family, name).  ``family``
-# could be used to represent a project, a customer etc.  and
-# ``name`` would represent the name of the DTD or schema
-# Both ``family`` and ``name`` are completey arbitrary.
+# All entries are stored internally as a tuple (family, name).  ``family``
+# could be used to represent a project, a customer etc.  and ``name`` would
+# represent the name of the DTD or schema Both ``family`` and ``name`` are
+# completey arbitrary.
 
 
-class SchemaRegistry(object):
+class ValidatorRegistry(object):
     """ A registry for XML schemas and DTDs """
 
-    implements(ISchemaRegistry)
+    implements(IValidatorRegistry)
 
-    schema_registry = {}
+    registry = {}
 
     def parse_folder(self, family, directory):
         """ Parse a given folder for XML schema files (.xsd) or
@@ -35,7 +41,7 @@ class SchemaRegistry(object):
         """
         
         if not os.path.exists(directory):
-            raise IOError(u'Schema/DTD directory "{}" does not exist'.format(directory))
+            raise IOError(u'Directory "{}" does not exist'.format(directory))
 
         for name in os.listdir(directory):
             fullname = os.path.join(directory, name)
@@ -64,24 +70,24 @@ class SchemaRegistry(object):
             else:
                 continue
 
-            if key in self.schema_registry:
+            if key in self.registry:
                 raise ValueError('{} already registered'.format(key))
 
-            self.schema_registry[key] = dict(
+            self.registry[key] = dict(
                 validation=validator,
                 path=fullname,
                 type=validator_type,
                 registered=datetime.datetime.utcnow())
-            LOG.info('Schema/DTD registered ({}, {})'.format(key, fullname))
+            LOG.info('Registered ({}, {})'.format(key, fullname))
 
     def get_schema(self, family, name):
-        """ Return a pre-validator DTD/schema """
+        """ Return a pre-validator DTD/schema/RelaxNG/Schematron """
 
         key = '{}::{}'.format(family, name)
-        if key not in self.schema_registry:
+        if key not in self.registry:
             raise ValueError(
                 'Schema/DTD {}/{} not registered'.format(family, name))
-        return self.schema_registry[key]['validation']
+        return self.registry[key]['validation']
 
     def get_validator(self, family, name):
         schema = self.get_schema(family, name)
@@ -101,14 +107,14 @@ class SchemaRegistry(object):
 
     def clear(self):
         """ Remove all entries """
-        self.schema_registry.clear()
+        self.registry.clear()
 
     def __len__(self):
         """ Return number of registered transformations """
-        return len(self.schema_registry)
+        return len(self.registry)
 
 
-SchemaRegistryUtility = SchemaRegistry()
+ValidatorRegistryUtility = ValidatorRegistry()
 
 
 class ValidationResult(object):
@@ -125,7 +131,7 @@ class ValidationResult(object):
 
 
 class Validator(object):
-    """ Encapsulates a DTD/schema validator """
+    """ Encapsulates a schema validator """
 
     def __init__(self, schema):
         self.schema = schema

@@ -26,9 +26,9 @@ class IXSLTRegistry(Interface):
     """ Marker interface for XSLTRegistry """
 
 
-class ISchemaRegistry(Interface):
+class IValidatorRegistry(Interface):
 
-    """ Marker interface for SchemaRegistry """
+    """ Marker interface for ValidatorRegistry """
 
 
 class IWebdavSettings(Interface):

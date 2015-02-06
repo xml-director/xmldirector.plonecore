@@ -7,7 +7,7 @@
 
 import os
 import unittest2
-from xmldirector.plonecore.schema_registry import SchemaRegistry
+from xmldirector.plonecore.validator_registry import ValidatorRegistry
 
 cwd = os.path.dirname(__file__)
 
@@ -15,7 +15,7 @@ cwd = os.path.dirname(__file__)
 class BasicTests(unittest2.TestCase):
 
     def setUp(self):
-        self.registry = SchemaRegistry()
+        self.registry = ValidatorRegistry()
         self.registry.clear()
         self.registry.parse_folder(
                 family='testing',
