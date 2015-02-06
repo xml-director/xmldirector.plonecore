@@ -9,18 +9,30 @@
 import os
 import datetime
 import lxml.etree
+import lxml.isoschematron
 from zope.interface import implements
 from xmldirector.plonecore.interfaces import ISchemaRegistry
 from xmldirector.plonecore.logger import LOG
 
 
+# The schema registrie stores DTD or schema as s dictionary
+# where the keys are composed of a tuple (family, name).  ``family``
+# could be used to represent a project, a customer etc.  and
+# ``name`` would represent the name of the DTD or schema
+# Both ``family`` and ``name`` are completey arbitrary.
+
+
 class SchemaRegistry(object):
+    """ A registry for XML schemas and DTDs """
 
     implements(ISchemaRegistry)
 
     schema_registry = {}
 
     def parse_folder(self, family, directory):
+        """ Parse a given folder for XML schema files (.xsd) or
+            DTD files (.dtd).
+        """
         
         if not os.path.exists(directory):
             raise IOError(u'Schema/DTD directory "{}" does not exist'.format(directory))
@@ -33,10 +45,22 @@ class SchemaRegistry(object):
             if ext == '.dtd':
                 with open(fullname, 'rb') as fp:
                     validator = lxml.etree.DTD(fp)
+                    validator_type = 'DTD'
             elif ext == '.xsd':
                 with open(fullname, 'rb') as fp:
                     schema_doc = lxml.etree.XML(fp.read())
                     validator = lxml.etree.XMLSchema(schema_doc)
+                    validator_type = 'XSD'
+            elif ext == '.rng':
+                with open(fullname, 'rb') as fp:
+                    relaxng_doc = lxml.etree.XML(fp.read())
+                    validator = lxml.etree.RelaxNG(relaxng_doc)
+                    validator_type = 'RELAXNG'
+            elif ext == '.schematron':
+                with open(fullname, 'rb') as fp:
+                    relaxng_doc = lxml.etree.XML(fp.read())
+                    validator = lxml.isoschematron.Schematron(relaxng_doc)
+                    validator_type = 'SCHEMATRON'
             else:
                 continue
 
@@ -46,6 +70,7 @@ class SchemaRegistry(object):
             self.schema_registry[key] = dict(
                 validation=validator,
                 path=fullname,
+                type=validator_type,
                 registered=datetime.datetime.utcnow())
             LOG.info('Schema/DTD registered ({}, {})'.format(key, fullname))
 

@@ -28,7 +28,7 @@ class BasicTests(unittest2.TestCase):
                     directory='does.not.exist')
 
     def test_registry(self):
-        self.assertEquals(len(self.registry), 3)
+        self.assertEquals(len(self.registry), 5)
         validator1 = self.registry[('testing', 'DGHO_Webcontent_20150202.dtd')]
         validator2 = self.registry['testing::DGHO_Webcontent_20150202.dtd']
         self.assertEqual(validator1, validator2)
@@ -49,6 +49,18 @@ class BasicTests(unittest2.TestCase):
     def test_validator_with_DTD(self):
         validator = self.registry.get_validator('testing', 'simple.dtd')
         xml = open(os.path.join(cwd, 'simple_dtd.xml'), 'rb').read()
+        result = validator.validate(xml)
+        self.assertEqual(bool(result), True)
+
+    def test_validator_with_RELAXNG(self):
+        validator = self.registry.get_validator('testing', 'simple.rng')
+        xml = open(os.path.join(cwd, 'simple_relaxng.xml'), 'rb').read()
+        result = validator.validate(xml)
+        self.assertEqual(bool(result), True)
+
+    def test_validator_with_SCHEMATRON(self):
+        validator = self.registry.get_validator('testing', 'simple.schematron')
+        xml = open(os.path.join(cwd, 'simple_schematron.xml'), 'rb').read()
         result = validator.validate(xml)
         self.assertEqual(bool(result), True)
 

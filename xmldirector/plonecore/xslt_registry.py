@@ -14,7 +14,7 @@ from xmldirector.plonecore.interfaces import IXSLTRegistry
 from xmldirector.plonecore.logger import LOG
 
 
-# The XSLT registries stores pre-compiled XSLT transformations as a dictionary
+# The XSLT registrie stores pre-compiled XSLT transformations as a dictionary
 # where the keys are composed of a tuple (family, stylesheet_name).  ``family``
 # could be used to represent a project, a customer etc.  and
 # ``stylesheet_name`` would represent the name of the XSLT transformation.
