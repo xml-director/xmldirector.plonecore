@@ -15,7 +15,8 @@
             <label i18n:translate="">Family</label>: <span tal:content="request/family"/>
             <br/>
             <label i18n:translate="">Name</label>: <span tal:content="request/name"/>
-
+            <br/>
+            <a i18n:translate="" href="@@validator-registry">Back to validator registry</a>
             <pre tal:content="view/schema_content"/>
         </div>
 

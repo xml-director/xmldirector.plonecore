@@ -7,6 +7,7 @@
 
 
 import os
+import fs.opener
 import datetime
 import operator
 import lxml.etree
@@ -40,31 +41,36 @@ class ValidatorRegistry(object):
         """ Parse a given folder for XML schema files (.xsd) or
             DTD files (.dtd).
         """
-        
-        if not os.path.exists(directory):
-            raise IOError(u'Directory "{}" does not exist'.format(directory))
 
-        for name in os.listdir(directory):
+        if directory.startswith('/'):
+            directory = 'file://' + directory
+
+        try:
+            handle = fs.opener.fsopendir(directory)
+        except Exception as e:
+            raise IOError(u'Directory "{}" does not exist ({})'.format(directory, e))
+
+        for name in handle.listdir():
             fullname = os.path.join(directory, name)
             base, ext = os.path.splitext(name)
 
             key = '{}::{}'.format(family, name)
             if ext == '.dtd':
-                with open(fullname, 'rb') as fp:
+                with handle.open(name, 'rb') as fp:
                     validator = lxml.etree.DTD(fp)
                     validator_type = 'DTD'
             elif ext == '.xsd':
-                with open(fullname, 'rb') as fp:
+                with handle.open(name, 'rb') as fp:
                     schema_doc = lxml.etree.XML(fp.read())
                     validator = lxml.etree.XMLSchema(schema_doc)
                     validator_type = 'XSD'
             elif ext == '.rng':
-                with open(fullname, 'rb') as fp:
+                with handle.open(name, 'rb') as fp:
                     relaxng_doc = lxml.etree.XML(fp.read())
                     validator = lxml.etree.RelaxNG(relaxng_doc)
                     validator_type = 'RELAXNG'
             elif ext == '.schematron':
-                with open(fullname, 'rb') as fp:
+                with handle.open(name, 'rb') as fp:
                     relaxng_doc = lxml.etree.XML(fp.read())
                     validator = lxml.isoschematron.Schematron(relaxng_doc)
                     validator_type = 'SCHEMATRON'

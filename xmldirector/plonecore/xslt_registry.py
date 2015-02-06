@@ -7,6 +7,7 @@
 
 
 import os
+import fs.opener
 import datetime
 import lxml.etree
 from zope.interface import implements
@@ -29,16 +30,22 @@ class XSLTRegistry(object):
     def register_stylesheet(self, family, stylesheet_name, stylesheet_path):
         """ Register a Stylesheet as tuple (family, stylesheet_name) """
 
+        if stylesheet_path.startswith('/'):
+            stylesheet_path = 'file://' + stylesheet_path
+
         key = '{}::{}'.format(family, stylesheet_name)
         if key in self.xslt_registry:
             raise ValueError(
                 'Stylesheet {}/{} already registered'.format(family, stylesheet_name))
 
-        if not os.path.exists(stylesheet_path):
-            raise ValueError(
-                'Stylesheet {}/{} not found ({})'.format(family, stylesheet_name, stylesheet_path))
 
-        with open(stylesheet_path, 'rb') as fp:
+        try:
+            handle = fs.opener.opener.open(stylesheet_path)
+        except Exception as e:
+            raise ValueError(
+                'Stylesheet {}/{} not found ({}, {})'.format(family, stylesheet_name, stylesheet_path, e))
+
+        with fs.opener.opener.open(stylesheet_path, 'rb') as fp:
             try:
                 xslt = lxml.etree.XML(fp.read())
             except lxml.etree.XMLSyntaxError as e:
