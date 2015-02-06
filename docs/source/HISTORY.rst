@@ -4,7 +4,10 @@ Changelog
 0.3.6 (unreleased)
 ------------------
 - re-added Dexterity tests
-- added DTD/Schema registry
+- added validator registry for XML schemas, DTDs, Schematron files
+  and RelaxNG schemas
+- added @@validator-registry view
+- added  unified validation API based on registered validation files
 
 0.3.5 (2015-01-30)
 ------------------
