@@ -102,17 +102,16 @@ class ValidatorRegistry(object):
         schema = self.get_schema(family, name)
         return Validator(schema)
 
-    def __getitem__(self, name_or_tuple):
+    def _convert_key(self, name_or_tuple):
         if isinstance(name_or_tuple, tuple):
-            return self.get_schema(*name_or_tuple)
-        family, name = name_or_tuple.split('::')
-        return self.get_schema(family, name)
+            return name_or_tuple
+        return name_or_tuple.split('::')
+
+    def __getitem__(self, name_or_tuple):
+        return self.get_schema(*self._convert_key(name_or_tuple))
 
     def __contains__(self, name_or_tuple):
-        if isinstance(name_or_tuple, tuple):
-            return self.get_schema(*name_or_tuple)
-        family, name = name_or_tuple.split('::')
-        return self.get_schema(family, name)
+        return self.get_schema(*self._convert_key(name_or_tuple))
 
     def clear(self):
         """ Remove all entries """

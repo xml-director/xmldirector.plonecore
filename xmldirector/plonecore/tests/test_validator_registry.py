@@ -35,43 +35,43 @@ class BasicTests(unittest2.TestCase):
         self.assertEqual(('testing', 'DGHO_Webcontent_20150202.dtd') in self.registry, True)
 
     def test_validator(self):
-        validator = self.registry.get_validator('testing', 'simple.xsd')
+        validator = self.registry.get_validator(family='testing', name='simple.xsd')
         xml = open(os.path.join(cwd, 'simple.xml'), 'rb').read()
         result = validator.validate(xml)
         self.assertEqual(bool(result), True)
 
     def test_validator_wrong_xml(self):
-        validator = self.registry.get_validator('testing', 'simple.xsd')
+        validator = self.registry.get_validator(family='testing', name='simple.xsd')
         xml = open(os.path.join(cwd, 'simple_bad.xml'), 'rb').read()
         result = validator.validate(xml)
         self.assertEqual(bool(result), False)
 
     def test_validator_with_DTD(self):
-        validator = self.registry.get_validator('testing', 'simple.dtd')
+        validator = self.registry.get_validator(family='testing', name='simple.dtd')
         xml = open(os.path.join(cwd, 'simple_dtd.xml'), 'rb').read()
         result = validator.validate(xml)
         self.assertEqual(bool(result), True)
 
     def test_validator_with_RELAXNG(self):
-        validator = self.registry.get_validator('testing', 'simple.rng')
+        validator = self.registry.get_validator(family='testing', name='simple.rng')
         xml = open(os.path.join(cwd, 'simple_relaxng.xml'), 'rb').read()
         result = validator.validate(xml)
         self.assertEqual(bool(result), True)
 
     def test_validator_with_SCHEMATRON(self):
-        validator = self.registry.get_validator('testing', 'simple.schematron')
+        validator = self.registry.get_validator(family='testing', name='simple.schematron')
         xml = open(os.path.join(cwd, 'simple_schematron.xml'), 'rb').read()
         result = validator.validate(xml)
         self.assertEqual(bool(result), True)
 
     def test_validator_invalid_xml(self):
-        validator = self.registry.get_validator('testing', 'simple.dtd')
+        validator = self.registry.get_validator(family='testing', name='simple.dtd')
         xml = open(os.path.join(cwd, 'simple_invalid.xml'), 'rb').read()
         result = validator.validate(xml)
         self.assertEqual(bool(result), False)
 
     def test_get_schema(self):
-        validator = self.registry.get_schema('testing', 'DGHO_Webcontent_20150202.dtd')
+        validator = self.registry.get_schema(family='testing', name='DGHO_Webcontent_20150202.dtd')
         with self.assertRaises(ValueError):
             validator = self.registry.get_schema('testing', 'does.not.exist')
 
