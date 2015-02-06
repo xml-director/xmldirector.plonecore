@@ -99,6 +99,7 @@ class ValidatorRegistry(object):
         return self.registry[key]['validation']
 
     def get_validator(self, family, name):
+        """ Return a wrapped Validator instance for the given family + name """
         schema = self.get_schema(family, name)
         return Validator(schema)
 
