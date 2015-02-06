@@ -85,6 +85,7 @@ class ValidatorRegistry(object):
                 name=name,
                 validation=validator,
                 path=fullname,
+                info=handle.getinfo(name),
                 type=validator_type,
                 registered=datetime.datetime.utcnow())
             LOG.info('Registered ({}, {})'.format(key, fullname))

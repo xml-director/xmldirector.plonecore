@@ -17,6 +17,7 @@
                     <th i18n:translate="">Family</th>
                     <th i18n:translate="">Name</th>
                     <th i18n:translate="">Type</th>
+                    <th i18n:translate="">Info</th>
                     <th i18n:translate="">Path</th>
                 </tr>
             </thead>
@@ -27,6 +28,7 @@
                         <a tal:attributes="href string:@@validator-registry-view?family=${entry/family}&name=${entry/name}" tal:content="entry/name"/>
                     </td>
                     <td tal:content="entry/type"/>
+                    <td tal:content="entry/info"/>
                     <td>
                         <span class="validator-path" tal:content="entry/path"/>
                     </td>
