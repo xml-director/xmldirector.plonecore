@@ -6,6 +6,7 @@
 ################################################################
 
 
+import fs.opener
 import fs.errors
 from zope.component import getUtility
 from plone.app.registry.browser import controlpanel
@@ -72,7 +73,7 @@ class ValidatorRegistry(BrowserView):
         name = self.request['name']
         key = '{}::{}'.format(family, name)
         d = self.registry.registry.get(key)
-        with open(d['path'], 'rb') as fp:
+        with fs.opener.opener.open(d['path'], 'rb') as fp:
             content = fp.read()
         return content
 
