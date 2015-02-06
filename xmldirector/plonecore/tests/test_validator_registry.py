@@ -59,7 +59,7 @@ class BasicTests(unittest2.TestCase):
         self.assertEqual(bool(result), True)
 
     def test_validator_with_SCHEMATRON(self):
-        validator = self.registry.get_validator(family='testing', name='simple.schematron')
+        validator = self.registry.get_validator(family='testing', name='simple.sch')
         xml = open(os.path.join(cwd, 'simple_schematron.xml'), 'rb').read()
         result = validator.validate(xml)
         self.assertEqual(bool(result), True)

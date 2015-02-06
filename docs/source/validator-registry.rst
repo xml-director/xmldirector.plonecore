@@ -7,7 +7,7 @@ The registry supports the following validation methods:
 - XML schemas (file suffix ``.xsd``)
 - Document Type Definitions DTD (file suffix ``.dtd``)
 - RelaxNG schemas (file suffix ``.rng``)
-- Schematron (file suffix ``.schematron``)
+- Schematron (file suffix ``.sch``)
 
 Validators in XML-Director can be grouped together as a ``family``.
 A family is a list of validators that belongs together (per project, per 

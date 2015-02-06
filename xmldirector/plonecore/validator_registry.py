@@ -22,7 +22,7 @@ from xmldirector.plonecore.logger import LOG
 # - XML Schema (.xsd)
 # - Document Type Definitions (DTD) (.dtd)
 # - RelaxNG schema (.rng)
-# - Schematron (.schematron)
+# - Schematron (.sch)
 
 # All entries are stored internally as a tuple (family, name).  ``family``
 # could be used to represent a project, a customer etc.  and ``name`` would
@@ -69,7 +69,7 @@ class ValidatorRegistry(object):
                     relaxng_doc = lxml.etree.XML(fp.read())
                     validator = lxml.etree.RelaxNG(relaxng_doc)
                     validator_type = 'RELAXNG'
-            elif ext == '.schematron':
+            elif ext == '.sch':
                 with handle.open(name, 'rb') as fp:
                     relaxng_doc = lxml.etree.XML(fp.read())
                     validator = lxml.isoschematron.Schematron(relaxng_doc)
