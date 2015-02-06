@@ -145,6 +145,14 @@
         permission="cmf.ManagePortal"
     />
 
+    <browser:page
+        name="validator-registry-view"
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        class=".controlpanel.ValidatorRegistry"
+        template="validator_registry_view.pt"
+        permission="cmf.ManagePortal"
+    />
+
     <!-- viewlet -->
 
 	<browser:viewlet

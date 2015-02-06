@@ -56,11 +56,23 @@ class DBSettingsControlPanel(controlpanel.ControlPanelFormWrapper):
 
 class ValidatorRegistry(BrowserView):
 
-    def get_entries(self):
-
+    @property
+    def registry(self):
         from zope.component import getUtility
         from xmldirector.plonecore.interfaces import IValidatorRegistry
+        return getUtility(IValidatorRegistry)
 
-        result = list()
-        registry = getUtility(IValidatorRegistry)
-        return registry.entries()
+    def get_entries(self):
+        return self.registry.entries()
+
+    def schema_content(self):
+        """ Return the schema content of the given schema """
+
+        family = self.request['family']
+        name = self.request['name']
+        key = '{}::{}'.format(family, name)
+        d = self.registry.registry.get(key)
+        with open(d['path'], 'rb') as fp:
+            content = fp.read()
+        return content
+
