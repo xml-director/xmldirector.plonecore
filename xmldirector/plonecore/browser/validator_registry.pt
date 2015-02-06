@@ -25,7 +25,9 @@
                     <td tal:content="entry/family"/>
                     <td tal:content="entry/name"/>
                     <td tal:content="entry/type"/>
-                    <td tal:content="entry/path"/>
+                    <td>
+                        <span class="validator-path" tal:content="entry/path"/>
+                    </td>
                 </tr>
             </tbody>
         </table>

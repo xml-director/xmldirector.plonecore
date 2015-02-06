@@ -154,3 +154,9 @@ input.xmlxpath-field {
 .xml-editor-validation-msg {
     display: block;
 }
+
+/* Validator registry */
+
+#validator-registry .validator-path {
+    font-size: 0.8em;
+}
