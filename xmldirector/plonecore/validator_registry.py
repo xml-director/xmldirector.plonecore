@@ -8,6 +8,7 @@
 
 import os
 import datetime
+import operator
 import lxml.etree
 import lxml.isoschematron
 from zope.interface import implements
@@ -74,6 +75,8 @@ class ValidatorRegistry(object):
                 raise ValueError('{} already registered'.format(key))
 
             self.registry[key] = dict(
+                family=family,
+                name=name,
                 validation=validator,
                 path=fullname,
                 type=validator_type,
@@ -112,6 +115,11 @@ class ValidatorRegistry(object):
     def __len__(self):
         """ Return number of registered transformations """
         return len(self.registry)
+
+    def entries(self):
+        """ All entries as sorted list """
+        result = self.registry.values()
+        return sorted(result, key=operator.itemgetter('family', 'name'))
 
 
 ValidatorRegistryUtility = ValidatorRegistry()

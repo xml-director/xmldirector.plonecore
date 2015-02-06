@@ -58,14 +58,9 @@ class ValidatorRegistry(BrowserView):
 
     def get_entries(self):
 
-        from xmldirector.plonecore.interfaces import IValdidatorRegistry
         from zope.component import getUtility
+        from xmldirector.plonecore.interfaces import IValidatorRegistry
 
         result = list()
         registry = getUtility(IValidatorRegistry)
-
-        for key, d in sorted(registry.registry):
-            d = registry[key]
-            print d
-
-        return result
+        return registry.entries()

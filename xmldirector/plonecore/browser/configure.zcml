@@ -138,7 +138,7 @@
 
     <!-- Validator registry -->
     <browser:page
-        name="valiator-registry"
+        name="validator-registry"
         for="Products.CMFPlone.interfaces.IPloneSiteRoot"
         class=".controlpanel.ValidatorRegistry"
         template="validator_registry.pt"
