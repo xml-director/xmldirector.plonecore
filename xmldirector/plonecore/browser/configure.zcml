@@ -136,6 +136,14 @@
         permission="zope2.View"
     />
 
+    <!-- Validator registry -->
+    <browser:page
+        name="valiator-registry"
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        class=".controlpanel.ValidatorRegistry"
+        template="validator_registry.pt"
+        permission="cmf.ManagePortal"
+    />
 
     <!-- viewlet -->
 

@@ -9,6 +9,7 @@
 import fs.errors
 from zope.component import getUtility
 from plone.app.registry.browser import controlpanel
+from Products.Five.browser import BrowserView
 
 from xmldirector.plonecore.i18n import MessageFactory as _
 from xmldirector.plonecore.interfaces import IWebdavSettings
@@ -51,3 +52,20 @@ class DBSettingsControlPanel(controlpanel.ControlPanelFormWrapper):
             return errors
 
         return errors
+
+
+class ValidatorRegistry(BrowserView):
+
+    def get_entries(self):
+
+        from xmldirector.plonecore.interfaces import IValdidatorRegistry
+        from zope.component import getUtility
+
+        result = list()
+        registry = getUtility(IValidatorRegistry)
+
+        for key, d in sorted(registry.registry):
+            d = registry[key]
+            print d
+
+        return result
