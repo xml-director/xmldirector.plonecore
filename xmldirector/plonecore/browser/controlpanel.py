@@ -6,6 +6,9 @@
 ################################################################
 
 
+import hurry
+import humanize
+import datetime
 import fs.opener
 import fs.errors
 from zope.component import getUtility
@@ -77,3 +80,13 @@ class ValidatorRegistry(BrowserView):
             content = fp.read()
         return content
 
+    def human_readable_datetime(self, dt):
+        """ Convert with `dt` datetime string into a human readable
+            representation using humanize module.
+        """
+        diff = datetime.datetime.utcnow() - dt
+        return humanize.naturaltime(diff)
+
+    def human_readable_filesize(self, num_bytes):
+        """ Return num_bytes as human readable representation """
+        return hurry.filesize.size(num_bytes, hurry.filesize.alternative)

@@ -18,19 +18,24 @@
                     <th i18n:translate="">Name</th>
                     <th i18n:translate="">Type</th>
                     <th i18n:translate="">Info</th>
-                    <th i18n:translate="">Path</th>
                 </tr>
             </thead>
             <tbody>
                 <tr tal:repeat="entry entries">
                     <td tal:content="entry/family"/>
                     <td>
-                        <a tal:attributes="href string:@@validator-registry-view?family=${entry/family}&name=${entry/name}" tal:content="entry/name"/>
+                        <a tal:attributes="href string:@@validator-registry-view?family=${entry/family}&name=${entry/name};
+                                           title entry/path" 
+                           tal:content="entry/name"/>
                     </td>
                     <td tal:content="entry/type"/>
-                    <td tal:content="entry/info"/>
                     <td>
-                        <span class="validator-path" tal:content="entry/path"/>
+                        <label i18n:translate="">Size</label>: 
+                        <span  tal:content="python: view.human_readable_filesize(entry['info']['st_size'])"/> 
+                        <br/>
+                        <label i18n:translate="">Modified</label>: 
+                        <span tal:content="python: view.human_readable_datetime(entry['info']['modified_time'])"/>
+                        (<span tal:content="python: entry['info']['modified_time'].isoformat()" />)
                     </td>
                 </tr>
             </tbody>
