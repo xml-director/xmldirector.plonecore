@@ -20,6 +20,7 @@ Contents:
    README.rst
    content-types.rst
    xslt-registry.rst
+   validator-registry.rst
    logging.rst
    testing.rst
    demo.rst
