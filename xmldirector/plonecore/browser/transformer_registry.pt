@@ -21,6 +21,9 @@
                 </tr>
             </thead>
             <tbody>
+                <tr tal:condition="not: entries">
+                    <td colspan="4" i18n:translate="">No entries</td>
+                </tr>
                 <tr tal:repeat="entry entries">
                     <td tal:content="entry/family"/>
                     <td>
