@@ -1,3 +1,7 @@
+
+service_name: travis-pro
+repo_token: 9Gz8lbFOfnCehczzQnPMy49awudPW4Rzz
+
 sudo: false
 language: python
 python:
@@ -13,12 +17,18 @@ cache:
   directories:
     - eggs
 
+after_success:
+ - test -v QA && pip install python-coveralls==2.4.0 || true
+ - test -v QA && coveralls || true
+
 matrix:
   include:
   - python: 2.7
     env: PLONE_VERSION=plone-5.0
 script:
 - bash build_test.sh $PLONE_VERSION
+
+
 notifications:
   irc:
     channels:
