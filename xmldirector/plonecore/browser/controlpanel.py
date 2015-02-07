@@ -90,3 +90,37 @@ class ValidatorRegistry(BrowserView):
     def human_readable_filesize(self, num_bytes):
         """ Return num_bytes as human readable representation """
         return hurry.filesize.size(num_bytes, hurry.filesize.alternative)
+
+
+class TransformerRegistry(BrowserView):
+    
+    @property
+    def registry(self):
+        from zope.component import getUtility
+        from xmldirector.plonecore.interfaces import IXSLTRegistry
+        return getUtility(IXSLTRegistry)
+
+    def transformer_content(self):
+        """ Return the transformer content of the given transformer"""
+
+        family = self.request['family']
+        name = self.request['name']
+        key = '{}::{}'.format(family, name)
+        d = self.registry.registry.get(key)
+        with fs.opener.opener.open(d['path'], 'rb') as fp:
+            content = fp.read()
+        return content
+
+    def get_entries(self):
+        return self.registry.entries()
+
+    def human_readable_datetime(self, dt):
+        """ Convert with `dt` datetime string into a human readable
+            representation using humanize module.
+        """
+        diff = datetime.datetime.utcnow() - dt
+        return humanize.naturaltime(diff)
+
+    def human_readable_filesize(self, num_bytes):
+        """ Return num_bytes as human readable representation """
+        return hurry.filesize.size(num_bytes, hurry.filesize.alternative)

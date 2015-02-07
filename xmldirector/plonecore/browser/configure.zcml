@@ -153,6 +153,23 @@
         permission="cmf.ManagePortal"
     />
 
+    <!-- Validator registry -->
+    <browser:page
+        name="transformer-registry"
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        class=".controlpanel.TransformerRegistry"
+        template="transformer_registry.pt"
+        permission="cmf.ManagePortal"
+    />
+
+    <browser:page
+        name="transformer-registry-view"
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        class=".controlpanel.TransformerRegistry"
+        template="transformer_registry_view.pt"
+        permission="cmf.ManagePortal"
+    />
+
     <!-- viewlet -->
 
 	<browser:viewlet

@@ -7,6 +7,7 @@
 
 
 import os
+import operator
 import fs.opener
 import datetime
 import lxml.etree
@@ -25,7 +26,7 @@ class XSLTRegistry(object):
 
     implements(IXSLTRegistry)
 
-    xslt_registry = {}
+    registry = {}
 
     def register_stylesheet(self, family, stylesheet_name, stylesheet_path):
         """ Register a Stylesheet as tuple (family, stylesheet_name) """
@@ -34,7 +35,7 @@ class XSLTRegistry(object):
             stylesheet_path = 'file://' + stylesheet_path
 
         key = '{}::{}'.format(family, stylesheet_name)
-        if key in self.xslt_registry:
+        if key in self.registry:
             raise ValueError(
                 'Stylesheet {}/{} already registered'.format(family, stylesheet_name))
 
@@ -44,6 +45,9 @@ class XSLTRegistry(object):
         except Exception as e:
             raise ValueError(
                 'Stylesheet {}/{} not found ({}, {})'.format(family, stylesheet_name, stylesheet_path, e))
+
+        dir_handle = fs.opener.fsopendir('{}/..'.format(handle.name))
+        info = dir_handle.getinfo(os.path.basename(handle.name))
 
         with fs.opener.opener.open(stylesheet_path, 'rb') as fp:
             try:
@@ -57,29 +61,37 @@ class XSLTRegistry(object):
             except lxml.etree.XSLTParseError as e:
                 raise ValueError(
                     'Stylesheet {}/{} could not be parsed ({}, {})'.format(family, stylesheet_name, e, stylesheet_path))
-
-            self.xslt_registry[key] = dict(
+        
+            self.registry[key] = dict(
                 transform=transform,
                 path=stylesheet_path,
+                type='XSLT',
+                family=family,
+                name=stylesheet_name,
+                info=info,
                 registered=datetime.datetime.utcnow())
             LOG.info('XSLT registered ({}, {})'.format(key, stylesheet_path))
+
+    def entries(self):
+        result = self.registry.values()
+        return sorted(result, key=operator.itemgetter('family', 'name'))
 
     def get_stylesheet(self, family, stylesheet_name):
         """ Return a pre-compiled XSLT transformation by (family, stylesheet_name) """
 
         key = '{}::{}'.format(family, stylesheet_name)
-        if key not in self.xslt_registry:
+        if key not in self.registry:
             raise ValueError(
                 'Stylesheet {}/{} not registered'.format(family, stylesheet_name))
-        return self.xslt_registry[key]['transform']
+        return self.registry[key]['transform']
 
     def clear(self):
         """ Remove all entries """
-        self.xslt_registry.clear()
+        self.registry.clear()
 
     def __len__(self):
         """ Return number of registered transformations """
-        return len(self.xslt_registry)
+        return len(self.registry)
 
 
 XSLTRegistryUtility = XSLTRegistry()

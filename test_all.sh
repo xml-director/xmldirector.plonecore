@@ -7,13 +7,6 @@
 export WEBDAV_USERNAME=admin
 export WEBDAV_PASSWORD=admin
 
-export WEBDAV_URL=https://demo:demo@www.crushftp.com/demo/
-echo '######################################################'
-echo Tests against EXISTDB
-echo $WEBDAV_URL
-echo '######################################################'
-bin/test xmldirector.plonecore
-
 export WEBDAV_URL=http://demo.xml-director.info:22081/exist/webdav/db
 echo '######################################################'
 echo Tests against EXISTDB
