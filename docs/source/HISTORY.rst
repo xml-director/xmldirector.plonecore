@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.3.7 (unreleased)
+------------------
+- added @@transformer-registery view
+- added @@transformer-registery-view view
+
+
 0.3.6 (2015-02-06)
 ------------------
 - re-added Dexterity tests
