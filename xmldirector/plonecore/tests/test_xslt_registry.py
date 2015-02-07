@@ -15,11 +15,11 @@ cwd = os.path.dirname(__file__)
 class BasicTests(unittest2.TestCase):
 
     def setUp(self):
-        self.xslt_registry = XSLTRegistry()
-        self.xslt_registry.xslt_registry.clear()
+        self.registry = XSLTRegistry()
+        self.registry.registry.clear()
 
     def _register_one(self):
-        self.xslt_registry.register_stylesheet(
+        self.registry.register_stylesheet(
             'demo', 'play.xsl', os.path.join(cwd, 'play.xsl'))
 
     def test_register(self):
@@ -32,32 +32,32 @@ class BasicTests(unittest2.TestCase):
 
     def test_register_invalid_xml_stylesheet(self):
         with self.assertRaises(ValueError):
-            self.xslt_registry.register_stylesheet(
+            self.registry.register_stylesheet(
                 'demo', 'play.xsl', os.path.join(cwd, 'play-invalid-xml.xsl'))
 
     def test_register_invalid_xslt_stylesheet(self):
         with self.assertRaises(ValueError):
-            self.xslt_registry.register_stylesheet(
+            self.registry.register_stylesheet(
                 'demo', 'play.xsl', os.path.join(cwd, 'play-invalid-xslt.xsl'))
 
     def test_register_nonexisting_stylesheet(self):
         with self.assertRaises(ValueError):
-            self.xslt_registry.register_stylesheet(
+            self.registry.register_stylesheet(
                 'demo', 'play.xsl', 'does.not.exist.xsl')
 
     def test_registry_clear(self):
         self._register_one()
-        self.xslt_registry.clear()
-        self.assertEqual(len(self.xslt_registry), 0)
+        self.registry.clear()
+        self.assertEqual(len(self.registry), 0)
 
     def test_registery_get_existing_xslt(self):
         self._register_one()
-        self.xslt_registry.get_stylesheet('demo', 'play.xsl')
+        self.registry.get_stylesheet('demo', 'play.xsl')
 
     def test_registery_get_nonexisting_xslt(self):
         self._register_one()
         with self.assertRaises(ValueError):
-            self.xslt_registry.get_stylesheet('xxx', 'xxx')
+            self.registry.get_stylesheet('xxx', 'xxx')
 
 
 class OtherTests(unittest2.TestCase):
