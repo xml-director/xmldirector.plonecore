@@ -31,3 +31,6 @@ test:
 
 test-coverage:
 	unbuffer bin/test --coverage=${PWD}/coverage xmldirector | tee coverage.txt
+
+demo:
+	bin/instance run src/xmldirector.demo/democontent/setup-plone.py local
