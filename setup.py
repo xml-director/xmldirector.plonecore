@@ -24,7 +24,7 @@ setup(name='xmldirector.plonecore',
       url='http://pypi.python.org/pypi/xmldirector.plonecore',
       license='GPL',
       packages=find_packages(exclude=['ez_setup']),
-      namespace_packages=['xmldirector', 'xmldirector.plonecore'],
+      namespace_packages=['xmldirector'],
       include_package_data=True,
       zip_safe=False,
       install_requires=[
