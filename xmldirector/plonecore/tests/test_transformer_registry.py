@@ -19,8 +19,8 @@ class BasicTests(unittest2.TestCase):
         self.registry.registry.clear()
 
     def _register_one(self):
-        self.registry.register_stylesheet(
-            'demo', 'play.xsl', os.path.join(cwd, 'play.xsl'))
+        self.registry.register_transformation(
+            'demo', 'play.xsl', os.path.join(cwd, 'play.xsl'), 'XSLT1')
 
     def test_register(self):
         self._register_one()
@@ -30,20 +30,25 @@ class BasicTests(unittest2.TestCase):
         with self.assertRaises(ValueError):
             self._register_one()
 
-    def test_register_invalid_xml_stylesheet(self):
+    def test_register_unsupported_transformer_type(self):
         with self.assertRaises(ValueError):
-            self.registry.register_stylesheet(
-                'demo', 'play.xsl', os.path.join(cwd, 'play-invalid-xml.xsl'))
+            self.registry.register_transformation(
+                'demo', 'play.xsl', os.path.join(cwd, 'play.xsl'), 'XXXXXXXXXX')
 
-    def test_register_invalid_xslt_stylesheet(self):
+    def test_register_invalid_xml_transformer(self):
         with self.assertRaises(ValueError):
-            self.registry.register_stylesheet(
-                'demo', 'play.xsl', os.path.join(cwd, 'play-invalid-xslt.xsl'))
+            self.registry.register_transformation(
+                'demo', 'play.xsl', os.path.join(cwd, 'play-invalid-xml.xsl'), 'XSLT1')
 
-    def test_register_nonexisting_stylesheet(self):
+    def test_register_invalid_xslt_transformer(self):
         with self.assertRaises(ValueError):
-            self.registry.register_stylesheet(
-                'demo', 'play.xsl', 'does.not.exist.xsl')
+            self.registry.register_transformation(
+                'demo', 'play.xsl', os.path.join(cwd, 'play-invalid-xslt.xsl'), 'XSLT1')
+
+    def test_register_nonexisting_transformer(self):
+        with self.assertRaises(ValueError):
+            self.registry.register_transformation(
+                'demo', 'play.xsl', 'does.not.exist.xsl', 'XSLT1')
 
     def test_registry_clear(self):
         self._register_one()
@@ -52,12 +57,12 @@ class BasicTests(unittest2.TestCase):
 
     def test_registery_get_existing_xslt(self):
         self._register_one()
-        self.registry.get_stylesheet('demo', 'play.xsl')
+        self.registry.get_transformation('demo', 'play.xsl')
 
     def test_registery_get_nonexisting_xslt(self):
         self._register_one()
         with self.assertRaises(ValueError):
-            self.registry.get_stylesheet('xxx', 'xxx')
+            self.registry.get_transformation('xxx', 'xxx')
 
 
 class OtherTests(unittest2.TestCase):
