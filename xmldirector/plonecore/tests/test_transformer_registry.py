@@ -12,6 +12,15 @@ from xmldirector.plonecore.transformer_registry import TransformerRegistry
 cwd = os.path.dirname(__file__)
 
 
+def python_transformer(root, conversion_context):
+    """ Sample Python transformation turning all <foo>
+        tags into <bar> tags.
+    """
+
+    for node in root.xpath('//foo'):
+        node.tag = 'bar'
+
+
 class BasicTests(unittest2.TestCase):
 
     def setUp(self):
@@ -55,15 +64,18 @@ class BasicTests(unittest2.TestCase):
         self.registry.clear()
         self.assertEqual(len(self.registry), 0)
 
-    def test_registery_get_existing_xslt(self):
+    def test_registry_get_existing_xslt(self):
         self._register_one()
         self.registry.get_transformation('demo', 'play.xsl')
 
-    def test_registery_get_nonexisting_xslt(self):
+    def test_registry_get_nonexisting_xslt(self):
         self._register_one()
         with self.assertRaises(ValueError):
             self.registry.get_transformation('xxx', 'xxx')
 
+    def test_register_python_transformer(self):
+        self.registry.register_transformation(
+                'demo', 'foo2bar replacer', python_transformer, 'python')
 
 class OtherTests(unittest2.TestCase):
 

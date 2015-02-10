@@ -31,26 +31,29 @@ class TransformerRegistry(object):
     def register_transformation(self, family, transformer_name, transformer_path, transformer_type='XSLT1'):
         """ Register a Transformation as tuple (family, transformer_name) """
 
-        if transformer_path.startswith('/'):
-            transformer_path = 'file://' + transformer_path
+        if transformer_type == 'python':
 
-        key = '{}::{}'.format(family, transformer_name)
-        if key in self.registry:
-            raise ValueError(
-                'Transformation {}/{} already registered'.format(family, transformer_name))
+            transform = transformer_path
+            transformer_path = '{}(), {}'.format(transformer_path.func_name, transformer_path.func_code.co_filename)
+            info = dict()
 
-        try:
-            handle = fs.opener.opener.open(transformer_path)
-        except Exception as e:
-            raise ValueError(
-                'Transformation {}/{} not found ({}, {})'.format(family, transformer_name, transformer_path, e))
 
-        dir_handle = fs.opener.fsopendir('{}/..'.format(handle.name))
-        info = dir_handle.getinfo(os.path.basename(handle.name))
+        elif transformer_type == 'XSLT1':
 
-        with fs.opener.opener.open(transformer_path, 'rb') as fp:
+            try:
+                handle = fs.opener.opener.open(transformer_path)
+            except Exception as e:
+                raise ValueError(
+                    'Transformation {}/{} not found ({}, {})'.format(family, transformer_name, transformer_path, e))
 
-            if transformer_type == 'XSLT1':
+            with fs.opener.opener.open(transformer_path, 'rb') as fp:
+
+                if transformer_path.startswith('/'):
+                    transformer_path = 'file://' + transformer_path
+
+                dir_handle = fs.opener.fsopendir('{}/..'.format(handle.name))
+                info = dir_handle.getinfo(os.path.basename(handle.name))
+
                 try:
                     xslt = lxml.etree.XML(fp.read())
                 except lxml.etree.XMLSyntaxError as e:
@@ -63,18 +66,24 @@ class TransformerRegistry(object):
                     raise ValueError(
                         'Transformation {}/{} could not be parsed ({}, {})'.format(family, transformer_name, e, transformer_path))
 
-            else:
-                raise ValueError(u'Unsupported transformer type {}'.format(transformer_type))
-        
-            self.registry[key] = dict(
-                transform=transform,
-                path=transformer_path,
-                type=transformer_type,
-                family=family,
-                name=transformer_name,
-                info=info,
-                registered=datetime.datetime.utcnow())
-            LOG.info('XSLT registered ({}, {})'.format(key, transformer_path))
+        else:
+            raise ValueError(u'Unsupported transformer type "{}"'.format(transformer_type))
+
+        key = '{}::{}'.format(family, transformer_name)
+        if key in self.registry:
+            raise ValueError(
+                'Transformation {}/{} already registered'.format(family, transformer_name))
+    
+        self.registry[key] = dict(
+            transform=transform,
+            path=transformer_path,
+            type=transformer_type,
+            family=family,
+            name=transformer_name,
+            info=info,
+            registered=datetime.datetime.utcnow())
+
+        LOG.info('Transformer registered ({}, {})'.format(key, transformer_path))
 
     def entries(self):
         result = self.registry.values()
