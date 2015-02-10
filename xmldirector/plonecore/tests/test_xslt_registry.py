@@ -7,7 +7,7 @@
 
 import os
 import unittest2
-from xmldirector.plonecore.xslt_registry import XSLTRegistry
+from xmldirector.plonecore.transformer_registry import TransformerRegistry
 
 cwd = os.path.dirname(__file__)
 
@@ -15,7 +15,7 @@ cwd = os.path.dirname(__file__)
 class BasicTests(unittest2.TestCase):
 
     def setUp(self):
-        self.registry = XSLTRegistry()
+        self.registry = TransformerRegistry()
         self.registry.registry.clear()
 
     def _register_one(self):

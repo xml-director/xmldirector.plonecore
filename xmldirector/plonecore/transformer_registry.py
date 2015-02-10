@@ -12,7 +12,7 @@ import fs.opener
 import datetime
 import lxml.etree
 from zope.interface import implements
-from xmldirector.plonecore.interfaces import IXSLTRegistry
+from xmldirector.plonecore.interfaces import ITransformerRegistry
 from xmldirector.plonecore.logger import LOG
 
 
@@ -22,9 +22,9 @@ from xmldirector.plonecore.logger import LOG
 # ``stylesheet_name`` would represent the name of the XSLT transformation.
 # Both ``family`` and ``stylesheet_name`` are completey arbitrary.
 
-class XSLTRegistry(object):
+class TransformerRegistry(object):
 
-    implements(IXSLTRegistry)
+    implements(ITransformerRegistry)
 
     registry = {}
 
@@ -94,4 +94,4 @@ class XSLTRegistry(object):
         return len(self.registry)
 
 
-XSLTRegistryUtility = XSLTRegistry()
+TransformerRegistryUtility = TransformerRegistry()

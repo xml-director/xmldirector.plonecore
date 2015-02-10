@@ -21,9 +21,9 @@ class IWebdavHandle(Interface):
         WebDav/database server """
 
 
-class IXSLTRegistry(Interface):
+class ITransformerRegistry(Interface):
 
-    """ Marker interface for XSLTRegistry """
+    """ Marker interface for TransformerRegistry """
 
 
 class IValidatorRegistry(Interface):

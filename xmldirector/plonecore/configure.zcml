@@ -15,8 +15,8 @@
     />
 
     <utility
-        provides="xmldirector.plonecore.interfaces.IXSLTRegistry"
-        component="xmldirector.plonecore.xslt_registry.XSLTRegistryUtility"
+        provides="xmldirector.plonecore.interfaces.ITransformerRegistry"
+        component="xmldirector.plonecore.transformer_registry.TransformerRegistryUtility"
     />
 
     <utility

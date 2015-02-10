@@ -97,8 +97,8 @@ class TransformerRegistry(BrowserView):
     @property
     def registry(self):
         from zope.component import getUtility
-        from xmldirector.plonecore.interfaces import IXSLTRegistry
-        return getUtility(IXSLTRegistry)
+        from xmldirector.plonecore.interfaces import ITransformerRegistry
+        return getUtility(ITransformerRegistry)
 
     def transformer_content(self):
         """ Return the transformer content of the given transformer"""
