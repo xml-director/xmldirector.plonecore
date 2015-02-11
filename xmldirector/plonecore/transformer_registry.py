@@ -22,6 +22,16 @@ from xmldirector.plonecore.logger import LOG
 # ``transformer_name`` would represent the name of the XSLT transformation.
 # Both ``family`` and ``transformer_name`` are completey arbitrary.
 
+
+class XSLT1Wrapper(object):
+
+    def __init__(self, transformer):
+        self.transformer = transformer
+
+    def __call__(self, root, conversion_context):
+        return self.transformer(root)
+
+
 class TransformerRegistry(object):
 
     implements(ITransformerRegistry)
@@ -97,7 +107,12 @@ class TransformerRegistry(object):
         if key not in self.registry:
             raise ValueError(
                 'Transformation {}/{} not registered'.format(family, transformer_name))
-        return self.registry[key]['transform']
+        d = self.registry[key]
+        if d['type'] == 'python':
+            return d['transform']
+        elif d['type'] == 'XSLT1':
+            return XSLT1Wrapper(d['transform'])
+        
 
     def clear(self):
         """ Remove all entries """

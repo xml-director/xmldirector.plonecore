@@ -69,7 +69,9 @@ class Transformer(object):
                           destdir=self.destdir,
                           )
             conversion_context.update(self.params)
-            transformer(root, conversion_context=conversion_context)
+            new_root = transformer(root, conversion_context=conversion_context)
+            if new_root is not None:
+                root = new_root
             LOG.info('Transformation %-30s: %3.6f seconds' % (name, time.time()-ts))
 
         # optional: return a fragment given by the top-level tag name

@@ -6,6 +6,7 @@
 ################################################################
 
 import os
+import codecs
 import unittest2
 from xmldirector.plonecore.transformer_registry import TransformerRegistry
 from xmldirector.plonecore.transformation import Transformer
@@ -41,6 +42,19 @@ def python_transformer2(root, conversion_context):
     root.attrib['foo'] = 'bar'
 
 
+catalog_xsd = os.path.join(cwd, 'catalog.xsd')
+with codecs.open(os.path.join(cwd, 'catalog.xml'), 'rb', encoding='utf8') as fp:
+    catalog_xml = fp.read()
+
+def catalog_transformer(root, conversion_context):
+    """ Sample Python transformation turning the result
+        HTML of the catalog.xsd: replaces <table>
+        with <TABELLE>.
+    """
+    for node in root.xpath('//table'):
+        node.tag = 'TABELLE'
+
+
 class BasicTests(unittest2.TestCase):
 
     def setUp(self):
@@ -50,6 +64,10 @@ class BasicTests(unittest2.TestCase):
                 'demo', 't1', python_transformer, 'python')
         self.registry.register_transformation(
                 'demo', 't2', python_transformer2, 'python')
+        self.registry.register_transformation(
+                'demo', 'catalog-xsd', catalog_xsd, 'XSLT1')
+        self.registry.register_transformation(
+                'demo', 'catalog-python', catalog_transformer, 'python')
 
     def test_verify_steps_failing(self):
         T = Transformer([('demo', 't1'), ('demo', 't2')], transformer_registry=self.registry)
@@ -77,6 +95,32 @@ class BasicTests(unittest2.TestCase):
         self.assertTrue(result.count('<bar>') == 3)
         self.assertTrue('<hello foo="bar">' in result)
 
+    def test_catalog_xsd(self):
+        T = Transformer([('demo', 'catalog-xsd')], transformer_registry=self.registry)
+        result = T(catalog_xml)
+        self.assertTrue('<h2>My CD Collection</h2>' in result)
+        self.assertTrue('<tr bgcolor="#9acd32">' in result)
+        self.assertTrue('<td>Bob Dylan</td>' in result)
+
+    def test_catalog_xsd_python_transform(self):
+        T = Transformer([('demo', 'catalog-xsd'),
+                         ('demo', 'catalog-python')], 
+                         transformer_registry=self.registry)
+        result = T(catalog_xml)
+        self.assertTrue('<h2>My CD Collection</h2>' in result)
+        self.assertTrue('<tr bgcolor="#9acd32">' in result)
+        self.assertFalse('<table>' in result)
+        self.assertTrue('<TABELLE' in result)
+
+    def test_catalog_python_xsd_transform(self):
+        T = Transformer([('demo', 'catalog-python'),
+                         ('demo', 'catalog-xsd')], 
+                         transformer_registry=self.registry)
+        result = T(catalog_xml)
+        # running catalog-python first should not have any effect
+        self.assertTrue('<h2>My CD Collection</h2>' in result)
+        self.assertTrue('<tr bgcolor="#9acd32">' in result)
+        self.assertTrue('<table' in result)
 
 def test_suite():
     from unittest2 import TestSuite, makeSuite
