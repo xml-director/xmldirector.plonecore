@@ -99,7 +99,8 @@ class PreconditionRegistryTests(unittest2.TestCase):
         self.assertEqual(result, u'default handler')
 
     def test_class_as_view_handler(self):
-        self.registry.set_default(Precondition(view_handler=class_view_handler))
+        self.registry.set_default(
+            Precondition(view_handler=class_view_handler))
         result = self.registry.dispatch(
             webdav_handle=None, filename='xxxxx', view_name='xxxxxx', request=None)
         self.assertEqual(result, u'i am a class view handler')

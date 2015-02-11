@@ -75,7 +75,8 @@ class BasicTests(unittest2.TestCase):
 
     def test_register_python_transformer(self):
         self.registry.register_transformation(
-                'demo', 'foo2bar replacer', python_transformer, 'python')
+            'demo', 'foo2bar replacer', python_transformer, 'python')
+
 
 class OtherTests(unittest2.TestCase):
 

@@ -93,7 +93,7 @@ class ValidatorRegistry(BrowserView):
 
 
 class TransformerRegistry(BrowserView):
-    
+
     @property
     def registry(self):
         from zope.component import getUtility
@@ -114,7 +114,8 @@ class TransformerRegistry(BrowserView):
         elif d['type'] == 'python':
             return dict(text=inspect.getsource(d['transform']), ace_type='python')
         else:
-            raise ValueError('Unsupported transformer type "{}"'.format(d['type']))
+            raise ValueError(
+                'Unsupported transformer type "{}"'.format(d['type']))
 
     def get_entries(self):
         return self.registry.entries()
