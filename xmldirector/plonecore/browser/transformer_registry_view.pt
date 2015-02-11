@@ -8,7 +8,8 @@
 <body>
 
 <metal:main fill-slot="content-core">
-    <metal:content-core define-macro="content-core">
+    <metal:content-core define-macro="content-core" 
+        tal:define="result view/transformer_content">
 
         <h2 i18n:translate="">Transformer Registry</h2>
         <div>
@@ -17,8 +18,22 @@
             <label i18n:translate="">Name</label>: <span tal:content="request/name"/>
             <br/>
             <a i18n:translate="" href="@@Transformer-registry">Back to transformer registry</a>
-            <pre tal:content="view/transformer_content"/>
+            <div id="editor" 
+                style="width: 80%; min-height: 100px; height: 450px; max-height: 800px"
+                tal:content="result/text"/>
         </div>
+
+        <script type="text/javascript" tal:content="string:var ace_type='${result/ace_type}'"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function() {        
+                var editor = ace.edit('editor');
+                editor.setTheme("ace/theme/chrome");
+                editor.getSession().setMode("ace/mode/" + ace_type);
+                editor.setShowPrintMargin(false);
+                editor.setReadOnly(true);
+            });
+        </script>
 
   </metal:content-core>
 </metal:main>

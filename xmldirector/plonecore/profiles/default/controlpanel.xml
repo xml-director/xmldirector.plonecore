@@ -16,5 +16,17 @@
         i18n:attributes="title">
             <permission>Manage portal</permission>
     </configlet>
+    
+    <configlet
+        title="XML-Director Introspection"
+        action_id="xmldirector.plonecore.introspection"
+        appId="xmldirector.plonecore"
+        category="Products"
+        condition_expr=""
+        url_expr="string:${portal_url}/@@xmldirector-core-introspection"
+        visible="True"
+        i18n:attributes="title">
+            <permission>Manage portal</permission>
+    </configlet>
 
 </object>

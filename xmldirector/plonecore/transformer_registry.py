@@ -32,11 +32,12 @@ class TransformerRegistry(object):
         """ Register a Transformation as tuple (family, transformer_name) """
 
         if transformer_type == 'python':
-
+            # transformer_path is Python function here
             transform = transformer_path
+            method_filename = transform.func_code.co_filename
             transformer_path = '{}(), {}'.format(transformer_path.func_name, transformer_path.func_code.co_filename)
-            info = dict()
-
+            dir_handle = fs.opener.fsopendir('{}/..'.format(method_filename))
+            info = dir_handle.getinfo(os.path.basename(method_filename))
 
         elif transformer_type == 'XSLT1':
 

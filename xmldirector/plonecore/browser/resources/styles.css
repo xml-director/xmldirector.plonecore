@@ -157,5 +157,7 @@ input.xmlxpath-field {
 
 /* Validator registry */
 
-#validator-registry .validator-path {
+.template-transformer-registry-view #editor,
+.template-validator-registry-view #editor {
+    margin-top: 2em;
 }

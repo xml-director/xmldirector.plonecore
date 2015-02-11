@@ -130,6 +130,13 @@
     />
 
     <browser:page
+        name="xmldirector-core-introspection"
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        template="introspection.pt"
+        permission="cmf.ManagePortal"
+    />
+
+    <browser:page
         name="error"
         for="xmldirector.plonecore.connector.IConnector"
         template="error.pt"

@@ -44,7 +44,7 @@ class Transformer(object):
         if errors:
             raise ValueError('Unknown transformer steps: {}'.format(errors))
 
-    def __call__(self, xml_or_node, input_encoding=None, output_encoding=unicode):
+    def __call__(self, xml_or_node, input_encoding=None, output_encoding=unicode, return_fragment=None):
 
         self.verify_steps()
 
@@ -62,25 +62,32 @@ class Transformer(object):
             raise TypeError(u'Unsupported type {}'.format(xml_or_node.__class__))
 
         for family, name in self.steps:
-
             ts = time.time()
             transformer = self.registry.get_transformation(family, name)
-            params = dict(context=self.context,
+            conversion_context = dict(context=self.context,
                           request=getattr(self.context, 'REQUEST', None),
                           destdir=self.destdir,
                           )
-            params.update(self.params)
-            transformer(root, params)
+            conversion_context.update(self.params)
+            transformer(root, conversion_context=conversion_context)
             LOG.info('Transformation %-30s: %3.6f seconds' % (name, time.time()-ts))
+
+        # optional: return a fragment given by the top-level tag name
+        return_node = root
+        if return_fragment:
+            node = root.find(return_fragment)
+            if node is None:
+                raise ValueError('No tag <{}> found in transformed document'.format(return_fragment))
+            return_node = node
 
         if output_encoding == unicode:
             return lxml.etree.tostring(
-                    root, 
+                    return_node, 
                     encoding=unicode, 
                     pretty_print=True)
         else:
             return lxml.etree.tostring(
-                    root.getroottree(), 
+                    return_node.getroottree(), 
                     encoding=output_encoding,
                     xml_declaration=True,
                     pretty_print=True)

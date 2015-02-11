@@ -7,6 +7,7 @@
 
 
 import hurry
+import inspect
 import humanize
 import datetime
 import fs.opener
@@ -69,7 +70,7 @@ class ValidatorRegistry(BrowserView):
     def get_entries(self):
         return self.registry.entries()
 
-    def schema_content(self):
+    def validator_content(self):
         """ Return the schema content of the given schema """
 
         family = self.request['family']
@@ -77,8 +78,7 @@ class ValidatorRegistry(BrowserView):
         key = '{}::{}'.format(family, name)
         d = self.registry.registry.get(key)
         with fs.opener.opener.open(d['path'], 'rb') as fp:
-            content = fp.read()
-        return content
+            return dict(text=fp.read(), ace_type='xml')
 
     def human_readable_datetime(self, dt):
         """ Convert with `dt` datetime string into a human readable
@@ -107,9 +107,14 @@ class TransformerRegistry(BrowserView):
         name = self.request['name']
         key = '{}::{}'.format(family, name)
         d = self.registry.registry.get(key)
-        with fs.opener.opener.open(d['path'], 'rb') as fp:
-            content = fp.read()
-        return content
+
+        if d['type'] in ('XSLT1', 'XSLT2', 'XSLT3'):
+            with fs.opener.opener.open(d['path'], 'rb') as fp:
+                return dict(text=fp.read(), ace_type='xml')
+        elif d['type'] == 'python':
+            return dict(text=inspect.getsource(d['transform']), ace_type='python')
+        else:
+            raise ValueError('Unsupported transformer type "{}"'.format(d['type']))
 
     def get_entries(self):
         return self.registry.entries()
