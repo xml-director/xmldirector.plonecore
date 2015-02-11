@@ -11,6 +11,7 @@
     <metal:content-core define-macro="content-core">
 
         <h2 i18n:translate="">Transformation Registry</h2>
+        <a href="@@xmldirector-core-introspection" i18n:translate="">Back to introspection overview</a>
         <table class="listing" tal:define="entries view/get_entries" id="transformation-registry">
             <thead>
                 <tr>
