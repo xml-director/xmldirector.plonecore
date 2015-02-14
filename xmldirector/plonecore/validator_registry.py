@@ -31,6 +31,7 @@ from xmldirector.plonecore.logger import LOG
 
 
 class ValidatorRegistry(object):
+
     """ A registry for XML schemas and DTDs """
 
     implements(IValidatorRegistry)
@@ -48,7 +49,8 @@ class ValidatorRegistry(object):
         try:
             handle = fs.opener.fsopendir(directory)
         except Exception as e:
-            raise IOError(u'Directory "{}" does not exist ({})'.format(directory, e))
+            raise IOError(
+                u'Directory "{}" does not exist ({})'.format(directory, e))
 
         for name in handle.listdir():
             fullname = os.path.join(directory, name)
@@ -133,6 +135,7 @@ ValidatorRegistryUtility = ValidatorRegistry()
 
 
 class ValidationResult(object):
+
     """ Encapsulates DTD/schema validation results """
 
     def __init__(self, errors=[]):
@@ -146,6 +149,7 @@ class ValidationResult(object):
 
 
 class Validator(object):
+
     """ Encapsulates a schema validator """
 
     def __init__(self, schema):

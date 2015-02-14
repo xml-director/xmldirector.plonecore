@@ -4,7 +4,6 @@
 ################################################################
 
 
-import inspect
 import time
 import lxml.etree
 import lxml.html
@@ -30,7 +29,7 @@ class Transformer(object):
 
         if self.transformer_registry:
             return self.transformer_registry
-        return  getUtility(ITransformerRegistry)
+        return getUtility(ITransformerRegistry)
 
     def verify_steps(self):
         """ Verify all transformation steps """
@@ -55,42 +54,45 @@ class Transformer(object):
                     xml_or_node = unicode(xml_or_node, input_encoding)
             root = lxml.html.fromstring(xml_or_node.strip())
 
-        elif instance(xml_or_node, lxml.etree.Element):
+        elif isinstance(xml_or_node, lxml.etree.Element):
             pass
 
         else:
-            raise TypeError(u'Unsupported type {}'.format(xml_or_node.__class__))
+            raise TypeError(
+                u'Unsupported type {}'.format(xml_or_node.__class__))
 
         for family, name in self.steps:
             ts = time.time()
             transformer = self.registry.get_transformation(family, name)
             conversion_context = dict(context=self.context,
-                          request=getattr(self.context, 'REQUEST', None),
-                          destdir=self.destdir,
-                          )
+                                      request=getattr(
+                                          self.context, 'REQUEST', None),
+                                      destdir=self.destdir,
+                                      )
             conversion_context.update(self.params)
             new_root = transformer(root, conversion_context=conversion_context)
             if new_root is not None:
                 root = new_root
-            LOG.info('Transformation %-30s: %3.6f seconds' % (name, time.time()-ts))
+            LOG.info('Transformation %-30s: %3.6f seconds' %
+                     (name, time.time() - ts))
 
         # optional: return a fragment given by the top-level tag name
         return_node = root
         if return_fragment:
             node = root.find(return_fragment)
             if node is None:
-                raise ValueError('No tag <{}> found in transformed document'.format(return_fragment))
+                raise ValueError(
+                    'No tag <{}> found in transformed document'.format(return_fragment))
             return_node = node
 
         if output_encoding == unicode:
             return lxml.etree.tostring(
-                    return_node, 
-                    encoding=unicode, 
-                    pretty_print=True)
+                return_node,
+                encoding=unicode,
+                pretty_print=True)
         else:
             return lxml.etree.tostring(
-                    return_node.getroottree(), 
-                    encoding=output_encoding,
-                    xml_declaration=True,
-                    pretty_print=True)
-
+                return_node.getroottree(),
+                encoding=output_encoding,
+                xml_declaration=True,
+                pretty_print=True)

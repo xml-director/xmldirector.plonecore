@@ -28,10 +28,12 @@ LOG_KEY = 'xmldirector.plonecore.connector.log'
 
 
 class IPersistentLogger(zope.interface.Interface):
+
     """ Marker interface for a object persistent logger """
 
 
 class PersistentLoggerAdapter(object):
+
     """ An adapter for storing logging information as an annotation
         on a persistent object.
     """

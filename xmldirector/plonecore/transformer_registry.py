@@ -45,7 +45,8 @@ class TransformerRegistry(object):
             # transformer_path is Python function here
             transform = transformer_path
             method_filename = transform.func_code.co_filename
-            transformer_path = '{}(), {}'.format(transformer_path.func_name, transformer_path.func_code.co_filename)
+            transformer_path = '{}(), {}'.format(
+                transformer_path.func_name, transformer_path.func_code.co_filename)
             dir_handle = fs.opener.fsopendir('{}/..'.format(method_filename))
             info = dir_handle.getinfo(os.path.basename(method_filename))
 
@@ -78,13 +79,14 @@ class TransformerRegistry(object):
                         'Transformation {}/{} could not be parsed ({}, {})'.format(family, transformer_name, e, transformer_path))
 
         else:
-            raise ValueError(u'Unsupported transformer type "{}"'.format(transformer_type))
+            raise ValueError(
+                u'Unsupported transformer type "{}"'.format(transformer_type))
 
         key = '{}::{}'.format(family, transformer_name)
         if key in self.registry:
             raise ValueError(
                 'Transformation {}/{} already registered'.format(family, transformer_name))
-    
+
         self.registry[key] = dict(
             transform=transform,
             path=transformer_path,
@@ -94,7 +96,8 @@ class TransformerRegistry(object):
             info=info,
             registered=datetime.datetime.utcnow())
 
-        LOG.info('Transformer registered ({}, {})'.format(key, transformer_path))
+        LOG.info(
+            'Transformer registered ({}, {})'.format(key, transformer_path))
 
     def entries(self):
         result = self.registry.values()
@@ -112,7 +115,6 @@ class TransformerRegistry(object):
             return d['transform']
         elif d['type'] == 'XSLT1':
             return XSLT1Wrapper(d['transform'])
-        
 
     def clear(self):
         """ Remove all entries """

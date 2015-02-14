@@ -24,6 +24,7 @@ sample_xml = u'''<?xml version="1.0">
 </hello>
 '''
 
+
 def python_transformer(root, conversion_context):
     """ Sample Python transformation turning all <foo>
         tags into <bar> tags.
@@ -31,6 +32,7 @@ def python_transformer(root, conversion_context):
 
     for node in root.xpath('//foo'):
         node.tag = 'bar'
+
 
 def python_transformer2(root, conversion_context):
     """ Sample Python transformation removing all <foo>
@@ -45,6 +47,7 @@ def python_transformer2(root, conversion_context):
 catalog_xsd = os.path.join(cwd, 'catalog.xsd')
 with codecs.open(os.path.join(cwd, 'catalog.xml'), 'rb', encoding='utf8') as fp:
     catalog_xml = fp.read()
+
 
 def catalog_transformer(root, conversion_context):
     """ Sample Python transformation turning the result
@@ -61,16 +64,17 @@ class BasicTests(unittest2.TestCase):
         self.registry = TransformerRegistry()
         self.registry.clear()
         self.registry.register_transformation(
-                'demo', 't1', python_transformer, 'python')
+            'demo', 't1', python_transformer, 'python')
         self.registry.register_transformation(
-                'demo', 't2', python_transformer2, 'python')
+            'demo', 't2', python_transformer2, 'python')
         self.registry.register_transformation(
-                'demo', 'catalog-xsd', catalog_xsd, 'XSLT1')
+            'demo', 'catalog-xsd', catalog_xsd, 'XSLT1')
         self.registry.register_transformation(
-                'demo', 'catalog-python', catalog_transformer, 'python')
+            'demo', 'catalog-python', catalog_transformer, 'python')
 
-    def test_verify_steps_failing(self):
-        T = Transformer([('demo', 't1'), ('demo', 't2')], transformer_registry=self.registry)
+    def test_verify_steps_working(self):
+        T = Transformer(
+            [('demo', 't1'), ('demo', 't2')], transformer_registry=self.registry)
         T.verify_steps()
 
     def test_verify_steps_failing(self):
@@ -89,14 +93,16 @@ class BasicTests(unittest2.TestCase):
         self.assertTrue('<hello foo="bar">' in result)
 
     def test_transformation_1_and_2(self):
-        T = Transformer([('demo', 't1'), ('demo', 't2')], transformer_registry=self.registry)
+        T = Transformer(
+            [('demo', 't1'), ('demo', 't2')], transformer_registry=self.registry)
         result = T(sample_xml)
         self.assertTrue(result.count('<foo>') == 0)
         self.assertTrue(result.count('<bar>') == 3)
         self.assertTrue('<hello foo="bar">' in result)
 
     def test_catalog_xsd(self):
-        T = Transformer([('demo', 'catalog-xsd')], transformer_registry=self.registry)
+        T = Transformer(
+            [('demo', 'catalog-xsd')], transformer_registry=self.registry)
         result = T(catalog_xml)
         self.assertTrue('<h2>My CD Collection</h2>' in result)
         self.assertTrue('<tr bgcolor="#9acd32">' in result)
@@ -104,8 +110,8 @@ class BasicTests(unittest2.TestCase):
 
     def test_catalog_xsd_python_transform(self):
         T = Transformer([('demo', 'catalog-xsd'),
-                         ('demo', 'catalog-python')], 
-                         transformer_registry=self.registry)
+                         ('demo', 'catalog-python')],
+                        transformer_registry=self.registry)
         result = T(catalog_xml)
         self.assertTrue('<h2>My CD Collection</h2>' in result)
         self.assertTrue('<tr bgcolor="#9acd32">' in result)
@@ -114,13 +120,14 @@ class BasicTests(unittest2.TestCase):
 
     def test_catalog_python_xsd_transform(self):
         T = Transformer([('demo', 'catalog-python'),
-                         ('demo', 'catalog-xsd')], 
-                         transformer_registry=self.registry)
+                         ('demo', 'catalog-xsd')],
+                        transformer_registry=self.registry)
         result = T(catalog_xml)
         # running catalog-python first should not have any effect
         self.assertTrue('<h2>My CD Collection</h2>' in result)
         self.assertTrue('<tr bgcolor="#9acd32">' in result)
         self.assertTrue('<table' in result)
+
 
 def test_suite():
     from unittest2 import TestSuite, makeSuite
