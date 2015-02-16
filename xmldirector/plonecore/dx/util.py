@@ -72,11 +72,18 @@ def metadata_to_xml(context, metadata={}):
     xml = [u'<xmldirector-metadata>',
            u'<value name="modified" type="iso8601">{}</value>'.format(
                datetime.utcnow().isoformat()),
-           u'<value name="plone-path" type="string">{}</value>'.format(
-               '/'.join(context.getPhysicalPath())),
            u'<value name="plone-uid" type="string">{}</value>'.format(
-               uid or ''),
+               uid or '')
            ]
+
+    # getPhysicalPath() does not work during the construction phase
+    # of the object
+    try:
+        xml.append(u'<value name="plone-path" type="string">{}</value>'.format(
+               '/'.join(context.getPhysicalPath())))
+    except AttributeError:
+        pass
+
     for k, v in metadata.items():
         if k == 'sha256':
             xml.append(
