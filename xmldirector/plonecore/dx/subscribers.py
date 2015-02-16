@@ -63,6 +63,7 @@ def version_handler(obj, event):
     if not util.is_xml_content(event.object):
         return
 
+    return
     registry = getUtility(IRegistry)
     settings = registry.forInterface(IWebdavSettings)
     if not settings.versioning_enabled:
