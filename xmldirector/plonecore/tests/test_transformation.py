@@ -14,7 +14,7 @@ from xmldirector.plonecore.transformation import Transformer
 cwd = os.path.dirname(__file__)
 
 
-sample_xml = u'''<?xml version="1.0">
+sample_xml = u'''<?xml version="1.0"?>
 <hello>
     <world>
         <foo>123</foo>
