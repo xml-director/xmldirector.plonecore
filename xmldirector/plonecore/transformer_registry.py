@@ -144,6 +144,10 @@ class TransformerRegistry(object):
                     raise ValueError(
                         'Transformation {}/{} could not be parsed ({}, {})'.format(family, transformer_name, e, transformer_path))
 
+                xslt_version = xslt.attrib.get('version', '1.0')
+                if xslt_version[0] != transformer_type[-1]:
+                    raise ValueError('Stylesheet version "{}" does not match specified transformer_type "{}"'.format(xslt_version, transformer_type))
+
                 if transformer_type == 'XSLT1':
                     try:
                         transform = lxml.etree.XSLT(xslt)
