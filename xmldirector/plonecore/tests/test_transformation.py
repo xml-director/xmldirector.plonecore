@@ -22,6 +22,7 @@ sample_xml = u'''<?xml version="1.0"?>
         <foo>345</foo>
         <foo>789</foo>
     </world>
+    <umlaute>mit Umlauten üöäßÜÖÄ</umlaute>
 </hello>
 '''
 
