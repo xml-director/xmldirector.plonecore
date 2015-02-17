@@ -7,7 +7,10 @@
 
 import os
 import unittest2
+import zExceptions
 from xmldirector.plonecore.transformer_registry import TransformerRegistry
+import Testing.makerequest
+from base import TestBase
 
 cwd = os.path.dirname(__file__)
 
@@ -78,21 +81,43 @@ class BasicTests(unittest2.TestCase):
             'demo', 'foo2bar replacer', python_transformer, 'python')
 
 
-class OtherTests(unittest2.TestCase):
+class ViewTests(TestBase):
 
-    def test_parse_field_expression(self):
+    def setUp(self):
+        super(ViewTests, self).setUp()
+        self.registry = TransformerRegistry()
+        self.registry.registry.clear()
 
-        from xmldirector.plonecore.dx.xpath_field import parse_field_expression as pfe
-        self.assertEqual(pfe('field=xxxx,xpath=/a/bc'), ('xxxx', '/a/bc'))
-        self.assertEqual(pfe('field=xxxx , xpath=/a/bc'), None)
-        self.assertEqual(pfe(None), None)
-        self.assertEqual(pfe(''), None)
-        self.assertEqual(pfe('field,xpath'), None)
+    def _register_one(self):
+        self.registry.register_transformation(
+            'demo', 'play.xsl', os.path.join(cwd, 'play.xsl'), 'XSLT1')
+
+    def test_transformer_registry_view_unauthorized(self):
+        with self.assertRaises(zExceptions.Unauthorized):
+            view = self.portal.restrictedTraverse('@@transformer-registry')
+
+    def test_transformer_registry_view(self):
+        self.login('god')
+        view = self.portal.restrictedTraverse('@@transformer-registry')
+        view()
+
+    def test_transformer_registry_detail_view_unauthorized(self):
+        with self.assertRaises(zExceptions.Unauthorized):
+            view = self.portal.restrictedTraverse('@@transformer-registry-view')
+
+    def test_transformer_registry_detail_view(self):
+        self._register_one()
+        self.login('god')
+        Testing.makerequest.makerequest(self.portal)
+        view = self.portal.restrictedTraverse('@@transformer-registry-view')
+        self.portal.REQUEST.form['family'] ='demo'
+        self.portal.REQUEST.form['name'] ='play.xsl'
+        view()
 
 
 def test_suite():
     from unittest2 import TestSuite, makeSuite
     suite = TestSuite()
     suite.addTest(makeSuite(BasicTests))
-    suite.addTest(makeSuite(OtherTests))
+    suite.addTest(makeSuite(ViewTests))
     return suite

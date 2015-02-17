@@ -8,6 +8,10 @@
 import os
 import unittest2
 from xmldirector.plonecore.validator_registry import ValidatorRegistry
+import zExceptions
+import Testing.makerequest
+from base import TestBase
+
 
 cwd = os.path.dirname(__file__)
 
@@ -85,8 +89,40 @@ class BasicTests(unittest2.TestCase):
             self.registry.get_schema('testing', 'does.not.exist')
 
 
+class ViewTests(TestBase):
+
+    def setUp(self):
+        super(ViewTests, self).setUp()
+        self.registry = ValidatorRegistry()
+        self.registry.clear()
+        self.registry.parse_folder(
+            family='testing',
+            directory=os.path.join(cwd, 'schemas'))
+
+    def test_validator_registry_view_unauthorized(self):
+        with self.assertRaises(zExceptions.Unauthorized):
+            view = self.portal.restrictedTraverse('@@validator-registry')
+
+    def test_validator_registry_view(self):
+        self.login('god')
+        view = self.portal.restrictedTraverse('@@validator-registry')
+        view()
+
+    def test_validator_registry_detail_view_unauthorized(self):
+        with self.assertRaises(zExceptions.Unauthorized):
+            view = self.portal.restrictedTraverse('@@validator-registry-view')
+
+    def test_validator_registry_detail_view(self):
+        self.login('god')
+        Testing.makerequest.makerequest(self.portal)
+        view = self.portal.restrictedTraverse('@@validator-registry-view')
+        self.portal.REQUEST.form['family'] ='testing'
+        self.portal.REQUEST.form['name'] ='simple.dtd'
+        view()
+
 def test_suite():
     from unittest2 import TestSuite, makeSuite
     suite = TestSuite()
     suite.addTest(makeSuite(BasicTests))
+    suite.addTest(makeSuite(ViewTests))
     return suite
