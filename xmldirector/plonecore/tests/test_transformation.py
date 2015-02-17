@@ -118,6 +118,11 @@ class BasicTests(unittest2.TestCase):
         with self.assertRaises(ValueError):
             T(sample_xml, return_fragment='XXXXXX')
 
+    def test_transformation_custom_output_encoding(self):
+        T = Transformer([('demo', 't1')], transformer_registry=self.registry)
+        result = T(sample_xml, output_encoding='utf16')
+        self.assertTrue(not isinstance(result, unicode))
+
     def test_transformation_1_and_2(self):
         T = Transformer(
             [('demo', 't1'), ('demo', 't2')], transformer_registry=self.registry)
