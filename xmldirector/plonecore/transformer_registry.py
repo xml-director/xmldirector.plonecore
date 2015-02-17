@@ -12,23 +12,42 @@ import fs.opener
 import datetime
 import lxml.etree
 from zope.interface import implements
+from zope.interface import Interface
 from xmldirector.plonecore.interfaces import ITransformerRegistry
 from xmldirector.plonecore.logger import LOG
 
 
-# The XSLT registrie stores pre-compiled XSLT transformations as a dictionary
-# where the keys are composed of a tuple (family, transformer_name).  ``family``
-# could be used to represent a project, a customer etc.  and
-# ``transformer_name`` would represent the name of the XSLT transformation.
-# Both ``family`` and ``transformer_name`` are completey arbitrary.
+class ITransformerWrapper(Interface):
+
+    def __init__(transformer):
+        pass
+
+    def __call__(root, conversion_context):
+        pass
+
+# The transformer registry stores arbitrary XML transformations.
+# A transformer is identifed through a tuple (family, transformer_name).
+# ``family`` # could be used to represent a project, a customer etc.  and
+# ``transformer_name`` would represent the name of the transformation.
+# The registry allows to register different transformer implementation like
+# XSLT1 transformations, Python methods etc.
+# For each transformation type there must be an adapter implementing ITransformerWrapper
+# which is the canonical API for chaining different transformations.
 
 
 class XSLT1Wrapper(object):
 
+    implements(ITransformerWrapper)
+
     def __init__(self, transformer):
+        # ``transformer`` is the original transformer object
         self.transformer = transformer
 
     def __call__(self, root, conversion_context):
+        # ``root`` is parsed root node of the document to be transformed
+        # as an lxml.etree.Element instance.
+        # The ``conversion_context`` is a dict holding the current ``context`` object,
+        # the current ``request`` object and the destination directory ``destdir``.
         return self.transformer(root)
 
 
@@ -39,10 +58,15 @@ class TransformerRegistry(object):
     registry = {}
 
     def register_transformation(self, family, transformer_name, transformer_path, transformer_type='XSLT1'):
-        """ Register a Transformation as tuple (family, transformer_name) """
+        """ Register a Transformation as tuple (``family``, ``transformer_name``).
+            ``transformer_path`` is either an URI to the related transformation file on the filesystem (XSLT1)
+            or a Python function implementing the IWrapper.
+
+            Supported ``transformer_type``s so far: 'XSLT1', 'python' 
+        """
 
         if transformer_type == 'python':
-            # transformer_path is Python function here
+            # ``transformer_path`` is Python function here
             transform = transformer_path
             method_filename = transform.func_code.co_filename
             transformer_path = '{}(), {}'.format(
@@ -100,11 +124,12 @@ class TransformerRegistry(object):
             'Transformer registered ({}, {})'.format(key, transformer_path))
 
     def entries(self):
+        """ Return all entries of the registry sorted by family + name """
         result = self.registry.values()
         return sorted(result, key=operator.itemgetter('family', 'name'))
 
     def get_transformation(self, family, transformer_name):
-        """ Return a pre-compiled XSLT transformation by (family, transformer_name) """
+        """ Return a transformer by (family, transformer_name) """
 
         key = '{}::{}'.format(family, transformer_name)
         if key not in self.registry:

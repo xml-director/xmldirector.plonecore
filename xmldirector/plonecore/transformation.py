@@ -16,6 +16,14 @@ from xmldirector.plonecore.logger import LOG
 class Transformer(object):
 
     def __init__(self, steps=[], context=None, destdir=None, transformer_registry=None, **params):
+        """ Instantiate a new transformer chain with an arbitrary number of registered
+            transformer steps. The chain ``steps`` is expressed as list of tuples
+            [(family1, name1), (family2, name2), ...].
+            ``context`` - the current context object in Plone.
+            ``destdir`` - the work directory of the transformation
+            ``transformer_registry`` - a custom transformer_registry instance (needed for tests only).
+            ``params`` - an arbitrary data dict
+        """
         self.steps = steps
         self.context = context
         self.destdir = destdir
@@ -25,13 +33,12 @@ class Transformer(object):
     @property
     def registry(self):
         """ Return transformer registry """
-
         if self.transformer_registry:
             return self.transformer_registry
         return getUtility(ITransformerRegistry)
 
     def verify_steps(self):
-        """ Verify all transformation steps """
+        """ Verify all transformation steps before running the transformation """
 
         errors = list()
         for family, name in self.steps:
@@ -43,13 +50,22 @@ class Transformer(object):
             raise ValueError('Unknown transformer steps: {}'.format(errors))
 
     def __call__(self, xml_or_node, input_encoding=None, output_encoding=unicode, return_fragment=None, debug=False):
+        """ Run the transformation chain either on an XML document passed as ``xml_or_node`` parameter
+            or as pre-parsed XML node (lxml.etree.Element). XML documents passed as string must be either of type
+            unicode or you must specify an explicit ``input_encoding``. The result XML document is returned as
+            unicode string unless a different ``output_encoding`` is specified. In order to return a subelement
+            from the result XML document you can specify a tag name using ``return_fragment`` in order the subdocument
+            starting with the given tag name.
+        """
 
+        # Check validness of the transformation chain first
         self.verify_steps()
 
         if debug:
             debug_dir = tempfile.mkdtemp(prefix='transformation_debug_')
             LOG.info('Transformation debug directory: {}'.format(debug_dir))
 
+        # Convert XML string into a root node
         if isinstance(xml_or_node, basestring):
             if not isinstance(xml_or_node, unicode):
                 if not input_encoding:
@@ -64,6 +80,7 @@ class Transformer(object):
             raise TypeError(
                 u'Unsupported type {}'.format(xml_or_node.__class__))
 
+        # run the transformation chain
         for step_no, step in enumerate(self.steps):
             family, name = step
             ts = time.time()
@@ -81,6 +98,9 @@ class Transformer(object):
                 with open(os.path.join(debug_dir, in_data_fn), 'wb') as fp:
                     fp.write(in_data)
 
+            # A transformation is allowed to return a new root node (None
+            # otherwise).  The transformation chain will then continue in the
+            # next transformation step with this new node.
             new_root = transformer(root, conversion_context=conversion_context)
             if new_root is not None:
                 root = new_root
