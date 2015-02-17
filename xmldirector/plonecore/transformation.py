@@ -57,8 +57,8 @@ class Transformer(object):
                     xml_or_node = unicode(xml_or_node, input_encoding)
             root = lxml.etree.fromstring(xml_or_node.strip())
 
-        elif isinstance(xml_or_node, lxml.etree.Element):
-            pass
+        elif isinstance(xml_or_node, lxml.etree._Element):
+            root = xml_or_node
 
         else:
             raise TypeError(

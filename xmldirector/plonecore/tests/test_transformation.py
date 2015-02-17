@@ -7,6 +7,7 @@
 
 import os
 import codecs
+import lxml.etree
 import unittest2
 from xmldirector.plonecore.transformer_registry import TransformerRegistry
 from xmldirector.plonecore.transformation import Transformer
@@ -87,6 +88,11 @@ class BasicTests(unittest2.TestCase):
         result = T(sample_xml)
         self.assertTrue(result.count('<bar>') == 3)
 
+    def test_transformation_with_node(self):
+        T = Transformer([('demo', 't1')], transformer_registry=self.registry)
+        result = T(lxml.etree.fromstring(sample_xml))
+        self.assertTrue(result.count('<bar>') == 3)
+
     def test_transformation_2(self):
         T = Transformer([('demo', 't2')], transformer_registry=self.registry)
         result = T(sample_xml)
@@ -117,6 +123,12 @@ class BasicTests(unittest2.TestCase):
         self.assertTrue('<tr bgcolor="#9acd32">' in result)
         self.assertFalse('<table>' in result)
         self.assertTrue('<TABELLE' in result)
+
+    def test_transformation_with_debug_option(self):
+        T = Transformer([('demo', 'catalog-xsd'),
+                         ('demo', 'catalog-python')],
+                        transformer_registry=self.registry)
+        T(catalog_xml, debug=True)
 
     def test_catalog_python_xsd_transform(self):
         T = Transformer([('demo', 'catalog-python'),
