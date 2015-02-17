@@ -101,7 +101,7 @@ class ViewTests(TestBase):
 
     def test_validator_registry_view_unauthorized(self):
         with self.assertRaises(zExceptions.Unauthorized):
-            view = self.portal.restrictedTraverse('@@validator-registry')
+            self.portal.restrictedTraverse('@@validator-registry')
 
     def test_validator_registry_view(self):
         self.login('god')
@@ -110,7 +110,7 @@ class ViewTests(TestBase):
 
     def test_validator_registry_detail_view_unauthorized(self):
         with self.assertRaises(zExceptions.Unauthorized):
-            view = self.portal.restrictedTraverse('@@validator-registry-view')
+            self.portal.restrictedTraverse('@@validator-registry-view')
 
     def test_validator_registry_detail_view(self):
         self.login('god')

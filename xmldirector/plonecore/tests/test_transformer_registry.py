@@ -94,7 +94,7 @@ class ViewTests(TestBase):
 
     def test_transformer_registry_view_unauthorized(self):
         with self.assertRaises(zExceptions.Unauthorized):
-            view = self.portal.restrictedTraverse('@@transformer-registry')
+            self.portal.restrictedTraverse('@@transformer-registry')
 
     def test_transformer_registry_view(self):
         self.login('god')
@@ -103,7 +103,7 @@ class ViewTests(TestBase):
 
     def test_transformer_registry_detail_view_unauthorized(self):
         with self.assertRaises(zExceptions.Unauthorized):
-            view = self.portal.restrictedTraverse('@@transformer-registry-view')
+            self.portal.restrictedTraverse('@@transformer-registry-view')
 
     def test_transformer_registry_detail_view(self):
         self._register_one()
