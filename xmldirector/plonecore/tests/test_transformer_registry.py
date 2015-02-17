@@ -114,8 +114,8 @@ class ViewTests(TestBase):
         self.login('god')
         Testing.makerequest.makerequest(self.portal)
         view = self.portal.restrictedTraverse('@@transformer-registry-view')
-        self.portal.REQUEST.form['family'] ='demo'
-        self.portal.REQUEST.form['name'] ='play.xsl'
+        self.portal.REQUEST.form['family'] = 'demo'
+        self.portal.REQUEST.form['name'] = 'play.xsl'
         view()
 
 

@@ -8,9 +8,10 @@ from subprocess import Popen, PIPE
 from xmldirector.plonecore.logger import LOG
 
 
-win32 = (sys.platform=='win32')
+win32 = (sys.platform == 'win32')
 
-def runcmd(cmd):                
+
+def runcmd(cmd):
     """ Execute a command using the subprocess module """
 
     LOG.info(cmd)
@@ -22,7 +23,7 @@ def runcmd(cmd):
     else:
         stdin = open('/dev/null')
         stdout = stderr = PIPE
-        p = Popen(cmd, 
+        p = Popen(cmd,
                   shell=True,
                   stdin=stdin,
                   stdout=stdout,

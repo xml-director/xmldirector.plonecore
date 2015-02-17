@@ -116,9 +116,10 @@ class ViewTests(TestBase):
         self.login('god')
         Testing.makerequest.makerequest(self.portal)
         view = self.portal.restrictedTraverse('@@validator-registry-view')
-        self.portal.REQUEST.form['family'] ='testing'
-        self.portal.REQUEST.form['name'] ='simple.dtd'
+        self.portal.REQUEST.form['family'] = 'testing'
+        self.portal.REQUEST.form['name'] = 'simple.dtd'
         view()
+
 
 def test_suite():
     from unittest2 import TestSuite, makeSuite

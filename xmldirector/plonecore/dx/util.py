@@ -80,7 +80,7 @@ def metadata_to_xml(context, metadata={}):
     # of the object
     try:
         xml.append(u'<value name="plone-path" type="string">{}</value>'.format(
-               '/'.join(context.getPhysicalPath())))
+            '/'.join(context.getPhysicalPath())))
     except AttributeError:
         pass
 

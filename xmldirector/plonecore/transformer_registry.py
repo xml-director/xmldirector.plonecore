@@ -25,6 +25,7 @@ from xmldirector.plonecore.util import runcmd
 
 
 class ITransformerWrapper(Interface):
+
     """ Marker interface for transformer wrappers """
 
     def __init__(transformer):
@@ -56,11 +57,13 @@ class XSLT1Wrapper(object):
         # ``root`` is parsed root node of the document to be transformed
         # as an lxml.etree.Element instance.
         # The ``conversion_context`` is a dict holding the current ``context`` object,
-        # the current ``request`` object and the destination directory ``destdir``.
+        # the current ``request`` object and the destination directory
+        # ``destdir``.
         return self.entry['transform'](root)
 
 
 class SaxonWrapper(object):
+
     """ A Saxon 9.6 wrapper for XSLT 2/3 transformations """
 
     implements(ITransformerWrapper)
@@ -70,9 +73,9 @@ class SaxonWrapper(object):
 
     def __call__(self, root, conversion_context):
 
-        temp_d  = tempfile.mkdtemp()
+        temp_d = tempfile.mkdtemp()
 
-        # Store XML of node ``root`` and store it on the FS 
+        # Store XML of node ``root`` and store it on the FS
         xml_in = os.path.join(temp_d, 'in.xml')
         with open(xml_in, 'wb') as fp:
             fp.write(lxml.etree.tostring(root, encoding='utf8'))
@@ -83,13 +86,15 @@ class SaxonWrapper(object):
             with open(xslt_in, 'wb') as fp_out:
                 fp_out.write(fp_in.read())
 
-        # Output XML file 
+        # Output XML file
         xml_out = os.path.join(temp_d, 'out.xml')
 
         # Determine path to Saxon JAR file
-        saxon_path = os.path.join(pkg_resources.get_distribution('xmldirector.plonecore').location, 'xmldirector', 'plonecore', 'transformations', 'saxon', 'saxon9he.jar')
+        saxon_path = os.path.join(pkg_resources.get_distribution(
+            'xmldirector.plonecore').location, 'xmldirector', 'plonecore', 'transformations', 'saxon', 'saxon9he.jar')
 
-        cmd = 'java -jar "{}" -s:"{}" -xsl:"{}" -o:"{}"'.format(saxon_path, xml_in, xslt_in, xml_out)
+        cmd = 'java -jar "{}" -s:"{}" -xsl:"{}" -o:"{}"'.format(
+            saxon_path, xml_in, xslt_in, xml_out)
         status, output = runcmd(cmd)
         with open(xml_out, 'rb') as fp:
             xml_out = fp.read()
@@ -146,7 +151,8 @@ class TransformerRegistry(object):
 
                 xslt_version = xslt.attrib.get('version', '1.0')
                 if xslt_version[0] != transformer_type[-1]:
-                    raise ValueError('Stylesheet version "{}" does not match specified transformer_type "{}"'.format(xslt_version, transformer_type))
+                    raise ValueError('Stylesheet version "{}" does not match specified transformer_type "{}"'.format(
+                        xslt_version, transformer_type))
 
                 if transformer_type == 'XSLT1':
                     try:
