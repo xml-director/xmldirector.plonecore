@@ -46,7 +46,11 @@ def python_transformer2(root, conversion_context):
     root.attrib['foo'] = 'bar'
 
 
-catalog_xsd = os.path.join(cwd, 'catalog.xsd')
+sample_xslt2 = os.path.join(cwd, 'sample_xslt2.xsl')
+with codecs.open(os.path.join(cwd, 'sample_xslt2.xml'), 'rb', encoding='utf8') as fp:
+    sample_xslt2_xml = fp.read()
+
+catalog_xsl = os.path.join(cwd, 'catalog.xsl')
 with codecs.open(os.path.join(cwd, 'catalog.xml'), 'rb', encoding='utf8') as fp:
     catalog_xml = fp.read()
 
@@ -70,7 +74,9 @@ class BasicTests(unittest2.TestCase):
         self.registry.register_transformation(
             'demo', 't2', python_transformer2, 'python')
         self.registry.register_transformation(
-            'demo', 'catalog-xsd', catalog_xsd, 'XSLT1')
+            'demo', 'catalog-xsl', catalog_xsl, 'XSLT1')
+        self.registry.register_transformation(
+            'demo', 'sample-xslt2', sample_xslt2, 'XSLT2')
         self.registry.register_transformation(
             'demo', 'catalog-python', catalog_transformer, 'python')
 
@@ -134,14 +140,14 @@ class BasicTests(unittest2.TestCase):
 
     def test_catalog_xsd(self):
         T = Transformer(
-            [('demo', 'catalog-xsd')], transformer_registry=self.registry)
+            [('demo', 'catalog-xsl')], transformer_registry=self.registry)
         result = T(catalog_xml)
         self.assertTrue('<h2>My CD Collection</h2>' in result)
         self.assertTrue('<tr bgcolor="#9acd32">' in result)
         self.assertTrue('<td>Bob Dylan</td>' in result)
 
     def test_catalog_xsd_python_transform(self):
-        T = Transformer([('demo', 'catalog-xsd'),
+        T = Transformer([('demo', 'catalog-xsl'),
                          ('demo', 'catalog-python')],
                         transformer_registry=self.registry)
         result = T(catalog_xml)
@@ -151,20 +157,26 @@ class BasicTests(unittest2.TestCase):
         self.assertTrue('<TABELLE' in result)
 
     def test_transformation_with_debug_option(self):
-        T = Transformer([('demo', 'catalog-xsd'),
+        T = Transformer([('demo', 'catalog-xsl'),
                          ('demo', 'catalog-python')],
                         transformer_registry=self.registry)
         T(catalog_xml, debug=True)
 
     def test_catalog_python_xsd_transform(self):
         T = Transformer([('demo', 'catalog-python'),
-                         ('demo', 'catalog-xsd')],
+                         ('demo', 'catalog-xsl')],
                         transformer_registry=self.registry)
         result = T(catalog_xml)
         # running catalog-python first should not have any effect
         self.assertTrue('<h2>My CD Collection</h2>' in result)
         self.assertTrue('<tr bgcolor="#9acd32">' in result)
         self.assertTrue('<table' in result)
+
+    def test_xslt2_transformation(self):
+        T = Transformer([('demo', 'sample-xslt2')],
+                        transformer_registry=self.registry)
+        result = T(sample_xslt2_xml)
+        self.assertTrue('<test xmlns="http://www.example.com/v2">' in result)
 
 
 def test_suite():

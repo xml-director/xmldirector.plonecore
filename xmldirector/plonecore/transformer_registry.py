@@ -7,23 +7,32 @@
 
 
 import os
+import codecs
 import operator
+import tempfile
+import lxml.etree
 import fs.opener
 import datetime
-import lxml.etree
+import shutil
+import pkg_resources
+import subprocess
+
 from zope.interface import implements
 from zope.interface import Interface
 from xmldirector.plonecore.interfaces import ITransformerRegistry
 from xmldirector.plonecore.logger import LOG
+from xmldirector.plonecore.util import runcmd
 
 
 class ITransformerWrapper(Interface):
+    """ Marker interface for transformer wrappers """
 
     def __init__(transformer):
         pass
 
     def __call__(root, conversion_context):
         pass
+
 
 # The transformer registry stores arbitrary XML transformations.
 # A transformer is identifed through a tuple (family, transformer_name).
@@ -39,16 +48,55 @@ class XSLT1Wrapper(object):
 
     implements(ITransformerWrapper)
 
-    def __init__(self, transformer):
+    def __init__(self, registry_entry):
         # ``transformer`` is the original transformer object
-        self.transformer = transformer
+        self.entry = registry_entry
 
     def __call__(self, root, conversion_context):
         # ``root`` is parsed root node of the document to be transformed
         # as an lxml.etree.Element instance.
         # The ``conversion_context`` is a dict holding the current ``context`` object,
         # the current ``request`` object and the destination directory ``destdir``.
-        return self.transformer(root)
+        return self.entry['transform'](root)
+
+
+class SaxonWrapper(object):
+    """ A Saxon 9.6 wrapper for XSLT 2/3 transformations """
+
+    implements(ITransformerWrapper)
+
+    def __init__(self, registry_entry):
+        self.entry = registry_entry
+
+    def __call__(self, root, conversion_context):
+
+        temp_d  = tempfile.mkdtemp()
+
+        # Store XML of node ``root`` and store it on the FS 
+        xml_in = os.path.join(temp_d, 'in.xml')
+        with open(xml_in, 'wb') as fp:
+            fp.write(lxml.etree.tostring(root, encoding='utf8'))
+
+        # Store XSLT on the filesystem
+        xslt_in = os.path.join(temp_d, 'in.xsl')
+        with fs.opener.opener.open(self.entry['transform'], 'rb') as fp_in:
+            with open(xslt_in, 'wb') as fp_out:
+                fp_out.write(fp_in.read())
+
+        # Output XML file 
+        xml_out = os.path.join(temp_d, 'out.xml')
+
+        # Determine path to Saxon JAR file
+        saxon_path = os.path.join(pkg_resources.get_distribution('xmldirector.plonecore').location, 'xmldirector', 'plonecore', 'transformations', 'saxon', 'saxon9he.jar')
+
+        cmd = 'java -jar "{}" -s:"{}" -xsl:"{}" -o:"{}"'.format(saxon_path, xml_in, xslt_in, xml_out)
+        status, output = runcmd(cmd)
+        with open(xml_out, 'rb') as fp:
+            xml_out = fp.read()
+
+        # house keeping
+        shutil.rmtree(temp_d)
+        return lxml.etree.fromstring(xml_out)
 
 
 class TransformerRegistry(object):
@@ -74,7 +122,7 @@ class TransformerRegistry(object):
             dir_handle = fs.opener.fsopendir('{}/..'.format(method_filename))
             info = dir_handle.getinfo(os.path.basename(method_filename))
 
-        elif transformer_type == 'XSLT1':
+        elif transformer_type in ('XSLT1', 'XSLT2', 'XSLT3'):
 
             try:
                 handle = fs.opener.opener.open(transformer_path)
@@ -96,11 +144,15 @@ class TransformerRegistry(object):
                     raise ValueError(
                         'Transformation {}/{} could not be parsed ({}, {})'.format(family, transformer_name, e, transformer_path))
 
-                try:
-                    transform = lxml.etree.XSLT(xslt)
-                except lxml.etree.XSLTParseError as e:
-                    raise ValueError(
-                        'Transformation {}/{} could not be parsed ({}, {})'.format(family, transformer_name, e, transformer_path))
+                if transformer_type == 'XSLT1':
+                    try:
+                        transform = lxml.etree.XSLT(xslt)
+                    except lxml.etree.XSLTParseError as e:
+                        raise ValueError(
+                            'Transformation {}/{} could not be parsed ({}, {})'.format(family, transformer_name, e, transformer_path))
+                else:
+                    # XSLT2+3
+                    transform = transformer_path
 
         else:
             raise ValueError(
@@ -128,6 +180,14 @@ class TransformerRegistry(object):
         result = self.registry.values()
         return sorted(result, key=operator.itemgetter('family', 'name'))
 
+    def clear(self):
+        """ Remove all entries """
+        self.registry.clear()
+
+    def __len__(self):
+        """ Return number of registered transformations """
+        return len(self.registry)
+
     def get_transformation(self, family, transformer_name):
         """ Return a transformer by (family, transformer_name) """
 
@@ -139,15 +199,9 @@ class TransformerRegistry(object):
         if d['type'] == 'python':
             return d['transform']
         elif d['type'] == 'XSLT1':
-            return XSLT1Wrapper(d['transform'])
-
-    def clear(self):
-        """ Remove all entries """
-        self.registry.clear()
-
-    def __len__(self):
-        """ Return number of registered transformations """
-        return len(self.registry)
+            return XSLT1Wrapper(d)
+        elif d['type'] in ('XSLT2', 'XSLT3'):
+            return SaxonWrapper(d)
 
 
 TransformerRegistryUtility = TransformerRegistry()

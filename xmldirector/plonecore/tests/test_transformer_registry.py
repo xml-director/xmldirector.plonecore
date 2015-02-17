@@ -80,6 +80,10 @@ class BasicTests(unittest2.TestCase):
         self.registry.register_transformation(
             'demo', 'foo2bar replacer', python_transformer, 'python')
 
+    def test_register_xslt2(self):
+        self.registry.register_transformation(
+            'xslt2', 'sample_xslt2.xsl', os.path.join(cwd, 'sample_xslt2.xsl'), 'XSLT2')
+
 
 class ViewTests(TestBase):
 

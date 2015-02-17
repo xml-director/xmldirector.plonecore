@@ -9,6 +9,7 @@ Changelog
 - added (optional) debug option for debugging Transformer steps (input and
   output data of a step is written to disk)
 - added more tests
+- support for XSLT2+3 transformations by integrating Saxon 9.6 HE
 
 
 0.3.6 (2015-02-06)

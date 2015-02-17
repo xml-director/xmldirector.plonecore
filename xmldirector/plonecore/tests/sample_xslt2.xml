@@ -1,0 +1,3 @@
+<test xmlns="http://www.example.com/v1">
+  <qnameValue xmlns:foo="http://foo.example.com/">foo:bar</qnameValue>
+</test>
