@@ -93,10 +93,30 @@ class BasicTests(unittest2.TestCase):
         result = T(lxml.etree.fromstring(sample_xml))
         self.assertTrue(result.count('<bar>') == 3)
 
+    def test_transformation_improper_root(self):
+        T = Transformer([('demo', 't1')], transformer_registry=self.registry)
+        with self.assertRaises(TypeError):
+            result = T(object)
+
+    def test_transformation_unicode_without_input_encoding(self):
+        T = Transformer([('demo', 't1')], transformer_registry=self.registry)
+        with self.assertRaises(TypeError):
+            result = T(sample_xml.encode('utf8'), input_encoding=None)
+
     def test_transformation_2(self):
         T = Transformer([('demo', 't2')], transformer_registry=self.registry)
         result = T(sample_xml)
         self.assertTrue('<hello foo="bar">' in result)
+
+    def test_transformation_return_fragment(self):
+        T = Transformer([('demo', 't1')], transformer_registry=self.registry)
+        result = T(sample_xml, return_fragment='world')
+        self.assertTrue('<hello' not in result)
+
+    def test_transformation_return_fragment_non_existing_fragment(self):
+        T = Transformer([('demo', 't1')], transformer_registry=self.registry)
+        with self.assertRaises(ValueError):
+            T(sample_xml, return_fragment='XXXXXX')
 
     def test_transformation_1_and_2(self):
         T = Transformer(
