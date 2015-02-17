@@ -3,11 +3,10 @@
 # (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
-
+import os
 import time
+import tempfile
 import lxml.etree
-import lxml.html
-
 
 from zope.component import getUtility
 from xmldirector.plonecore.interfaces import ITransformerRegistry
@@ -43,16 +42,20 @@ class Transformer(object):
         if errors:
             raise ValueError('Unknown transformer steps: {}'.format(errors))
 
-    def __call__(self, xml_or_node, input_encoding=None, output_encoding=unicode, return_fragment=None):
+    def __call__(self, xml_or_node, input_encoding=None, output_encoding=unicode, return_fragment=None, debug=False):
 
         self.verify_steps()
+
+        if debug:
+            debug_dir = tempfile.mkdtemp(prefix='transformation_debug_')
+            LOG.info('Transformation debug directory: {}'.format(debug_dir))
 
         if isinstance(xml_or_node, basestring):
             if not isinstance(xml_or_node, unicode):
                 if not input_encoding:
                     raise TypeError('Input data must be unicode')
                     xml_or_node = unicode(xml_or_node, input_encoding)
-            root = lxml.html.fromstring(xml_or_node.strip())
+            root = lxml.etree.fromstring(xml_or_node.strip())
 
         elif isinstance(xml_or_node, lxml.etree.Element):
             pass
@@ -61,7 +64,8 @@ class Transformer(object):
             raise TypeError(
                 u'Unsupported type {}'.format(xml_or_node.__class__))
 
-        for family, name in self.steps:
+        for step_no, step in enumerate(self.steps):
+            family, name = step
             ts = time.time()
             transformer = self.registry.get_transformation(family, name)
             conversion_context = dict(context=self.context,
@@ -70,9 +74,23 @@ class Transformer(object):
                                       destdir=self.destdir,
                                       )
             conversion_context.update(self.params)
+
+            if debug:
+                in_data = lxml.etree.tostring(root, encoding='utf8')
+                in_data_fn = '{:02d}-{}-{}.in'.format(step_no, family, name)
+                with open(os.path.join(debug_dir, in_data_fn), 'wb') as fp:
+                    fp.write(in_data)
+
             new_root = transformer(root, conversion_context=conversion_context)
             if new_root is not None:
                 root = new_root
+
+            if debug:
+                out_data = lxml.etree.tostring(root, encoding='utf8')
+                out_data_fn = '{:02d}-{}-{}.out'.format(step_no, family, name)
+                with open(os.path.join(debug_dir, out_data_fn), 'wb') as fp:
+                    fp.write(out_data)
+
             LOG.info('Transformation %-30s: %3.6f seconds' %
                      (name, time.time() - ts))
 
