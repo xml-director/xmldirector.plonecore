@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.3.7 (unreleased)
+0.4.0 (2015-02-18)
 ------------------
 - added @@transformer-registery view
 - added @@transformer-registery-view view

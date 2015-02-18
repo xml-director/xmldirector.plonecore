@@ -21,6 +21,7 @@ Contents:
    content-types.rst
    validator-registry.rst
    transformer-registry.rst
+   transformation-pipeline.rst
    logging.rst
    testing.rst
    demo.rst
