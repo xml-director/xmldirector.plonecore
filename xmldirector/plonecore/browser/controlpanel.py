@@ -110,9 +110,9 @@ class TransformerRegistry(BrowserView):
 
         if d['type'] in ('XSLT1', 'XSLT2', 'XSLT3'):
             with fs.opener.opener.open(d['path'], 'rb') as fp:
-                return dict(text=fp.read(), ace_type='xml')
+                return dict(text=fp.read(), ace_type='xml', transformer_type=d['type'])
         elif d['type'] == 'python':
-            return dict(text=inspect.getsource(d['transform']), ace_type='python')
+            return dict(text=inspect.getsource(d['transform']), ace_type='python', transformer_type=d['type'])
         else:
             raise ValueError(
                 'Unsupported transformer type "{}"'.format(d['type']))

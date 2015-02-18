@@ -17,6 +17,8 @@
             <br/>
             <label i18n:translate="">Name</label>: <span tal:content="request/name"/>
             <br/>
+            <label i18n:translate="">Type</label>: <span tal:content="result/transformer_type"/>
+            <br/>
             <a i18n:translate="" href="@@Transformer-registry">Back to transformer registry</a>
             <div id="editor" 
                 style="width: 80%; min-height: 100px; height: 450px; max-height: 800px"
