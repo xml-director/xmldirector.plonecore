@@ -103,12 +103,12 @@ class BasicTests(unittest2.TestCase):
     def test_transformation_improper_root(self):
         T = Transformer([('demo', 't1')], transformer_registry=self.registry)
         with self.assertRaises(TypeError):
-            result = T(object)
+            T(object)
 
     def test_transformation_unicode_without_input_encoding(self):
         T = Transformer([('demo', 't1')], transformer_registry=self.registry)
         with self.assertRaises(TypeError):
-            result = T(sample_xml.encode('utf8'), input_encoding=None)
+            T(sample_xml.encode('utf8'), input_encoding=None)
 
     def test_transformation_2(self):
         T = Transformer([('demo', 't2')], transformer_registry=self.registry)

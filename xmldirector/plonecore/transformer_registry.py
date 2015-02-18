@@ -7,7 +7,6 @@
 
 
 import os
-import codecs
 import operator
 import tempfile
 import lxml.etree
@@ -15,7 +14,6 @@ import fs.opener
 import datetime
 import shutil
 import pkg_resources
-import subprocess
 
 from zope.interface import implements
 from zope.interface import Interface
@@ -115,7 +113,7 @@ class TransformerRegistry(object):
             ``transformer_path`` is either an URI to the related transformation file on the filesystem (XSLT1)
             or a Python function implementing the IWrapper.
 
-            Supported ``transformer_type``s so far: 'XSLT1', 'python' 
+            Supported ``transformer_type``s so far: 'XSLT1', 'python'
         """
 
         if transformer_type == 'python':
