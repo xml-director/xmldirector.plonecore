@@ -7,7 +7,7 @@
 
 
 import fs.errors
-from fs.contrib.davfs import DAVFS
+from xmldirector.plonecore.davfs import DAVFSWrapper as DAVFS
 import zope.interface
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry

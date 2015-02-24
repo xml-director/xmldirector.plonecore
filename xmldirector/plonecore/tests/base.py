@@ -9,7 +9,6 @@ import os
 import uuid
 import unittest2
 import plone.api
-from fs.contrib.davfs import DAVFS
 from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import applyProfile
 from plone.app.testing import PLONE_FIXTURE
@@ -21,8 +20,10 @@ from plone.registry.interfaces import IRegistry
 
 from zope.component import getUtility
 from zope.configuration import xmlconfig
-from xmldirector.plonecore.interfaces import IWebdavSettings
 from AccessControl.SecurityManagement import newSecurityManager
+
+from xmldirector.plonecore.interfaces import IWebdavSettings
+from xmldirector.plonecore.davfs import DAVFSWrapper as DAVFS
 
 import xmldirector.plonecore
 import plone.app.dexterity
