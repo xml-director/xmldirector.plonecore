@@ -54,8 +54,12 @@ class LockManager(object):
         
         handle = self.webdav_handle
         lock_filename = self.lock_filename(path)
-        with handle.open(lock_filename, 'rb') as fp:
-            lock_xml = fp.read()
+        try:
+            with handle.open(lock_filename, 'rb') as fp:
+                lock_xml = fp.read()
+        except fs.errors.ResourceNotFoundError:
+            raise LockError('Lock file found for {}'.format(path))
+
         root = lxml.etree.fromstring(lock_xml)
         lock_info = dict()
         lock_info['mode'] = root.attrib['mode']
@@ -93,9 +97,14 @@ class LockManager(object):
     def unlock(self, path, token):
 
         handle = self.webdav_handle
-        lock_filename = self.lock_filename(path)
+
+        lock_info = self.get_lock(path)
+        lock_token = lock_info['token']
+        if token != lock_token:
+            raise UnlockError('Lock tokens differ')
+
         try:
-            handle.remove(lock_filename)
+            handle.remove(self.lock_filename(path))
         except fs.errors.ResourceNotFoundError:
             raise UnlockError('Lock not found ({})'.format(path))
 
