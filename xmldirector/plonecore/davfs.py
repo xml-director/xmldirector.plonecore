@@ -9,9 +9,9 @@ from fs import iotools
 
 def check_locks(method):
     """ Decorator to register a method as a transformation"""
-    def wrapper(*args, **kw):
-        return method(*args, **kw)
-    return wrapper
+    def _check_locks(self, *args, **kw):
+        return method(self, *args, **kw)
+    return _check_locks
 
 
 class DAVFSWrapper(DAVFS):
