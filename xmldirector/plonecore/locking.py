@@ -49,6 +49,10 @@ class AlreadyLockedError(Exception):
     """ File already locked """
 
 
+class FileIsLocked(Exception):
+    """ Exception for disallowed operations on locked files """
+
+
 class LockManager(object):
 
     def __init__(self, context):

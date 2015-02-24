@@ -14,6 +14,7 @@ from xmldirector.plonecore.locking import LockManager
 from xmldirector.plonecore.locking import LockError
 from xmldirector.plonecore.locking import AlreadyLockedError
 from xmldirector.plonecore.locking import UnlockError
+from xmldirector.plonecore.locking import FileIsLocked
 
 PREFIX = 'testing-{}'.format(uuid.uuid4())
 
@@ -101,6 +102,28 @@ class BasicTests(TestBase):
         self.assertEqual(lock_info['custom']['a'], '1')
         self.assertEqual(lock_info['custom']['c'], '3')
         self.assertEqual(lock_info['custom']['hello'], 'world')
+
+    def test_write_to_locked_file(self):
+        lm = self.lock_manager
+        lm.lock(self.sample_xml)
+        handle = self.webdav_handle
+        with self.assertRaises(FileIsLocked):
+            with handle.open(self.sample_xml, 'wb') as fp:
+                fp.write('<foo/>')
+
+    def test_remove_locked_file(self):
+        lm = self.lock_manager
+        lm.lock(self.sample_xml)
+        handle = self.webdav_handle
+        with self.assertRaises(FileIsLocked):
+            handle.remove(self.sample_xml)
+
+    def test_move_locked_file(self):
+        lm = self.lock_manager
+        lm.lock(self.sample_xml)
+        handle = self.webdav_handle
+        with self.assertRaises(FileIsLocked):
+            handle.move(self.sample_xml, 'somewhere.xml')
 
 
 def test_suite():
