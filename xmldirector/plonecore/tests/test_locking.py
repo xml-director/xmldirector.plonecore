@@ -90,6 +90,11 @@ class BasicTests(TestBase):
         with self.assertRaises(UnlockError):
             lm.unlock(self.sample_xml, 'improper.token')
 
+    def test_lock_with_forced_unlock(self):
+        lm = self.lock_manager
+        lm.lock(self.sample_xml)
+        lm.unlock(self.sample_xml, 'improper.token', force=True)
+
     def test_custom_lock_data(self):
 
         lm = self.lock_manager

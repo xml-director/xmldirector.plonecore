@@ -117,7 +117,7 @@ class LockManager(object):
             fp.write(lock_xml)
         return lock_info
 
-    def unlock(self, path, token):
+    def unlock(self, path, token, force=False):
         """ Unlock a file lock using a given lock token.
             The stored lock token and the given token must match
             in order to release the lock successfully.
@@ -127,7 +127,7 @@ class LockManager(object):
 
         lock_info = self.get_lock(path)
         lock_token = lock_info['token']
-        if token != lock_token:
+        if not force and token != lock_token:
             raise UnlockError('Lock tokens differ')
 
         try:
