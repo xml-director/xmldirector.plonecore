@@ -35,12 +35,17 @@ mode="{mode}"
 
 
 class UnlockError(Exception):
+
     """ Exception for unlock operations """
 
+
 class LockError(Exception):
+
     """ Exception for lock operations """
 
+
 class AlreadyLockedError(Exception):
+
     """ File already locked """
 
 
@@ -92,7 +97,7 @@ class LockManager(object):
             mode=exclusive - file can not read, only written.
         """
 
-        if not mode in ('shared', 'exclusive'):
+        if mode not in ('shared', 'exclusive'):
             raise LockError(u'mode must be either "shared" or "exclusive"')
 
         handle = self.webdav_handle
@@ -104,14 +109,15 @@ class LockManager(object):
             raise AlreadyLockedError('Already locked ({})'.format(path))
 
         valid = ''
-        custom= u''.join([u'<value name="{}">{}</value>'.format(k, v) for k,v in custom.items()])
+        custom = u''.join(
+            [u'<value name="{}">{}</value>'.format(k, v) for k, v in custom.items()])
         lock_info = dict(
-                token=str(uuid.uuid4()),
-                owner= plone.api.user.get_current().getUserName(),
-                created=datetime.utcnow().isoformat(),
-                mode=mode,
-                valid=valid, 
-                custom=custom)
+            token=str(uuid.uuid4()),
+            owner=plone.api.user.get_current().getUserName(),
+            created=datetime.utcnow().isoformat(),
+            mode=mode,
+            valid=valid,
+            custom=custom)
         lock_xml = lock_xml_template.format(**lock_info)
         with handle.open(lock_filename, 'wb') as fp:
             fp.write(lock_xml)
@@ -134,4 +140,3 @@ class LockManager(object):
             handle.remove(self.lock_filename(path))
         except fs.errors.ResourceNotFoundError:
             raise UnlockError('Lock not found ({})'.format(path))
-

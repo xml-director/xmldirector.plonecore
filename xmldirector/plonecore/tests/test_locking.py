@@ -6,13 +6,9 @@
 ################################################################
 
 
-import os
 import uuid
-import datetime
 from zipfile import ZipFile
 from .base import TestBase
-from .base import WEBDAV_URL
-import zExceptions
 
 from xmldirector.plonecore.locking import LockManager
 from xmldirector.plonecore.locking import LockError
@@ -22,6 +18,7 @@ from xmldirector.plonecore.locking import UnlockError
 PREFIX = 'testing-{}'.format(uuid.uuid4())
 
 sample_xml = '<hello>world</hello>'
+
 
 class BasicTests(TestBase):
 

@@ -23,4 +23,3 @@ class Lock(BrowserView):
         path = '{}/xml_content.xml'.format(storage_path)
         LM.unlock(path, token=None)
         return 'unlocked'
-
