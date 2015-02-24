@@ -33,6 +33,9 @@ class UnlockError(Exception):
 class LockError(Exception):
     pass
 
+class AlreadyLockedError(Exception):
+    pass
+
 
 class LockManager(object):
 
@@ -80,7 +83,7 @@ class LockManager(object):
 
         lock_filename = self.lock_filename(path)
         if handle.exists(lock_filename):
-            raise LockError('Already locked ({})'.format(path))
+            raise AlreadyLockedError('Already locked ({})'.format(path))
 
         valid = ''
         lock_info = dict(

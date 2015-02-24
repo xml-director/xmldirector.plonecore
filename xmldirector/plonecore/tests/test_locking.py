@@ -16,6 +16,7 @@ import zExceptions
 
 from xmldirector.plonecore.locking import LockManager
 from xmldirector.plonecore.locking import LockError
+from xmldirector.plonecore.locking import AlreadyLockedError
 from xmldirector.plonecore.locking import UnlockError
 
 PREFIX = 'testing-{}'.format(uuid.uuid4())
@@ -67,6 +68,12 @@ class BasicTests(TestBase):
         lock_info  = lm.lock(self.sample_xml)
         token = lock_info['token']
         lm.unlock(self.sample_xml, token)
+
+    def test_relock(self):
+        lm = self.lock_manager
+        lm.lock(self.sample_xml)
+        with self.assertRaises(AlreadyLockedError):
+            lm.lock(self.sample_xml)
 
     def test_lock_unlock_cycle_improper_token(self):
         lm = self.lock_manager
