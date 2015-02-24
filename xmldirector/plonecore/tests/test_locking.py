@@ -69,6 +69,15 @@ class BasicTests(TestBase):
         token = lock_info['token']
         lm.unlock(self.sample_xml, token)
 
+    def test_get_lock_info(self):
+        self.login('god')
+        lm = self.lock_manager
+        lock_info  = lm.lock(self.sample_xml)
+        lock_info2 = lm.get_lock(self.sample_xml)
+        self.assertEqual(lock_info['token'], lock_info2['token'])
+        self.assertEqual(lock_info['owner'], lock_info2['owner'])
+        self.assertEqual(lock_info['mode'], lock_info2['mode'])
+
     def test_relock(self):
         lm = self.lock_manager
         lm.lock(self.sample_xml)
@@ -80,6 +89,17 @@ class BasicTests(TestBase):
         lm.lock(self.sample_xml)
         with self.assertRaises(UnlockError):
             lm.unlock(self.sample_xml, 'improper.token')
+
+    def test_custom_lock_data(self):
+
+        lm = self.lock_manager
+        lm.lock(self.sample_xml, custom=dict(foo='bar', a=1, c=3, hello='world'))
+        lock_info = lm.get_lock(self.sample_xml)
+        self.assertEqual(lock_info['custom']['foo'], 'bar')
+        self.assertEqual(lock_info['custom']['a'], '1')
+        self.assertEqual(lock_info['custom']['c'], '3')
+        self.assertEqual(lock_info['custom']['hello'], 'world')
+
 
 def test_suite():
     from unittest2 import TestSuite, makeSuite
