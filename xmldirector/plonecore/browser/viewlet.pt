@@ -4,6 +4,7 @@
         <ul tal:define="info view/info">
             <li>Storage key: <span tal:content="info/storage_key" /></li>
             <li>Storage path: <span tal:content="info/storage_path" /></li>
+            <li>Lock info: <span tal:content="info/lock_info" /></li>
         </ul>
     </div>
 </tal:def>

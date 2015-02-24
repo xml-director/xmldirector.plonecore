@@ -6,6 +6,23 @@
     <!-- load permissions.zcml -->
     <include package="Products.CMFCore" />
 
+
+    <browser:page
+        for="*"
+        name="lock"
+        class=".lock.Lock"
+        attribute="lock"
+        permission="cmf.ModifyPortalContent"
+    />
+
+    <browser:page
+        for="*"
+        name="unlock"
+        class=".lock.Lock"
+        attribute="unlock"
+        permission="cmf.ModifyPortalContent"
+    />
+
     <browser:page
         for="xmldirector.plonecore.connector.IConnector"
         name="view"
