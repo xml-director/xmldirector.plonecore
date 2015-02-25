@@ -103,28 +103,58 @@ class BasicTests(TestBase):
         self.assertEqual(lock_info['custom']['c'], '3')
         self.assertEqual(lock_info['custom']['hello'], 'world')
 
-    def test_write_to_locked_file(self):
+    def test_write_to_locked_file_as_different_user(self):
         lm = self.lock_manager
-        lm.lock(self.sample_xml)
         handle = self.webdav_handle
+
+        self.login('god')
+        lm.lock(self.sample_xml)
+
+        self.login('god2')
         with self.assertRaises(FileIsLocked):
             with handle.open(self.sample_xml, 'wb') as fp:
                 fp.write('<foo/>')
 
-    def test_remove_locked_file(self):
+    def test_write_to_locked_file_as_same_user(self):
         lm = self.lock_manager
-        lm.lock(self.sample_xml)
         handle = self.webdav_handle
+
+        self.login('god')
+        lm.lock(self.sample_xml)
+        with handle.open(self.sample_xml, 'wb') as fp:
+            fp.write('<foo/>')
+
+
+    def test_remove_locked_file_as_different_user(self):
+        lm = self.lock_manager
+        handle = self.webdav_handle
+        self.login('god')
+        lm.lock(self.sample_xml)
+        self.login('god2')
         with self.assertRaises(FileIsLocked):
             handle.remove(self.sample_xml)
 
-    def test_move_locked_file(self):
+    def test_remove_locked_file_as_same_user(self):
         lm = self.lock_manager
-        lm.lock(self.sample_xml)
         handle = self.webdav_handle
+        self.login('god')
+        lm.lock(self.sample_xml)
+        handle.remove(self.sample_xml)
+
+    def test_move_locked_file_as_different_user(self):
+        lm = self.lock_manager
+        handle = self.webdav_handle
+        self.login('god')
+        lm.lock(self.sample_xml)
+        self.login('god2')
         with self.assertRaises(FileIsLocked):
             handle.move(self.sample_xml, 'somewhere.xml')
 
+    def test_move_locked_file_as_same_user(self):
+        lm = self.lock_manager
+        handle = self.webdav_handle
+        lm.lock(self.sample_xml)
+        handle.move(self.sample_xml, 'somewhere.xml')
 
 def test_suite():
     from unittest2 import TestSuite, makeSuite

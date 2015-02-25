@@ -54,11 +54,9 @@ class PolicyFixture(PloneSandboxLayer):
         # Install into Plone site using portal_setup
         applyProfile(portal, 'xmldirector.plonecore:testing')
         portal.acl_users.userFolderAddUser('god', 'dummy', ['Manager'], [])
+        portal.acl_users.userFolderAddUser('god2', 'dummy', ['Manager'], [])
         setRoles(portal, 'god', ['Manager'])
-        portal.acl_users.userFolderAddUser('ppr', 'dummy', ['PPR'], [])
-        setRoles(portal, 'ppr', ['Member', 'PPR'])
-        portal.acl_users.userFolderAddUser('member', 'dummy', ['Member'], [])
-        setRoles(portal, 'member', ['Member'])
+        setRoles(portal, 'god2', ['Manager'])
         login(portal, 'god')
 
         registry = getUtility(IRegistry)

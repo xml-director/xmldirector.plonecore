@@ -55,7 +55,7 @@ class FileIsLocked(Exception):
 
 class LockManager(object):
 
-    def __init__(self, context):
+    def __init__(self, context=None):
         self.context = context
 
     @property
@@ -78,7 +78,7 @@ class LockManager(object):
         handle = self.webdav_handle
         lock_filename = self.lock_filename(path)
         try:
-            with handle.open(lock_filename, 'rb') as fp:
+            with handle.open(lock_filename, 'rb', lock_check=False) as fp:
                 lock_xml = fp.read()
         except fs.errors.ResourceNotFoundError:
             raise LockError('No lock file found for {}'.format(path))
@@ -123,7 +123,7 @@ class LockManager(object):
             valid=valid,
             custom=custom)
         lock_xml = lock_xml_template.format(**lock_info)
-        with handle.open(lock_filename, 'wb') as fp:
+        with handle.open(lock_filename, 'wb', lock_check=False) as fp:
             fp.write(lock_xml)
         return lock_info
 
