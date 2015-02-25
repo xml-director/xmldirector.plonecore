@@ -12,6 +12,7 @@ from xmldirector.plonecore.locking import LockManager
 from xmldirector.plonecore.locking import FileIsLocked
 from xmldirector.plonecore.locking import LockError
 
+
 class DAVFSWrapper(DAVFS):
     """ A wapper for DAVFS """
 
