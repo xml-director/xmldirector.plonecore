@@ -56,10 +56,10 @@
                                 paginate: { type: 'numeric', pageSize: 20 },             
                                 availablePageSizes: [10, 20, 50, 100, 500],
                                 columns: [                     
-                                       { label: 'Date' },
-                                       { label: 'Level' },
-                                       { label: 'Username' },
-                                       { label: 'Comment' }
+                                       { label: 'Path' },
+                                       { label: 'Owner' },
+                                       { label: 'Mode' },
+                                       { label: 'Created' }
                                 ]
                 });
               });
