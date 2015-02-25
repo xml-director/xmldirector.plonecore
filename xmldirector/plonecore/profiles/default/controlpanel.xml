@@ -29,4 +29,16 @@
             <permission>Manage portal</permission>
     </configlet>
 
+    <configlet
+        title="XML-Director Lock manager"
+        action_id="xmldirector.plonecore.lockmanager"
+        appId="xmldirector.plonecore"
+        category="Products"
+        condition_expr=""
+        url_expr="string:${portal_url}/@@xmldirector-core-lockmanager"
+        visible="True"
+        i18n:attributes="title">
+            <permission>Manage portal</permission>
+    </configlet>
+
 </object>

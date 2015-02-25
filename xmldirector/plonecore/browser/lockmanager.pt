@@ -1,0 +1,74 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="xmldirector.plonecore">
+<body>
+
+
+<metal:main fill-slot="javascript_head_slot">
+    <script type="text/javascript" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/tableutils/js/tableutils.js"></script>
+    <link rel="stylesheet" type="text/html" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/tableutils/css/tableutils.css"/>
+</metal:main>
+
+<metal:main fill-slot="content-core">
+    <metal:content-core define-macro="content-core"
+        tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime">
+
+      <h2 i18n:translate="">Lock Manager</h2>
+      <tal:def define="rows view/entries"> 
+
+          <div class="warning" i18n:translate="" tal:condition="not: rows">
+              No logger entries found
+          </div>
+
+          <table class="listing" id="lockmanager" tal:condition="rows">
+              <thead>
+                  <tr>
+                      <th i18n:translate="">Path</th>
+                      <th width="10%" i18n:translate="">Owner</th>
+                      <th width="10%" i18n:translate="">Mode</th>
+                      <th width="10%" i18n:translate="">Created</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr tal:repeat="row python: reversed(rows)">
+                      <td>
+                          <span tal:content="row/uri" />
+                      </td>
+                      <td width="10%" tal:content="row/owner" />
+                      <td width="10%" tal:content="row/mode" />
+                      <td width="10%" tal:content="python: toLocalizedTime(row['created'], True)" />
+                  </tr>
+              </tbody>
+          </table>
+
+          <script type="text/javascript">
+              $(document).ready(function() {
+                  $('.action').click(function() {
+                          $(this).siblings('pre').fadeToggle('fast');
+                  });
+                  $('table').tableutils( {
+                                filter:true,
+                                fixHeader: { width: '100%', height: 600 },                 
+                                paginate: { type: 'numeric', pageSize: 20 },             
+                                availablePageSizes: [10, 20, 50, 100, 500],
+                                columns: [                     
+                                       { label: 'Date' },
+                                       { label: 'Level' },
+                                       { label: 'Username' },
+                                       { label: 'Comment' }
+                                ]
+                });
+              });
+          </script>
+
+      </tal:def>
+  </metal:content-core>
+</metal:main>
+
+</body>
+</html>
+

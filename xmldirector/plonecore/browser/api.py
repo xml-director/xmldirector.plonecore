@@ -36,7 +36,7 @@ class API(BrowserView):
             Note that <script_path> must start with '/db/' or 'db/'.
         """
 
-        if not self.context.api_enabled:
+        if self.context and not self.context.api_enabled:
             raise Forbidden('API not enabled')
 
         if output_format not in ('json', 'xml', 'html'):

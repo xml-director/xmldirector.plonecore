@@ -94,6 +94,14 @@
 
     <browser:page
         for="*"
+        name="xmldirector-core-lockmanager"
+        class=".lockmanager.LockManager"
+        template="lockmanager.pt"
+        permission="cmf.ManagePortal"
+    />
+
+    <browser:page
+        for="*"
         name="connector-log-clear"
         class=".connector.Logging"
         attribute="log_clear"
