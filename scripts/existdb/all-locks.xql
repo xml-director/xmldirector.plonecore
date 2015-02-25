@@ -10,15 +10,6 @@ declare namespace json="http://www.json.org";
 
 declare
     %rest:GET
-    %rest:path("/all-locks.html")
-    %output:media-type("text/html")
-    %output:method("html5")
-function services:home() {
-    transform:transform(services:func(), doc("/db/scripts/all-locks.xslt"), ())
-};
-
-declare
-    %rest:GET
     %rest:path("/all-locks.json")
     %rest:produces("application/json")
     %output:method("json")
@@ -42,18 +33,18 @@ declare
     %private
 function services:func() {
 
-<locks> {
-    let $data-collection := '/db'
-    for $doc in collection($data-collection)[ends-with(base-uri(.), '.lock.xml')]
-    return 
-        <lock>
-            <uri>{base-uri($doc)}</uri>
-            <owner>{string($doc//lock/@owner)}</owner>
-            <created>{string($doc//lock/@created)}</created>
-            <mode>{string($doc//lock/@mode)}</mode>
-            <valid>{string($doc//lock/@valid)}</valid>
-        </lock>
-}
-</locks>
+    <locks> {
+        let $data-collection := '/db'
+        for $doc in collection($data-collection)[ends-with(base-uri(.), '.lock.xml')]
+        return 
+            <lock json:array="true">
+                <uri>{base-uri($doc)}</uri>
+                <owner>{string($doc//lock/@owner)}</owner>
+                <created>{string($doc//lock/@created)}</created>
+                <mode>{string($doc//lock/@mode)}</mode>
+                <valid>{string($doc//lock/@valid)}</valid>
+            </lock>
+    }
+    </locks>
 };
 
