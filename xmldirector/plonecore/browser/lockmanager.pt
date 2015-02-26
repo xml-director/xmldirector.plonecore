@@ -18,13 +18,17 @@
         tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime">
 
       <h2 i18n:translate="">Lock Manager</h2>
-      <tal:def define="rows view/entries"> 
+      <tal:def define="result view/entries"> 
 
-          <div class="warning" i18n:translate="" tal:condition="not: rows">
-              No logger entries found
+          <div class="error" i18n:translate="" tal:condition="result/error"
+               tal:content="result/error"
+          />
+
+          <div class="warning" i18n:translate="" tal:condition="python: not result['error'] and not result['rows']">
+              No lock entries found
           </div>
 
-          <table class="listing" id="lockmanager" tal:condition="rows">
+          <table class="listing" id="lockmanager" tal:condition="python: not result['error'] and result['rows']">
               <thead>
                   <tr>
                       <th i18n:translate="">Path</th>
@@ -34,9 +38,12 @@
                   </tr>
               </thead>
               <tbody>
-                  <tr tal:repeat="row python: reversed(rows)">
+                  <tr tal:repeat="row python: reversed(result['rows'])">
                       <td>
                           <span tal:content="row/uri" />
+                          <a tal:attributes="href string:${portal_url}/@@xmldirector-core-lockmanager?release=${row/uri}"
+                              i18n:translate="">[release]
+                          </a>
                       </td>
                       <td width="10%" tal:content="row/owner" />
                       <td width="10%" tal:content="row/mode" />

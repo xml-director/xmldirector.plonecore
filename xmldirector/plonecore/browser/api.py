@@ -20,7 +20,7 @@ from zExceptions import NotFound
 from xmldirector.plonecore.interfaces import IWebdavSettings
 
 
-class DBError(Exception):
+class APIError(Exception):
     pass
 
 
@@ -53,7 +53,7 @@ class API(BrowserView):
                                                  settings.webdav_password or ''),
                               params=kw)
         if result.status_code != 200:
-            raise DBError(
+            raise APIError(
                 'eXist-db return an response with HTTP code {} for {}'.format(result.status_code, url))
 
         if output_format == 'json':
