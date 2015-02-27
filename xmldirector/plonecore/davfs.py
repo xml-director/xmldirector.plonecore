@@ -18,7 +18,7 @@ _marker = object
 
 lockstate = namedtuple('lockstate', 'op, mode, lock_owner')
 
-# LOCK MODES 
+# LOCK MODES
 
 EXCL = 'exclusive'
 SHRD = 'shared'
@@ -52,6 +52,7 @@ LOCK_PERMISSION_MAP = dict([
 
 
 class DAVFSWrapper(DAVFS):
+
     """ A wapper for DAVFS """
 
     def _check_lock(self, path, op):
@@ -60,13 +61,15 @@ class DAVFSWrapper(DAVFS):
         try:
             log_info = lm.get_lock(path)
         except LockError:
-            return 
+            return
 
         owner = log_info['owner']
         lock_mode = log_info['mode']
         lock_owner = (owner == plone.api.user.get_current().getUserName())
-        allowed = LOCK_PERMISSION_MAP.get(lockstate(mode=lock_mode, op=op, lock_owner=lock_owner), _marker)
-        msg = '(lock_mode={}, op={}, lock_owner={}'.format(lock_mode, op, lock_owner)
+        allowed = LOCK_PERMISSION_MAP.get(
+            lockstate(mode=lock_mode, op=op, lock_owner=lock_owner), _marker)
+        msg = '(lock_mode={}, op={}, lock_owner={}'.format(
+            lock_mode, op, lock_owner)
         if allowed is _marker:
             raise ValueError('No entry found for ({})'.format(msg))
         if not allowed:
@@ -77,7 +80,7 @@ class DAVFSWrapper(DAVFS):
         if lock_check:
             self._check_lock(path, op='open_{}'.format(mode[0]))
         return super(DAVFSWrapper, self).open(path, mode, **kwargs)
-    
+
     def remove(self, path, lock_check=True):
         if lock_check:
             self._check_lock(path, op='remove')
@@ -87,4 +90,3 @@ class DAVFSWrapper(DAVFS):
         if lock_check:
             self._check_lock(path_old, op='move')
         return super(DAVFSWrapper, self).move(path_old, path_new)
-

@@ -7,7 +7,6 @@
 
 
 import uuid
-from zipfile import ZipFile
 from .base import TestBase
 
 from xmldirector.plonecore.locking import LockManager
@@ -64,18 +63,18 @@ class BasicTests(TestBase):
     def test_lock_unknown_lock_mode(self):
         lm = self.lock_manager
         with self.assertRaises(LockError):
-            lock_info  = lm.lock(self.sample_xml, mode='unknown.lock')
+            lm.lock(self.sample_xml, mode='unknown.lock')
 
     def test_lock_unlock_cycle(self):
         lm = self.lock_manager
-        lock_info  = lm.lock(self.sample_xml, mode='shared')
+        lock_info = lm.lock(self.sample_xml, mode='shared')
         token = lock_info['token']
         lm.unlock(self.sample_xml, token)
 
     def test_get_lock_info(self):
         self.login('god')
         lm = self.lock_manager
-        lock_info  = lm.lock(self.sample_xml, mode='shared')
+        lock_info = lm.lock(self.sample_xml, mode='shared')
         lock_info2 = lm.get_lock(self.sample_xml)
         self.assertEqual(lock_info['token'], lock_info2['token'])
         self.assertEqual(lock_info['owner'], lock_info2['owner'])
@@ -101,7 +100,8 @@ class BasicTests(TestBase):
     def test_custom_lock_data(self):
 
         lm = self.lock_manager
-        lm.lock(self.sample_xml, custom=dict(foo='bar', a=1, c=3, hello='world'), mode='shared')
+        lm.lock(self.sample_xml, custom=dict(
+            foo='bar', a=1, c=3, hello='world'), mode='shared')
         lock_info = lm.get_lock(self.sample_xml)
         self.assertEqual(lock_info['custom']['foo'], 'bar')
         self.assertEqual(lock_info['custom']['a'], '1')
@@ -128,7 +128,6 @@ class BasicTests(TestBase):
         lm.lock(self.sample_xml, mode='shared')
         with handle.open(self.sample_xml, 'wb') as fp:
             fp.write('<foo/>')
-
 
     def test_remove_locked_file_as_different_user(self):
         lm = self.lock_manager
@@ -177,6 +176,7 @@ class BasicTests(TestBase):
             handle.open(self.sample_xml, 'r')
         with self.assertRaises(FileIsLocked):
             handle.open(self.sample_xml, 'w')
+
 
 def test_suite():
     from unittest2 import TestSuite, makeSuite

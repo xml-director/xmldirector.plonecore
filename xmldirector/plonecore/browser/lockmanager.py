@@ -12,6 +12,7 @@ from xmldirector.plonecore.browser.api import API
 from xmldirector.plonecore.browser.api import APIError
 from xmldirector.plonecore.logger import LOG
 
+
 class LockManager(BrowserView):
 
     def entries(self):
@@ -25,7 +26,8 @@ class LockManager(BrowserView):
 
         api_view = API(context=None, request=self.request)
         try:
-            results = api_view.generic_query('all-locks', deserialize_json=True)
+            results = api_view.generic_query(
+                'all-locks', deserialize_json=True)
         except APIError as e:
             msg = u'Unable to retrieve locks ({})'.format(e)
             LOG.error(msg, exc_info=False)

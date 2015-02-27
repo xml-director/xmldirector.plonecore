@@ -50,6 +50,7 @@ class AlreadyLockedError(Exception):
 
 
 class FileIsLocked(Exception):
+
     """ Exception for disallowed operations on locked files """
 
 
