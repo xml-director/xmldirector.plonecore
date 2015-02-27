@@ -109,6 +109,9 @@ class LockManager(object):
         if not handle.exists(path):
             raise LockError('Lock target does not exist ({})'.format(path))
 
+        if not handle.isfile(path):
+            raise LockError('Only files can be locked({})'.format(path))
+
         lock_filename = self.lock_filename(path)
         if handle.exists(lock_filename):
             raise AlreadyLockedError('Already locked ({})'.format(path))
