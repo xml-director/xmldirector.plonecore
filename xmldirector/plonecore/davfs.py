@@ -48,6 +48,12 @@ LOCK_PERMISSION_MAP = dict([
     (lockstate(op='move', mode=SHRD, lock_owner=True), True),
     (lockstate(op='move', mode=EXCL, lock_owner=False), False),
     (lockstate(op='move', mode=SHRD, lock_owner=False), False),
+
+    # copy()
+    (lockstate(op='copy', mode=EXCL, lock_owner=True), True),
+    (lockstate(op='copy', mode=SHRD, lock_owner=True), True),
+    (lockstate(op='copy', mode=EXCL, lock_owner=False), False),
+    (lockstate(op='copy', mode=SHRD, lock_owner=False), True),
 ])
 
 
@@ -90,3 +96,8 @@ class DAVFSWrapper(DAVFS):
         if lock_check:
             self._check_lock(path_old, op='move')
         return super(DAVFSWrapper, self).move(path_old, path_new)
+    
+    def copy(self, src, dst, overwrite=False, chunk_size=None):
+        if lock_check:
+            self._check_lock(path_old, op='copy')
+        return super(DAVFSWrapper, self).copy(src, dst, overwrite, chunk_size)
