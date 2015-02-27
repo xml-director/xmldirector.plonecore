@@ -61,16 +61,21 @@ class BasicTests(TestBase):
         with self.assertRaises(LockError):
             self.assertFalse(lm.get_lock('does.not.exist'))
 
+    def test_lock_unknown_lock_mode(self):
+        lm = self.lock_manager
+        with self.assertRaises(LockError):
+            lock_info  = lm.lock(self.sample_xml, mode='unknown.lock')
+
     def test_lock_unlock_cycle(self):
         lm = self.lock_manager
-        lock_info  = lm.lock(self.sample_xml)
+        lock_info  = lm.lock(self.sample_xml, mode='shared')
         token = lock_info['token']
         lm.unlock(self.sample_xml, token)
 
     def test_get_lock_info(self):
         self.login('god')
         lm = self.lock_manager
-        lock_info  = lm.lock(self.sample_xml)
+        lock_info  = lm.lock(self.sample_xml, mode='shared')
         lock_info2 = lm.get_lock(self.sample_xml)
         self.assertEqual(lock_info['token'], lock_info2['token'])
         self.assertEqual(lock_info['owner'], lock_info2['owner'])
@@ -78,25 +83,25 @@ class BasicTests(TestBase):
 
     def test_relock(self):
         lm = self.lock_manager
-        lm.lock(self.sample_xml)
+        lm.lock(self.sample_xml, mode='shared')
         with self.assertRaises(AlreadyLockedError):
             lm.lock(self.sample_xml)
 
     def test_lock_unlock_cycle_improper_token(self):
         lm = self.lock_manager
-        lm.lock(self.sample_xml)
+        lm.lock(self.sample_xml, mode='shared')
         with self.assertRaises(UnlockError):
             lm.unlock(self.sample_xml, 'improper.token')
 
     def test_lock_with_forced_unlock(self):
         lm = self.lock_manager
-        lm.lock(self.sample_xml)
+        lm.lock(self.sample_xml, mode='shared')
         lm.unlock(self.sample_xml, 'improper.token', force=True)
 
     def test_custom_lock_data(self):
 
         lm = self.lock_manager
-        lm.lock(self.sample_xml, custom=dict(foo='bar', a=1, c=3, hello='world'))
+        lm.lock(self.sample_xml, custom=dict(foo='bar', a=1, c=3, hello='world'), mode='shared')
         lock_info = lm.get_lock(self.sample_xml)
         self.assertEqual(lock_info['custom']['foo'], 'bar')
         self.assertEqual(lock_info['custom']['a'], '1')
@@ -108,7 +113,7 @@ class BasicTests(TestBase):
         handle = self.webdav_handle
 
         self.login('god')
-        lm.lock(self.sample_xml)
+        lm.lock(self.sample_xml, mode='shared')
 
         self.login('god2')
         with self.assertRaises(FileIsLocked):
@@ -120,7 +125,7 @@ class BasicTests(TestBase):
         handle = self.webdav_handle
 
         self.login('god')
-        lm.lock(self.sample_xml)
+        lm.lock(self.sample_xml, mode='shared')
         with handle.open(self.sample_xml, 'wb') as fp:
             fp.write('<foo/>')
 
@@ -129,7 +134,7 @@ class BasicTests(TestBase):
         lm = self.lock_manager
         handle = self.webdav_handle
         self.login('god')
-        lm.lock(self.sample_xml)
+        lm.lock(self.sample_xml, mode='shared')
         self.login('god2')
         with self.assertRaises(FileIsLocked):
             handle.remove(self.sample_xml)
@@ -138,14 +143,14 @@ class BasicTests(TestBase):
         lm = self.lock_manager
         handle = self.webdav_handle
         self.login('god')
-        lm.lock(self.sample_xml)
+        lm.lock(self.sample_xml, mode='shared')
         handle.remove(self.sample_xml)
 
     def test_move_locked_file_as_different_user(self):
         lm = self.lock_manager
         handle = self.webdav_handle
         self.login('god')
-        lm.lock(self.sample_xml)
+        lm.lock(self.sample_xml, mode='shared')
         self.login('god2')
         with self.assertRaises(FileIsLocked):
             handle.move(self.sample_xml, 'somewhere.xml')
@@ -153,8 +158,25 @@ class BasicTests(TestBase):
     def test_move_locked_file_as_same_user(self):
         lm = self.lock_manager
         handle = self.webdav_handle
-        lm.lock(self.sample_xml)
+        lm.lock(self.sample_xml, mode='shared')
         handle.move(self.sample_xml, 'somewhere.xml')
+
+    def test_exclusive_lock(self):
+        lm = self.lock_manager
+        handle = self.webdav_handle
+
+        # Lock owner can read and write
+        self.login('god')
+        lm.lock(self.sample_xml, mode='exclusive')
+        handle.open(self.sample_xml, 'r')
+        handle.open(self.sample_xml, 'w')
+
+        # others can not read
+        self.login('god2')
+        with self.assertRaises(FileIsLocked):
+            handle.open(self.sample_xml, 'r')
+        with self.assertRaises(FileIsLocked):
+            handle.open(self.sample_xml, 'w')
 
 def test_suite():
     from unittest2 import TestSuite, makeSuite
