@@ -347,12 +347,7 @@ class Connector(BrowserView):
                     marker=RotatingMarker()), ' ', ETA(), ' ']
                 files = list(zip_handle.walkfiles())
 
-                try:
-                    getConfiguration().testinghome
-                    show_progress = False
-                except AttributeError:
-                    show_progress = True
-
+                show_progress = not os.environ.get('TESTING')
                 if show_progress:
                     pbar = ProgressBar(
                         widgets=widgets, maxval=len(files)).start()

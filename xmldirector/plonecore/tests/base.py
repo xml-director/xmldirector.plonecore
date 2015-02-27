@@ -34,6 +34,8 @@ WEBDAV_URL = os.environ.get(
 WEBDAV_USERNAME = os.environ.get('WEBDAV_USERNAME', 'admin')
 WEBDAV_PASSWORD = os.environ.get('WEBDAV_PASSWORD', 'admin')
 
+os.environ['TESTING'] = '1'
+
 
 class PolicyFixture(PloneSandboxLayer):
 
