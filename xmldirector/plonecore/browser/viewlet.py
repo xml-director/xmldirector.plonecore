@@ -26,7 +26,6 @@ class Debug(ViewletBase):
         try:
             lock_info = LM.get_lock(path)
         except Exception as e:
-            print e
             lock_info = None
 
         return dict(lock_info=lock_info,
