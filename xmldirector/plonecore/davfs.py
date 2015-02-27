@@ -99,5 +99,5 @@ class DAVFSWrapper(DAVFS):
     
     def copy(self, src, dst, overwrite=False, chunk_size=None, lock_check=True):
         if lock_check:
-            self._check_lock(path_old, op='copy')
+            self._check_lock(src, op='copy')
         return super(DAVFSWrapper, self).copy(src, dst, overwrite, chunk_size)
