@@ -104,7 +104,7 @@ class ValidatorRegistry(object):
     def get_validator(self, family, name):
         """ Return a wrapped Validator instance for the given family + name """
         schema = self.get_schema(family, name)
-        return Validator(schema)
+        return Validator(schema, family, name)
 
     def _convert_key(self, name_or_tuple):
         if isinstance(name_or_tuple, tuple):
@@ -138,22 +138,25 @@ class ValidationResult(object):
 
     """ Encapsulates DTD/schema validation results """
 
-    def __init__(self, errors=[]):
+    def __init__(self, errors=[], validator=None):
         self.errors = errors
+        self.validator = validator
 
     def __nonzero__(self):
         return not self.errors
 
     def __str__(self):
-        return '{}, errors: {}'.format(self.__class__, self.errors)
+        return '{}, validator: {}, errors: {}'.format(self.__class__, self.validator, self.errors)
 
 
 class Validator(object):
 
     """ Encapsulates a schema validator """
 
-    def __init__(self, schema):
+    def __init__(self, schema, family, name):
         self.schema = schema
+        self.family = family
+        self.name = name
 
     def validate(self, xml):
 
@@ -169,7 +172,8 @@ class Validator(object):
             raise TypeError('Unsupported type {}'.format(type(xml)))
 
         validation_result = self.schema.validate(root)
+        validator_key = '{}::{}'.format(self.family, self.name)
         if not validation_result:
-            return ValidationResult([self.schema.error_log])
+            return ValidationResult(errors=[self.schema.error_log], validator=validator_key)
         else:
-            return ValidationResult()
+            return ValidationResult(validator=validator_key)

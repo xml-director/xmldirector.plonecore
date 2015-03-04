@@ -112,7 +112,7 @@ class Connector(BrowserView):
         except fs.errors.ResourceNotFoundError as e:
             msg = 'eXist-db path {} does not exist'.format(e.url)
             self.context.plone_utils.addPortalMessage(msg, 'error')
-            LOG.error(msg)
+            LOG.debug(msg)
             raise zExceptions.NotFound()
         except fs.errors.PermissionDeniedError as e:
             msg = 'eXist-db path {} unauthorized access (check credentials)'.format(
