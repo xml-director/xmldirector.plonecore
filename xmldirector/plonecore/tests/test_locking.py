@@ -60,6 +60,11 @@ class BasicTests(TestBase):
         with self.assertRaises(LockError):
             self.assertFalse(lm.get_lock('does.not.exist'))
 
+    def test_no_lock_support_for_directories(self):
+        lm = self.lock_manager
+        with self.assertRaises(LockError):
+            lm.lock('{}/..'.format(self.sample_xml))
+
     def test_lock_unknown_lock_mode(self):
         lm = self.lock_manager
         with self.assertRaises(LockError):

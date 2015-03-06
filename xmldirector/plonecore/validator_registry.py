@@ -166,8 +166,9 @@ class Validator(object):
             except lxml.etree.XMLSyntaxError as e:
                 return ValidationResult([u'Invalid XML ({})'.format(e)])
 
-        elif isinstance(xml, lxml.etree.Element):
+        elif isinstance(xml, lxml.etree._Element):
             root = xml
+
         else:
             raise TypeError('Unsupported type {}'.format(type(xml)))
 
