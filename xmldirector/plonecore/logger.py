@@ -5,6 +5,7 @@
 # (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
+import uuid
 import logging
 import datetime
 import pprint
@@ -47,6 +48,13 @@ class PersistentLoggerAdapter(object):
     def entries(self, min_datetime=None, max_datetime=None):
         return self.annotations.values(min_datetime, max_datetime)
 
+    def entry_by_uuid(self, target_uuid):
+        """ Find a logger entry by uuid """
+        for entry in self.entries:
+            if target_uuid == entry.get('uuid'):
+                return entry
+        raise ValueError(u'No log entry with UUID {} found'.format(target_uuid))
+
     def __len__(self):
         return len(self.entries)
 
@@ -74,6 +82,7 @@ class PersistentLoggerAdapter(object):
                  username=plone.api.user.get_current().getUserName(),
                  level=level,
                  details=details,
+                 uuid=str(uuid.uuid1()),
                  comment=comment)
         annotations[d['date']] = d
         annotations._p_changed = 1

@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.4.1 (unreleased)
+------------------
+- added entry_by_uuid() to PersistentLogAdapter API
+
 0.4.0 (2015-02-18)
 ------------------
 - added @@transformer-registery view
