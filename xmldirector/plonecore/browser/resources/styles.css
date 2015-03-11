@@ -101,39 +101,39 @@ a.file:before {
 }
 
 
-a.file[href$='.xml']:before {
+a.file[href*='.xml']:before {
     background-image: url(++resource++xmldirector.plonecore/images/svg/xml5.svg) !important;
 }
 
-a.file[href$='.html']:before {
+a.file[href*='.html']:before {
     background-image: url(++resource++xmldirector.plonecore/images/svg/html9.svg) !important;
 }
 
-a.file[href$='.pdf']:before {
+a.file[href*='.pdf']:before {
     background-image: url(++resource++xmldirector.plonecore/images/svg/pdf19.svg) !important;
 }
 
-a.file[href$='.css']:before {
+a.file[href*='.css']:before {
     background-image: url(++resource++xmldirector.plonecore/images/svg/css5.svg) !important;
 }
 
-a.file[href$='.png']:before {
+a.file[href*='.png']:before {
     background-image: url(++resource++xmldirector.plonecore/images/svg/png3.svg) !important;
 }
 
-a.file[href$='.gif']:before {
+a.file[href*='.gif']:before {
     background-image: url(++resource++xmldirector.plonecore/images/svg/gif3.svg) !important;
 }
 
-a.file[href$='.jpg']:before {
+a.file[href*='.jpg']:before {
     background-image: url(++resource++xmldirector.plonecore/images/svg/jpg3.svg) !important;
 }
 
-a.file[href$='.svg']:before {
+a.file[href*='.svg']:before {
     background-image: url(++resource++xmldirector.plonecore/images/svg/svg1.svg) !important;
 }
 
-a.file[href$='.docx']:before {
+a.file[href*='.docx']:before {
     background-image: url(++resource++xmldirector.plonecore/images/svg/docx.svg) !important;
 }
 
