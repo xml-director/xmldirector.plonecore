@@ -7,6 +7,7 @@
 
 
 import os
+import time
 import fs.opener
 import datetime
 import operator
@@ -57,6 +58,7 @@ class ValidatorRegistry(object):
             base, ext = os.path.splitext(name)
 
             key = '{}::{}'.format(family, name)
+            ts = time.time()
             if ext == '.dtd':
                 with handle.open(name, 'rb') as fp:
                     validator = lxml.etree.DTD(fp)
@@ -90,7 +92,7 @@ class ValidatorRegistry(object):
                 info=handle.getinfo(name),
                 type=validator_type,
                 registered=datetime.datetime.utcnow())
-            LOG.info('Registered ({}, {})'.format(key, fullname))
+            LOG.info('Registered ({}, {}), duration: {:0.3f} seconds'.format(key, fullname, time.time() - ts))
 
     def get_schema(self, family, name):
         """ Return a pre-validator DTD/schema/RelaxNG/Schematron """
