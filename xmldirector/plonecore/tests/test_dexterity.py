@@ -69,13 +69,13 @@ class BasicTests(TestBase):
             os.path.join(os.path.dirname(__file__), 'sample.jpg'), 'rb').read()
         named_image = NamedImage()
         named_image.data = img_data
-        named_image.filename = u'test.jpg'
+        named_image.filename = u'üöä.jpg'
         named_image.contentType = 'image/jpg'
         self.doc.xml_set('xml_image', named_image)
 
         named_image2 = self.doc.xml_get('xml_image')
         self.assertEqual(named_image2.data, img_data)
-        self.assertEqual(named_image2.filename, u'test.jpg')
+        self.assertEqual(named_image2.filename, u'üöä.jpg')
         self.assertEqual(named_image2.contentType, 'image/jpg')
 
     def test_xml_binary(self):
@@ -86,13 +86,13 @@ class BasicTests(TestBase):
             os.path.join(os.path.dirname(__file__), 'sample.jpg'), 'rb').read()
         named_file = NamedFile()
         named_file.data = img_data
-        named_file.filename = u'test.jpg'
+        named_file.filename = u'üöä.jpg'
         named_file.contentType = 'image/jpg'
         self.doc.xml_set('xml_binary', named_file)
 
         named_file2 = self.doc.xml_get('xml_binary')
         self.assertEqual(named_file2.data, img_data)
-        self.assertEqual(named_file2.filename, u'test.jpg')
+        self.assertEqual(named_file2.filename, u'üöä.jpg')
         self.assertEqual(named_file2.contentType, 'image/jpg')
 
     def test_xml_binary_set_None(self):

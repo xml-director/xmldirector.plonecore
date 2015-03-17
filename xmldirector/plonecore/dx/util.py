@@ -92,7 +92,8 @@ def metadata_to_xml(context, metadata={}):
             xml.append(
                 u'<value name="{}" type="{}">{}</value>'.format(k, k, v))
     xml.append(u'</xmldirector-metadata>')
-    return '\n'.join(xml)
+    xml = '\n'.join(xml)
+    return xml.encode('utf8')
 
 
 def xml_to_metadata(xml):
