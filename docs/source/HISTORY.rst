@@ -6,6 +6,7 @@ Changelog
 - added entry_by_uuid() to PersistentLogAdapter API
 - fixed unicode issues with uploaded binaries/images with non-ascii 
   filenames
+- added 'version_suffix' parameter to parser_folder() of validator registry
 
 0.4.0 (2015-02-18)
 ------------------
