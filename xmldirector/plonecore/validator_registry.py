@@ -39,7 +39,7 @@ class ValidatorRegistry(object):
 
     registry = {}
 
-    def parse_folder(self, family, directory):
+    def parse_folder(self, family, directory, version_suffix=None):
         """ Parse a given folder for XML schema files (.xsd) or
             DTD files (.dtd).
         """
@@ -57,7 +57,12 @@ class ValidatorRegistry(object):
             fullname = os.path.join(directory, name)
             base, ext = os.path.splitext(name)
 
-            key = '{}::{}'.format(family, name)
+            registered_name = name
+            if version_suffix:
+                basename, ext = os.path.splitext(name)
+                registered_name = '{}-{}{}'.format(basename, version_suffix, ext)
+
+            key = '{}::{}'.format(family, registered_name)
             ts = time.time()
             if ext == '.dtd':
                 with handle.open(name, 'rb') as fp:
@@ -84,9 +89,10 @@ class ValidatorRegistry(object):
             if key in self.registry:
                 raise ValueError('{} already registered'.format(key))
 
+
             self.registry[key] = dict(
                 family=family,
-                name=name,
+                name=registered_name,
                 validation=validator,
                 path=fullname,
                 info=handle.getinfo(name),
