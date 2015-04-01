@@ -15,6 +15,15 @@
     font-weight: bold;
 }
 
+#logging td {
+    text-align: center !important;
+}
+
+#logging td.log-text {
+    text-align: left !important;
+}
+
+
 .status-ok {
     color: green;
     font-weight: bold;
