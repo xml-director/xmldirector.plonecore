@@ -1,12 +1,13 @@
 Changelog
 =========
 
-0.4.1 (unreleased)
+0.4.1 (2015-04-07)
 ------------------
 - added entry_by_uuid() to PersistentLogAdapter API
 - fixed unicode issues with uploaded binaries/images with non-ascii 
   filenames
 - added 'version_suffix' parameter to parser_folder() of validator registry
+- Javascript cleanup
 
 0.4.0 (2015-02-18)
 ------------------
