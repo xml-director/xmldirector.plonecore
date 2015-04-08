@@ -1,5 +1,17 @@
+if(require === undefined){
+  require = function(reqs, torun){
+    'use strict';
+    return torun(window.ace);
+  };
+}
+
+
+require([
+  'ace/ace'
+  ], function(ace){
 
 $(document).ready(function() {
+
     var num_editors = 0;
     var editors = [];
 
@@ -130,4 +142,6 @@ $(document).ready(function() {
             window.location.href = '@@xmldirector-connection-test'; 
         });
     }            
+});
+
 });
