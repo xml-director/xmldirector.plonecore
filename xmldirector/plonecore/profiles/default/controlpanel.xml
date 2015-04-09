@@ -6,7 +6,7 @@
     purge="False">
 
     <configlet
-        title="XML-Director core"
+        title="XML-Director Settings"
         action_id="xmldirector.plonecore"
         appId="xmldirector.plonecore"
         category="Products"
