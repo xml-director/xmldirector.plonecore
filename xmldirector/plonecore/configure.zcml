@@ -37,7 +37,7 @@
 
     <genericsetup:registerProfile
         name="default"
-        title="XML-Director plonecore - default profile"
+        title="XML-Director"
         directory="profiles/default"
         description="XML-Director core"
         provides="Products.GenericSetup.interfaces.EXTENSION"
@@ -45,7 +45,7 @@
 
     <genericsetup:registerProfile
         name="testing"
-        title="XML-Director plonecore - testing profile"
+        title="XML-Director (testing)"
         directory="profiles/testing"
         description="XML-Director core (testing)"
         provides="Products.GenericSetup.interfaces.EXTENSION"
