@@ -32,7 +32,6 @@ $(document).ready(function() {
 
     /* Edit mode */
     $('textarea.xmltext-field').each(function() {
-
         $(this).hide();
 
         var id = $(this).attr('id');
