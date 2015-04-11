@@ -41,7 +41,8 @@ setup(name='xmldirector.plonecore',
           'python-dateutil',
           'fs',
           'dexml',
-          'grampg'
+          'grampg',
+          'cssselect',
           # -*- Extra requirements: -*-
       ],
       tests_require=['zope.testing'],
