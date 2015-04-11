@@ -6,6 +6,10 @@ Changelog
 - updated lxml, cssselect dependencies to newest versions
 - analyzed XSD parsing slowness and logging/warning long-running
   XSD parsing
+- first serious take on Plone 5.0 compatibility on the UI level
+  (backend tests have been always passing but we had serious
+  UI issues until 5.0 beta 1 and there are still issues). Plone 5
+  beta support is work-in-progress and not fully completed.
 
 0.4.1 (2015-04-07)
 ------------------
