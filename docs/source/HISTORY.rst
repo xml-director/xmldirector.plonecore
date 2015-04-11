@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.4.2 (unreleased)
+0.4.2 (2015-04-11)
 ------------------
 - updated lxml, cssselect dependencies to newest versions
 - analyzed XSD parsing slowness and logging/warning long-running
