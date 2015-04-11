@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.4.2 (unreleased)
+------------------
+- updated lxml, cssselect dependencies to newest versions
+- analyzed XSD parsing slowness and logging/warning long-running
+  XSD parsing
+
 0.4.1 (2015-04-07)
 ------------------
 - added entry_by_uuid() to PersistentLogAdapter API
