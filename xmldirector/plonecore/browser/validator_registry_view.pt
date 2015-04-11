@@ -26,6 +26,18 @@
         <script type="text/javascript" tal:content="string:var ace_type='${result/ace_type}'"></script>
 
         <script type="text/javascript">
+
+        if(require === undefined){
+          require = function(reqs, torun){
+            'use strict';
+            return torun(window.ace);
+          };
+        }
+
+        require([
+          'ace/ace'
+          ], function(ace){
+
             $(document).ready(function() {        
                 var editor = ace.edit('editor');
                 editor.setTheme("ace/theme/chrome");
@@ -33,6 +45,7 @@
                 editor.setShowPrintMargin(false);
                 editor.setReadOnly(true);
             });
+        });        
         </script>
 
   </metal:content-core>
