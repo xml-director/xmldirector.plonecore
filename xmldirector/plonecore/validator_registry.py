@@ -89,6 +89,7 @@ class ValidatorRegistry(object):
             if key in self.registry:
                 raise ValueError('{} already registered'.format(key))
 
+            duration = time.time() - ts
 
             self.registry[key] = dict(
                 family=family,
@@ -96,9 +97,12 @@ class ValidatorRegistry(object):
                 validation=validator,
                 path=fullname,
                 info=handle.getinfo(name),
+                duration=duration,
                 type=validator_type,
                 registered=datetime.datetime.utcnow())
-            LOG.info('Registered ({}, {}), duration: {:0.3f} seconds'.format(key, fullname, time.time() - ts))
+            if duration > 3:
+                LOG.warn('Slow loading/parsing of ({}, {}), duration: {:0.3f} seconds'.format(key, fullname, duration))
+            LOG.info('Registered ({}, {}), duration: {:0.3f} seconds'.format(key, fullname, duration))
 
     def get_schema(self, family, name):
         """ Return a pre-validator DTD/schema/RelaxNG/Schematron """

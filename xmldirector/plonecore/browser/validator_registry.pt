@@ -40,6 +40,10 @@
                         <label i18n:translate="">Modified</label>: 
                         <span tal:content="python: view.human_readable_datetime(entry['info']['modified_time'])"/>
                         (<span tal:content="python: entry['info']['modified_time'].isoformat()" />)
+                        <br/>
+                        <label i18n:translate="">Parsing time</label>: 
+                        <span tal:content="python: '{:.3f}'.format(entry['duration'])"/>
+                        <span i18n:translate="">seconds</span>
                     </td>
                 </tr>
             </tbody>
