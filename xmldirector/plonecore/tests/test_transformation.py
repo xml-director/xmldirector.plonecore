@@ -7,7 +7,7 @@
 
 import os
 import codecs
-import defusedxml
+import defusedxml.lxml
 import lxml.etree
 import unittest2
 from xmldirector.plonecore.transformer_registry import TransformerRegistry

@@ -9,7 +9,7 @@
 import os
 import operator
 import tempfile
-import defusedxml
+import defusedxml.lxml
 import lxml.etree
 import fs.opener
 import datetime

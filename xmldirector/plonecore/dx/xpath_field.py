@@ -7,7 +7,7 @@
 
 import re
 import plone.api
-import defusedxml
+import defusedxml.lxml
 import lxml.etree
 
 from z3c.form.interfaces import IFormLayer

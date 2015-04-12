@@ -5,7 +5,7 @@
 # (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
-import defusedxml
+import defusedxml.lxml
 import lxml.etree
 import zope.interface
 from plone.indexer import indexer

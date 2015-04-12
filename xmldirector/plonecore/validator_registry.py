@@ -11,7 +11,7 @@ import time
 import fs.opener
 import datetime
 import operator
-import defusedxml
+import defusedxml.lxml
 import lxml.etree
 import lxml.isoschematron
 from zope.interface import implements

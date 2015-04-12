@@ -15,7 +15,7 @@ additional metadata related to the lock and/or application.
 import fs
 import uuid
 import dateutil
-import defusedxml
+import defusedxml.lxml
 import lxml.etree
 from datetime import datetime
 

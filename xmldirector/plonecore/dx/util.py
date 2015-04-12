@@ -6,7 +6,7 @@
 ################################################################
 
 import uuid
-import defusedxml
+import defusedxml.lxml
 import lxml.etree
 import dateutil
 import plone.api

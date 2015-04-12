@@ -6,7 +6,7 @@
 import os
 import time
 import tempfile
-import defusedxml
+import defusedxml.lxml
 import lxml.etree
 
 from zope.component import getUtility

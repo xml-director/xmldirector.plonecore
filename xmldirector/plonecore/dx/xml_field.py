@@ -7,7 +7,7 @@
 import os
 import hashlib
 import plone.api
-import defusedxml
+import defusedxml.lxml
 import lxml.etree
 
 import zope.schema

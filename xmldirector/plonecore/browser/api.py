@@ -6,7 +6,7 @@
 ################################################################
 
 import json
-import defusedxml
+import defusedxml.lxml
 import lxml.etree
 import urlparse
 import requests

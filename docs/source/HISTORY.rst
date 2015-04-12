@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.4.3 (unreleased)
+------------------
+- using defusedxml module for protecting XML Director against
+  malicious data and XML related security attacks
+
 0.4.2 (2015-04-11)
 ------------------
 - updated lxml, cssselect dependencies to newest versions
