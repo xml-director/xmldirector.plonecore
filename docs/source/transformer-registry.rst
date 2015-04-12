@@ -17,7 +17,7 @@ The transformer registry supports current the following transformations:
 - ``python`` - arbitrary Python methods that work on the given node tree
 
 Registering a transformer
-------------------------
+-------------------------
 
 Example::
 
