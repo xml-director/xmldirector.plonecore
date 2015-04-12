@@ -22,6 +22,7 @@ Contents:
    validator-registry.rst
    transformer-registry.rst
    transformation-pipeline.rst
+   security.rst
    pdf-generation.rst
    logging.rst
    testing.rst
