@@ -15,6 +15,7 @@ additional metadata related to the lock and/or application.
 import fs
 import uuid
 import dateutil
+import defusedxml
 import lxml.etree
 from datetime import datetime
 
@@ -84,7 +85,7 @@ class LockManager(object):
         except fs.errors.ResourceNotFoundError:
             raise LockError('No lock file found for {}'.format(path))
 
-        root = lxml.etree.fromstring(lock_xml)
+        root = defusedxml.lxml.fromstring(lock_xml)
         lock_info = dict()
         lock_info['mode'] = root.attrib['mode']
         lock_info['owner'] = root.attrib['owner']

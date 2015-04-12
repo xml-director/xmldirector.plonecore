@@ -7,6 +7,7 @@
 
 import re
 import plone.api
+import defusedxml
 import lxml.etree
 
 from z3c.form.interfaces import IFormLayer
@@ -159,7 +160,7 @@ class XMLXPathDataManager(AttributeDataManager):
             return dict(errors=[error], data=None)
 
         # apply xpath expression
-        root = lxml.etree.fromstring(xml)
+        root = defusedxml.lxml.fromstring(xml)
         try:
             result = root.xpath(xpath_expr)
         except lxml.etree.XPathEvalError as e:

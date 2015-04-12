@@ -42,6 +42,7 @@ setup(name='xmldirector.plonecore',
           'fs',
           'dexml',
           'grampg',
+          'defusedxml',
           'cssselect',
           # -*- Extra requirements: -*-
       ],
