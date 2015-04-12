@@ -60,7 +60,8 @@ class ValidatorRegistry(object):
             registered_name = name
             if version_suffix:
                 basename, ext = os.path.splitext(name)
-                registered_name = '{}-{}{}'.format(basename, version_suffix, ext)
+                registered_name = '{}-{}{}'.format(basename,
+                                                   version_suffix, ext)
 
             key = '{}::{}'.format(family, registered_name)
             ts = time.time()
@@ -101,8 +102,10 @@ class ValidatorRegistry(object):
                 type=validator_type,
                 registered=datetime.datetime.utcnow())
             if duration > 3:
-                LOG.warn('Slow loading/parsing of ({}, {}), duration: {:0.3f} seconds'.format(key, fullname, duration))
-            LOG.info('Registered ({}, {}), duration: {:0.3f} seconds'.format(key, fullname, duration))
+                LOG.warn(
+                    'Slow loading/parsing of ({}, {}), duration: {:0.3f} seconds'.format(key, fullname, duration))
+            LOG.info('Registered ({}, {}), duration: {:0.3f} seconds'.format(
+                key, fullname, duration))
 
     def get_schema(self, family, name):
         """ Return a pre-validator DTD/schema/RelaxNG/Schematron """

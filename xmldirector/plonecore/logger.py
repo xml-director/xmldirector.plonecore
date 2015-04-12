@@ -53,7 +53,8 @@ class PersistentLoggerAdapter(object):
         for entry in self.entries:
             if target_uuid == entry.get('uuid'):
                 return entry
-        raise ValueError(u'No log entry with UUID {} found'.format(target_uuid))
+        raise ValueError(
+            u'No log entry with UUID {} found'.format(target_uuid))
 
     def __len__(self):
         return len(self.entries)

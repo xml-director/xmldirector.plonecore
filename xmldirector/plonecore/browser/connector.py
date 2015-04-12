@@ -24,7 +24,6 @@ from progressbar import Bar, ETA, Percentage, ProgressBar, RotatingMarker
 from zope.interface import implements
 from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
-from App.config import getConfiguration
 from AccessControl.SecurityManagement import getSecurityManager
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
