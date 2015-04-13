@@ -73,5 +73,6 @@ must be like::
 
     http://localhost:6080/exist/webdav/db
 
-where ``6080`` is the port of your eXist-db installation.
+where ``6080`` is the port of your eXist-db installation (or ``8080`` for the default installation
+with demo data (``make build-demo``).
 
