@@ -7,7 +7,6 @@
 
 import uuid
 import defusedxml.lxml
-import lxml.etree
 import dateutil
 import plone.api
 from datetime import datetime

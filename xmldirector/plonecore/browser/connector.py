@@ -319,7 +319,7 @@ class Connector(BrowserView):
         """ Import WebDAV subfolder from an uploaded ZIP file """
 
         if clean_directories is None:
-            clean_directors = []
+            clean_directories = []
 
         handle = self.webdav_handle()
 

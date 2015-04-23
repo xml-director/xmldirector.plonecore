@@ -10,6 +10,7 @@ from plone.app.layout.viewlets import ViewletBase
 from xmldirector.plonecore.dx import util
 from xmldirector.plonecore.locking import LockManager
 from xmldirector.plonecore.dx.util import get_storage_path
+from xmldirector.plonecore.logger import LOG
 
 
 class Debug(ViewletBase):
@@ -26,6 +27,7 @@ class Debug(ViewletBase):
         try:
             lock_info = LM.get_lock(path)
         except Exception as e:
+            LOG.debug(e)
             lock_info = None
 
         return dict(lock_info=lock_info,

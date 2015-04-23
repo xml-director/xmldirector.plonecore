@@ -8,7 +8,6 @@
 import os
 import codecs
 import defusedxml.lxml
-import lxml.etree
 import unittest2
 from xmldirector.plonecore.transformer_registry import TransformerRegistry
 from xmldirector.plonecore.transformation import Transformer

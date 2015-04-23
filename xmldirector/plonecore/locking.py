@@ -16,7 +16,6 @@ import fs
 import uuid
 import dateutil
 import defusedxml.lxml
-import lxml.etree
 from datetime import datetime
 
 import plone.api

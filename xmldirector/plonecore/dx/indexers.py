@@ -6,7 +6,6 @@
 ################################################################
 
 import defusedxml.lxml
-import lxml.etree
 import zope.interface
 from plone.indexer import indexer
 
