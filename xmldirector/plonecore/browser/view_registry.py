@@ -15,7 +15,13 @@ _marker = object
 
 class Precondition(object):
 
-    def __init__(self, suffixes=[], view_names=[], view_handler=None):
+    def __init__(self, suffixes=None, view_names=None, view_handler=None):
+
+        if suffixes == None:
+            suffixes = []
+
+        if view_names == None:
+            view_names = []
 
         if not isinstance(suffixes, (list, tuple)):
             raise TypeError('"suffixes" must be list or tuple')

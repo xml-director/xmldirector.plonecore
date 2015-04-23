@@ -96,11 +96,13 @@ class LockManager(object):
             lock_info['custom'][node.attrib['name']] = node.text
         return lock_info
 
-    def lock(self, path, mode='shared', lifetime=None, custom={}):
+    def lock(self, path, mode='shared', lifetime=None, custom=None):
         """ Lock the given path in mode shared|exclusive.
             mode=shared - file can be read but not modified.
             mode=exclusive - file can not read, only written.
         """
+
+        custom = None or {}
 
         if mode not in ('shared', 'exclusive'):
             raise LockError(u'mode must be either "shared" or "exclusive"')

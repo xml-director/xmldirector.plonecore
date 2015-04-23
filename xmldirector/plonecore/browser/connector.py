@@ -302,8 +302,11 @@ class Connector(BrowserView):
         else:
             return zip_filename
 
-    def zip_import(self, zip_file=None, subpath=None, clean_directories=[]):
+    def zip_import(self, zip_file=None, subpath=None, clean_directories=None):
         """ Import WebDAV subfolder from an uploaded ZIP file """
+
+        if clean_directories == None:
+            clean_directors = []
 
         handle = self.webdav_handle()
 

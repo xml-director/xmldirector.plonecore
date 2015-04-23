@@ -61,8 +61,11 @@ def get_storage_path_parent(context):
     return '{}/{}'.format(plone_uid, storage_key[-4:])
 
 
-def metadata_to_xml(context, metadata={}):
+def metadata_to_xml(context, metadata=None):
     """ Convert dict with metadata into a metadata.xml file """
+
+    if metadata == None:
+        metadata = {}
 
     try:
         uid = context.UID()

@@ -15,7 +15,7 @@ from xmldirector.plonecore.logger import LOG
 
 class Transformer(object):
 
-    def __init__(self, steps=[], context=None, destdir=None, transformer_registry=None, **params):
+    def __init__(self, steps=None, context=None, destdir=None, transformer_registry=None, **params):
         """ Instantiate a new transformer chain with an arbitrary number of registered
             transformer steps. The chain ``steps`` is expressed as list of tuples
             [(family1, name1), (family2, name2), ...].
@@ -24,6 +24,9 @@ class Transformer(object):
             ``transformer_registry`` - a custom transformer_registry instance (needed for tests only).
             ``params`` - an arbitrary data dict
         """
+
+        if steps == None:
+            steps = []
         self.steps = steps
         self.context = context
         self.destdir = destdir

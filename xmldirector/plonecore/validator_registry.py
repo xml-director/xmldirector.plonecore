@@ -153,8 +153,8 @@ class ValidationResult(object):
 
     """ Encapsulates DTD/schema validation results """
 
-    def __init__(self, errors=[], validator=None):
-        self.errors = errors
+    def __init__(self, errors=None, validator=None):
+        self.errors = errors or []
         self.validator = validator
 
     def __nonzero__(self):
