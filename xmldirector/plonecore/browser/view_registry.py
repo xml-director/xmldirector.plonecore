@@ -17,10 +17,10 @@ class Precondition(object):
 
     def __init__(self, suffixes=None, view_names=None, view_handler=None):
 
-        if suffixes == None:
+        if suffixes is None:
             suffixes = []
 
-        if view_names == None:
+        if view_names is None:
             view_names = []
 
         if not isinstance(suffixes, (list, tuple)):

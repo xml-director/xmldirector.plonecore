@@ -65,7 +65,7 @@ def get_storage_path_parent(context):
 def metadata_to_xml(context, metadata=None):
     """ Convert dict with metadata into a metadata.xml file """
 
-    if metadata == None:
+    if metadata is None:
         metadata = {}
 
     try:

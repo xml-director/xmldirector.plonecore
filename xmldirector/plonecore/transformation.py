@@ -26,7 +26,7 @@ class Transformer(object):
             ``params`` - an arbitrary data dict
         """
 
-        if steps == None:
+        if steps is None:
             steps = []
         self.steps = steps
         self.context = context
