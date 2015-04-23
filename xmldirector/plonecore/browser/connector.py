@@ -52,10 +52,14 @@ class Dispatcher(BrowserView):
         # request/force_default_view can be used to force a redirect to the
         # default anonymous view
         force_default_view = self.request.form.get('force_default_view', 0)
-        if force_default_view and user.has_permission(permissions.View, self.context):
-            default_view = self.context.default_view_anonymous
-            return self.request.response.redirect(
-                '{}/{}'.format(self.context.absolute_url(), default_view))
+        if force_default_view 
+            if user.has_permission(permissions.View, self.context):
+                default_view = self.context.default_view_anonymous
+                return self.request.response.redirect(
+                    '{}/{}'.format(self.context.absolute_url(), default_view))
+            else:
+                LOG.error(u'Unable to redirect to anonymous default view of ({}, {})'.format(user.getUserName(), self.context.absolute_url(1)))
+                raise zExceptions.NotFound()
 
         if user.has_permission(permissions.ModifyPortalContent, self.context):
             default_view = self.context.default_view_authenticated
