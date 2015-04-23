@@ -6,6 +6,7 @@
 ################################################################
 
 import json
+import defusedxml.lxml
 import lxml.etree
 import urlparse
 import requests
@@ -84,7 +85,7 @@ class Validation(BrowserView):
         errors = []
         if xml:
             try:
-                lxml.etree.fromstring(xml)
+                defusedxml.lxml.fromstring(xml)
             except lxml.etree.ParseError as e:
                 errors.append(u'Parse error {}'.format(e))
         return json.dumps(errors)

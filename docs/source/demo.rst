@@ -34,15 +34,45 @@ http://your-host:12020/xml-director::
 Building and running XML Director yourself from scratch
 -------------------------------------------------------
 
+eXist-db installation
++++++++++++++++++++++
+
+XML Director has been tested with eXist-db 2.2 or higher.
+You can download eXist-db yourself directly from www.existdb.org
+and install it yourself. You need to remember the configured port and 
+username + password specified during the installation process.
+
+Another option is to use Docker (www.docker.org) for running eXist-db
+through a pre-configured Docker container image::
+
+    docker run -p 6080:8080 zopyx/existdb-2.2
+
+This will download and run eXist-db version 2.2 and expose its service
+on port 6080 (8080 is the port used internally by eXist-db).
+
+
+Plone installation
+++++++++++++++++++
+
+
 You can build XML Director (which is based on the CMS Plone) on any Linux system
 (or MacOS)::
 
     git clone https://github.com/xml-director/xmldirector.plonecore.git
     cd xmldirector.plonecore
     make build-demo
+    # or 'make build' if you want only the standard installation without demo data.
     bin/instance fg
 
 - Login into the site http://your-host:12020/manage using username ``admin`` and password ``admin``
 - click on ``Add Plone Site`` and choose the "XML Director demo" profile
 - after some seconds you will be redirected to the installed Plone site running XML Director
+
+Verify the ``XML Director settings`` within the Plone ``Site setup``. The webdav URL for eXist-db
+must be like::
+
+    http://localhost:6080/exist/webdav/db
+
+where ``6080`` is the port of your eXist-db installation (or ``8080`` for the default installation
+with demo data (``make build-demo``).
 

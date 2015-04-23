@@ -7,6 +7,7 @@
 import os
 import hashlib
 import plone.api
+import defusedxml.lxml
 import lxml.etree
 
 import zope.schema
@@ -37,7 +38,7 @@ def normalize_xml(xml):
 
 def xml_hash(xml):
     """ Get a stable SHA256 hash from XML string """
-    root = lxml.etree.fromstring(xml)
+    root = defusedxml.lxml.fromstring(xml)
     nodes = [unicode(node.tag) for node in root.iter()]
     return hashlib.sha256((u''.join(nodes)).encode('utf8')).hexdigest()
 
@@ -59,7 +60,7 @@ class XMLText(Text):
 
         if value:
             try:
-                lxml.etree.fromstring(normalize_xml(value))
+                defusedxml.lxml.fromstring(normalize_xml(value))
             except lxml.etree.XMLSyntaxError as e:
                 raise zope.interface.Invalid(u'XML syntax error {}'.format(e))
         return super(XMLText, self).validate(value)

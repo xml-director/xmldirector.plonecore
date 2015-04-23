@@ -17,7 +17,7 @@ The transformer registry supports current the following transformations:
 - ``python`` - arbitrary Python methods that work on the given node tree
 
 Registering a transformer
-------------------------
+-------------------------
 
 Example::
 
@@ -41,7 +41,7 @@ Retrieving a transformation
 Example::
 
     transformation = registry.get_transformation('demo', 'test-transformation')    
-    doc_root = lxml.etree.fromstring(some_xml_string)
+    doc_root = defused.xml.fromstring(some_xml_string)
     result = transformation(doc_root)$
     html = lxml.etree.tostring(result.getroot(), encoding=unicode)$ 
 

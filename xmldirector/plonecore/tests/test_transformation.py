@@ -7,6 +7,7 @@
 
 import os
 import codecs
+import defusedxml.lxml
 import lxml.etree
 import unittest2
 from xmldirector.plonecore.transformer_registry import TransformerRegistry
@@ -97,7 +98,7 @@ class BasicTests(unittest2.TestCase):
 
     def test_transformation_with_node(self):
         T = Transformer([('demo', 't1')], transformer_registry=self.registry)
-        result = T(lxml.etree.fromstring(sample_xml))
+        result = T(defusedxml.lxml.fromstring(sample_xml))
         self.assertTrue(result.count('<bar>') == 3)
 
     def test_transformation_improper_root(self):

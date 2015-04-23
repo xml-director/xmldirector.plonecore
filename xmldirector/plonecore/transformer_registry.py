@@ -9,6 +9,7 @@
 import os
 import operator
 import tempfile
+import defusedxml.lxml
 import lxml.etree
 import fs.opener
 import datetime
@@ -99,7 +100,7 @@ class SaxonWrapper(object):
 
         # house keeping
         shutil.rmtree(temp_d)
-        return lxml.etree.fromstring(xml_out)
+        return defusedxml.lxml.fromstring(xml_out)
 
 
 class TransformerRegistry(object):

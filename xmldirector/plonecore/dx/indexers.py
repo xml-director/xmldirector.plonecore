@@ -5,6 +5,7 @@
 # (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
+import defusedxml.lxml
 import lxml.etree
 import zope.interface
 from plone.indexer import indexer
@@ -42,7 +43,7 @@ def _SearchableText(obj):
         adapter = XMLFieldDataManager(context=obj, field=xml_field)
         xml = adapter.get()
         if xml:
-            root = lxml.etree.fromstring(xml)
+            root = defusedxml.lxml.fromstring(xml)
             for node in root.iter():
                 if node.text:
                     text = node.text.strip()

@@ -6,6 +6,7 @@
 ################################################################
 
 import uuid
+import defusedxml.lxml
 import lxml.etree
 import dateutil
 import plone.api
@@ -102,7 +103,7 @@ def metadata_to_xml(context, metadata=None):
 def xml_to_metadata(xml):
     """ Convert metadata.xml back to a dict """
 
-    root = lxml.etree.fromstring(xml)
+    root = defusedxml.lxml.fromstring(xml)
     result = {}
     for node in root.xpath('//value'):
         name = node.attrib['name']

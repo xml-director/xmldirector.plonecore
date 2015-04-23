@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.4.3 (unreleased)
+------------------
+- using defusedxml module for protecting XML Director against
+  malicious data and XML related security attacks
+- added support for 'force_default_view' URL parameter 
+  to enforce redirection to the default anonymous view
+
 0.4.2 (2015-04-11)
 ------------------
 - updated lxml, cssselect dependencies to newest versions
