@@ -102,7 +102,7 @@ class LockManager(object):
             mode=exclusive - file can not read, only written.
         """
 
-        custom = None or {}
+        custom = custom or {}
 
         if mode not in ('shared', 'exclusive'):
             raise LockError(u'mode must be either "shared" or "exclusive"')
