@@ -39,7 +39,7 @@
                       <td width="10%"tal:attributes="class string:level-${row/level}" tal:content="row/level" />
                       <td width="10%"tal:content="row/username" />
                       <td class="log-text">
-                          <span tal:content="row/comment" />
+                          <span tal:content="structure row/comment" />
                           <tal:if condition="row/details | nothing"> 
                               (<a class="action"
                                   i18n:translate="">
