@@ -164,6 +164,12 @@ input.xmlxpath-field {
     display: block;
 }
 
+/* Plone 5 specific settings */
+
+.plone-toolbar-left {
+    z-index: 100 !important;
+}
+
 /* Validator registry */
 
 .template-transformer-registry table,
