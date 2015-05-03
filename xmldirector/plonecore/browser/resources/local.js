@@ -13,8 +13,13 @@ require([
 
 $(document).ready(function() {
 
-    var num_editors = 0;
+    var plone5 = $('[data-bundle="plone-legacy"]').length > 0;
+    if (plone5) {
+        ace.config.set("basePath", $('body').attr('data-portal-url') + '/++resource++xmldirector.plonecore/ace-builds/src-min');
+    }
+
     var editors = [];
+    var num_editors = 0;
 
     /* View mode */
     $('.template-view .xmltext-field').each(function() {
@@ -55,7 +60,6 @@ $(document).ready(function() {
               $('#' + id + '-chars').text(xml.length + ' chars');
         });
         num_editors++;
-
     });
 
     /* Push XML content from editors back to textarea fields before submit */    
