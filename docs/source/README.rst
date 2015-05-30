@@ -66,13 +66,15 @@ subscribers and related technology.
 Requirements
 ------------
 
-- Plone 4.3 (Plone 5.0 support in progres)
+- Plone 4.3 (tested)
+  
+- Plone 5.0 (experimental, in progress)
 
 - Supported XML backends:
 
     - eXist-db 2.2 or higher
 
-    - or Base-X 8.0 beta (no support for V 7.X due to WebDAV bugs)  
+    - or Base-X 8.2 or higher
 
 - (un)supported/experimental WebDAV backends:
 
