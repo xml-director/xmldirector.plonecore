@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.0 (unreleased)
+1.0.0 (2015-05-30)
 ------------------
 - using defusedxml module for protecting XML Director against
   malicious data and XML related security attacks
