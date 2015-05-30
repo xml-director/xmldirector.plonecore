@@ -58,7 +58,9 @@ class Dispatcher(BrowserView):
                 return self.request.response.redirect(
                     '{}/{}'.format(self.context.absolute_url(), default_view))
             else:
-                LOG.error(u'Unable to redirect to anonymous default view of ({}, {})'.format(user.getUserName(), self.context.absolute_url(1)))
+                LOG.error(u'Unable to redirect to anonymous default view of ({}, {})'.format(
+                    user.getUserName(),
+                    self.context.absolute_url(1)))
                 raise zExceptions.NotFound()
 
         if user.has_permission(permissions.ModifyPortalContent, self.context):

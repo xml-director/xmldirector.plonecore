@@ -56,24 +56,11 @@ def copied_handler(obj, event):
         handle.copydir(storage_dir_original, storage_dir_copied)
 
 
-def version_handler(obj, event):
-    """ Copy XML resources to new object """
-
-    # Is this Dexterity content object related to XML resources?
-    if not util.is_xml_content(event.object):
-        return
-
-    return
-    registry = getUtility(IRegistry)
-    settings = registry.forInterface(IWebdavSettings)
-    if not settings.versioning_enabled:
-        return
-
-    context = event.object
-    handle = getUtility(IWebdavHandle).webdav_handle()
-    storage_path = util.get_storage_path(context)
-
-    for field in get_all_xml_fields(context):
-        content = xml_get(context, field.getName())
-        print field
-        print content
+#def version_handler(obj, event):
+#    """ Copy XML resources to new object """
+#
+#    # Is this Dexterity content object related to XML resources?
+#    if not util.is_xml_content(event.object):
+#        return
+#
+#    return

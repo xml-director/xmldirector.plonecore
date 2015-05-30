@@ -146,7 +146,11 @@ class TransformerRegistry(object):
                     xslt = lxml.etree.XML(fp.read())
                 except lxml.etree.XMLSyntaxError as e:
                     raise ValueError(
-                        'Transformation {}/{} could not be parsed ({}, {})'.format(family, transformer_name, e, transformer_path))
+                        'Transformation {}/{} could not be parsed ({}, {})'.format(
+                            family,
+                            transformer_name,
+                            e,
+                            transformer_path))
 
                 xslt_version = xslt.attrib.get('version', '1.0')
                 if xslt_version[0] != transformer_type[-1]:
@@ -158,7 +162,11 @@ class TransformerRegistry(object):
                         transform = lxml.etree.XSLT(xslt)
                     except lxml.etree.XSLTParseError as e:
                         raise ValueError(
-                            'Transformation {}/{} could not be parsed ({}, {})'.format(family, transformer_name, e, transformer_path))
+                            'Transformation {}/{} could not be parsed ({}, {})'.format(
+                                family,
+                                transformer_name,
+                                e,
+                                transformer_path))
                 else:
                     # XSLT2+3
                     transform = transformer_path
