@@ -25,9 +25,9 @@ RUN apt-get install -y \
     git-core  
 
 
-RUN useradd -u 5555 -ms /bin/bash plone
+RUN useradd -ms /bin/bash plone
 
-USER 5555 
+USER plone
 WORKDIR /home/plone
 
 RUN curl -LO http://downloads.sourceforge.net/exist/Stable/2.2/eXist-db-setup-2.2.jar
