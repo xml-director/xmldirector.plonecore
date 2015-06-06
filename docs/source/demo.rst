@@ -1,3 +1,5 @@
+.. _demo-installation:
+
 Installation & XML Director demo
 ================================
 
