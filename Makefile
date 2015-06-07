@@ -39,3 +39,6 @@ test-coverage:
 
 demo:
 	bin/instance run src/xmldirector.demo/democontent/setup-plone.py local
+
+demo-docker:
+	bin/instance run src/xmldirector.demo/democontent/setup-plone.py docker
