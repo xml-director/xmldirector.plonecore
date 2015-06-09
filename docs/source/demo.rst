@@ -1,8 +1,9 @@
-XML Director demo
-=================
+.. _demo-installation:
+
+Installation & XML Director demo
+================================
 
 You have multiple options for trying out XML Director and its features yourself.
-
 
 Hosted XML Director demo
 ------------------------

@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.0.1 (unreleased)
+------------------
+
+- updated Saxon 6.0.6HE
+
+
 1.0.0 (2015-05-30)
 ------------------
 - using defusedxml module for protecting XML Director against

@@ -85,9 +85,11 @@ Requirements
 Installation
 ------------
 
-Add ``xmldirector.plonecore`` to the ``eggs`` and ``zcml`` options of your buildout
-configuration, re-run buildout and install the connector through the add-ons
-management of Plone.
+Add ``xmldirector.plonecore`` to the ``eggs`` and ``zcml`` options of your
+buildout configuration, re-run buildout and install the connector through the
+add-ons management of Plone. See also :ref:`demo-installation`.  for details
+about using the XML Diector demo using Docker or how to setup XML Director from
+scratch using the source code.
 
 Configuration
 -------------
