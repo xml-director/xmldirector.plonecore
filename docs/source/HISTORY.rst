@@ -5,7 +5,8 @@ Changelog
 ------------------
 
 - updated Saxon 6.0.6HE
-
+- added get_last_user(), get_last_date() to logger API for
+  getting hold of the username performing the last logger entry
 
 1.0.0 (2015-05-30)
 ------------------

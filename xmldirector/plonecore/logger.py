@@ -26,6 +26,8 @@ urllib3_log.setLevel(logging.WARNING)
 
 
 LOG_KEY = 'xmldirector.plonecore.connector.log'
+LOG_LAST_USER = 'xmldirector.plonecore.connector.lastuser'
+LOG_LAST_DATE = 'xmldirector.plonecore.connector.lastdate'
 
 
 class IPersistentLogger(zope.interface.Interface):
@@ -87,7 +89,17 @@ class PersistentLoggerAdapter(object):
                  comment=comment)
         annotations[d['date']] = d
         annotations._p_changed = 1
+        IAnnotations(self.context)[LOG_LAST_USER] = plone.api.user.get_current().getUserName()
+        IAnnotations(self.context)[LOG_LAST_DATE] = datetime.datetime.utcnow()
         self.context.setModificationDate(DateTime())
+
+    def get_last_user(self):
+        """ Return username of last user """
+        return IAnnotations(self.context).get(LOG_LAST_USER)
+
+    def get_last_date(self):
+        """ Return datetime of last time used """
+        return IAnnotations(self.context).get(LOG_LAST_date)
 
     def clear(self):
         """ Clear all logger entries """
