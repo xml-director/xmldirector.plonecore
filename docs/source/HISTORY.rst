@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.1 (unreleased)
+1.0.2 (2015-06-12)
 ------------------
 
 - updated Saxon 6.0.6HE
