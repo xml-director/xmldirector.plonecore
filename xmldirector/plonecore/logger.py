@@ -99,7 +99,7 @@ class PersistentLoggerAdapter(object):
 
     def get_last_date(self):
         """ Return datetime of last time used """
-        return IAnnotations(self.context).get(LOG_LAST_date)
+        return IAnnotations(self.context).get(LOG_LAST_DATE)
 
     def clear(self):
         """ Clear all logger entries """
