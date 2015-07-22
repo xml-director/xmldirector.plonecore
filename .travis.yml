@@ -32,7 +32,7 @@ script:
 notifications:
   irc:
     channels:
-    - irc.freenode.org#sprint
+    - irc.freenode.org#xml-director
     template:
     - '%{repository}/#%{build_number}/%{branch} (%{author}): %{message} %{build_url}'
 
