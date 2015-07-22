@@ -67,11 +67,7 @@
                   });
 
 
-                try {
-                    order = DT_ORDER_BY;
-                } catch(e) {
-                    order = [0, "asc"];
-                }
+                var order = [0, "desc"];
 
                 var table = $('#logging').DataTable({
 
