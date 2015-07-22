@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.0.3 (2015-07-22)
+------------------
+
+- using DataTables.net for connector logging view instead of TableUtils JS
+
 1.0.2 (2015-06-12)
 ------------------
 

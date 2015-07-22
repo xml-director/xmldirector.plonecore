@@ -23,6 +23,13 @@
     text-align: left !important;
 }
 
+#logging tr:nth-child(even) {
+    background-color: #ddd;
+}
+
+#logging tr:nth-child(odd) {
+    background-color: #eee;
+}
 
 .status-ok {
     color: green;

@@ -7,11 +7,18 @@
       i18n:domain="xmldirector.plonecore">
 <body>
 
+    <metal:slot fill-slot="style_slot">
+        <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/DataTables/media/css/jquery.dataTables.css" />
+        <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/DataTables/extensions/ColVis/css/dataTables.colVis.min.css" />
+        <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/DataTables/extensions/FixedHeader/css/dataTables.fixedHeader.min.css" />
+    </metal:slot>
 
-<metal:main fill-slot="javascript_head_slot">
-    <script type="text/javascript" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/tableutils/js/tableutils.js"></script>
-    <link rel="stylesheet" type="text/html" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/tableutils/css/tableutils.css"/>
-</metal:main>
+    <metal:slot fill-slot="javascript_head_slot">
+        <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/DataTables/media/js/jquery.dataTables.js"></script>
+        <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/DataTables/extensions/ColVis/js/dataTables.colVis.min.js"></script>
+        <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/DataTables/extensions/FixedHeader/js/dataTables.fixedHeader.min.js"></script>
+        <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/DataTables/extensions/TableTools/js/dataTables.tableTools.min.js"></script>
+    </metal:slot>
 
 <metal:main fill-slot="content-core">
     <metal:content-core define-macro="content-core"
@@ -24,7 +31,7 @@
               No logger entries found
           </div>
 
-          <table class="listing" id="logging" tal:condition="rows">
+          <table id="logging" tal:condition="rows">
               <thead>
                   <tr>
                       <th width="15%" i18n:translate="">Date</th>
@@ -58,17 +65,57 @@
                   $('.action').click(function() {
                           $(this).siblings('pre').fadeToggle('fast');
                   });
-                  $('table').tableutils( {
-                                filter:true,
-                                fixHeader: { width: '100%', height: 600 },                 
-                                paginate: { type: 'numeric', pageSize: 20 },             
-                                availablePageSizes: [10, 20, 50, 100, 500],
-                                columns: [                     
-                                       { label: 'Date' },
-                                       { label: 'Level' },
-                                       { label: 'Username' },
-                                       { label: 'Comment' }
-                                ]
+
+
+                try {
+                    order = DT_ORDER_BY;
+                } catch(e) {
+                    order = [0, "asc"];
+                }
+
+                var table = $('#logging').DataTable({
+
+        "columnDefs": [ {
+                  "targets": 'no-sort',
+                            "orderable": false,
+                                } ],
+                pageLength: 50,
+                autoWidth: false,
+                initComplete: function(settings, json) {
+                    $('#listing').show();
+                },
+                order: order,
+                aLengthMenu: [25, 50, 100, 250, 500, 750, 1000, 2000, 3000],
+                // dom: 'TC<"clear">lfrtip',
+                dom: 'C<"clear">lfrtip',
+                //    tableTools: {
+                //"sSwfPath": "++resource++zchl.policy/DataTables-1.10.7/extensions/TableTools/swf/copy_csv_xls_pdf.swf"
+                //},
+                language: {
+                    "sEmptyTable":      "Keine Daten in der Tabelle vorhanden",
+                    "sInfo":            "_START_ bis _END_ von _TOTAL_ Einträgen",
+                    "sInfoEmpty":       "0 bis 0 von 0 Einträgen",
+                    "sInfoFiltered":    "(gefiltert von _MAX_ Einträgen)",
+                    "sInfoPostFix":     "",
+                    "sInfoThousands":   ".",
+                    "sLengthMenu":      "_MENU_ Einträge anzeigen",
+                    "sLoadingRecords":  "Wird geladen...",
+                    "sProcessing":      "Bitte warten...",
+                    "sSearch":          "Suchen",
+                    "sZeroRecords":     "Keine Einträge vorhanden.",
+                    "oPaginate": {
+                        "sFirst":       "Erste",
+                        "sPrevious":    "Zurück",
+                        "sNext":        "Nächste",
+                        "sLast":        "Letzte"
+                    },
+                    "oAria": {
+                        "sSortAscending":  ": aktivieren, um Spalte aufsteigend zu sortieren",
+                        "sSortDescending": ": aktivieren, um Spalte absteigend zu sortieren"
+                    }
+                }
+
+
                 });
               });
           </script>
