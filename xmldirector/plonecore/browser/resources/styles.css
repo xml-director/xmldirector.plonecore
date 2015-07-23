@@ -188,5 +188,5 @@ input.xmlxpath-field {
 
 /* Control Panel */
 .icon-controlpanel-xmldirector_plonecore:before {
-    content: content('++resource++xmldirector.plonecore/circle-logo.png') !important;
+    content: url('++resource++xmldirector.plonecore/circle-logo.png') !important;
 }
