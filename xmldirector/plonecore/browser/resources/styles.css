@@ -24,11 +24,12 @@
 }
 
 #logging tr:nth-child(even) {
-    background-color: #ddd;
+    background-color: #ddd !important;
 }
 
+#logging tr.odd,
 #logging tr:nth-child(odd) {
-    background-color: #eee;
+    background-color: #eee !important;
 }
 
 .status-ok {

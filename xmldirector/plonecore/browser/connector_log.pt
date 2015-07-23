@@ -42,7 +42,9 @@
               </thead>
               <tbody>
                   <tr tal:repeat="row python: reversed(rows)">
-                      <td width="15%" tal:content="python: toLocalizedTime(row['date'], True)" />
+                      <td width="15%"
+                          tal:attributes="data-order python: row['date'].isoformat()"
+                          tal:content="python: toLocalizedTime(row['date'], True)" />
                       <td width="10%"tal:attributes="class string:level-${row/level}" tal:content="row/level" />
                       <td width="10%"tal:content="row/username" />
                       <td class="log-text">
