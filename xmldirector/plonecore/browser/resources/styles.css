@@ -185,3 +185,8 @@ input.xmlxpath-field {
 .template-validator-registry-view #editor {
     margin-top: 2em;
 }
+
+/* Control Panel */
+.icon-controlpanel-xmldirector_plonecore:before {
+    content: content('++resource++xmldirector.plonecore/circle-logo.png') !important;
+}
