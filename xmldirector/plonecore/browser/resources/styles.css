@@ -186,7 +186,8 @@ input.xmlxpath-field {
     margin-top: 2em;
 }
 
-/* Control Panel */
+.icon-controlpanel-xmldirector_plonecore_lockmanager:before,
+.icon-controlpanel-xmldirector_plonecore_introspection:before, 
 .icon-controlpanel-xmldirector_plonecore:before {
-    content: url('++resource++xmldirector.plonecore/circle-logo.png') !important;
+    content: '\e846';
 }
