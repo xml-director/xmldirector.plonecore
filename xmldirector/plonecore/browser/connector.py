@@ -309,7 +309,6 @@ class Connector(BrowserView):
                     continue
             for filename in filenames:
                 z_filename = fs.path.join(dirname, filename)
-                print filename
                 with handle.open(z_filename, 'rb') as fp:
                     zf.writestr(z_filename, fp.read())
         zf.close()
