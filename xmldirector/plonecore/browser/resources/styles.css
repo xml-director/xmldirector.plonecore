@@ -17,18 +17,22 @@
 
 #logging td {
     text-align: center !important;
+    vertical-align: top;
 }
 
 #logging td.log-text {
     text-align: left !important;
 }
 
-#logging tr:nth-child(even) {
-    background-color: #ddd;
+
+#logging tbody tr.even,
+#logging tbody tr:nth-child(even) {
+    background-color: #dddddd !important;
 }
 
-#logging tr:nth-child(odd) {
-    background-color: #eee;
+#logging tbody tr.odd,
+#logging tbody tr:nth-child(odd) {
+    background-color: #eeeeee !important;
 }
 
 .status-ok {

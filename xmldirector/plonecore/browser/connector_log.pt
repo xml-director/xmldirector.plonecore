@@ -42,7 +42,9 @@
               </thead>
               <tbody>
                   <tr tal:repeat="row python: reversed(rows)">
-                      <td width="15%" tal:content="python: toLocalizedTime(row['date'], True)" />
+                      <td width="15%"
+                          tal:attributes="data-order python: row['date'].isoformat()"
+                          tal:content="python: toLocalizedTime(row['date'], True)" />
                       <td width="10%"tal:attributes="class string:level-${row/level}" tal:content="row/level" />
                       <td width="10%"tal:content="row/username" />
                       <td class="log-text">
@@ -58,6 +60,14 @@
                           </tal:if>
                   </tr>
               </tbody>
+              <tfoot>
+                  <tr>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                  </tr>
+              </tfoot>
           </table>
 
           <script type="text/javascript">
@@ -69,50 +79,63 @@
 
                 var order = [0, "desc"];
 
+                  $('#logging tfoot th').each( function () {
+                          var title = $('#logging thead th').eq( $(this).index() ).text();
+                                  $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+                                      } );
+
                 var table = $('#logging').DataTable({
 
-        "columnDefs": [ {
-                  "targets": 'no-sort',
-                            "orderable": false,
-                                } ],
-                pageLength: 50,
-                autoWidth: false,
-                initComplete: function(settings, json) {
-                    $('#listing').show();
-                },
-                order: order,
-                aLengthMenu: [25, 50, 100, 250, 500, 750, 1000, 2000, 3000],
-                // dom: 'TC<"clear">lfrtip',
-                dom: 'C<"clear">lfrtip',
-                //    tableTools: {
-                //"sSwfPath": "++resource++zchl.policy/DataTables-1.10.7/extensions/TableTools/swf/copy_csv_xls_pdf.swf"
-                //},
-                language: {
-                    "sEmptyTable":      "Keine Daten in der Tabelle vorhanden",
-                    "sInfo":            "_START_ bis _END_ von _TOTAL_ Einträgen",
-                    "sInfoEmpty":       "0 bis 0 von 0 Einträgen",
-                    "sInfoFiltered":    "(gefiltert von _MAX_ Einträgen)",
-                    "sInfoPostFix":     "",
-                    "sInfoThousands":   ".",
-                    "sLengthMenu":      "_MENU_ Einträge anzeigen",
-                    "sLoadingRecords":  "Wird geladen...",
-                    "sProcessing":      "Bitte warten...",
-                    "sSearch":          "Suchen",
-                    "sZeroRecords":     "Keine Einträge vorhanden.",
-                    "oPaginate": {
-                        "sFirst":       "Erste",
-                        "sPrevious":    "Zurück",
-                        "sNext":        "Nächste",
-                        "sLast":        "Letzte"
+                    columnDefs: [ {
+                      "targets": 'no-sort',
+                                 "orderable": false,
+                    } ],
+                    pageLength: 50,
+                    autoWidth: false,
+                    initComplete: function(settings, json) {
+                        $('#listing').show();
                     },
-                    "oAria": {
-                        "sSortAscending":  ": aktivieren, um Spalte aufsteigend zu sortieren",
-                        "sSortDescending": ": aktivieren, um Spalte absteigend zu sortieren"
+                    order: order,
+                    aLengthMenu: [25, 50, 100, 250, 500, 750, 1000, 2000, 3000],
+                    // dom: 'TC<"clear">lfrtip',
+                    dom: 'C<"clear">lfrtip',
+                       tableTools: {
+                    "sSwfPath": "++resource++zchl.policy/DataTables/extensions/TableTools/swf/copy_csv_xls_pdf.swf"
+                    },
+                    language: {
+                        "sEmptyTable":      "Keine Daten in der Tabelle vorhanden",
+                        "sInfo":            "_START_ bis _END_ von _TOTAL_ Einträgen",
+                        "sInfoEmpty":       "0 bis 0 von 0 Einträgen",
+                        "sInfoFiltered":    "(gefiltert von _MAX_ Einträgen)",
+                        "sInfoPostFix":     "",
+                        "sInfoThousands":   ".",
+                        "sLengthMenu":      "_MENU_ Einträge anzeigen",
+                        "sLoadingRecords":  "Wird geladen...",
+                        "sProcessing":      "Bitte warten...",
+                        "sSearch":          "Suchen",
+                        "sZeroRecords":     "Keine Einträge vorhanden.",
+                        "oPaginate": {
+                            "sFirst":       "Erste",
+                            "sPrevious":    "Zurück",
+                            "sNext":        "Nächste",
+                            "sLast":        "Letzte"
+                        },
+                        "oAria": {
+                            "sSortAscending":  ": aktivieren, um Spalte aufsteigend zu sortieren",
+                            "sSortDescending": ": aktivieren, um Spalte absteigend zu sortieren"
+                        }
                     }
-                }
-
-
                 });
+
+                table.columns().every( function () {
+                    var that = this;
+                    $( 'input', this.footer() ).on( 'keyup change', function () {
+                        that
+                            .search( this.value )
+                            .draw();
+                    } );
+                } );
+
               });
           </script>
 
