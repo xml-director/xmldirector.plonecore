@@ -5,6 +5,8 @@ Changelog
 ------------------
 
 - some CSS styles fine-tuning
+- added optional ``dirs`` parameter to ZIP export API for 
+  exporting only a subset of the export directory structure
 
 1.0.4 (2015-07-22)
 ------------------
