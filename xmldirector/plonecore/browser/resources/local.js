@@ -145,6 +145,17 @@ $(document).ready(function() {
         button2.on('click', function() {
             window.location.href = '@@xmldirector-connection-test'; 
         });
+
+        var button3 = button.clone();
+        button3.attr('value', 'Install Exist-DB scripts');
+        button3.attr('name', 'form-button-install-scripts');
+        button3.attr('id', 'form-button-install-scripts');
+        button3.attr('type', 'button');
+        button3.attr('style', 'margin-left: 1em');
+        button3.insertAfter(button2);
+        button3.on('click', function() {
+            window.location.href = '@@xmldirector-install-scripts'; 
+        });
     }            
 });
 
