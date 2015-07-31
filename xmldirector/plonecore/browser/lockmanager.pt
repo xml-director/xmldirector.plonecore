@@ -17,6 +17,10 @@
     <metal:content-core define-macro="content-core"
         tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime">
 
+      <a tal:attributes="href string:$portal_url//@@overview-controlpanel" i18n:translate="">
+          Back to Plone configuration
+      </a>
+
       <h2 i18n:translate="">Lock Manager</h2>
       <tal:def define="result view/entries"> 
 
