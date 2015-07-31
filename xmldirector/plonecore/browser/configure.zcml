@@ -6,7 +6,6 @@
     <!-- load permissions.zcml -->
     <include package="Products.CMFCore" />
 
-
     <browser:page
         for="*"
         name="lock"
@@ -151,6 +150,14 @@
         for="Products.CMFPlone.interfaces.IPloneSiteRoot"
         class=".controlpanel.DBSettingsControlPanel"
         template="connection_test.pt"
+        permission="cmf.ManagePortal"
+    />
+
+    <browser:page
+        name="xmldirector-install-scripts"
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        class=".controlpanel.Installer"
+        attribute="install_scripts"
         permission="cmf.ManagePortal"
     />
 
