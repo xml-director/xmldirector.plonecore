@@ -6,12 +6,16 @@
 ################################################################
 
 
+import os
 import hurry
 import inspect
 import humanize
 import datetime
 import fs.opener
 import fs.errors
+import pkg_resources
+
+import plone.api
 from zope.component import getUtility
 from plone.app.registry.browser import controlpanel
 from Products.Five.browser import BrowserView
@@ -130,3 +134,23 @@ class TransformerRegistry(BrowserView):
     def human_readable_filesize(self, num_bytes):
         """ Return num_bytes as human readable representation """
         return hurry.filesize.size(num_bytes, hurry.filesize.alternative)
+
+
+class Installer(BrowserView):
+
+    def install_scripts(self):
+
+
+        service = getUtility(IWebdavHandle)
+        handle = service.webdav_handle()
+            
+        for exist_name, local_name in [('scripts/all-locks.xql', 'scripts/existdb/all-locks.xql')]:
+            src = pkg_resources.resource_string('xmldirector.plonecore', local_name)
+            dirname = os.path.dirname(exist_name)
+            if not handle.exists(dirname):
+                handle.makedir(dirname, True, True)
+            with handle.open(exist_name, 'wb') as fp:
+                fp.write(src)
+        msg = u'Exist-DB specific scripts installed'
+        self.context.plone_utils.addPortalMessage(msg)
+        self.request.response.redirect(plone.api.portal.get().absolute_url() + '/@@xmldirector-core-settings')
