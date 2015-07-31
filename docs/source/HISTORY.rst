@@ -7,6 +7,10 @@ Changelog
 - some CSS styles fine-tuning
 - added optional ``dirs`` parameter to ZIP export API for 
   exporting only a subset of the export directory structure
+- added control panel functionality for installing Exist-DB
+  specific RESTXQ script (e.g. all-locks.xql which is needed
+  by the lockmanager introspection control panel for getting
+  hold of all locks).
 
 1.0.4 (2015-07-22)
 ------------------
