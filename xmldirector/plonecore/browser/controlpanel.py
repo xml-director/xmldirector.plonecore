@@ -7,6 +7,7 @@
 
 
 import os
+import json
 import hurry
 import inspect
 import humanize
@@ -17,6 +18,7 @@ import pkg_resources
 
 import plone.api
 from zope.component import getUtility
+from plone.registry.interfaces import IRegistry
 from plone.app.registry.browser import controlpanel
 from Products.Five.browser import BrowserView
 
@@ -40,6 +42,20 @@ class DBSettingsEditForm(controlpanel.RegistryEditForm):
 
 class DBSettingsControlPanel(controlpanel.ControlPanelFormWrapper):
     form = DBSettingsEditForm
+
+    @property
+    def settings(self):
+        """ Returns setting as dict """
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(IWebdavSettings)
+        result = dict()
+        for name in settings.__schema__:
+            result[name] = getattr(settings, name)
+        return result
+
+    def settings_json(self):
+        """ Returns setting as JSON """
+        return json.dumps(self.settings)
 
     def connection_test(self):
 
@@ -139,7 +155,6 @@ class TransformerRegistry(BrowserView):
 class Installer(BrowserView):
 
     def install_scripts(self):
-
 
         service = getUtility(IWebdavHandle)
         handle = service.webdav_handle()
