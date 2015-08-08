@@ -138,10 +138,13 @@ class Connector(BrowserView):
     def webdav_handle_root(self):
         return self.webdav_handle(root=True)
 
-    def redirect(self, message=None, level='info'):
+    def redirect(self, message=None, level='info', subpath=None):
         if message:
             self.context.plone_utils.addPortalMessage(message, level)
-        return self.request.response.redirect(self.context.absolute_url())
+        url = self.context.absolute_url()
+        if subpath:
+            url = '{}/@@view/{}'.format(url, subpath)
+        return self.request.response.redirect(url)
 
     def __call__(self, *args, **kw):
 
@@ -381,21 +384,25 @@ class Connector(BrowserView):
                 # import all files from ZIP into WebDAV
                 count = 0
                 for i, name in enumerate(zip_handle.walkfiles()):
+
                     if show_progress:
                         pbar.update(i)
 
-                    dirname = '/'.join(name.split('/')[:-1])
+                    target_filename = name.lstrip('/')
+                    if subpath:
+                        target_filename = '{}/{}'.format(subpath, target_filename)
 
+                    target_dirname = '/'.join(target_filename.split('/')[:-1])
                     try:
                         handle.makedir(
-                            dirname, recursive=True, allow_recreate=True)
+                            target_dirname, recursive=True, allow_recreate=True)
                     except Exception as e:
                         LOG.error(
                             'Failed creating {} failed ({})'.format(dirname, e))
 
                     LOG.info('ZIP filename({})'.format(name))
 
-                    out_fp = handle.open(name.lstrip('/'), 'wb')
+                    out_fp = handle.open(target_filename, 'wb')
                     zip_fp = zip_handle.open(name, 'rb')
                     out_fp.write(zip_fp.read())
                     out_fp.close()
@@ -411,7 +418,7 @@ class Connector(BrowserView):
 
         self.logger.log(
             u'ZIP file imported ({}, {} files)'.format(zip_filename, count))
-        return self.redirect(_(u'Uploaded ZIP archive imported'))
+        return self.redirect(_(u'Uploaded ZIP archive imported'), subpath=subpath)
 
 
 class AceEditor(Connector):

@@ -11,6 +11,8 @@ Changelog
   specific RESTXQ script (e.g. all-locks.xql which is needed
   by the lockmanager introspection control panel for getting
   hold of all locks).
+- ZIP import now works inside the given subdirectory and no longer
+  only on the top level directory of the connector
 
 1.0.4 (2015-07-22)
 ------------------
