@@ -247,6 +247,9 @@ class Connector(BrowserView):
     def rename_collection(self, subpath, name, new_name):
         """ Rename a collection """
 
+        if not new_name:
+            raise ValueError(u'No new name given')
+
         handle = self.webdav_handle(subpath)
         if handle.exists(name):
             handle.rename(name, new_name)
