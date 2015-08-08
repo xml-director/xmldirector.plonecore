@@ -55,6 +55,14 @@
 
     <browser:page
         for="xmldirector.plonecore.connector.IConnector"
+        name="remove-from-collection"
+        attribute="remove_from_collection"
+        class=".connector.Connector"
+        permission="cmf.ModifyPortalContent"
+    />
+
+    <browser:page
+        for="xmldirector.plonecore.connector.IConnector"
         name="rename-collection"
         attribute="rename_collection"
         class=".connector.Connector"

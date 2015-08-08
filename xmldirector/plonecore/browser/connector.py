@@ -155,9 +155,11 @@ class Connector(BrowserView):
             context_url = self.context.absolute_url()
             view_prefix = '@@view'
             edit_prefix = '@@view-editor'
+            remove_prefix = '@@remove-from-collection?subpath='
             if self.subpath:
                 view_prefix += '/' + '/'.join(self.subpath)
                 edit_prefix += '/' + '/'.join(self.subpath)
+                remove_prefix += '/' + '/'.join(self.subpath)
 
             files = list()
             for info in handle.listdirinfo(files_only=True):
@@ -167,6 +169,8 @@ class Connector(BrowserView):
                     except KeyError:
                         size = u'n/a'
                     files.append(dict(url='{}/{}/{}'.format(context_url, view_prefix, info[0]),
+                                      remove_url='{}/{}&name={}'.format(
+                                          context_url, remove_prefix, info[0]),
                                       edit_url='{}/{}/{}'.format(
                                           context_url, edit_prefix, info[0]),
                                       title=info[0],
@@ -241,6 +245,22 @@ class Connector(BrowserView):
         else:
             msg = u'Collection does not exist'
             self.context.plone_utils.addPortalMessage(msg, 'error')
+        return self.request.response.redirect(
+            '{}/@@view/{}'.format(self.context.absolute_url(), subpath))
+
+    def remove_from_collection(self, subpath, name):
+        """ Remove a collection """
+        
+        handle = self.webdav_handle(subpath)
+        if handle.exists(name):
+            handle.remove(name)
+            msg = u'Removed {}'.format(name)
+            self.logger.log(msg)
+            self.context.plone_utils.addPortalMessage(msg)
+        else:
+
+            self.request.response.setStatus(404)
+            return 'not found'
         return self.request.response.redirect(
             '{}/@@view/{}'.format(self.context.absolute_url(), subpath))
 

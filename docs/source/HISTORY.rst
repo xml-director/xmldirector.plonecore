@@ -13,6 +13,7 @@ Changelog
   hold of all locks).
 - ZIP import now works inside the given subdirectory and no longer
   only on the top level directory of the connector
+- delete actions for collections and collection items
 
 1.0.4 (2015-07-22)
 ------------------

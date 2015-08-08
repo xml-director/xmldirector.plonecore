@@ -39,7 +39,7 @@
                   <td>
                       <a tal:attributes="href string:${context/absolute_url}/@@remove-collection?subpath=${options/subpath}&name=${item/title}"
                          i18n:translate="">
-                         Delete
+                         <img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove" i18n:attributes="title"/>
                      </a>
                   </td>
               </tr>
@@ -127,6 +127,12 @@
                           >
                           <img src="++resource++xmldirector.plonecore/images/edit.png" />
                       </a>
+                      <a tal:attributes="href item/remove_url"
+                         i18n:translate=""
+                         title="Remove"
+                         >
+                         <img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove" i18n:attributes="title"/>
+                     </a>
                   </td>
               </tr>
           </tbody>
