@@ -291,7 +291,7 @@ class Connector(BrowserView):
 
         return self.redirect(_(u'eXist-db collection cleared'))
 
-    def zip_export(self, download=True, dirs=None):
+    def zip_export(self, download=True, dirs=None, subpath=None):
         """ Export WebDAV subfolder to a ZIP file.
             ``dirs`` optional comma separated list of top-level
             directory names to be exported.
@@ -303,7 +303,7 @@ class Connector(BrowserView):
         handle = self.webdav_handle()
         zip_filename = tempfile.mktemp(suffix='.zip')
         zf = zipfile.ZipFile(zip_filename, 'w')
-        for dirname, filenames in handle.walk():
+        for dirname, filenames in handle.walk(subpath):
             if dirname.startswith('/'):
                 dirname = dirname.lstrip('/')
             if dirs:
