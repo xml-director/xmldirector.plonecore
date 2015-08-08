@@ -16,6 +16,7 @@
               <tr>
                   <th i18n:translate="">Directory</th>
                   <th i18n:translate="">Last modified</th>
+                  <th i18n:translate="">Action</th>
               </tr>
           </thead>
           <tbody>
@@ -23,6 +24,7 @@
                   <td>                                     
                       <a class="dir" tal:attributes="href python: u'{}/@@view/{}'.format(context.absolute_url(), '/'.join(view.subpath[:-1]))">..</a>
                   </td>
+                  <td />
                   <td />
               </tr>
               <tr tal:repeat="item options/dirs">
@@ -34,11 +36,17 @@
                   <td>
                       <span tal:replace="item/modified" />
                   </td>
+                  <td>
+                      <a tal:attributes="href string:${context/absolute_url}/@@remove-collection?subpath=${options/subpath}&name=${item/title}"
+                         i18n:translate="">
+                         Delete
+                     </a>
+                  </td>
               </tr>
           </tbody>
           <tfoot>
               <tr>
-                  <th colspan="2" class="actions">
+                  <th colspan="3" class="actions">
                       <a class="action" 
                          id="action-create-collection">
                           New collection
