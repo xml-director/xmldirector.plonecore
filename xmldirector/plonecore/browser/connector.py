@@ -221,6 +221,9 @@ class Connector(BrowserView):
     def create_collection(self, subpath, name):
         """ Create a new collection """
 
+        if not name:
+            raise ValueError(_(u'No "name" given'))
+
         handle = self.webdav_handle(subpath)
         if handle.exists(name):
             msg = u'Collection already exists'
@@ -268,7 +271,7 @@ class Connector(BrowserView):
         """ Rename a collection """
 
         if not new_name:
-            raise ValueError(u'No new name given')
+            raise ValueError(_(u'No new "name" given'))
 
         handle = self.webdav_handle(subpath)
         if handle.exists(name):
@@ -406,8 +409,8 @@ class Connector(BrowserView):
 
                 # import all files from ZIP into WebDAV
                 count = 0
+                dirs_created = set()
                 for i, name in enumerate(zip_handle.walkfiles()):
-
                     if show_progress:
                         pbar.update(i)
 
@@ -416,12 +419,14 @@ class Connector(BrowserView):
                         target_filename = '{}/{}'.format(subpath, target_filename)
 
                     target_dirname = '/'.join(target_filename.split('/')[:-1])
-                    try:
-                        handle.makedir(
-                            target_dirname, recursive=True, allow_recreate=True)
-                    except Exception as e:
-                        LOG.error(
-                            'Failed creating {} failed ({})'.format(target_dirname, e))
+                    if not target_dirname in dirs_created:
+                        try:
+                            handle.makedir(
+                                target_dirname, recursive=True, allow_recreate=True)
+                            dirs_created.add(target_dirname)
+                        except Exception as e:
+                            LOG.error(
+                                'Failed creating {} failed ({})'.format(target_dirname, e))
 
                     LOG.info('ZIP filename({})'.format(name))
 

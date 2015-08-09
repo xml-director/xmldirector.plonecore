@@ -131,6 +131,13 @@ $(document).ready(function() {
         }
     });
 
+    $('.confirm-action').on('click', function(e) {
+        var text = $(this).data('text');
+        if (! confirm(text)) {
+            return false;
+        }
+    });
+
     // Test connection button for XML Director controlpanel
     var button = $('.template-xmldirector-core-settings #form-buttons-save');
     if (button.length > 0) {

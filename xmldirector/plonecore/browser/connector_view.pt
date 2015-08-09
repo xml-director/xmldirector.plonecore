@@ -22,7 +22,10 @@
           <tbody>
               <tr>
                   <td>                                     
-                      <a class="dir" tal:attributes="href python: u'{}/@@view/{}'.format(context.absolute_url(), '/'.join(view.subpath[:-1]))">..</a>
+                      <a class="dir" 
+                         title="One level up"
+                         i18n:attributes="title"
+                         tal:attributes="href python: u'{}/@@view/{}'.format(context.absolute_url(), '/'.join(view.subpath[:-1]))">..</a>
                   </td>
                   <td />
                   <td />
@@ -37,7 +40,10 @@
                       <span tal:replace="item/modified" />
                   </td>
                   <td>
-                      <a tal:attributes="href string:${context/absolute_url}/@@remove-collection?subpath=${options/subpath}&name=${item/title}"
+                      <a class="confirm-action" 
+                         data-text="Do you really want to remove this collection?"
+                         i18n:attributes="data-text"
+                          tal:attributes="href string:${context/absolute_url}/@@remove-collection?subpath=${options/subpath}&name=${item/title}"
                          i18n:translate="">
                          <img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove" i18n:attributes="title"/>
                      </a>
@@ -128,6 +134,9 @@
                           <img src="++resource++xmldirector.plonecore/images/edit.png" />
                       </a>
                       <a tal:attributes="href item/remove_url"
+                         class="confirm-action" 
+                         data-text="Do you really want to remove this item?"
+                         i18n:attributes="data-text"
                          i18n:translate=""
                          title="Remove"
                          >
