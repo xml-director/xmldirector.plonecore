@@ -40,7 +40,6 @@ WEBDAV_MODE_VOCAB = SimpleVocabulary([
 ])
 
 
-
 class IWebdavSettings(Interface):
 
     """ ExistDB settings """

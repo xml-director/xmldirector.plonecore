@@ -250,7 +250,7 @@ class Connector(BrowserView):
 
     def remove_from_collection(self, subpath, name):
         """ Remove a collection """
-        
+
         handle = self.webdav_handle(subpath)
         if handle.exists(name):
             handle.remove(name)
@@ -421,7 +421,7 @@ class Connector(BrowserView):
                             target_dirname, recursive=True, allow_recreate=True)
                     except Exception as e:
                         LOG.error(
-                            'Failed creating {} failed ({})'.format(dirname, e))
+                            'Failed creating {} failed ({})'.format(target_dirname, e))
 
                     LOG.info('ZIP filename({})'.format(name))
 

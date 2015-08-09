@@ -25,9 +25,14 @@ class BasicTests(TestBase):
             handle.removedir(PREFIX, False, True)
         handle.makedir(PREFIX)
         handle.makedir(PREFIX + '/foo')
+        handle.makedir(PREFIX + '/foo2')
         with handle.open(PREFIX + '/foo/index.html', 'wb') as fp:
             fp.write('<html/>')
         with handle.open(PREFIX + '/foo/index.xml', 'wb') as fp:
+            fp.write('<?xml version="1.0" ?>\n<hello>world</hello>')
+        with handle.open(PREFIX + '/foo2/index.html', 'wb') as fp:
+            fp.write('<html/>')
+        with handle.open(PREFIX + '/foo2/index.xml', 'wb') as fp:
             fp.write('<?xml version="1.0" ?>\n<hello>world</hello>')
         self.portal.connector.webdav_subpath = PREFIX
 
@@ -92,6 +97,18 @@ class BasicTests(TestBase):
         zf = ZipFile(fn, 'r')
         self.assertEqual('foo/index.html' in zf.namelist(), True)
         self.assertEqual('foo/index.xml' in zf.namelist(), True)
+        zf.close()
+        os.unlink(fn)
+
+    def testZipExportFoo2Only(self):
+        self.login('god')
+        view = self._get_view()
+        fn = view.zip_export(download=False, dirs='foo2')
+        zf = ZipFile(fn, 'r')
+        self.assertEqual('foo/index.html' not in zf.namelist(), True)
+        self.assertEqual('foo/index.xml' not in zf.namelist(), True)
+        self.assertEqual('foo2/index.html' in zf.namelist(), True)
+        self.assertEqual('foo2/index.xml' in zf.namelist(), True)
         zf.close()
         os.unlink(fn)
 

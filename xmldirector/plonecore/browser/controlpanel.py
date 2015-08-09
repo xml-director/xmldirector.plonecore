@@ -158,7 +158,7 @@ class Installer(BrowserView):
 
         service = getUtility(IWebdavHandle)
         handle = service.webdav_handle()
-            
+
         for exist_name, local_name in [('scripts/all-locks.xql', 'scripts/existdb/all-locks.xql')]:
             src = pkg_resources.resource_string('xmldirector.plonecore', local_name)
             dirname = os.path.dirname(exist_name)
