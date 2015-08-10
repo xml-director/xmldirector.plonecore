@@ -179,8 +179,10 @@ $(document).ready(function() {
     var order = [0, "desc"];
 
     $('.datatable tfoot th').each(function () {
-        var title = $('.datatable thead th').eq( $(this).index() ).text();
-        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+        if ($(this).children().length == 0) {
+            var title = $('.datatable thead th').eq( $(this).index() ).text();
+            $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+        }
     });
 
     var table = $('.datatable').DataTable({
