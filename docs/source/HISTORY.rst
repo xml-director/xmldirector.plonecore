@@ -16,6 +16,7 @@ Changelog
 - delete actions for collections and collection items
 - delete actions now ask for confirmation
 - massive speedup of ZIP import by reducing and caching WebDAV operations
+- using Datatables.net for collections and collection items
 
 1.0.4 (2015-07-22)
 ------------------
