@@ -9,13 +9,11 @@
 
     <metal:slot fill-slot="style_slot">
         <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/DataTables/media/css/jquery.dataTables.css" />
-        <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/DataTables/extensions/ColVis/css/dataTables.colVis.min.css" />
         <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/DataTables/extensions/FixedHeader/css/dataTables.fixedHeader.min.css" />
     </metal:slot>
 
     <metal:slot fill-slot="javascript_head_slot">
         <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/DataTables/media/js/jquery.dataTables.js"></script>
-        <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/DataTables/extensions/ColVis/js/dataTables.colVis.min.js"></script>
         <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/DataTables/extensions/FixedHeader/js/dataTables.fixedHeader.min.js"></script>
         <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/DataTables/extensions/TableTools/js/dataTables.tableTools.min.js"></script>
     </metal:slot>
@@ -24,7 +22,7 @@
   <metal:content-core define-macro="content-core">
 
       <h2 i18n:translate="">Directories</h2>
-      <table class="listing datatable">
+      <table class="datatable">
           <thead>
               <tr>
                   <th i18n:translate="">Directory</th>
@@ -116,7 +114,7 @@
       </table>
 
       <h2 tal:condition="options/files" i18n:translate="">Files</h2>
-      <table class="listing datatable" tal:condition="options/files">
+      <table class="datatable" tal:condition="options/files">
           <thead>
               <tr>
                   <th i18n:translate="">Filename</th>

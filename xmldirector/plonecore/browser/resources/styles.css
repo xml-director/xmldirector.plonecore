@@ -195,3 +195,13 @@ input.xmlxpath-field {
 .icon-controlpanel-xmldirector_plonecore:before {
     content: '\e846';
 }
+
+/* Datatables */
+
+.datatable tbody tr:nth-child(even) {
+    background: #ddd;
+}
+
+.datatable tbody tr:nth-child(odd) {
+    background: #eee;
+}
