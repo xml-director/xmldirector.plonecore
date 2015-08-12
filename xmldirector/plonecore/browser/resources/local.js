@@ -176,7 +176,7 @@ $(document).ready(function() {
     }            
 
 
-    var order = [0, "desc"];
+    var order = [0, "asc"];
 
     $('.datatable tfoot th').each(function () {
         if ($(this).children().length == 0) {

@@ -21,17 +21,19 @@
 <metal:main fill-slot="content-core">
   <metal:content-core define-macro="content-core">
 
-      <h2 i18n:translate="">Directories</h2>
       <table class="datatable">
           <thead>
               <tr>
-                  <th i18n:translate="">Directory</th>
+                  <th i18n:translate="">Type</th>
+                  <th i18n:translate="">Name</th>
+                  <th i18n:translate="">Size</th>
                   <th i18n:translate="">Last modified</th>
                   <th i18n:translate="">Action</th>
               </tr>
           </thead>
           <tbody>
               <tr>
+                  <td i18n:translate="">DIR</td>
                   <td>                                     
                       <a class="dir" 
                          title="One level up"
@@ -40,13 +42,16 @@
                   </td>
                   <td />
                   <td />
+                  <td />
               </tr>
               <tr tal:repeat="item options/dirs">
+                  <td i18n:translate="">DIR</td>
                   <td>
                       <a class="dir" tal:attributes="href item/url">
-                          <span tal:content="item/title" />
+                          <span tal:replace="item/title" />
                       </a>
                   </td>
+                  <td></td>
                   <td>
                       <span tal:replace="item/modified" />
                   </td>
@@ -56,6 +61,38 @@
                          i18n:attributes="data-text"
                           tal:attributes="href string:${context/absolute_url}/@@remove-collection?subpath=${options/subpath}&name=${item/title}"
                          i18n:translate="">
+                         <img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove" i18n:attributes="title"/>
+                     </a>
+                  </td>
+              </tr>
+              <tr tal:repeat="item options/files">
+                  <td i18n:translate="">FILE</td>
+                  <td>
+                      <a class="file" tal:attributes="href item/url">
+                          <span tal:replace="item/title" />
+                      </a>
+                  </td>
+                  <td>
+                      <span tal:replace="item/modified" />
+                  </td>
+                  <td>
+                      <span tal:replace="item/size" />
+                  </td>
+                  <td>
+                      <a tal:condition="item/editable"
+                         tal:attributes="href item/edit_url"
+                         i18n:attributes="title"
+                         title="Edit"
+                          >
+                          <img src="++resource++xmldirector.plonecore/images/edit.png" />
+                      </a>
+                      <a tal:attributes="href item/remove_url"
+                         class="confirm-action" 
+                         data-text="Do you really want to remove this item?"
+                         i18n:attributes="data-text"
+                         i18n:translate=""
+                         title="Remove"
+                         >
                          <img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove" i18n:attributes="title"/>
                      </a>
                   </td>
@@ -109,59 +146,6 @@
                           <input type="submit" i18n:attributes="value" value="Rename" />
                       </form>
                   </th>
-              </tr>
-          </tfoot>
-      </table>
-
-      <h2 tal:condition="options/files" i18n:translate="">Files</h2>
-      <table class="datatable" tal:condition="options/files">
-          <thead>
-              <tr>
-                  <th i18n:translate="">Filename</th>
-                  <th i18n:translate="">Last modified</th>
-                  <th i18n:translate="">Size</th>
-                  <th i18n:translate="">Action</th>
-              </tr>
-          </thead>
-          <tbody>
-              <tr tal:repeat="item options/files">
-                  <td>
-                      <a class="file" tal:attributes="href item/url">
-                          <span tal:content="item/title" />
-                      </a>
-                  </td>
-                  <td>
-                      <span tal:replace="item/modified" />
-                  </td>
-                  <td>
-                      <span tal:replace="item/size" />
-                  </td>
-                  <td>
-                      <a tal:condition="item/editable"
-                         tal:attributes="href item/edit_url"
-                         i18n:attributes="title"
-                         title="Edit"
-                          >
-                          <img src="++resource++xmldirector.plonecore/images/edit.png" />
-                      </a>
-                      <a tal:attributes="href item/remove_url"
-                         class="confirm-action" 
-                         data-text="Do you really want to remove this item?"
-                         i18n:attributes="data-text"
-                         i18n:translate=""
-                         title="Remove"
-                         >
-                         <img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove" i18n:attributes="title"/>
-                     </a>
-                  </td>
-              </tr>
-          </tbody>
-          <tfoot>
-              <tr>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
               </tr>
           </tfoot>
       </table>
