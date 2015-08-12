@@ -194,7 +194,7 @@ $(document).ready(function() {
         pageLength: 50,
         autoWidth: false,
         initComplete: function(settings, json) {
-            $('#listing').show();
+            $('.datatable').show();
         },
         order: order,
         aLengthMenu: [25, 50, 100, 250, 500, 750, 1000, 2000, 3000],

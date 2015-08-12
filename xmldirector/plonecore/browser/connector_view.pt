@@ -28,6 +28,7 @@
                   <th i18n:translate="">Name</th>
                   <th i18n:translate="">Size</th>
                   <th i18n:translate="">Last modified</th>
+                  <th i18n:translate="">ST MODE</th>
                   <th i18n:translate="">Action</th>
               </tr>
           </thead>
@@ -43,17 +44,19 @@
                   <td />
                   <td />
                   <td />
+                  <td />
               </tr>
               <tr tal:repeat="item options/dirs">
                   <td i18n:translate="">COLLECTION</td>
                   <td>
-                      <a class="dir" tal:attributes="href item/url">
-                          <span tal:replace="item/title" />
-                      </a>
+                      <a class="dir" tal:attributes="href item/url"><span tal:replace="item/title" /></a>
                   </td>
                   <td></td>
                   <td tal:attributes="data-order python: item['modified_original'].isoformat()">
                       <span tal:replace="item/modified" />
+                  </td>
+                  <td>
+                      <span tal:replace="item/st_mode" />
                   </td>
                   <td>
                       <a class="confirm-action" 
@@ -68,15 +71,16 @@
               <tr tal:repeat="item options/files">
                   <td i18n:translate="">FILE</td>
                   <td>
-                      <a class="file" tal:attributes="href item/url">
-                          <span tal:replace="item/title" />
-                      </a>
+                      <a class="file" tal:attributes="href item/url"><span tal:replace="item/title" /></a>
                   </td>
                   <td tal:attributes="data-order item/size_original">
                       <span tal:replace="item/size" />
                   </td>
                   <td tal:attributes="data-order python: item['modified_original'].isoformat()">
                       <span tal:replace="item/modified" />
+                  </td>
+                  <td>
+                      <span tal:replace="item/st_mode" />
                   </td>
                   <td>
                       <a tal:condition="item/editable"

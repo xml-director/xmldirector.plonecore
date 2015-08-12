@@ -175,6 +175,7 @@ class Connector(BrowserView):
                                           context_url, edit_prefix, info[0]),
                                       title=info[0],
                                       editable=self.is_ace_editable(info[0]),
+                                      st_mode=info[1]['st_mode'],
                                       size_original=info[1]['size'],
                                       size=size,
                                       modified_original=info[1]['modified_time'],
@@ -185,6 +186,7 @@ class Connector(BrowserView):
                 url = u'{}/{}/{}'.format(context_url, view_prefix, info[0])
                 dirs.append(dict(url=url,
                                  title=info[0],
+                                 st_mode=info[1]['st_mode'],
                                  modified_original=info[1]['modified_time'],
                                  modified=self.human_readable_datetime(info[1]['modified_time'])))
 
@@ -386,7 +388,7 @@ class Connector(BrowserView):
 
             msg = u'File "{}" imported'.format(zip_filename)
             self.logger.log(msg)
-            return self.redirect(_(msg))
+            return self.redirect(_(msg), subpath=subpath)
 
         try:
             with ZipFS(zip_file, 'r') as zip_handle:
