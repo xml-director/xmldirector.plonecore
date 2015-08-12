@@ -33,7 +33,7 @@
           </thead>
           <tbody>
               <tr>
-                  <td i18n:translate="">DIR</td>
+                  <td i18n:translate="">COLLECTION</td>
                   <td>                                     
                       <a class="dir" 
                          title="One level up"
@@ -45,14 +45,14 @@
                   <td />
               </tr>
               <tr tal:repeat="item options/dirs">
-                  <td i18n:translate="">DIR</td>
+                  <td i18n:translate="">COLLECTION</td>
                   <td>
                       <a class="dir" tal:attributes="href item/url">
                           <span tal:replace="item/title" />
                       </a>
                   </td>
                   <td></td>
-                  <td>
+                  <td tal:attributes="data-order python: item['modified_original'].isoformat()">
                       <span tal:replace="item/modified" />
                   </td>
                   <td>
@@ -61,7 +61,7 @@
                          i18n:attributes="data-text"
                           tal:attributes="href string:${context/absolute_url}/@@remove-collection?subpath=${options/subpath}&name=${item/title}"
                          i18n:translate="">
-                         <img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove" i18n:attributes="title"/>
+                         <img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove collection" i18n:attributes="title"/>
                      </a>
                   </td>
               </tr>
@@ -93,7 +93,7 @@
                          i18n:translate=""
                          title="Remove"
                          >
-                         <img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove" i18n:attributes="title"/>
+                         <img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove item" i18n:attributes="title"/>
                      </a>
                   </td>
               </tr>

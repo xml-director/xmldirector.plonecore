@@ -176,6 +176,7 @@ class Connector(BrowserView):
                                       title=info[0],
                                       editable=self.is_ace_editable(info[0]),
                                       size=size,
+                                      modified_original=info[1]['modified_time'],
                                       modified=self.human_readable_datetime(info[1]['modified_time'])))
 
             dirs = list()
@@ -183,6 +184,7 @@ class Connector(BrowserView):
                 url = u'{}/{}/{}'.format(context_url, view_prefix, info[0])
                 dirs.append(dict(url=url,
                                  title=info[0],
+                                 modified_original=info[1]['modified_time'],
                                  modified=self.human_readable_datetime(info[1]['modified_time'])))
 
             dirs = sorted(dirs, key=operator.itemgetter('title'))
