@@ -72,11 +72,11 @@
                           <span tal:replace="item/title" />
                       </a>
                   </td>
-                  <td>
-                      <span tal:replace="item/modified" />
-                  </td>
-                  <td>
+                  <td tal:attributes="data-order item/size_original">
                       <span tal:replace="item/size" />
+                  </td>
+                  <td tal:attributes="data-order python: item['modified_original'].isoformat()">
+                      <span tal:replace="item/modified" />
                   </td>
                   <td>
                       <a tal:condition="item/editable"

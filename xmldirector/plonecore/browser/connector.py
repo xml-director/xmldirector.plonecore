@@ -175,6 +175,7 @@ class Connector(BrowserView):
                                           context_url, edit_prefix, info[0]),
                                       title=info[0],
                                       editable=self.is_ace_editable(info[0]),
+                                      size_original=info[1]['size'],
                                       size=size,
                                       modified_original=info[1]['modified_time'],
                                       modified=self.human_readable_datetime(info[1]['modified_time'])))
