@@ -183,7 +183,7 @@ class Connector(BrowserView):
 
             dirs = list()
             for info in handle.listdirinfo(dirs_only=True):
-                url = '{}/{}/{}'.format(context_url, view_prefix, info[0])
+                url = '{}/{}/{}'.format(context_url, view_prefix, info[0].encode('utf8'))
                 dirs.append(dict(url=url,
                                  title=info[0],
                                  st_mode=info[1]['st_mode'],
