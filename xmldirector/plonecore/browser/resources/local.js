@@ -178,7 +178,7 @@ $(document).ready(function() {
 
     var order = [0, "asc"];
 
-    $('.datatable tfoot th').each(function () {
+    $('.datatable tfoot th.searchable').each(function () {
         if ($(this).children().length == 0) {
             var title = $('.datatable thead th').eq( $(this).index() ).text();
             $(this).html( '<input type="text" placeholder="Search '+title+'" />' );

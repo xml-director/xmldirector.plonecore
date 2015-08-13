@@ -60,10 +60,10 @@
               </tbody>
               <tfoot>
                   <tr>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                      <th></th>
+                      <th class="searchable"></th>
+                      <th class="searchable"></th>
+                      <th class="searchable"></th>
+                      <th class="searchable"></th>
                   </tr>
               </tfoot>
           </table>

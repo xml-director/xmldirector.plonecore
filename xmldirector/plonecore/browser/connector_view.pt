@@ -39,7 +39,7 @@
                       <a class="dir" 
                          title="One level up"
                          i18n:attributes="title"
-                         tal:attributes="href python: u'{}/@@view/{}'.format(context.absolute_url(), '/'.join(view.subpath[:-1]))">..</a>
+                         tal:attributes="href python: '{}/@@view/{}'.format(context.absolute_url(), '/'.join(view.subpath[:-1]))">..</a>
                   </td>
                   <td />
                   <td />
@@ -104,7 +104,8 @@
           </tbody>
           <tfoot>
               <tr>
-                  <th></th>
+                  <th class="searchable"></th>
+                  <th class="searchable"></th>
                   <th></th>
                   <th></th>
                   <th></th>
