@@ -433,7 +433,7 @@ class Connector(BrowserView):
                             LOG.error(
                                 'Failed creating {} failed ({})'.format(target_dirname, e))
 
-                    LOG.info('ZIP filename({})'.format(name))
+                    LOG.info(u'ZIP filename({})'.format(name))
 
                     out_fp = handle.open(target_filename, 'wb')
                     zip_fp = zip_handle.open(name, 'rb')
@@ -448,9 +448,8 @@ class Connector(BrowserView):
         except fs.zipfs.ZipOpenError as e:
             msg = u'Error opening ZIP file: {}'.format(e)
             return self.redirect(msg, 'error')
-
         self.logger.log(
-            u'ZIP file imported ({}, {} files)'.format(zip_filename, count))
+            'ZIP file imported ({}, {} files)'.format(zip_filename, count))
         return self.redirect(_(u'Uploaded ZIP archive imported'), subpath=subpath)
 
 
