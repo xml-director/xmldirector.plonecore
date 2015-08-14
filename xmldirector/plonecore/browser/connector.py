@@ -143,6 +143,8 @@ class Connector(BrowserView):
             self.context.plone_utils.addPortalMessage(message, level)
         url = self.context.absolute_url()
         if subpath:
+            if isinstance(subpath, unicode):
+                subpath = subpath.encode('utf8')
             url = '{}/@@view/{}'.format(url, subpath)
         return self.request.response.redirect(url)
 
@@ -322,7 +324,7 @@ class Connector(BrowserView):
 
         return self.redirect(_(u'eXist-db collection cleared'))
 
-    def zip_export(self, download=True, dirs=None, subpath=''):
+    def zip_export(self, download=True, dirs=None, subpath=u''):
         """ Export WebDAV subfolder to a ZIP file.
             ``dirs`` optional comma separated list of top-level
             directory names to be exported.
@@ -331,21 +333,24 @@ class Connector(BrowserView):
         if dirs:
             dirs = dirs.split(',')
 
+        if not isinstance(subpath, unicode):
+            subpath = unicode(subpath, 'utf8')
+
         handle = self.webdav_handle()
         zip_filename = tempfile.mktemp(suffix='.zip')
-        zf = zipfile.ZipFile(zip_filename, 'w')
-        for dirname, filenames in handle.walk(subpath):
-            if dirname.startswith('/'):
-                dirname = dirname.lstrip('/')
-            if dirs:
-                dir_paths = dirname.split('/')
-                if dir_paths[0] not in dirs:
-                    continue
-            for filename in filenames:
-                z_filename = fs.path.join(dirname, filename)
-                with handle.open(z_filename, 'rb') as fp:
-                    zf.writestr(z_filename, fp.read())
-        zf.close()
+        with ZipFS(zip_filename, 'w', encoding='utf8') as zip_fs:
+            for dirname, filenames in handle.walk(subpath):
+                if dirname.startswith('/'):
+                    dirname = dirname.lstrip('/')
+                if dirs:
+                    dir_paths = dirname.split('/')
+                    if dir_paths[0] not in dirs:
+                        continue
+                for filename in filenames:
+                    z_filename = fs.path.join(dirname, filename)
+                    with handle.open(z_filename, 'rb') as fp:
+                        with zip_fs.open(z_filename, 'wb') as zip_out:
+                            zip_out.write(fp.read())
 
         if download:
             self.request.response.setHeader('content-type', 'application/zip')
@@ -362,6 +367,9 @@ class Connector(BrowserView):
 
     def zip_import(self, zip_file=None, subpath=None, clean_directories=None):
         """ Import WebDAV subfolder from an uploaded ZIP file """
+
+        if subpath and not isinstance(subpath, unicode):
+            subpath = unicode(subpath, 'utf8')
 
         if clean_directories is None:
             clean_directories = []
@@ -391,7 +399,7 @@ class Connector(BrowserView):
             return self.redirect(_(msg), subpath=subpath)
 
         try:
-            with ZipFS(zip_file, 'r') as zip_handle:
+            with ZipFS(zip_file, 'r', encoding='utf-8') as zip_handle:
                 # Cleanup webdav directory first
                 for i, name in enumerate(handle.listdir()):
                     if name not in clean_directories:
@@ -421,7 +429,7 @@ class Connector(BrowserView):
 
                     target_filename = name.lstrip('/')
                     if subpath:
-                        target_filename = '{}/{}'.format(subpath, target_filename)
+                        target_filename = u'{}/{}'.format(subpath, target_filename)
 
                     target_dirname = '/'.join(target_filename.split('/')[:-1])
                     if target_dirname not in dirs_created:
