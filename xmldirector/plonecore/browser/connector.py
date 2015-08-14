@@ -424,7 +424,7 @@ class Connector(BrowserView):
                         target_filename = '{}/{}'.format(subpath, target_filename)
 
                     target_dirname = '/'.join(target_filename.split('/')[:-1])
-                    if not target_dirname in dirs_created:
+                    if target_dirname not in dirs_created:
                         try:
                             handle.makedir(
                                 target_dirname, recursive=True, allow_recreate=True)
