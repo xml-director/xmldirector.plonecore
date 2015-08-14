@@ -17,6 +17,8 @@ Changelog
 - delete actions now ask for confirmation
 - massive speedup of ZIP import by reducing and caching WebDAV operations
 - using Datatables.net for collections and collection items
+- ZIP export/import is now more robust with directories or filenames
+  containing non-ascii characters
 
 1.0.4 (2015-07-22)
 ------------------
