@@ -100,7 +100,7 @@ class BasicTests(TestBase):
         zf = ZipFile(fn, 'r')
         self.assertEqual('foo/index.html' in zf.namelist(), True)
         self.assertEqual('foo/index.xml' in zf.namelist(), True)
-        self.assertEqual(u'üöä/üöä.xml' in zf.namelist(), True)
+        self.assertEqual('üöä/üöä.xml' in zf.namelist(), True)
         zf.close()
         os.unlink(fn)
 
@@ -115,6 +115,22 @@ class BasicTests(TestBase):
         self.assertEqual('foo2/index.xml' in zf.namelist(), True)
         zf.close()
         os.unlink(fn)
+
+    def testZipExportReimport(self):
+        handle = self.portal.connector.webdav_handle()
+        self.login('god')
+
+        view = self._get_view()
+        fn = view.zip_export(download=False)
+
+        for name in handle.listdir():
+            handle.removedir(name, False, True)
+
+        view.zip_import(fn)
+        dirs = handle.listdir()
+        self.assertEqual('foo' in dirs, True)
+        self.assertEqual('foo2' in dirs, True)
+        self.assertEqual(u'üöä' in dirs, True)
 
     def testZipImport(self):
         self.login('god')
