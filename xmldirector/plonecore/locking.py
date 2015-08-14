@@ -66,6 +66,8 @@ class LockManager(object):
 
     def lock_filename(self, path):
         """ Canoncial lock filename for a given path """
+        if not isinstance(path, unicode):
+            path = unicode(path, 'utf8')
         return u'{}.lock.xml'.format(path).encode('utf-8')
 
     def has_lock(self, path):
@@ -75,6 +77,8 @@ class LockManager(object):
 
     def get_lock(self, path):
         """ Retrieve lock information """
+        if not isinstance(path, unicode):
+            path = unicode(path, 'utf8')
 
         handle = self.webdav_handle
         lock_filename = self.lock_filename(path)
