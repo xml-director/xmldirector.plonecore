@@ -134,12 +134,36 @@ class BasicTests(TestBase):
 
     def testZipImport(self):
         self.login('god')
-        fn = os.path.join(os.path.dirname(__file__), 'sample.zip')
+        fn = os.path.join(os.path.dirname(__file__), 'zip_data', 'sample.zip')
         view = self._get_view()
         view.zip_import(fn)
         handle = self.portal.connector.webdav_handle()
         self.assertEqual(handle.exists('import/test.xml'), True)
         self.assertEqual(handle.exists('import/test.html'), True)
+
+    def testZipImportMacFinder(self):
+        self.login('god')
+        handle = self.portal.connector.webdav_handle()
+        for name in handle.listdir():
+            handle.removedir(name, False, True)
+
+        fn = os.path.join(os.path.dirname(__file__), 'zip_data', 'created_macosx_finder.zip')
+        view = self._get_view()
+        view.zip_import(fn)
+        names = handle.listdir()
+        self.assertEquals(u'üöä' in names, True)
+
+    def testZipImportMacFinder(self):
+        self.login('god')
+        handle = self.portal.connector.webdav_handle()
+        for name in handle.listdir():
+            handle.removedir(name, False, True)
+
+        fn = os.path.join(os.path.dirname(__file__), 'zip_data', 'created_macosx_zip.zip')
+        view = self._get_view()
+        view.zip_import(fn)
+        names = handle.listdir()
+        self.assertEquals(u'üöä' in names, True)
 
     def testHumanReadableDatetime(self):
         view = self._get_view()
