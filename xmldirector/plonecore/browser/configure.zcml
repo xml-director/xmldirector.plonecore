@@ -6,7 +6,6 @@
     <!-- load permissions.zcml -->
     <include package="Products.CMFCore" />
 
-
     <browser:page
         for="*"
         name="lock"
@@ -50,6 +49,14 @@
         for="xmldirector.plonecore.connector.IConnector"
         name="remove-collection"
         attribute="remove_collection"
+        class=".connector.Connector"
+        permission="cmf.ModifyPortalContent"
+    />
+
+    <browser:page
+        for="xmldirector.plonecore.connector.IConnector"
+        name="remove-from-collection"
+        attribute="remove_from_collection"
         class=".connector.Connector"
         permission="cmf.ModifyPortalContent"
     />
@@ -147,10 +154,26 @@
     />
 
     <browser:page
+        name="xmldirector-settings-json"
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        class=".controlpanel.DBSettingsControlPanel"
+        attribute="settings_json"
+        permission="cmf.ManagePortal"
+    />
+
+    <browser:page
         name="xmldirector-connection-test"
         for="Products.CMFPlone.interfaces.IPloneSiteRoot"
         class=".controlpanel.DBSettingsControlPanel"
         template="connection_test.pt"
+        permission="cmf.ManagePortal"
+    />
+
+    <browser:page
+        name="xmldirector-install-scripts"
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        class=".controlpanel.Installer"
+        attribute="install_scripts"
         permission="cmf.ManagePortal"
     />
 

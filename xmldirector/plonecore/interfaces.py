@@ -7,6 +7,8 @@
 
 from zope import schema
 from zope.interface import Interface
+from zope.schema.vocabulary import SimpleVocabulary
+from zope.schema.vocabulary import SimpleTerm
 from xmldirector.plonecore.i18n import MessageFactory as _
 
 
@@ -31,6 +33,13 @@ class IValidatorRegistry(Interface):
     """ Marker interface for ValidatorRegistry """
 
 
+WEBDAV_MODE_VOCAB = SimpleVocabulary([
+    SimpleTerm(u'existdb', title=u'Exist-DB'),
+    SimpleTerm(u'basex', title=u'BaseX'),
+    SimpleTerm(u'other', title=u'Other')
+])
+
+
 class IWebdavSettings(Interface):
 
     """ ExistDB settings """
@@ -47,6 +56,14 @@ class IWebdavSettings(Interface):
         description=_(u'Subpath inside WebDAV for Dexterity content'),
         default=u'',
         required=False
+    )
+
+    webdav_mode = schema.Choice(
+        title=_(u'WebDAV mode'),
+        description=_(u'WebDAV mode (defaults to Exist-DB)'),
+        default=u'existdb',
+        required=True,
+        vocabulary=WEBDAV_MODE_VOCAB
     )
 
     webdav_username = schema.TextLine(

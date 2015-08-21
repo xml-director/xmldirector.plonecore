@@ -48,6 +48,7 @@
 #content .actions {
     border-top: 1px solid #329fd7;
     cursor: pointer;
+    margin-bottom: 1em;
 }
 
 #content .actions ul {
@@ -106,6 +107,12 @@ button.xml-editor {
 
 /* mimetype icons */
 
+a.dir,
+a.file {
+    border: none !important;
+}
+
+
 a.file span {
     display: inline-block;
 }
@@ -120,6 +127,9 @@ a.file:before {
     vertical-align: middle;
 }
 
+a.file:before {
+    background-image: url(++resource++xmldirector.plonecore/images/svg/raw2.svg) !important;
+}
 
 a.file[href*='.xml']:before {
     background-image: url(++resource++xmldirector.plonecore/images/svg/xml5.svg) !important;
@@ -194,4 +204,19 @@ input.xmlxpath-field {
 .icon-controlpanel-xmldirector_plonecore_introspection:before, 
 .icon-controlpanel-xmldirector_plonecore:before {
     content: '\e846';
+}
+
+/* Datatables */
+
+/* Hide datatables by default and show then upon completion (JS) */
+.datatable {
+    display: none;
+}
+
+.datatable tbody tr:nth-child(even) {
+    background: #ddd;
+}
+
+.datatable tbody tr:nth-child(odd) {
+    background: #eee;
 }

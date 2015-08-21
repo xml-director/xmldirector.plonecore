@@ -25,9 +25,17 @@ class BasicTests(TestBase):
             handle.removedir(PREFIX, False, True)
         handle.makedir(PREFIX)
         handle.makedir(PREFIX + '/foo')
+        handle.makedir(PREFIX + '/foo2')
+        handle.makedir(PREFIX + '/üöä')
         with handle.open(PREFIX + '/foo/index.html', 'wb') as fp:
             fp.write('<html/>')
         with handle.open(PREFIX + '/foo/index.xml', 'wb') as fp:
+            fp.write('<?xml version="1.0" ?>\n<hello>world</hello>')
+        with handle.open(PREFIX + '/foo2/index.html', 'wb') as fp:
+            fp.write('<html/>')
+        with handle.open(PREFIX + '/foo2/index.xml', 'wb') as fp:
+            fp.write('<?xml version="1.0" ?>\n<hello>world</hello>')
+        with handle.open(PREFIX + '/üöä/üöä.xml', 'wb') as fp:
             fp.write('<?xml version="1.0" ?>\n<hello>world</hello>')
         self.portal.connector.webdav_subpath = PREFIX
 
@@ -92,17 +100,70 @@ class BasicTests(TestBase):
         zf = ZipFile(fn, 'r')
         self.assertEqual('foo/index.html' in zf.namelist(), True)
         self.assertEqual('foo/index.xml' in zf.namelist(), True)
+        self.assertEqual('üöä/üöä.xml' in zf.namelist(), True)
         zf.close()
         os.unlink(fn)
 
+    def testZipExportFoo2Only(self):
+        self.login('god')
+        view = self._get_view()
+        fn = view.zip_export(download=False, dirs='foo2')
+        zf = ZipFile(fn, 'r')
+        self.assertEqual('foo/index.html' not in zf.namelist(), True)
+        self.assertEqual('foo/index.xml' not in zf.namelist(), True)
+        self.assertEqual('foo2/index.html' in zf.namelist(), True)
+        self.assertEqual('foo2/index.xml' in zf.namelist(), True)
+        zf.close()
+        os.unlink(fn)
+
+    def testZipExportReimport(self):
+        handle = self.portal.connector.webdav_handle()
+        self.login('god')
+
+        view = self._get_view()
+        fn = view.zip_export(download=False)
+
+        for name in handle.listdir():
+            handle.removedir(name, False, True)
+
+        view.zip_import(fn)
+        dirs = handle.listdir()
+        self.assertEqual('foo' in dirs, True)
+        self.assertEqual('foo2' in dirs, True)
+        self.assertEqual(u'üöä' in dirs, True)
+
     def testZipImport(self):
         self.login('god')
-        fn = os.path.join(os.path.dirname(__file__), 'sample.zip')
+        fn = os.path.join(os.path.dirname(__file__), 'zip_data', 'sample.zip')
         view = self._get_view()
         view.zip_import(fn)
         handle = self.portal.connector.webdav_handle()
         self.assertEqual(handle.exists('import/test.xml'), True)
         self.assertEqual(handle.exists('import/test.html'), True)
+
+    def testZipImportMacFinder(self):
+        self.login('god')
+        handle = self.portal.connector.webdav_handle()
+        for name in handle.listdir():
+            handle.removedir(name, False, True)
+
+        fn = os.path.join(os.path.dirname(__file__), 'zip_data', 'created_macosx_finder.zip')
+        view = self._get_view()
+        view.zip_import(fn)
+        names = handle.listdir()
+        self.assertEquals(u'üüüü' in names, True, names)
+
+    def testZipImportMacZip(self):
+        self.login('god')
+        handle = self.portal.connector.webdav_handle()
+        for name in handle.listdir():
+            handle.removedir(name, False, True)
+
+        fn = os.path.join(os.path.dirname(__file__), 'zip_data', 'created_macosx_zip.zip')
+        view = self._get_view()
+        view.zip_import(fn)
+        names = handle.listdir()
+        self.assertEquals(u'üüüü' in names, True, names)
 
     def testHumanReadableDatetime(self):
         view = self._get_view()

@@ -53,7 +53,14 @@ class Transformer(object):
         if errors:
             raise ValueError('Unknown transformer steps: {}'.format(errors))
 
-    def __call__(self, xml_or_node, input_encoding=None, output_encoding=unicode, return_fragment=None, pretty_print=False, debug=False):
+    def __call__(
+            self,
+            xml_or_node,
+            input_encoding=None,
+            output_encoding=unicode,
+            return_fragment=None,
+            pretty_print=False,
+            debug=False):
         """ Run the transformation chain either on an XML document passed as ``xml_or_node`` parameter
             or as pre-parsed XML node (lxml.etree.Element). XML documents passed as string must be either of type
             unicode or you must specify an explicit ``input_encoding``. The result XML document is returned as

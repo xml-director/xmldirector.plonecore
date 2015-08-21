@@ -66,7 +66,9 @@ class LockManager(object):
 
     def lock_filename(self, path):
         """ Canoncial lock filename for a given path """
-        return '{}.lock.xml'.format(path)
+        if not isinstance(path, unicode):
+            path = unicode(path, 'utf8')
+        return u'{}.lock.xml'.format(path).encode('utf-8')
 
     def has_lock(self, path):
         """ Return True if the given file is locked, False otherwise """
@@ -75,6 +77,8 @@ class LockManager(object):
 
     def get_lock(self, path):
         """ Retrieve lock information """
+        if not isinstance(path, unicode):
+            path = unicode(path, 'utf8')
 
         handle = self.webdav_handle
         lock_filename = self.lock_filename(path)
@@ -82,7 +86,7 @@ class LockManager(object):
             with handle.open(lock_filename, 'rb', lock_check=False) as fp:
                 lock_xml = fp.read()
         except fs.errors.ResourceNotFoundError:
-            raise LockError('No lock file found for {}'.format(path))
+            raise LockError(u'No lock file found for {}'.format(path))
 
         root = defusedxml.lxml.fromstring(lock_xml)
         lock_info = dict()

@@ -1,12 +1,24 @@
 Changelog
 =========
 
-1.0.5 (unreleased)
+1.1.0 (unreleased)
 ------------------
 
 - some CSS styles fine-tuning
 - added optional ``dirs`` parameter to ZIP export API for 
   exporting only a subset of the export directory structure
+- added control panel functionality for installing Exist-DB
+  specific RESTXQ script (e.g. all-locks.xql which is needed
+  by the lockmanager introspection control panel for getting
+  hold of all locks).
+- ZIP import now works inside the given subdirectory and no longer
+  only on the top level directory of the connector
+- delete actions for collections and collection items
+- delete actions now ask for confirmation
+- massive speedup of ZIP import by reducing and caching WebDAV operations
+- using Datatables.net for collections and collection items
+- ZIP export/import is now more robust with directories or filenames
+  containing non-ascii characters
 
 1.0.4 (2015-07-22)
 ------------------

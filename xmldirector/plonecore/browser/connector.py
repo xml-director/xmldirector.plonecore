@@ -17,6 +17,7 @@ import zipfile
 import tempfile
 import mimetypes
 import logging
+import unicodedata
 import zExceptions
 from dateutil import tz
 from fs.zipfs import ZipFS
@@ -138,10 +139,15 @@ class Connector(BrowserView):
     def webdav_handle_root(self):
         return self.webdav_handle(root=True)
 
-    def redirect(self, message=None, level='info'):
+    def redirect(self, message=None, level='info', subpath=None):
         if message:
             self.context.plone_utils.addPortalMessage(message, level)
-        return self.request.response.redirect(self.context.absolute_url())
+        url = self.context.absolute_url()
+        if subpath:
+            if isinstance(subpath, unicode):
+                subpath = subpath.encode('utf8')
+            url = '{}/@@view/{}'.format(url, subpath)
+        return self.request.response.redirect(url)
 
     def __call__(self, *args, **kw):
 
@@ -152,9 +158,11 @@ class Connector(BrowserView):
             context_url = self.context.absolute_url()
             view_prefix = '@@view'
             edit_prefix = '@@view-editor'
+            remove_prefix = '@@remove-from-collection?subpath='
             if self.subpath:
                 view_prefix += '/' + '/'.join(self.subpath)
                 edit_prefix += '/' + '/'.join(self.subpath)
+                remove_prefix += '/' + '/'.join(self.subpath)
 
             files = list()
             for info in handle.listdirinfo(files_only=True):
@@ -164,18 +172,25 @@ class Connector(BrowserView):
                     except KeyError:
                         size = u'n/a'
                     files.append(dict(url='{}/{}/{}'.format(context_url, view_prefix, info[0]),
+                                      remove_url='{}/{}&name={}'.format(
+                                          context_url, remove_prefix, info[0]),
                                       edit_url='{}/{}/{}'.format(
                                           context_url, edit_prefix, info[0]),
                                       title=info[0],
                                       editable=self.is_ace_editable(info[0]),
+                                      st_mode=info[1]['st_mode'],
+                                      size_original=info[1]['size'],
                                       size=size,
+                                      modified_original=info[1]['modified_time'],
                                       modified=self.human_readable_datetime(info[1]['modified_time'])))
 
             dirs = list()
             for info in handle.listdirinfo(dirs_only=True):
-                url = u'{}/{}/{}'.format(context_url, view_prefix, info[0])
+                url = '{}/{}/{}'.format(context_url, view_prefix, info[0].encode('utf8'))
                 dirs.append(dict(url=url,
                                  title=info[0],
+                                 st_mode=info[1]['st_mode'],
+                                 modified_original=info[1]['modified_time'],
                                  modified=self.human_readable_datetime(info[1]['modified_time'])))
 
             dirs = sorted(dirs, key=operator.itemgetter('title'))
@@ -214,6 +229,9 @@ class Connector(BrowserView):
     def create_collection(self, subpath, name):
         """ Create a new collection """
 
+        if not name:
+            raise ValueError(_(u'No "name" given'))
+
         handle = self.webdav_handle(subpath)
         if handle.exists(name):
             msg = u'Collection already exists'
@@ -241,8 +259,27 @@ class Connector(BrowserView):
         return self.request.response.redirect(
             '{}/@@view/{}'.format(self.context.absolute_url(), subpath))
 
+    def remove_from_collection(self, subpath, name):
+        """ Remove a collection """
+
+        handle = self.webdav_handle(subpath)
+        if handle.exists(name):
+            handle.remove(name)
+            msg = u'Removed {}'.format(name)
+            self.logger.log(msg)
+            self.context.plone_utils.addPortalMessage(msg)
+        else:
+
+            self.request.response.setStatus(404)
+            return 'not found'
+        return self.request.response.redirect(
+            '{}/@@view/{}'.format(self.context.absolute_url(), subpath))
+
     def rename_collection(self, subpath, name, new_name):
         """ Rename a collection """
+
+        if not new_name:
+            raise ValueError(_(u'No new "name" given'))
 
         handle = self.webdav_handle(subpath)
         if handle.exists(name):
@@ -288,7 +325,7 @@ class Connector(BrowserView):
 
         return self.redirect(_(u'eXist-db collection cleared'))
 
-    def zip_export(self, download=True, dirs=None):
+    def zip_export(self, download=True, dirs=None, subpath=u''):
         """ Export WebDAV subfolder to a ZIP file.
             ``dirs`` optional comma separated list of top-level
             directory names to be exported.
@@ -297,21 +334,24 @@ class Connector(BrowserView):
         if dirs:
             dirs = dirs.split(',')
 
+        if not isinstance(subpath, unicode):
+            subpath = unicode(subpath, 'utf8')
+
         handle = self.webdav_handle()
         zip_filename = tempfile.mktemp(suffix='.zip')
-        zf = zipfile.ZipFile(zip_filename, 'w')
-        for dirname, filenames in handle.walk():
-            if dirname.startswith('/'):
-                dirname = dirname.lstrip('/')
-            if dirs:
-                dir_paths = dirname.split('/')
-                if dir_paths[0] not in dirs:
-                    continue
-            for filename in filenames:
-                z_filename = fs.path.join(dirname, filename)
-                with handle.open(z_filename, 'rb') as fp:
-                    zf.writestr(z_filename, fp.read())
-        zf.close()
+        with ZipFS(zip_filename, 'w', encoding='utf8') as zip_fs:
+            for dirname, filenames in handle.walk(subpath):
+                if dirname.startswith('/'):
+                    dirname = dirname.lstrip('/')
+                if dirs:
+                    dir_paths = dirname.split('/')
+                    if dir_paths[0] not in dirs:
+                        continue
+                for filename in filenames:
+                    z_filename = fs.path.join(dirname, filename)
+                    with handle.open(z_filename, 'rb') as fp:
+                        with zip_fs.open(z_filename, 'wb') as zip_out:
+                            zip_out.write(fp.read())
 
         if download:
             self.request.response.setHeader('content-type', 'application/zip')
@@ -328,6 +368,9 @@ class Connector(BrowserView):
 
     def zip_import(self, zip_file=None, subpath=None, clean_directories=None):
         """ Import WebDAV subfolder from an uploaded ZIP file """
+
+        if subpath and not isinstance(subpath, unicode):
+            subpath = unicode(subpath, 'utf8')
 
         if clean_directories is None:
             clean_directories = []
@@ -354,10 +397,10 @@ class Connector(BrowserView):
 
             msg = u'File "{}" imported'.format(zip_filename)
             self.logger.log(msg)
-            return self.redirect(_(msg))
+            return self.redirect(_(msg), subpath=subpath)
 
         try:
-            with ZipFS(zip_file, 'r') as zip_handle:
+            with ZipFS(zip_file, 'r', encoding='utf-8') as zip_handle:
                 # Cleanup webdav directory first
                 for i, name in enumerate(handle.listdir()):
                     if name not in clean_directories:
@@ -380,22 +423,28 @@ class Connector(BrowserView):
 
                 # import all files from ZIP into WebDAV
                 count = 0
+                dirs_created = set()
                 for i, name in enumerate(zip_handle.walkfiles()):
                     if show_progress:
                         pbar.update(i)
 
-                    dirname = '/'.join(name.split('/')[:-1])
+                    target_filename = unicodedata.normalize('NFC', name).lstrip('/')
+                    if subpath:
+                        target_filename = u'{}/{}'.format(subpath, target_filename)
 
-                    try:
-                        handle.makedir(
-                            dirname, recursive=True, allow_recreate=True)
-                    except Exception as e:
-                        LOG.error(
-                            'Failed creating {} failed ({})'.format(dirname, e))
+                    target_dirname = '/'.join(target_filename.split('/')[:-1])
+                    if target_dirname not in dirs_created:
+                        try:
+                            handle.makedir(
+                                target_dirname, recursive=True, allow_recreate=True)
+                            dirs_created.add(target_dirname)
+                        except Exception as e:
+                            LOG.error(
+                                'Failed creating {} failed ({})'.format(target_dirname, e))
 
-                    LOG.info('ZIP filename({})'.format(name))
+                    LOG.info(u'ZIP filename({})'.format(name))
 
-                    out_fp = handle.open(name.lstrip('/'), 'wb')
+                    out_fp = handle.open(target_filename, 'wb')
                     zip_fp = zip_handle.open(name, 'rb')
                     out_fp.write(zip_fp.read())
                     out_fp.close()
@@ -408,10 +457,9 @@ class Connector(BrowserView):
         except fs.zipfs.ZipOpenError as e:
             msg = u'Error opening ZIP file: {}'.format(e)
             return self.redirect(msg, 'error')
-
         self.logger.log(
-            u'ZIP file imported ({}, {} files)'.format(zip_filename, count))
-        return self.redirect(_(u'Uploaded ZIP archive imported'))
+            'ZIP file imported ({}, {} files)'.format(zip_filename, count))
+        return self.redirect(_(u'Uploaded ZIP archive imported'), subpath=subpath)
 
 
 class AceEditor(Connector):
