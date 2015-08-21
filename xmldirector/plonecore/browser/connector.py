@@ -17,6 +17,7 @@ import zipfile
 import tempfile
 import mimetypes
 import logging
+import unicodedata
 import zExceptions
 from dateutil import tz
 from fs.zipfs import ZipFS
@@ -427,7 +428,7 @@ class Connector(BrowserView):
                     if show_progress:
                         pbar.update(i)
 
-                    target_filename = name.lstrip('/')
+                    target_filename = unicodedata.normalize('NFC', name).lstrip('/')
                     if subpath:
                         target_filename = u'{}/{}'.format(subpath, target_filename)
 

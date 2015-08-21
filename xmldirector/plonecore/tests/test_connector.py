@@ -151,7 +151,7 @@ class BasicTests(TestBase):
         view = self._get_view()
         view.zip_import(fn)
         names = handle.listdir()
-        self.assertEquals(u'üöä' in names, True, names)
+        self.assertEquals(u'üüüü' in names, True, names)
 
     def testZipImportMacFinder(self):
         self.login('god')
@@ -163,7 +163,7 @@ class BasicTests(TestBase):
         view = self._get_view()
         view.zip_import(fn)
         names = handle.listdir()
-        self.assertEquals(u'üöä' in names, True, names)
+        self.assertEquals(u'üüüü' in names, True, names)
 
     def testHumanReadableDatetime(self):
         view = self._get_view()
