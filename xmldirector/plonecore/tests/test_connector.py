@@ -153,7 +153,7 @@ class BasicTests(TestBase):
         names = handle.listdir()
         self.assertEquals(u'üüüü' in names, True, names)
 
-    def testZipImportMacFinder(self):
+    def testZipImportMacZip(self):
         self.login('god')
         handle = self.portal.connector.webdav_handle()
         for name in handle.listdir():
