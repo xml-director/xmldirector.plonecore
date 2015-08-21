@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.1.0 (unreleased)
+1.1.0 (2015-08-21)
 ------------------
 
 - some CSS styles fine-tuning
@@ -19,6 +19,7 @@ Changelog
 - using Datatables.net for collections and collection items
 - ZIP export/import is now more robust with directories or filenames
   containing non-ascii characters
+- improved Plone 5.0 integration
 
 1.0.4 (2015-07-22)
 ------------------
