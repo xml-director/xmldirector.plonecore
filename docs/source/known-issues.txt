@@ -1,0 +1,5 @@
+Known issues
+------------
+
+- BaseX does not support non-ascii collection names (at least not by default).
+  See https://github.com/BaseXdb/basex/issues/1184
