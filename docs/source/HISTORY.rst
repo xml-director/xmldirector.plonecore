@@ -1,6 +1,13 @@
 Changelog
 =========
 
+1.1.1 (unreleased) 
+------------------
+
+- updated selenium version pin
+- better encapsulation of the DataTables Javascript initialization
+  code in local.js
+
 1.1.0 (2015-08-21)
 ------------------
 
