@@ -1,5 +1,10 @@
-Changelog
+hangelog
 =========
+
+1.1.2 (unreleased)
+------------------
+
+- refactored zip export functionality
 
 1.1.1 (2015-08-25) 
 ------------------
