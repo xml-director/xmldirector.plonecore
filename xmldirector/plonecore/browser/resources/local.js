@@ -176,7 +176,11 @@ $(document).ready(function() {
     }            
 
 
-    var order = [0, "asc"];
+    try {
+        var order = DATATABLES_ORDER;
+    } catch(e) {
+        var order = [0, "asc"];
+    }
 
     var tables = $('.datatable');
     if (tables.length > 0) {

@@ -69,7 +69,11 @@
           </table>
 
           <script type="text/javascript">
+
+              var DATATABLES_ORDER = [0, "desc"];
+
               $(document).ready(function() {
+
                   $('.action').click(function() {
                           $(this).siblings('pre').fadeToggle('fast');
                   });

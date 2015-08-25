@@ -449,7 +449,7 @@ class Connector(BrowserView):
                     zip_fp = zip_handle.open(name, 'rb')
                     out_fp.write(zip_fp.read())
                     out_fp.close()
-                    files_imported.append(target_filename)
+                    imported_files.append(target_filename)
                     count += 1
 
                 zip_fp.close()
@@ -460,7 +460,7 @@ class Connector(BrowserView):
             msg = u'Error opening ZIP file: {}'.format(e)
             return self.redirect(msg, 'error')
         self.logger.log(
-            'ZIP file imported ({}, {} files)'.format(zip_filename, count), detail=files_imported)
+            'ZIP file imported ({}, {} files)'.format(zip_filename, count), details=imported_files)
         return self.redirect(_(u'Uploaded ZIP archive imported'), subpath=subpath)
 
 
