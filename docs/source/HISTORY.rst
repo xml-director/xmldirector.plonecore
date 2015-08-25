@@ -1,12 +1,13 @@
 Changelog
 =========
 
-1.1.1 (unreleased) 
+1.1.1 (2015-08-25) 
 ------------------
 
 - updated selenium version pin
 - better encapsulation of the DataTables Javascript initialization
   code in local.js
+- fixed integration bug in Plone 5.0
 
 1.1.0 (2015-08-21)
 ------------------
