@@ -366,6 +366,21 @@ class Connector(BrowserView):
         else:
             return zip_filename
 
+    def zip_import_ui(self, zip_file=None, subpath=None, clean_directories=None):
+        """ Import WebDAV subfolder from an uploaded ZIP file """
+
+   
+        try:
+            imported_files = self.zip_import(zip_file, subpath, clean_directories)
+        except Exception as e:
+            msg = u'ZIP import failed'
+            LOG.error(msg, exc_info=True)
+            return self.redirect(msg, 'error')
+
+        self.logger.log(
+            'ZIP file imported ({}, {} files)'.format(zip_file, len(imported_files)), details=imported_files)
+        return self.redirect(_(u'Uploaded ZIP archive imported'), subpath=subpath)
+
     def zip_import(self, zip_file=None, subpath=None, clean_directories=None):
         """ Import WebDAV subfolder from an uploaded ZIP file """
 
@@ -385,6 +400,8 @@ class Connector(BrowserView):
             zip_file = open(zip_file, 'rb')
             LOG.info('ZIP import ({})'.format(zip_filename))
 
+        imported_files = list()
+
         # zip_import() can also be used to upload single files
         # into the current webdav folder
         if not zip_filename.endswith('.zip'):
@@ -392,13 +409,15 @@ class Connector(BrowserView):
                 target_filename = '{}/{}'.format(subpath, zip_filename)
             else:
                 target_filename = zip_filename
+
             with handle.open(target_filename, 'wb') as fp:
                 fp.write(zip_file.read())
 
+            imported_files.append(target_filename)
             msg = u'File "{}" imported'.format(zip_filename)
             self.logger.log(msg)
-            return self.redirect(_(msg), subpath=subpath)
-
+            return imported_files
+            
         try:
             with ZipFS(zip_file, 'r', encoding='utf-8') as zip_handle:
                 # Cleanup webdav directory first
@@ -424,7 +443,6 @@ class Connector(BrowserView):
                 # import all files from ZIP into WebDAV
                 count = 0
                 dirs_created = set()
-                imported_files = list()
                 for i, name in enumerate(zip_handle.walkfiles()):
                     if show_progress:
                         pbar.update(i)
@@ -449,7 +467,7 @@ class Connector(BrowserView):
                     zip_fp = zip_handle.open(name, 'rb')
                     out_fp.write(zip_fp.read())
                     out_fp.close()
-                    files_imported.append(target_filename)
+                    imported_files.append(target_filename)
                     count += 1
 
                 zip_fp.close()
@@ -458,10 +476,8 @@ class Connector(BrowserView):
 
         except fs.zipfs.ZipOpenError as e:
             msg = u'Error opening ZIP file: {}'.format(e)
-            return self.redirect(msg, 'error')
-        self.logger.log(
-            'ZIP file imported ({}, {} files)'.format(zip_filename, count), detail=files_imported)
-        return self.redirect(_(u'Uploaded ZIP archive imported'), subpath=subpath)
+            raise RuntimeError(msg)
+        return imported_files
 
 
 class AceEditor(Connector):

@@ -134,7 +134,7 @@
         for="xmldirector.plonecore.connector.IConnector"
         name="connector-zip-upload"
         class=".connector.Connector"
-        attribute="zip_import"
+        attribute="zip_import_ui"
         permission="cmf.ModifyPortalContent"
     />
 
