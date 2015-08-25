@@ -409,7 +409,8 @@ class Connector(BrowserView):
                 target_filename = '{}/{}'.format(subpath, zip_filename)
             else:
                 target_filename = zip_filename
-
+            if not target_filename:
+                raise ValueError(u'No filename detected, did you really upload a file?');
             with handle.open(target_filename, 'wb') as fp:
                 fp.write(zip_file.read())
 
