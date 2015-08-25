@@ -424,6 +424,7 @@ class Connector(BrowserView):
                 # import all files from ZIP into WebDAV
                 count = 0
                 dirs_created = set()
+                imported_files = list()
                 for i, name in enumerate(zip_handle.walkfiles()):
                     if show_progress:
                         pbar.update(i)
@@ -448,6 +449,7 @@ class Connector(BrowserView):
                     zip_fp = zip_handle.open(name, 'rb')
                     out_fp.write(zip_fp.read())
                     out_fp.close()
+                    files_imported.append(target_filename)
                     count += 1
 
                 zip_fp.close()
@@ -458,7 +460,7 @@ class Connector(BrowserView):
             msg = u'Error opening ZIP file: {}'.format(e)
             return self.redirect(msg, 'error')
         self.logger.log(
-            'ZIP file imported ({}, {} files)'.format(zip_filename, count))
+            'ZIP file imported ({}, {} files)'.format(zip_filename, count), detail=files_imported)
         return self.redirect(_(u'Uploaded ZIP archive imported'), subpath=subpath)
 
 
