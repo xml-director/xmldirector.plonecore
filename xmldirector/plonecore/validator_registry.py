@@ -56,6 +56,7 @@ class ValidatorRegistry(object):
 
         for name in handle.listdir():
             fullname = os.path.join(directory, name)
+            LOG.info(u'Parsing "{}"'.format(fullname))
             base, ext = os.path.splitext(name)
 
             registered_name = name
@@ -72,8 +73,12 @@ class ValidatorRegistry(object):
                     validator_type = 'DTD'
             elif ext == '.xsd':
                 with handle.open(name, 'rb') as fp:
-                    schema_doc = lxml.etree.XML(fp.read())
-                    validator = lxml.etree.XMLSchema(schema_doc)
+                    try:
+                        schema_doc = lxml.etree.XML(fp.read())
+                        validator = lxml.etree.XMLSchema(schema_doc)
+                    except Exception as e:
+                        LOG.error(u'Unable to parse XML Schema ({})'.format(e), exc_info=True)
+                        continue
                     validator_type = 'XSD'
             elif ext == '.rng':
                 with handle.open(name, 'rb') as fp:
