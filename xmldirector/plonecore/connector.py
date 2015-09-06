@@ -17,6 +17,8 @@ from xmldirector.plonecore.i18n import MessageFactory as _
 from xmldirector.plonecore.davfs import DAVFSWrapper as DAVFS
 from xmldirector.plonecore.interfaces import IWebdavSettings
 
+from xmldirector.plonecore.logger import LOG
+
 
 class IConnector(model.Schema):
 
@@ -98,5 +100,6 @@ class Connector(Item):
             return DAVFS(url, credentials=dict(username=username,
                                                password=password))
         except Exception as e:
+            LOG.error(e, exc_info=True)
             e.url = url
             raise e
