@@ -100,6 +100,6 @@ class Connector(Item):
             return DAVFS(url, credentials=dict(username=username,
                                                password=password))
         except Exception as e:
-            LOG.error(e, exc_info=True)
+            LOG.error(u'Error accessing {}'.format(url), exc_info=True)
             e.url = url
             raise e
