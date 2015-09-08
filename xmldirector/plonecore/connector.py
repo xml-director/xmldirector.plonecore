@@ -5,7 +5,12 @@
 # (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
+
+import fs
+import fs.errors
 import urllib
+
+import zExceptions
 from zope import schema
 from zope.interface import implements
 from zope.component import getUtility
@@ -99,6 +104,9 @@ class Connector(Item):
         try:
             return DAVFS(url, credentials=dict(username=username,
                                                password=password))
+        except  fs.errors.ResourceNotFoundError:
+            LOG.error(u'Error accessing {}::{}::{}'.format(self.absolute_url(), url, self.REQUEST.get('HTTP_USER_AGENT')), exc_info=True)
+            raise zExceptions.Unauthorized(url)
         except Exception as e:
             LOG.error(u'Error accessing {}::{}::{}'.format(self.absolute_url(), url, self.REQUEST.get('HTTP_USER_AGENT')), exc_info=True)
             e.url = url
