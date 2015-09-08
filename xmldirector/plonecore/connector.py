@@ -100,6 +100,6 @@ class Connector(Item):
             return DAVFS(url, credentials=dict(username=username,
                                                password=password))
         except Exception as e:
-            LOG.error(u'Error accessing {}::{}'.format(self.absolute_url(), url), exc_info=True)
+            LOG.error(u'Error accessing {}::{}::{}'.format(self.absolute_url(), url, self.REQUEST.get('HTTP_USER_AGENT')), exc_info=True)
             e.url = url
             raise e
