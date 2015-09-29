@@ -1,10 +1,15 @@
 hangelog
 =========
 
-1.1.2 (unreleased)
+1.2.0 (2015-09-29)
 ------------------
 
 - refactored zip export functionality
+- new supported WebDAV storage backends:
+  
+  - Alfresco
+  - Owncloud
+  - Dropbox (via dropdav.com SaaS) 
 
 1.1.1 (2015-08-25) 
 ------------------

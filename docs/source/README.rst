@@ -72,15 +72,15 @@ Requirements
 
 - Supported XML backends:
 
-    - eXist-db 2.2 or higher
+    - eXist-db 2.2 and 3.0
 
-    - or Base-X 8.2 or higher
-
-- (un)supported/experimental WebDAV backends:
+    - Base-X >= 8.2
 
     - OwnCloud
     
     - Alfresco
+
+    - Dropbox (via dropdav.com (Dropbox to WebDAV bridge, paid SaaS))
 
 
 Configuration
@@ -89,16 +89,28 @@ Configuration
 Goto the Plone control panel and click on the ``XML-Director Core`` configlet and
 configure the 
 
-- WebDAV URL of the XML database. 
+- Connection URL to your XML database or WebDAV storage
 
-  For eXist-db you need something like::
+  ExistDB:
   
     http://localhost:6080/existdb/webdav/db
 
-  For Base-X 8 you need::
+  BaseX:
 
     http://localhost:8984/webdav
-  
+
+  Owncloud:
+
+    http://hostname:port/remote.php/webdav
+
+  Alfresco:
+
+    http://hostname:port/webdav
+
+  Dropbox (via dropdav.com SaaS):
+
+    https://dav.dropdav.com
+
 
 - WebDAV username
 

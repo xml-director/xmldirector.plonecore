@@ -36,6 +36,9 @@ class IValidatorRegistry(Interface):
 WEBDAV_MODE_VOCAB = SimpleVocabulary([
     SimpleTerm(u'existdb', title=u'Exist-DB'),
     SimpleTerm(u'basex', title=u'BaseX'),
+    SimpleTerm(u'alfresco', title=u'Alfresco'),
+    SimpleTerm(u'dropbox-dropdav', title=u'Dropbox (via dropdav.com)'),
+    SimpleTerm(u'owncloud', title=u'OwnCloud'),
     SimpleTerm(u'other', title=u'Other')
 ])
 
