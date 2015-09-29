@@ -104,7 +104,7 @@ class Connector(Item):
         try:
             return DAVFS(url, credentials=dict(username=username,
                                                password=password))
-        except  fs.errors.ResourceNotFoundError:
+        except fs.errors.ResourceNotFoundError:
             LOG.error(u'Error accessing {}::{}::{}'.format(self.absolute_url(), url, self.REQUEST.get('HTTP_USER_AGENT')), exc_info=True)
             raise zExceptions.Unauthorized(url)
         except Exception as e:
