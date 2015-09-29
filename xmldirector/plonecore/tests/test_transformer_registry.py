@@ -6,7 +6,7 @@
 ################################################################
 
 import os
-import unittest2
+import unittest
 import zExceptions
 from xmldirector.plonecore.transformer_registry import TransformerRegistry
 import Testing.makerequest
@@ -24,7 +24,7 @@ def python_transformer(root, conversion_context):
         node.tag = 'bar'
 
 
-class BasicTests(unittest2.TestCase):
+class BasicTests(unittest.TestCase):
 
     def setUp(self):
         self.registry = TransformerRegistry()
@@ -120,7 +120,7 @@ class ViewTests(TestBase):
 
 
 def test_suite():
-    from unittest2 import TestSuite, makeSuite
+    from unittest import TestSuite, makeSuite
     suite = TestSuite()
     suite.addTest(makeSuite(BasicTests))
     suite.addTest(makeSuite(ViewTests))

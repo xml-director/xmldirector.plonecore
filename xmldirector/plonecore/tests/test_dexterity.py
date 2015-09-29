@@ -151,7 +151,7 @@ class BasicTests(TestBase):
 
 
 def test_suite():
-    from unittest2 import TestSuite, makeSuite
+    from unittest import TestSuite, makeSuite
     suite = TestSuite()
     suite.addTest(makeSuite(BasicTests))
     return suite

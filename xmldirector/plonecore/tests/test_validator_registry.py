@@ -6,7 +6,7 @@
 ################################################################
 
 import os
-import unittest2
+import unittest
 from xmldirector.plonecore.validator_registry import ValidatorRegistry
 import zExceptions
 import Testing.makerequest
@@ -16,7 +16,7 @@ from base import TestBase
 cwd = os.path.dirname(__file__)
 
 
-class BasicTests(unittest2.TestCase):
+class BasicTests(unittest.TestCase):
 
     def setUp(self):
         self.registry = ValidatorRegistry()
@@ -122,7 +122,7 @@ class ViewTests(TestBase):
 
 
 def test_suite():
-    from unittest2 import TestSuite, makeSuite
+    from unittest import TestSuite, makeSuite
     suite = TestSuite()
     suite.addTest(makeSuite(BasicTests))
     suite.addTest(makeSuite(ViewTests))

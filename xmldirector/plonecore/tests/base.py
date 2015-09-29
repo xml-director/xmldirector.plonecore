@@ -7,7 +7,7 @@
 
 import os
 import uuid
-import unittest2
+import unittest
 import plone.api
 from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import applyProfile
@@ -89,7 +89,7 @@ POLICY_INTEGRATION_TESTING = IntegrationTesting(
     bases=(POLICY_FIXTURE,), name='PolicyFixture:Integration')
 
 
-class TestBase(unittest2.TestCase):
+class TestBase(unittest.TestCase):
 
     layer = POLICY_INTEGRATION_TESTING
 
