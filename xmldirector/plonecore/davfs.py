@@ -10,7 +10,6 @@
 from collections import namedtuple
 from fs.contrib.davfs import DAVFS
 from fs.osfs import OSFS
-from fs.memoryfs import MemoryFS
 from fs.ftpfs import FTPFS
 from fs.s3fs import S3FS
 from fs import iotools
