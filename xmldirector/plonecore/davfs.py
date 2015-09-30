@@ -9,12 +9,24 @@
 
 from collections import namedtuple
 from fs.contrib.davfs import DAVFS
+from fs.osfs import OSFS
+from fs.sftpfs import SFTPFS
+from fs.memoryfs import MemoryFS
+from fs.ftpfs import FTPFS
+from fs.s3fs import S3FS
 from fs import iotools
 
 import plone.api
 from xmldirector.plonecore.locking import LockManager
 from xmldirector.plonecore.locking import FileIsLocked
 from xmldirector.plonecore.locking import LockError
+
+
+try:
+    import paramiko
+    have_paramiko = True
+except ImportError:
+    have_paramiko = False
 
 
 _marker = object
@@ -60,8 +72,7 @@ LOCK_PERMISSION_MAP = dict([
 ])
 
 
-class DAVFSWrapper(DAVFS):
-
+class BaseWrapper(object):
     """ A wapper for DAVFS """
 
     def _check_lock(self, path, op):
@@ -88,19 +99,40 @@ class DAVFSWrapper(DAVFS):
     def open(self, path, mode="r", lock_check=True, **kwargs):
         if lock_check:
             self._check_lock(path, op='open_{}'.format(mode[0]))
-        return super(DAVFSWrapper, self).open(path, mode, **kwargs)
+        return super(BaseWrapper, self).open(path, mode, **kwargs)
 
     def remove(self, path, lock_check=True):
         if lock_check:
             self._check_lock(path, op='remove')
-        return super(DAVFSWrapper, self).remove(path)
+        return super(BaseWrapper, self).remove(path)
 
     def move(self, path_old, path_new, lock_check=True):
         if lock_check:
             self._check_lock(path_old, op='move')
-        return super(DAVFSWrapper, self).move(path_old, path_new)
+        return super(BaseWrapper, self).move(path_old, path_new)
 
     def copy(self, src, dst, overwrite=False, chunk_size=None, lock_check=True):
         if lock_check:
             self._check_lock(src, op='copy')
-        return super(DAVFSWrapper, self).copy(src, dst, overwrite, chunk_size)
+        return super(BaseWrapper, self).copy(src, dst, overwrite, chunk_size)
+
+
+class DAVFSWrapper(BaseWrapper, DAVFS):
+    pass
+
+
+class OSFSWrapper(BaseWrapper, OSFS):
+    pass
+
+
+if have_paramiko:
+    class SFTPFSWrapper(BaseWrapper, SFTPFS):
+        pass
+
+
+class FTPFSWrapper(BaseWrapper, FTPFS):
+    pass
+
+
+class S3FSWrapper(BaseWrapper, S3FS):
+    pass
