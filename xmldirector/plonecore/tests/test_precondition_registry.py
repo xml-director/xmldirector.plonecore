@@ -6,7 +6,7 @@
 ################################################################
 
 import os
-import unittest2
+import unittest
 from xmldirector.plonecore.browser.view_registry import Precondition
 from xmldirector.plonecore.browser.view_registry import PreconditionRegistry
 
@@ -32,7 +32,7 @@ class class_view_handler(object):
         return 'i am a class view handler'
 
 
-class PreconditionTests(unittest2.TestCase):
+class PreconditionTests(unittest.TestCase):
 
     def test_precondition_arguments(self):
 
@@ -60,7 +60,7 @@ class PreconditionTests(unittest2.TestCase):
         self.assertEqual(result, u'hello world')
 
 
-class PreconditionRegistryTests(unittest2.TestCase):
+class PreconditionRegistryTests(unittest.TestCase):
 
     def setUp(self):
         self.registry = PreconditionRegistry()
@@ -111,7 +111,7 @@ class PreconditionRegistryTests(unittest2.TestCase):
 
 
 def test_suite():
-    from unittest2 import TestSuite, makeSuite
+    from unittest import TestSuite, makeSuite
     suite = TestSuite()
     suite.addTest(makeSuite(PreconditionTests))
     suite.addTest(makeSuite(PreconditionRegistryTests))

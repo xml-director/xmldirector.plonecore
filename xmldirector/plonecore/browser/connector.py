@@ -13,7 +13,6 @@ import fs.path
 import humanize
 import operator
 import hurry.filesize
-import zipfile
 import tempfile
 import mimetypes
 import logging
@@ -369,7 +368,6 @@ class Connector(BrowserView):
     def zip_import_ui(self, zip_file=None, subpath=None, clean_directories=None):
         """ Import WebDAV subfolder from an uploaded ZIP file """
 
-   
         try:
             imported_files = self.zip_import(zip_file, subpath, clean_directories)
         except Exception as e:
@@ -410,7 +408,7 @@ class Connector(BrowserView):
             else:
                 target_filename = zip_filename
             if not target_filename:
-                raise ValueError(u'No filename detected, did you really upload a file?');
+                raise ValueError(u'No filename detected, did you really upload a file?')
             with handle.open(target_filename, 'wb') as fp:
                 fp.write(zip_file.read())
 
@@ -418,7 +416,7 @@ class Connector(BrowserView):
             msg = u'File "{}" imported'.format(zip_filename)
             self.logger.log(msg)
             return imported_files
-            
+
         try:
             with ZipFS(zip_file, 'r', encoding='utf-8') as zip_handle:
                 # Cleanup webdav directory first

@@ -8,7 +8,7 @@
 import os
 import codecs
 import defusedxml.lxml
-import unittest2
+import unittest
 from xmldirector.plonecore.transformer_registry import TransformerRegistry
 from xmldirector.plonecore.transformation import Transformer
 
@@ -64,7 +64,7 @@ def catalog_transformer(root, conversion_context):
         node.tag = 'TABELLE'
 
 
-class BasicTests(unittest2.TestCase):
+class BasicTests(unittest.TestCase):
 
     def setUp(self):
         self.registry = TransformerRegistry()
@@ -180,7 +180,7 @@ class BasicTests(unittest2.TestCase):
 
 
 def test_suite():
-    from unittest2 import TestSuite, makeSuite
+    from unittest import TestSuite, makeSuite
     suite = TestSuite()
     suite.addTest(makeSuite(BasicTests))
     return suite

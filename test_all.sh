@@ -7,16 +7,24 @@
 export WEBDAV_USERNAME=admin
 export WEBDAV_PASSWORD=admin
 
+export WEBDAV_URL=http://demo.xml-director.info:22082/exist/webdav/db
+echo '######################################################'
+echo Tests against EXISTDB 3.0
+echo $WEBDAV_URL
+echo '######################################################'
+bin/test xmldirector.plonecore
+
+
 export WEBDAV_URL=http://demo.xml-director.info:22081/exist/webdav/db
 echo '######################################################'
-echo Tests against EXISTDB
+echo Tests against EXISTDB 2.2
 echo $WEBDAV_URL
 echo '######################################################'
 bin/test xmldirector.plonecore
 
 export WEBDAV_URL=http://demo.xml-director.info:22080/webdav
 echo '######################################################'
-echo Tests against BASEX
+echo Tests against BASEX  8.3
 echo $WEBDAV_URL
 echo '######################################################'
 bin/test xmldirector.plone
