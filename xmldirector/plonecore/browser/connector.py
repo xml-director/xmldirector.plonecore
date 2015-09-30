@@ -171,10 +171,10 @@ class Connector(BrowserView):
                         size = self.human_readable_filesize(info[1]['size'])
                     except KeyError:
                         size = u'n/a'
-                    files.append(dict(url='{}/{}/{}'.format(context_url, view_prefix, info[0]),
-                                      remove_url='{}/{}&name={}'.format(
+                    files.append(dict(url=u'{}/{}/{}'.format(context_url, view_prefix, info[0]),
+                                      remove_url=u'{}/{}&name={}'.format(
                                           context_url, remove_prefix, info[0]),
-                                      edit_url='{}/{}/{}'.format(
+                                      edit_url=u'{}/{}/{}'.format(
                                           context_url, edit_prefix, info[0]),
                                       title=info[0],
                                       editable=self.is_ace_editable(info[0]),
