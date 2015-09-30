@@ -19,9 +19,8 @@ from plone.supermodel import model
 from plone.registry.interfaces import IRegistry
 
 from xmldirector.plonecore.i18n import MessageFactory as _
-from xmldirector.plonecore.davfs import DAVFSWrapper as DAVFS
 from xmldirector.plonecore.interfaces import IWebdavSettings
-
+from xmldirector.plonecore.fswrapper import get_fs_wrapper
 from xmldirector.plonecore.logger import LOG
 
 
@@ -102,7 +101,7 @@ class Connector(Item):
             password = adapted.webdav_password or ''
 
         try:
-            return DAVFS(url, credentials=dict(username=username,
+            return get_fs_wrapper(url, credentials=dict(username=username,
                                                password=password))
         except fs.errors.ResourceNotFoundError:
             LOG.error(u'Error accessing {}::{}::{}'.format(self.absolute_url(), url, self.REQUEST.get('HTTP_USER_AGENT')), exc_info=True)

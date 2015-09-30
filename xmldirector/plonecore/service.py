@@ -7,12 +7,12 @@
 
 
 import fs.errors
-from xmldirector.plonecore.davfs import DAVFSWrapper as DAVFS
 import zope.interface
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
 from xmldirector.plonecore.interfaces import IWebdavSettings
 from xmldirector.plonecore.interfaces import IWebdavHandle
+from xmldirector.plonecore.fswrapper import get_fs_wrapper
 
 
 class WebdavHandle(object):
@@ -34,13 +34,13 @@ class WebdavHandle(object):
         else:
             url = root_url
         try:
-            return DAVFS(url, credentials=dict(username=username,
+            return get_fs_wrapper(url, credentials=dict(username=username,
                                                password=password))
         except fs.errors.ResourceNotFoundError:
-            root_handle = DAVFS(root_url, credentials=dict(username=username,
+            root_handle = get_fs_wrapper(root_url, credentials=dict(username=username,
                                                            password=password))
             root_handle.makedir(settings.webdav_dexterity_subpath, True, True)
-            return DAVFS(url, credentials=dict(username=username,
+            return get_fs_wrapper(url, credentials=dict(username=username,
                                                password=password))
 
 
