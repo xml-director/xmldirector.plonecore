@@ -10,7 +10,6 @@
 from collections import namedtuple
 from fs.contrib.davfs import DAVFS
 from fs.osfs import OSFS
-from fs.sftpfs import SFTPFS
 from fs.memoryfs import MemoryFS
 from fs.ftpfs import FTPFS
 from fs.s3fs import S3FS
@@ -126,6 +125,7 @@ class OSFSWrapper(BaseWrapper, OSFS):
 
 
 if have_paramiko:
+    from fs.sftpfs import SFTPFS
     class SFTPFSWrapper(BaseWrapper, SFTPFS):
         pass
 
