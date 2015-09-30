@@ -89,7 +89,8 @@ class PersistentLoggerAdapter(object):
                  comment=comment)
         annotations[d['date']] = d
         annotations._p_changed = 1
-        IAnnotations(self.context)[LOG_LAST_USER] = plone.api.user.get_current().getUserName()
+        IAnnotations(self.context)[
+            LOG_LAST_USER] = plone.api.user.get_current().getUserName()
         IAnnotations(self.context)[LOG_LAST_DATE] = datetime.datetime.utcnow()
         self.context.setModificationDate(DateTime())
 

@@ -20,6 +20,7 @@ PREFIX = 'testing-{}'.format(uuid.uuid4())
 is_mac = sys.platform == 'darwin'
 is_mac = False
 
+
 class BasicTests(TestBase):
 
     def setUp(self):
@@ -154,7 +155,8 @@ class BasicTests(TestBase):
         for name in handle.listdir():
             handle.removedir(name, False, True)
 
-        fn = os.path.join(os.path.dirname(__file__), 'zip_data', 'created_macosx_finder.zip')
+        fn = os.path.join(os.path.dirname(__file__),
+                          'zip_data', 'created_macosx_finder.zip')
         view = self._get_view()
         view.zip_import(fn)
         names = handle.listdir()
@@ -167,7 +169,8 @@ class BasicTests(TestBase):
         for name in handle.listdir():
             handle.removedir(name, False, True)
 
-        fn = os.path.join(os.path.dirname(__file__), 'zip_data', 'created_macosx_zip.zip')
+        fn = os.path.join(os.path.dirname(__file__),
+                          'zip_data', 'created_macosx_zip.zip')
         view = self._get_view()
         view.zip_import(fn)
         names = handle.listdir()

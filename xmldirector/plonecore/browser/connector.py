@@ -180,12 +180,14 @@ class Connector(BrowserView):
                                       st_mode=info[1]['st_mode'],
                                       size_original=info[1]['size'],
                                       size=size,
-                                      modified_original=info[1]['modified_time'],
+                                      modified_original=info[
+                                          1]['modified_time'],
                                       modified=self.human_readable_datetime(info[1]['modified_time'])))
 
             dirs = list()
             for info in handle.listdirinfo(dirs_only=True):
-                url = '{}/{}/{}'.format(context_url, view_prefix, info[0].encode('utf8'))
+                url = '{}/{}/{}'.format(context_url,
+                                        view_prefix, info[0].encode('utf8'))
                 dirs.append(dict(url=url,
                                  title=info[0],
                                  st_mode=info[1]['st_mode'],
@@ -369,7 +371,8 @@ class Connector(BrowserView):
         """ Import WebDAV subfolder from an uploaded ZIP file """
 
         try:
-            imported_files = self.zip_import(zip_file, subpath, clean_directories)
+            imported_files = self.zip_import(
+                zip_file, subpath, clean_directories)
         except Exception as e:
             msg = u'ZIP import failed'
             LOG.error(msg, exc_info=True)
@@ -408,7 +411,8 @@ class Connector(BrowserView):
             else:
                 target_filename = zip_filename
             if not target_filename:
-                raise ValueError(u'No filename detected, did you really upload a file?')
+                raise ValueError(
+                    u'No filename detected, did you really upload a file?')
             with handle.open(target_filename, 'wb') as fp:
                 fp.write(zip_file.read())
 
@@ -446,9 +450,11 @@ class Connector(BrowserView):
                     if show_progress:
                         pbar.update(i)
 
-                    target_filename = unicodedata.normalize('NFC', name).lstrip('/')
+                    target_filename = unicodedata.normalize(
+                        'NFC', name).lstrip('/')
                     if subpath:
-                        target_filename = u'{}/{}'.format(subpath, target_filename)
+                        target_filename = u'{}/{}'.format(
+                            subpath, target_filename)
 
                     target_dirname = '/'.join(target_filename.split('/')[:-1])
                     if target_dirname not in dirs_created:

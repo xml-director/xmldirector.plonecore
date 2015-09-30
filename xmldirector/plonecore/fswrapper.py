@@ -20,13 +20,13 @@ def get_fs_wrapper(url, credentials=None):
     if not url.endswith('/'):
         url += '/'
     f = furl(url)
-    original_url = url 
+    original_url = url
     if f.scheme == 'file':
         wrapper = OSFSWrapper(url[7:], encoding='utf-8')
     elif f.scheme == 'http':
-        wrapper = DAVFSWrapper(original_url, credentials) 
+        wrapper = DAVFSWrapper(original_url, credentials)
     elif f.scheme == 'https':
-        wrapper = DAVFSWrapper(original_url, credentials) 
+        wrapper = DAVFSWrapper(original_url, credentials)
     elif f.scheme == 's3':
         if have_boto:
             from xmldirector.plonecore.davfs import S3FSWrapper
@@ -37,17 +37,17 @@ def get_fs_wrapper(url, credentials=None):
 
         if have_paramiko:
             from xmldirector.plonecore.davfs import SFTPFSWrapper
-            wrapper = SFTPFSWrapper(connection=f.host, 
-                    root_path=str(f.path),
-                    username=f.username,
-                    password=f.password)
+            wrapper = SFTPFSWrapper(connection=f.host,
+                                    root_path=str(f.path),
+                                    username=f.username,
+                                    password=f.password)
         else:
             raise ValueError('paramiko module is not installed')
 
     elif f.scheme == 'ftp':
-        wrapper = FTPFSWrapper(host=f.host, 
-                user=f.username,
-                passwd=f.password)
+        wrapper = FTPFSWrapper(host=f.host,
+                               user=f.username,
+                               passwd=f.password)
     else:
         raise ValueError('Unsupported URL schema {}'.format(original_url))
 

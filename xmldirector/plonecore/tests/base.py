@@ -77,7 +77,7 @@ class PolicyFixture(PloneSandboxLayer):
     def tearDownZope(self, app):
 
         handle = get_fs_wrapper(WEBDAV_URL, credentials=dict(username=WEBDAV_USERNAME,
-                                                    password=WEBDAV_PASSWORD))
+                                                             password=WEBDAV_PASSWORD))
         if handle.exists(self.testing_directory):
             handle.removedir(
                 self.testing_directory, recursive=True, force=True)

@@ -35,13 +35,13 @@ class WebdavHandle(object):
             url = root_url
         try:
             return get_fs_wrapper(url, credentials=dict(username=username,
-                                               password=password))
+                                                        password=password))
         except fs.errors.ResourceNotFoundError:
             root_handle = get_fs_wrapper(root_url, credentials=dict(username=username,
-                                                           password=password))
+                                                                    password=password))
             root_handle.makedir(settings.webdav_dexterity_subpath, True, True)
             return get_fs_wrapper(url, credentials=dict(username=username,
-                                               password=password))
+                                                        password=password))
 
 
 WebdavHandleUtility = WebdavHandle()

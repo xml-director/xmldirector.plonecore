@@ -135,11 +135,13 @@ class FTPFSWrapper(BaseWrapper, FTPFS):
 
 if have_paramiko:
     from fs.sftpfs import SFTPFS
+
     class SFTPFSWrapper(BaseWrapper, SFTPFS):
         pass
 
 
 if have_boto:
     from fs.s3fs import S3FS
+
     class S3FSWrapper(BaseWrapper, S3FS):
         pass

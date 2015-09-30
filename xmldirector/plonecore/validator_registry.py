@@ -77,7 +77,8 @@ class ValidatorRegistry(object):
                         schema_doc = lxml.etree.XML(fp.read())
                         validator = lxml.etree.XMLSchema(schema_doc)
                     except Exception as e:
-                        LOG.error(u'Unable to parse XML Schema ({})'.format(e), exc_info=True)
+                        LOG.error(u'Unable to parse XML Schema ({})'.format(
+                            e), exc_info=True)
                         continue
                     validator_type = 'XSD'
             elif ext == '.rng':

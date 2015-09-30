@@ -160,7 +160,8 @@ class Installer(BrowserView):
         handle = service.webdav_handle()
 
         for exist_name, local_name in [('scripts/all-locks.xql', 'scripts/existdb/all-locks.xql')]:
-            src = pkg_resources.resource_string('xmldirector.plonecore', local_name)
+            src = pkg_resources.resource_string(
+                'xmldirector.plonecore', local_name)
             dirname = os.path.dirname(exist_name)
             if not handle.exists(dirname):
                 handle.makedir(dirname, True, True)
@@ -168,4 +169,5 @@ class Installer(BrowserView):
                 fp.write(src)
         msg = u'Exist-DB specific scripts installed'
         self.context.plone_utils.addPortalMessage(msg)
-        self.request.response.redirect(plone.api.portal.get().absolute_url() + '/@@xmldirector-core-settings')
+        self.request.response.redirect(plone.api.portal.get(
+        ).absolute_url() + '/@@xmldirector-core-settings')
