@@ -1,6 +1,11 @@
 hangelog
 =========
 
+1.2.1 (unreleased)
+------------------
+- unicode fixes in the context of testing federated cloud
+  solutions
+
 1.2.0 (2015-09-29)
 ------------------
 
