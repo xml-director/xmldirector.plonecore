@@ -11,7 +11,6 @@ from collections import namedtuple
 from fs.contrib.davfs import DAVFS
 from fs.osfs import OSFS
 from fs.ftpfs import FTPFS
-from fs.s3fs import S3FS
 from fs import iotools
 
 import plone.api
@@ -25,6 +24,13 @@ try:
     have_paramiko = True
 except ImportError:
     have_paramiko = False
+
+
+try:
+    import boto
+    have_boto = True
+except ImportError:
+    have_boto = False
 
 
 _marker = object
@@ -123,15 +129,17 @@ class OSFSWrapper(BaseWrapper, OSFS):
     pass
 
 
+class FTPFSWrapper(BaseWrapper, FTPFS):
+    pass
+
+
 if have_paramiko:
     from fs.sftpfs import SFTPFS
     class SFTPFSWrapper(BaseWrapper, SFTPFS):
         pass
 
 
-class FTPFSWrapper(BaseWrapper, FTPFS):
-    pass
-
-
-class S3FSWrapper(BaseWrapper, S3FS):
-    pass
+if have_boto:
+    from fs.s3fs import S3FS
+    class S3FSWrapper(BaseWrapper, S3FS):
+        pass
