@@ -23,7 +23,7 @@ from zope.configuration import xmlconfig
 from AccessControl.SecurityManagement import newSecurityManager
 
 from xmldirector.plonecore.interfaces import IWebdavSettings
-from xmldirector.plonecore.davfs import DAVFSWrapper as DAVFS
+from xmldirector.plonecore.fswrapper import get_fs_wrapper
 
 import xmldirector.plonecore
 import plone.app.dexterity
@@ -76,7 +76,7 @@ class PolicyFixture(PloneSandboxLayer):
 
     def tearDownZope(self, app):
 
-        handle = DAVFS(WEBDAV_URL, credentials=dict(username=WEBDAV_USERNAME,
+        handle = get_fs_wrapper(WEBDAV_URL, credentials=dict(username=WEBDAV_USERNAME,
                                                     password=WEBDAV_PASSWORD))
         if handle.exists(self.testing_directory):
             handle.removedir(

@@ -49,7 +49,7 @@ def get_fs_wrapper(url, credentials=None):
                 user=f.username,
                 passwd=f.password)
     else:
-        raise ValueError('Unsupport URL schema {}'.format(original_url))
+        raise ValueError('Unsupported URL schema {}'.format(original_url))
 
     wrapper.url = url
     return wrapper
