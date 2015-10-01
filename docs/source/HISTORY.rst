@@ -5,6 +5,7 @@ hangelog
 ------------------
 
 - support for OSFS (local filesystem)
+- individual per-connector URL configuration
 
 1.2.1 (unreleased)
 ------------------
