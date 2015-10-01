@@ -111,6 +111,10 @@ configure the
 
     https://dav.dropdav.com
 
+- local filesystem
+
+    file:///path/to/some/directory
+
 
 - WebDAV username
 

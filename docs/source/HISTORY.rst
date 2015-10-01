@@ -1,6 +1,11 @@
 hangelog
 =========
 
+1.3.0 (unreleased)
+------------------
+
+- support for OSFS (local filesystem)
+
 1.2.1 (unreleased)
 ------------------
 - unicode fixes in the context of testing federated cloud
