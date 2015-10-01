@@ -22,7 +22,7 @@ class webdav_iterator(file):
     implements(IStreamIterator)
 
     def __init__(self, handle, mode='rb', streamsize=1 << 16):
-        self.fp = handle.open('.', mode)
+        self.fp = handle.open(handle.leaf_filename, mode)
         self.streamsize = streamsize
 
     def next(self):
@@ -50,7 +50,7 @@ def default_html_handler(webdav_handle, filename, view_name, request):
                                    '/'.join(request.subpath[:-1]))
 
     # get HTML
-    html = webdav_handle.open('.', 'rb').read()
+    html = webdav_handle.open(webdav_handle.leaf_filename, 'rb').read()
     root = lxml.html.fromstring(html)
 
     # rewrite relative image urls
@@ -80,7 +80,7 @@ def ace_editor(webdav_handle, filename, view_name, request,
     """ Default handler for showing/editing textish content through the ACE editor """
 
     mt, encoding = mimetypes.guess_type(filename)
-    content = webdav_handle.open('.', 'rb').read()
+    content = webdav_handle.open(webdav_handle.leaf_filename, 'rb').read()
     ace_mode = config.ACE_MODES.get(mt, 'text')
     template = ViewPageTemplateFile(template_name)
     action_url = '{}/view-editor/{}'.format(request.context.absolute_url(),
@@ -105,7 +105,7 @@ def ace_editor_readonly(webdav_handle, filename, view_name,
 def default_view_handler(webdav_handle, filename, view_name, request):
     """ Default handler for images and other binary resources """
 
-    info = webdav_handle.getinfo('.')
+    info = webdav_handle.getinfo(webdav_handle.leaf_filename)
     mt, encoding = mimetypes.guess_type(filename)
     if not mt:
         mt = 'application/octet-stream'
@@ -117,7 +117,7 @@ def default_view_handler(webdav_handle, filename, view_name, request):
         request.response.setHeader('Content-Length', info['size'])
         return webdav_iterator(webdav_handle)
     else:
-        data = webdav_handle.open('.', 'rb').read()
+        data = webdav_handle.open(webdav_handle.leaf_filename, 'rb').read()
         request.response.setHeader('Content-Length', len(data))
         return data
 

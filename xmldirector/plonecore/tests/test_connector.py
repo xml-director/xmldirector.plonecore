@@ -209,7 +209,6 @@ class BasicTests(TestBase):
         self.assertEqual('wrapped_meta' in result.__dict__, True)
         info = result.wrapped_info
         self.assertEqual('modified_time' in info, True)
-        self.assertEqual('name' in info, True)
         self.assertEqual('st_mode' in info, True)
 
     def testTraversalNonExistingPath(self):

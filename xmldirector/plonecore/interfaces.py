@@ -48,8 +48,8 @@ class IWebdavSettings(Interface):
     """ ExistDB settings """
 
     webdav_url = schema.TextLine(
-        title=_(u'WebDAV server url'),
-        description=_(u'WebDAV base url'),
+        title=_(u'Coonnection URL of external storage service'),
+        description=_(u'URL'),
         default=u'http://localhost:6080/exist/webdav/db',
         required=True
     )
@@ -70,15 +70,15 @@ class IWebdavSettings(Interface):
     )
 
     webdav_username = schema.TextLine(
-        title=_(u'WebDAV username'),
-        description=_(u'WebDAV username'),
+        title=_(u'Username for external storage'),
+        description=_(u'Username'),
         default=u'admin',
         required=True
     )
 
     webdav_password = schema.Password(
-        title=_(u'WebDAV password'),
-        description=_(u'WebDAV password'),
+        title=_(u'Password for external storage'),
+        description=_(u'Password'),
         default=u'',
         required=False
     )

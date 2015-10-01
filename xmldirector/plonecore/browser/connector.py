@@ -152,7 +152,7 @@ class Connector(BrowserView):
 
         handle = self.webdav_handle()
 
-        if handle.isdir('.'):
+        if handle.isDirectory():
 
             context_url = self.context.absolute_url()
             view_prefix = '@@view'
@@ -203,7 +203,7 @@ class Connector(BrowserView):
                 files=files,
                 dirs=dirs)
 
-        elif handle.isfile('.'):
+        elif handle.isFile():
             filename = self.subpath[-1]
             self.request.subpath = self.subpath
             self.request.context = self.context

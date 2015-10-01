@@ -79,6 +79,20 @@ LOCK_PERMISSION_MAP = dict([
 class BaseWrapper(object):
     """ A wapper for DAVFS """
 
+    def isDirectory(self):
+        """ Represents a directory """
+        return not getattr(self, '__leaf__', False)
+
+    def isFile(self):
+        """ Represents a file """
+        return getattr(self, '__leaf__', False)
+
+    @property
+    def leaf_filename(self):
+        if self.isFile():
+            return self.__leaf_filename__
+        return '.'
+
     def _check_lock(self, path, op):
 
         lm = LockManager(None)

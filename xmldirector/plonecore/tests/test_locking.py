@@ -15,6 +15,9 @@ from xmldirector.plonecore.locking import AlreadyLockedError
 from xmldirector.plonecore.locking import UnlockError
 from xmldirector.plonecore.locking import FileIsLocked
 
+from Testing.makerequest import makerequest
+
+
 PREFIX = 'testing-{}'.format(uuid.uuid4())
 
 sample_xml = '<hello>world</hello>'
@@ -29,6 +32,7 @@ class BasicTests(TestBase):
         return getUtility(IWebdavHandle).webdav_handle()
 
     def setUp(self):
+
         handle = self.webdav_handle
         if handle.exists(PREFIX):
             handle.removedir(PREFIX, False, True)
@@ -37,6 +41,7 @@ class BasicTests(TestBase):
         with handle.open(self.sample_xml, 'wb') as fp:
             fp.write(sample_xml)
         self.portal.connector.webdav_subpath = PREFIX
+        makerequest(self.portal)
 
     def tearDown(self):
         self.portal.connector.webdav_subpath = None
