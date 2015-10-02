@@ -22,8 +22,7 @@ cache:
     - eggs
 
 before_install:
-- sudo apt-get -y update
-- sudo apt-get -y upgrade lxc-docker
+- sudo apt-get -y --only-upgrade install lxc-docker
 - docker version
 - docker pull zopyx/existdb-22
 - docker pull zopyx/existdb-30
