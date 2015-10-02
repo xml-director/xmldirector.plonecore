@@ -33,6 +33,7 @@ cache:
     - eggs
 
 before_install:
+- pwd
 ##- sudo apt-get -y update 
 #- sudo apt-get -y upgrade lxc-docker
 #- docker version
@@ -42,13 +43,16 @@ before_install:
 #- docker run -d -p 127.0.0.1:22081:8080 --name existdb22 zopyx/existdb-22
 #- docker run -d -p 127.0.0.1:22082:8080 --name existdb30 zopyx/existdb-30
 #- docker run -d -p 127.0.0.1:22083:8080 --name basex83   zopyx/basex-83
+- pwd
 
 after_success:
  - test -v QA && pip install python-coveralls==2.4.0 || true
  - test -v QA && coveralls || true
 
 script:
-- sudo bash build_test.sh 
+- pwd
+- ls -la
+- bash build_test.sh 
 
 
 notifications:
