@@ -13,10 +13,10 @@ python:
 
 matrix:
   include:
-  - python '2.7'
+  - python: "2.7"
     env: PLONE_VERSION=4.3
     env: PORT=22081
-  - python '2.7'
+  - python: "2.7"
     env: PLONE_VERSION=4.3
     env: PORT=22082
 
@@ -38,10 +38,6 @@ after_success:
  - test -v QA && pip install python-coveralls==2.4.0 || true
  - test -v QA && coveralls || true
 
-matrix:
-  include:
-  - python: 2.7
-    env: PLONE_VERSION=plone-5.0
 script:
 - bash build_test.sh $PLONE_VERSION $PORT
 
