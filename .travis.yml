@@ -49,4 +49,3 @@ notifications:
     template:
     - '%{repository}/#%{build_number}/%{branch} (%{author}): %{message} %{build_url}'
 
-
