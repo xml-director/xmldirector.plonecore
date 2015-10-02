@@ -24,8 +24,8 @@ cache:
 before_install:
 - docker pull zopyx/existdb-22
 - docker pull zopyx/existdb-30
-- docker run -d -p 22081:8080 --name existdb22 zopyx/existdb-22
-- docker run -d -p 22082:8080 --name existdb30 zopyx/existdb-30
+- docker run -d -p 127.0.0.1:22081:8080 --name existdb22 zopyx/existdb-22
+- docker run -d -p 127.0.0.1:22082:8080 --name existdb30 zopyx/existdb-30
 
 after_success:
  - test -v QA && pip install python-coveralls==2.4.0 || true
