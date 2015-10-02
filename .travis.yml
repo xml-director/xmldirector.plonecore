@@ -18,10 +18,16 @@ matrix:
     env: PLONE_VERSION=4.3 PORT=22082
 
   - python: "2.7"
+    env: PLONE_VERSION=4.3 PORT=22083
+
+  - python: "2.7"
     env: PLONE_VERSION=5.0 PORT=22081
 
   - python: "2.7"
     env: PLONE_VERSION=5.0 PORT=22082
+
+  - python: "2.7"
+    env: PLONE_VERSION=5.0 PORT=22083
 
 cache:
   directories:
@@ -33,8 +39,10 @@ before_install:
 - docker version
 - docker pull zopyx/existdb-22
 - docker pull zopyx/existdb-30
+- docker pull zopyx/basex-83
 - docker run -d -p 127.0.0.1:22081:8080 --name existdb22 zopyx/existdb-22
 - docker run -d -p 127.0.0.1:22082:8080 --name existdb30 zopyx/existdb-30
+- docker run -d -p 127.0.0.1:22083:8080 --name basex83   zopyx/basex-83
 
 after_success:
  - test -v QA && pip install python-coveralls==2.4.0 || true
