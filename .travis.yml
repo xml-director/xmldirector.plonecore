@@ -12,22 +12,22 @@ matrix:
   include:
 
   - python: "2.7"
-    env: PLONE_VERSION=4.3 PORT=22081
+    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:22081/exist/webdav/db
 
   - python: "2.7"
-    env: PLONE_VERSION=4.3 PORT=22082
+    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:22082/exist/webdav/db
 
   - python: "2.7"
-    env: PLONE_VERSION=4.3 PORT=22083
+    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:22083/webdav
 
   - python: "2.7"
-    env: PLONE_VERSION=5.0 PORT=22081
+    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:22081/exist/webdav/db
 
   - python: "2.7"
-    env: PLONE_VERSION=5.0 PORT=22082
+    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:22082/exist/webdav/db
 
   - python: "2.7"
-    env: PLONE_VERSION=5.0 PORT=22083
+    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:22083/webdav
 
 cache:
   directories:
@@ -49,7 +49,7 @@ after_success:
  - test -v QA && coveralls || true
 
 script:
-- bash build_test.sh $PLONE_VERSION $PORT
+- bash build_test.sh 
 
 
 notifications:
