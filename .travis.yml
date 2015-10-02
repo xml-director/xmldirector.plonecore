@@ -23,7 +23,7 @@ cache:
 
 before_install:
 - sudo apt-get -y update
-  sudo apt-get -y upgrade lxc-docker
+- sudo apt-get -y upgrade lxc-docker
 - docker pull zopyx/existdb-22
 - docker pull zopyx/existdb-30
 - docker run -d -p 127.0.0.1:22081:8080 --name existdb22 zopyx/existdb-22
