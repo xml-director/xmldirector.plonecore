@@ -7,13 +7,13 @@ $PATH:
 if [[ "$1" = "plone-4.3" ]]
 then
     config=buildout-plone-4.3.cfg
-    export WEBDAV_URL=http://localhost:22081/exist/webdav/db
+    export WEBDAV_URL=http://localhost:$2/exist/webdav/db
 fi
 
 if [[ "$1" = "plone-5.0" ]]
 then
     config=buildout-plone-5.0.cfg
-    export WEBDAV_URL=http://localhost:22082/exist/webdav/db
+    export WEBDAV_URL=http://localhost:$2/exist/webdav/db
 fi
 
 
