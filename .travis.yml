@@ -1,4 +1,3 @@
-
 service_name: travis-pro
 repo_token: 9Gz8lbFOfnCehczzQnPMy49awudPW4Rzz
 
@@ -49,7 +48,7 @@ after_success:
  - test -v QA && coveralls || true
 
 script:
-- bash build_test.sh 
+- sudo bash build_test.sh 
 
 
 notifications:
