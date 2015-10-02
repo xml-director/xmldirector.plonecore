@@ -13,12 +13,12 @@ python:
 
 matrix:
   include:
+
   - python: "2.7"
-    env: PLONE_VERSION=4.3
-    env: PORT=22081
+    env: PLONE_VERSION=4.3 PORT=22081
+
   - python: "2.7"
-    env: PLONE_VERSION=4.3
-    env: PORT=22082
+    env: PLONE_VERSION=4.3 PORT=22082
 
 
 cache:
