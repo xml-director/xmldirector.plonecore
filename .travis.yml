@@ -6,7 +6,7 @@ sudo: false
 language: python
 
 services:
-- docker
+ - docker
 
 python:
 - '2.7'
