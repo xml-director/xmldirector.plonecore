@@ -7,14 +7,15 @@ $PATH:
 if [[ "$1" = "plone-4.3" ]]
 then
     config=buildout-plone-4.3.cfg
+    export WEBDAV_URL=http://localhost:22081/exist/webdav/db
 fi
 
 if [[ "$1" = "plone-5.0" ]]
 then
     config=buildout-plone-5.0.cfg
+    export WEBDAV_URL=http://localhost:22082/exist/webdav/db
 fi
 
-export WEBDAV_URL=http://demo.xml-director.info:22081/exist/webdav/db
 
 #virtualenv-2.7 .
 pip install -U setuptools==7.0  
