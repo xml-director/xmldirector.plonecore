@@ -4,6 +4,10 @@ repo_token: 9Gz8lbFOfnCehczzQnPMy49awudPW4Rzz
 
 sudo: false
 language: python
+
+services:
+- docker
+
 python:
 - '2.7'
 env:
