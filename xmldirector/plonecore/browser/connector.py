@@ -178,7 +178,7 @@ class Connector(BrowserView):
                                       title=info[0],
                                       editable=self.is_ace_editable(info[0]),
                                       st_mode=info[1]['st_mode'],
-                                      size_original=info[1]['size'],
+                                      size_original=info[1].get('size'),
                                       size=size,
                                       modified_original=info[1]['modified_time'],
                                       modified=self.human_readable_datetime(info[1]['modified_time'])))
@@ -186,11 +186,12 @@ class Connector(BrowserView):
             dirs = list()
             for info in handle.listdirinfo(dirs_only=True):
                 url = '{}/{}/{}'.format(context_url, view_prefix, info[0].encode('utf8'))
+                modified = info[1].get('modified_time')
                 dirs.append(dict(url=url,
                                  title=info[0],
                                  st_mode=info[1]['st_mode'],
-                                 modified_original=info[1]['modified_time'],
-                                 modified=self.human_readable_datetime(info[1]['modified_time'])))
+                                 modified_original=modified,
+                                 modified=self.human_readable_datetime(modified)))
 
             dirs = sorted(dirs, key=operator.itemgetter('title'))
             files = sorted(files, key=operator.itemgetter('title'))
@@ -305,12 +306,13 @@ class Connector(BrowserView):
         dt = dt.replace(tzinfo=tz.gettz('UTC'))
         return dt.astimezone(to_tz).strftime('%d.%m.%Y %H:%M:%Sh')
 
-    def human_readable_datetime(self, dt):
+    def human_readable_datetime(self, dt=None):
         """ Convert with `dt` datetime string into a human readable
             representation using humanize module.
         """
-        diff = datetime.datetime.utcnow() - dt
-        return humanize.naturaltime(diff)
+        if dt:
+            diff = datetime.datetime.utcnow() - dt
+            return humanize.naturaltime(diff)
 
     def clear_contents(self):
         """ Remove all sub content """
