@@ -52,7 +52,7 @@
                       <a class="dir" tal:attributes="href item/url"><span tal:replace="item/title" /></a>
                   </td>
                   <td></td>
-                  <td tal:attributes="data-order python: item['modified_original'].isoformat()">
+                  <td tal:attributes="data-order python: item['modified_original'].isoformat()" tal:on-error="nothing">
                       <span tal:replace="item/modified" />
                   </td>
                   <td>
@@ -76,7 +76,7 @@
                   <td tal:attributes="data-order item/size_original">
                       <span tal:replace="item/size" />
                   </td>
-                  <td tal:attributes="data-order python: item['modified_original'].isoformat()">
+                  <td tal:attributes="data-order python: item['modified_original'].isoformat()" tal:on-error="nothing">
                       <span tal:replace="item/modified" />
                   </td>
                   <td>

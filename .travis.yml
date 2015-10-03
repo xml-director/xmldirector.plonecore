@@ -1,32 +1,68 @@
-
 service_name: travis-pro
 repo_token: 9Gz8lbFOfnCehczzQnPMy49awudPW4Rzz
 
-sudo: false
+sudo: required
 language: python
-python:
-- '2.7'
-env:
-  matrix:
-  - PLONE_VERSION=plone-4.3
-  global:
-    secure: W2O1Nhru3ZqgoUZuKf1NxnOfsmM4GzD+xSadM4HhetN1V3oNWrJ4gYnIaJ7wK3qWv8zcwKcWj0KtXETnSOIfyEEn3RS+5Y3l1Ltl3AnRz2vdwKWjeJut+xHcyEfLpUaouIp2JTu96xnMcO8qvWGKnX5jHDTXaIHNq5BKUZtQi/U=
 
+services:
+ - docker
+
+matrix:
+  include:
+
+  - python: "2.7"
+    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:22081/exist/webdav/db
+
+  - python: "2.7"
+    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:22082/exist/webdav/db
+
+#  - python: "2.7"
+#    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:22083/webdav
+
+#  - python: "2.7"
+#    env: PLONE_VERSION=4.3 WEBDAV_URL=file:///tmp/testing
+
+  - python: "2.7"
+    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:22081/exist/webdav/db
+
+  - python: "2.7"
+    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:22082/exist/webdav/db
+
+#  - python: "2.7"
+#    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:22083/webdav
+
+#  - python: "2.7"
+#    env: PLONE_VERSION=5.0 WEBDAV_URL=file:///tmp/testing
 
 cache:
   directories:
     - eggs
 
+before_install:
+- sudo apt-get -y update 
+- sudo apt-get -y upgrade lxc-docker
+- docker version
+- docker pull zopyx/existdb-22
+- docker pull zopyx/existdb-30
+- docker pull zopyx/basex-83
+- docker pull gui81/alfresco
+- docker pull owncloud:8.1
+- docker run -d -p 127.0.0.1:22081:8080 --name existdb22 zopyx/existdb-22
+- docker run -d -p 127.0.0.1:22082:8080 --name existdb30 zopyx/existdb-30
+- docker run -d -p 127.0.0.1:22083:8080 --name basex83   zopyx/basex-83
+- docker run -d -p 127.0.0.1:22084:8080  --name alfresco  gui81/alfresco
+- docker run -d -p 127.0.0.1:22085:8080  --name owncloud  owncloud:8.1
+
 after_success:
  - test -v QA && pip install python-coveralls==2.4.0 || true
  - test -v QA && coveralls || true
 
-matrix:
-  include:
-  - python: 2.7
-    env: PLONE_VERSION=plone-5.0
 script:
-- bash build_test.sh $PLONE_VERSION
+- pwd
+- ls -la
+- mkdir -p /tmp/testing
+- rm -fr /tmp/testing/*
+- bash build_test.sh 
 
 
 notifications:
