@@ -50,7 +50,7 @@ before_install:
 - docker run -d -p 127.0.0.1:22081:8080 --name existdb22 zopyx/existdb-22
 - docker run -d -p 127.0.0.1:22082:8080 --name existdb30 zopyx/existdb-30
 - docker run -d -p 127.0.0.1:22083:8080 --name basex83   zopyx/basex-83
-- docker run -d -p 127.0.0.1:22084:8080  --name alfresco  gui81/alfresco
+#- docker run -d -p 127.0.0.1:22084:8080  --name alfresco  gui81/alfresco
 - docker run -d -p 127.0.0.1:22085:8080  --name owncloud  owncloud:8.1
 - docker version
 - docker ps
