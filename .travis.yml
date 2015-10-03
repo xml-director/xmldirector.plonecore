@@ -13,11 +13,11 @@ matrix:
   - python: "2.7"
     env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:22081/exist/webdav/db
 
-  - python: "2.7"
-    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:22082/exist/webdav/db
+#  - python: "2.7"
+#    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:22082/exist/webdav/db
 
-  - python: "2.7"
-    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:22083/webdav
+#  - python: "2.7"
+#    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:22083/webdav
 
   - python: "2.7"
     env: PLONE_VERSION=4.3 WEBDAV_URL=file:///tmp/testing
@@ -25,11 +25,11 @@ matrix:
   - python: "2.7"
     env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:22081/exist/webdav/db
 
-  - python: "2.7"
-    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:22082/exist/webdav/db
+#  - python: "2.7"
+#    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:22082/exist/webdav/db
 
-  - python: "2.7"
-    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:22083/webdav
+#  - python: "2.7"
+#    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:22083/webdav
 
   - python: "2.7"
     env: PLONE_VERSION=5.0 WEBDAV_URL=file:///tmp/testing
