@@ -9,10 +9,9 @@ echo $PLONE_VERSION
 
 config=buildout-plone-$PLONE_VERSION.cfg
 
-export WEBDAV_URL=http://demo.xml-director.info:22081/exist/webdav/db
-
-pip install -U setuptools==18.2  
-python bootstrap.py -c $config --setuptools-version 18.2 --version 2.2.5
+#virtualenv-2.7 .
+pip install -U setuptools==7.0  
+python bootstrap.py -c $config --setuptools-version 7.0 --version 2.2.5
 bin/buildout -c $config
 bin/test -s xmldirector.plonecore
 ##bin/coverage run bin/test
