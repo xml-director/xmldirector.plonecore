@@ -19,8 +19,8 @@ matrix:
 #  - python: "2.7"
 #    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:22083/webdav
 
-#  - python: "2.7"
-#    env: PLONE_VERSION=4.3 WEBDAV_URL=file:///tmp/testing
+  - python: "2.7"
+    env: PLONE_VERSION=4.3 WEBDAV_URL=file:///tmp/testing
 
   - python: "2.7"
     env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:22081/exist/webdav/db
@@ -31,8 +31,8 @@ matrix:
 #  - python: "2.7"
 #    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:22083/webdav
 
-#  - python: "2.7"
-#    env: PLONE_VERSION=5.0 WEBDAV_URL=file:///tmp/testing
+  - python: "2.7"
+    env: PLONE_VERSION=5.0 WEBDAV_URL=file:///tmp/testing
 
 cache:
   directories:
