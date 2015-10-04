@@ -11,7 +11,23 @@ matrix:
   include:
 
   - python: "2.7"
+    env: PLONE_VERSION=4.3 WEBDAV_URL=file:///tmp/testing
+
+  - python: "2.7"
+    env: PLONE_VERSION=5.0 WEBDAV_URL=file:///tmp/testing
+
+  - python: "2.7"
     env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-22
+
+  - python: "2.7"
+    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-22
+
+  - python: "2.7"
+    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-30
+
+  - python: "2.7"
+    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-30
+
 
 #  - python: "2.7"
 #    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:22082/exist/webdav/db
@@ -21,9 +37,6 @@ matrix:
 #
 #  - python: "2.7"
 #    env: PLONE_VERSION=4.3 WEBDAV_URL=file:///tmp/testing
-
-  - python: "2.7"
-    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-22
 
 #  - python: "2.7"
 #    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:22082/exist/webdav/db
