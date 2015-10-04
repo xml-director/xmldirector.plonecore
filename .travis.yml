@@ -28,24 +28,12 @@ matrix:
   - python: "2.7"
     env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-30
 
+  - python: "2.7"
+    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:8080/webdav/ DOCKER=zopyx/basex-83
 
-#  - python: "2.7"
-#    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:22082/exist/webdav/db
-#
-#  - python: "2.7"
-#    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:22083/webdav
-#
-#  - python: "2.7"
-#    env: PLONE_VERSION=4.3 WEBDAV_URL=file:///tmp/testing
+  - python: "2.7"
+    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/webdav/ DOCKER=zopyx/basex-83
 
-#  - python: "2.7"
-#    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:22082/exist/webdav/db
-#
-#  - python: "2.7"
-#    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:22083/webdav
-#
-#  - python: "2.7"
-#    env: PLONE_VERSION=5.0 WEBDAV_URL=file:///tmp/testing
 
 cache:
   directories:
@@ -55,18 +43,8 @@ before_install:
 - sudo apt-get -y update 
 - sudo apt-get -y upgrade lxc-docker
 - docker version
-#- docker pull zopyx/existdb-22
-#- docker pull zopyx/existdb-30
-#- docker pull zopyx/basex-83
 #- docker pull gui81/alfresco
 #- docker pull owncloud:8.1
-#- docker run -d -p 127.0.0.1:22081:8080 --name existdb22 zopyx/existdb-22
-#- docker run -d -p 127.0.0.1:22082:8080 --name existdb30 zopyx/existdb-30
-#- docker run -d -p 127.0.0.1:22083:8080 --name basex83   zopyx/basex-83
-##- docker run -d -p 127.0.0.1:22084:8080  --name alfresco  gui81/alfresco
-#- docker run -d -p 127.0.0.1:22085:8080  --name owncloud  owncloud:8.1
-##- docker version
-#- docker ps
 
 after_success:
  - test -v QA && pip install python-coveralls==2.4.0 || true
@@ -86,5 +64,3 @@ notifications:
     - irc.freenode.org#xml-director
     template:
     - '%{repository}/#%{build_number}/%{branch} (%{author}): %{message} %{build_url}'
-
-
