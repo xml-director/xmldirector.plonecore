@@ -36,11 +36,11 @@ matrix:
 #    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/webdav DOCKER=zopyx/basex-83
     env: PLONE_VERSION=5.0 WEBDAV_URL=http://zopyx.com:22080/webdav DOCKER=zopyx/basex-83
 
-  - python: "2.7"
-    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:8080/remote.php/webdav DOCKER=owncloud:8.1
-
-  - python: "2.7"
-    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/remote.php/webdav DOCKER=owncloud:8.1
+#  - python: "2.7"
+#    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:8080/remote.php/webdav DOCKER=owncloud:8.1
+#
+#  - python: "2.7"
+#    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/remote.php/webdav DOCKER=owncloud:8.1
 
 cache:
   directories:
