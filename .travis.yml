@@ -29,10 +29,10 @@ matrix:
     env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-30
 
   - python: "2.7"
-    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:8080/webdav/ DOCKER=zopyx/basex-83
+    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:8080/webdav DOCKER=zopyx/basex-83
 
   - python: "2.7"
-    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/webdav/ DOCKER=zopyx/basex-83
+    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/webdav DOCKER=zopyx/basex-83
 
 
 cache:
