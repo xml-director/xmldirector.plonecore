@@ -11,7 +11,7 @@
     />
 
     <genericsetup:registerProfile
-        name="default"
+        name="common"
         title="XML-Director (common)"
         directory="profiles/common"
         description="XML-Director (common)"
