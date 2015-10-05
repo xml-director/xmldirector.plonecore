@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<metadata>
+    <version>1</version>
+    <dependencies>
+        <dependency>profile-xmldirector.plonecore:common</dependency>
+        <dependency>profile-xmldirector.plonecore:settings-50</dependency>
+    </dependencies>
+</metadata>

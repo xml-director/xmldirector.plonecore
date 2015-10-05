@@ -4,9 +4,17 @@
 
     <genericsetup:registerProfile
         name="default"
-        title="XML-Director"
-        directory="profiles/default"
+        title="XML-Director (Plone 5.0)"
+        directory="profiles/default-50"
         description="XML-Director core"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+    />
+
+    <genericsetup:registerProfile
+        name="default"
+        title="XML-Director (common)"
+        directory="profiles/common"
+        description="XML-Director (common)"
         provides="Products.GenericSetup.interfaces.EXTENSION"
     />
 
