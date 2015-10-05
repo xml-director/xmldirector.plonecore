@@ -1,18 +1,4 @@
-
-if(require === undefined){
-  require = function(reqs, torun){
-    'use strict';
-    return torun(window.ace);
-  };
-}
-
-
-require([
-  'ace/ace'
-  ], function(ace){
-
 $(document).ready(function() {
-
     var plone5 = $('[data-bundle="plone-legacy"]').length > 0;
     if (plone5) {
         ace.config.set("basePath", $('body').attr('data-portal-url') + '/++resource++xmldirector.plonecore/ace-builds/src-min');
