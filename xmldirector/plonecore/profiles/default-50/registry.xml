@@ -11,4 +11,14 @@
             <element>++resource++xmldirector.plonecore/styles.css</element>
         </value>
     </records>
+
+    <records prefix="plone.bundles/xmldirector.plonecore"
+         interface='Products.CMFPlone.interfaces.IBundleRegistry'>
+        <value key="resources">
+            <element>xmldirector.plonecore</element>
+        </value>
+      <value key="enabled">True</value>
+      <value key="jscompilation">++resource++xmldirector.plonecore-compiled.min.js</value>
+      <value key="last_compilation">2015-02-06 00:00:00</value>
+    </records>
 </registry>
