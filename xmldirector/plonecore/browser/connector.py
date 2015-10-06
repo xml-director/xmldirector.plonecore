@@ -7,6 +7,7 @@
 
 import os
 import fs
+import stat
 import datetime
 import fs.errors
 import fs.path
@@ -41,6 +42,13 @@ LOG = logging.getLogger('xmldirector.plonecore')
 
 TZ = os.environ.get('TZ', 'UTC')
 LOG.info('Local timezone: {}'.format(TZ))
+
+
+def stmode2unix(st_mode):
+    is_dir = 'd' if stat.S_ISDIR(st_mode) else '-'
+    dic = {'7':'rwx', '6' :'rw-', '5' : 'r-x', '4':'r--', '0': '---'}
+    perm = str(oct(st_mode)[-3:])
+    return is_dir + ''.join(dic.get(x,x) for x in perm)
 
 
 class Dispatcher(BrowserView):
@@ -178,6 +186,7 @@ class Connector(BrowserView):
                                       title=info[0],
                                       editable=self.is_ace_editable(info[0]),
                                       st_mode=info[1]['st_mode'],
+                                      st_mode_text=stmode2unix(info[1]['st_mode']),
                                       size_original=info[1].get('size'),
                                       size=size,
                                       modified_original=info[
@@ -191,6 +200,7 @@ class Connector(BrowserView):
                 dirs.append(dict(url=url,
                                  title=info[0],
                                  st_mode=info[1]['st_mode'],
+                                 st_mode_text=stmode2unix(info[1]['st_mode']),
                                  modified_original=modified,
                                  modified=self.human_readable_datetime(modified)))
 

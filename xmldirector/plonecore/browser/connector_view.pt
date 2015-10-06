@@ -28,7 +28,7 @@
                   <th i18n:translate="">Name</th>
                   <th i18n:translate="">Size</th>
                   <th i18n:translate="">Last modified</th>
-                  <th i18n:translate="">ST MODE</th>
+                  <th i18n:translate="">Permissions</th>
                   <th i18n:translate="">Action</th>
               </tr>
           </thead>
@@ -56,7 +56,7 @@
                       <span tal:replace="item/modified" />
                   </td>
                   <td>
-                      <span tal:replace="item/st_mode" />
+                      <span tal:replace="item/st_mode_text" />
                   </td>
                   <td>
                       <a class="confirm-action" 
@@ -80,7 +80,7 @@
                       <span tal:replace="item/modified" />
                   </td>
                   <td>
-                      <span tal:replace="item/st_mode" />
+                      <span tal:replace="item/st_mode_text" />
                   </td>
                   <td>
                       <a tal:condition="item/editable"
