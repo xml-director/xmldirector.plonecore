@@ -49,21 +49,21 @@ class IWebdavSettings(Interface):
 
     webdav_url = schema.TextLine(
         title=_(u'Coonnection URL of external storage service'),
-        description=_(u'URL'),
+        description=_(u'WebDAV: http://host:port/path/to/webdav, Local filesystem: file://path/to/directory, AWS S3: s3://bucketname, SFTP sftp://host/path, FTP: ftp://host/path'),
         default=u'http://localhost:6080/exist/webdav/db',
         required=True
     )
 
     webdav_dexterity_subpath = schema.TextLine(
-        title=_(u'Dexterity WebDAV subpath'),
-        description=_(u'Subpath inside WebDAV for Dexterity content'),
+        title=_(u'Dexterity subpath'),
+        description=_(u'Subpath inside storage for Dexterity content'),
         default=u'',
         required=False
     )
 
     webdav_mode = schema.Choice(
-        title=_(u'WebDAV mode'),
-        description=_(u'WebDAV mode (defaults to Exist-DB)'),
+        title=_(u'Connector mode'),
+        description=_(u'Connector mode (defaults to Exist-DB)'),
         default=u'existdb',
         required=True,
         vocabulary=WEBDAV_MODE_VOCAB

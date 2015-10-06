@@ -41,8 +41,8 @@
                          i18n:attributes="title"
                          tal:attributes="href python: '{}/@@view/{}'.format(context.absolute_url(), '/'.join(view.subpath[:-1]))">..</a>
                   </td>
-                  <td />
-                  <td />
+                  <td data-order="0"/>
+                  <td data-order="0"/>
                   <td />
                   <td />
               </tr>
@@ -51,7 +51,7 @@
                   <td>
                       <a class="dir" tal:attributes="href item/url"><span tal:replace="item/title" /></a>
                   </td>
-                  <td></td>
+                  <td data-order="0"></td>
                   <td tal:attributes="data-order python: item['modified_original'].isoformat()" tal:on-error="nothing">
                       <span tal:replace="item/modified" />
                   </td>
@@ -73,7 +73,7 @@
                   <td>
                       <a class="file" tal:attributes="href item/url"><span tal:replace="item/title" /></a>
                   </td>
-                  <td tal:attributes="data-order item/size_original">
+                  <td tal:attributes="data-sort item/size_original">
                       <span tal:replace="item/size" />
                   </td>
                   <td tal:attributes="data-order python: item['modified_original'].isoformat()" tal:on-error="nothing">
@@ -83,13 +83,12 @@
                       <span tal:replace="item/st_mode_text" />
                   </td>
                   <td>
+                      <img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove item" i18n:attributes="title"/>
                       <a tal:condition="item/editable"
                          tal:attributes="href item/edit_url"
                          i18n:attributes="title"
                          title="Edit"
-                          >
-                          <img src="++resource++xmldirector.plonecore/images/edit.png" />
-                      </a>
+                          ><img src="++resource++xmldirector.plonecore/images/edit.png" /></a>
                       <a tal:attributes="href item/remove_url"
                          class="confirm-action" 
                          data-text="Do you really want to remove this item?"
@@ -97,7 +96,6 @@
                          i18n:translate=""
                          title="Remove"
                          >
-                         <img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove item" i18n:attributes="title"/>
                      </a>
                   </td>
               </tr>
