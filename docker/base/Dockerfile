@@ -1,8 +1,7 @@
 FROM fedora:latest
 MAINTAINER Andreas Jung <info@zopyx.com>
 RUN dnf -y update
-RUN dnf -y install python-virtualenv gcc-c++ libxml2-devel libxslt-devel libjpeg-devel zlib-devel git-core wv java-1.8.0-openjdk
-RUN dnf -y install expect
+RUN dnf -y install python-virtualenv gcc-c++ libxml2-devel libxslt-devel libjpeg-devel zlib-devel git-core wv java-1.8.0-openjdk expect gettext net-tools procps-ng
 
 RUN useradd -u 5555 -ms /bin/bash plone
 
