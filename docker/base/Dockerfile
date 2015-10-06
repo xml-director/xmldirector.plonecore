@@ -1,29 +1,8 @@
-FROM dockerfile/java:oracle-java7
-
+FROM fedora:latest
 MAINTAINER Andreas Jung <info@zopyx.com>
-
-RUN apt-get update
-RUN apt-get install -y \
-    python-virtualenv \
-    python \
-    curl expect \
-    build-essential \
-    libssl-dev \
-    libxml2-dev \
-    libxslt1-dev \
-    libbz2-dev \
-    zlib1g-dev \
-    python-setuptools \
-    python-dev \
-    libjpeg62-dev \
-    libreadline-gplv2-dev \
-    python-imaging \
-    wv \
-    python-dev \
-    libxml2-dev \
-    libxslt1-dev \
-    git-core  
-
+RUN dnf -y update
+RUN dnf -y install python-virtualenv gcc-c++ libxml2-devel libxslt-devel libjpeg-devel zlib-devel git-core wv java-1.8.0-openjdk
+RUN dnf -y install expect
 
 RUN useradd -u 5555 -ms /bin/bash plone
 
