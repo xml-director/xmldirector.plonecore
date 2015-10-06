@@ -81,14 +81,20 @@ class BaseWrapper(object):
 
     def isDirectory(self):
         """ Represents a directory """
+        if isinstance(self, SFTPFSWrapper):
+            return not self.isfile('.')
         return not getattr(self, '__leaf__', False)
 
     def isFile(self):
         """ Represents a file """
+        if isinstance(self, SFTPFSWrapper):
+            return self.isfile('.')
         return getattr(self, '__leaf__', False)
 
     @property
     def leaf_filename(self):
+        if isinstance(self, SFTPFSWrapper):
+            return '.'
         if self.isFile():
             return self.__leaf_filename__
         return '.'
@@ -194,8 +200,8 @@ def get_fs_wrapper(url, credentials=None):
 
     elif f.scheme == 'ftp':
         wrapper = FTPFSWrapper(host=f.host,
-                               user=f.username,
-                               passwd=f.password)
+                               user=credentials['username'],
+                               passwd=credentials['password'])
     else:
         raise ValueError('Unsupported URL schema {}'.format(original_url))
 
