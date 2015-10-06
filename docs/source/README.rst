@@ -150,6 +150,8 @@ AWS S3
     
 - s3://bucketname
 - enter your AWS access key as username and the AWS secret key as password
+- you need to install the ``boto`` module (either using ``pip`` or using zc.buildout)
+
 
 Using xmldirector.plonecore
 ---------------------------
