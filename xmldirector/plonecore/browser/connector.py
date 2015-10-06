@@ -162,9 +162,11 @@ class Connector(BrowserView):
     def __call__(self, *args, **kw):
 
         handle = self.webdav_handle()
+        print handle.__dict__
+        print handle.isDirectory()
+        print handle.isFile()
 
         if handle.isDirectory():
-
             context_url = self.context.absolute_url()
             view_prefix = '@@view'
             edit_prefix = '@@view-editor'

@@ -34,7 +34,6 @@ class BasicTests(TestBase):
     def setUp(self):
 
         handle = self.webdav_handle
-        import pdb; pdb.set_trace() 
         if handle.exists(PREFIX):
             handle.removedir(PREFIX, False, True)
         handle.makedir(PREFIX)

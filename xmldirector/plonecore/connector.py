@@ -113,7 +113,6 @@ class Connector(Item):
                 self.absolute_url(), url, self.REQUEST.get('HTTP_USER_AGENT')), exc_info=True)
             raise zExceptions.Unauthorized(url)
         except fs.errors.ResourceInvalidError:
-            parts = url.rsplit('/', 1)
             wrapper = get_fs_wrapper(parts[0], credentials=dict(username=username, password=password))
             wrapper.__leaf__ = True
             wrapper.__leaf_filename__ = parts[1]

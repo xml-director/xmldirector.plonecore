@@ -42,6 +42,8 @@ lockstate = namedtuple('lockstate', 'op, mode, lock_owner')
 EXCL = 'exclusive'
 SHRD = 'shared'
 
+_marker = object
+
 
 LOCK_PERMISSION_MAP = dict([
     # open(..., 'r')
@@ -81,18 +83,26 @@ class BaseWrapper(object):
 
     def isDirectory(self):
         """ Represents a directory """
+        __leaf__ = getattr(self, '__leaf__', _marker)
+        if __leaf__ != _marker:
+            return not getattr(self, '__leaf__', False)
         if isinstance(self, SFTPFSWrapper):
             return not self.isfile('.')
-        return not getattr(self, '__leaf__', False)
+        
 
     def isFile(self):
         """ Represents a file """
+        __leaf__ = getattr(self, '__leaf__', _marker)
+        if __leaf__ != _marker:
+            return getattr(self, '__leaf__', False)
         if isinstance(self, SFTPFSWrapper):
             return self.isfile('.')
-        return getattr(self, '__leaf__', False)
 
     @property
     def leaf_filename(self):
+        __leaf__ = getattr(self, '__leaf__', _marker)
+        if __leaf__ != _marker:
+            return self.__leaf_filename__
         if isinstance(self, SFTPFSWrapper):
             return '.'
         if self.isFile():
@@ -195,6 +205,15 @@ def get_fs_wrapper(url, credentials=None):
                                     root_path=str(f.path),
                                     username=f.username,
                                     password=f.password)
+
+            if wrapper.isfile('.') and wrapper.isdir('.'):
+                parts = filter(None, str(f.path).split('/'))
+                wrapper = SFTPFSWrapper(connection=f.host,
+                                        root_path='/'.join(parts[:-1]),
+                                        username=f.username,
+                                        password=f.password)
+                wrapper.__leaf__ = True
+                wrapper.__leaf_filename__ = parts[-1]
         else:
             raise ImportError('paramiko module is not installed (required for SFTP access)')
 
