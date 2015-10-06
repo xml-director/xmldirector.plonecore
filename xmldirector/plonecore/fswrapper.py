@@ -181,7 +181,7 @@ def get_fs_wrapper(url, credentials=None):
                 aws_access_key=credentials['username'],
                 aws_secret_key=credentials['password'])
         else:
-            raise ImportError('boto module is not installed')
+            raise ImportError('boto module is not installed (required for S3 access)')
     elif f.scheme == 'sftp':
 
         if have_paramiko:
@@ -190,7 +190,7 @@ def get_fs_wrapper(url, credentials=None):
                                     username=f.username,
                                     password=f.password)
         else:
-            raise ImportError('paramiko module is not installed')
+            raise ImportError('paramiko module is not installed (required for SFTP access)')
 
     elif f.scheme == 'ftp':
         wrapper = FTPFSWrapper(host=f.host,
