@@ -48,7 +48,7 @@ class IWebdavSettings(Interface):
     """ ExistDB settings """
 
     webdav_url = schema.TextLine(
-        title=_(u'Coonnection URL of external storage service'),
+        title=_(u'Connection URL of storage service'),
         description=_(u'WebDAV: http://host:port/path/to/webdav, Local filesystem: file://path/to/directory, AWS S3: s3://bucketname, SFTP sftp://host/path, FTP: ftp://host/path'),
         default=u'http://localhost:6080/exist/webdav/db',
         required=True
