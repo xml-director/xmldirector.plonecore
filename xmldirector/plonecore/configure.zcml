@@ -37,7 +37,7 @@
     />
 
     <!-- Plone 4.3 -->
-    <include zcml:condition="installed Products.CMFDefault" file="profiles-43.zcml" />
-    <include zcml:condition="not-installed Products.CMFDefault" file="profiles-50.zcml" />
+    <include zcml:condition="have plone-4" file="profiles-43.zcml" />
+    <include zcml:condition="have plone-5" file="profiles-50.zcml" />
 
 </configure>
