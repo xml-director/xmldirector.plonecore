@@ -20,14 +20,14 @@ from xmldirector.plonecore.locking import LockError
 
 
 try:
-    import paramiko
+    import paramiko  # NOQA
     have_paramiko = True
 except ImportError:
     have_paramiko = False
 
 
 try:
-    import boto
+    import boto  # NOQA
     have_boto = True
 except ImportError:
     have_boto = False

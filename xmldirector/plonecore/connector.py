@@ -26,12 +26,10 @@ from xmldirector.plonecore.logger import LOG
 
 class IConnector(model.Schema):
 
-
     webdav_url = schema.TextLine(
         title=_(u'(optional) connection URL of storage'),
         required=False
     )
-
 
     webdav_username = schema.TextLine(
         title=_(u'(optional) username overriding the system settings'),
