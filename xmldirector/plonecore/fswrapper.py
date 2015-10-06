@@ -30,7 +30,7 @@ def get_fs_wrapper(url, credentials=None):
     elif f.scheme == 's3':
         if have_boto:
             from xmldirector.plonecore.davfs import S3FSWrapper
-            wrapper = S3FSWrapper(f.host)
+            wrapper = S3FSWrapper(bucket=f.host, prefix=str(f.path))
         else:
             raise ValueError('boto module is not installed')
     elif f.scheme == 'sftp':

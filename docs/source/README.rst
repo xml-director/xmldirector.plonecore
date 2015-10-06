@@ -70,7 +70,7 @@ Requirements
   
 - Plone 5.0 (experimental, in progress)
 
-- Supported XML backends:
+- Supported backends:
 
     - eXist-db 2.2 and 3.0
 
@@ -81,6 +81,8 @@ Requirements
     - Alfresco
 
     - Dropbox (via dropdav.com (Dropbox to WebDAV bridge, paid SaaS))
+
+    - AWS S3
 
 
 Configuration
@@ -115,6 +117,9 @@ configure the
 
     file:///path/to/some/directory
 
+- AWS S3
+    
+    s3://bucketname
 
 - WebDAV username
 
