@@ -84,47 +84,72 @@ Requirements
 
     - AWS S3
 
+    - Cloud federation services
+
+      - Otixo.com
+      - Storagemadeeasy.com
+
 
 Configuration
 -------------
 
 Goto the Plone control panel and click on the ``XML-Director Core`` configlet and
-configure the 
+configure the your service
 
-- Connection URL to your XML database or WebDAV storage
-
-  ExistDB:
+ExistDB
++++++++
   
-    http://localhost:6080/existdb/webdav/db
+- http://localhost:6080/existdb/webdav/db
+- username and password required to access your XML database over WebDAV
 
-  BaseX:
+BaseX
++++++
 
-    http://localhost:8984/webdav
+- http://localhost:8984/webdav                                     
+- username and password required to access your XML database over WebDAV
 
-  Owncloud:
+Owncloud
+++++++++
 
-    http://hostname:port/remote.php/webdav
+- http://hostname:port/remote.php/webdav
+- username and password required to access your Owncloud instance over WebDAV
 
-  Alfresco:
+Alfresco
+++++++++
 
-    http://hostname:port/webdav
+- http://hostname:port/webdav
+- username and password required to access your Alfresco instance over WebDAV
 
-  Dropbox (via dropdav.com SaaS):
+Dropbox (via dropdav.com SaaS)
+++++++++++++++++++++++++++++++
 
-    https://dav.dropdav.com
+- https://dav.dropdav.com
+- username and password required of your dropdav.com account
 
-- local filesystem
+SME (storagemadeeasy.com)
++++++++++++++++++++++++++
 
-    file:///path/to/some/directory
+- https://webdaveu.storagemadeeasy.com   (EU)
+- https://webdav.storagemadeeasy.com (US)
+- username and password required of your storagemadeeasy.com account
 
-- AWS S3
+Otixo.com
++++++++++
+
+- https://otixo.com
+- username and password required of your otixo.com account
+
+Local filesystem
+++++++++++++++++
+
+- file:///path/to/some/directory
+- no support for credentials, the referenced filesystem must be readable (and writable)
+
+AWS S3
+++++++
     
-    s3://bucketname
-
-- WebDAV username
-
-- WebDAV password
-
+- s3://bucketname
+- enter your AWS access key as username and the AWS secret key as password
 
 Using xmldirector.plonecore
 ---------------------------
