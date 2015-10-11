@@ -107,7 +107,7 @@ class BaseWrapper(object):
         if isinstance(self, SFTPFSWrapper):
             return '.'
         if self.isFile():
-            return self.__leaf_filename__
+            return '.'
         return '.'
 
     def _check_lock(self, path, op):
