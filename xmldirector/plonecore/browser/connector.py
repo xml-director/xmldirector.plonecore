@@ -338,6 +338,23 @@ class Connector(BrowserView):
 
         return self.redirect(_(u'eXist-db collection cleared'))
 
+    def upload_file(self):
+        """ Store .DOCX file """
+
+        webdav_handle = self.context.webdav_handle()
+        filename = os.path.basename(self.request.Filedata.filename)
+        basename, ext = os.path.splitext(filename)
+
+        with webdav_handle.open(filename, 'wb') as fp:
+            self.request.Filedata.seek(0)
+            data = self.request.Filedata.read()
+            fp.write(data)
+
+        self.logger.log(
+            u'{} uploaded ({} Byte)'.format(repr(filename), len(data)))
+        self.request.response.setStatus(200)
+        self.request.response.write('OK')
+
     def zip_export(self, download=True, dirs=None, subpath=u''):
         """ Export WebDAV subfolder to a ZIP file.
             ``dirs`` optional comma separated list of top-level

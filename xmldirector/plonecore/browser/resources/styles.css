@@ -220,3 +220,28 @@ input.xmlxpath-field {
 .datatable tbody tr:nth-child(odd) {
     background: #eee;
 }
+
+
+/* ZIP upload */
+.template-connector-zip-import legend {
+    font-size: 1.0rem !important;
+}
+
+.template-connector-zip-import .help {
+    font-style: italic !important;
+    margin-bottom: 1em;
+}
+
+input.zip-upload {
+    border-radius: 20px;
+    border: 1px solid #808080;
+    background: #606060;
+    color: white;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+    font-weight: bold;
+    margin-top: 1em;
+    
+}
