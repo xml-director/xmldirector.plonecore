@@ -88,7 +88,7 @@ class BaseWrapper(object):
             return not getattr(self, '__leaf__', False)
         if isinstance(self, SFTPFSWrapper):
             return not self.isfile('.')
-        
+        return self.isdir('.')
 
     def isFile(self):
         """ Represents a file """
@@ -97,6 +97,7 @@ class BaseWrapper(object):
             return getattr(self, '__leaf__', False)
         if isinstance(self, SFTPFSWrapper):
             return self.isfile('.')
+        return self.isfile('.')
 
     @property
     def leaf_filename(self):
