@@ -6,6 +6,7 @@ hangelog
 
 - support for OSFS (local filesystem)
 - individual per-connector URL configuration
+- support for multi-file upload  
 
 1.2.1 (unreleased)
 ------------------

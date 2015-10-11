@@ -75,7 +75,12 @@ class LockManager(object):
         if context:
             context_webdav_url = getattr(context, 'webdav_url', None)
             if context_webdav_url:
-                return get_fs_wrapper(context_webdav_url)
+                username = context.webdav_username
+                password = context.webdav_password
+                if username and password:
+                    return get_fs_wrapper(context_webdav_url, credentials=dict(username=username, password=password))
+                else:
+                    return get_fs_wrapper(context_webdav_url)
         return getUtility(IWebdavHandle).webdav_handle()
 
     def lock_filename(self, path):
