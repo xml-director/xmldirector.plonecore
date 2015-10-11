@@ -24,7 +24,6 @@
     text-align: left !important;
 }
 
-
 #logging tbody tr.even,
 #logging tbody tr:nth-child(even) {
     background-color: #dddddd !important;
@@ -244,4 +243,10 @@ input.zip-upload {
     font-weight: bold;
     margin-top: 1em;
     
+}
+
+/* misc */
+#connection-url {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
 }
