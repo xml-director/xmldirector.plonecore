@@ -341,7 +341,9 @@ class Connector(BrowserView):
     def upload_file(self):
         """ Store .DOCX file """
 
-        webdav_handle = self.context.webdav_handle()
+        subpath = self.request.get('subpath')
+        import pdb; pdb.set_trace() 
+        webdav_handle = self.context.webdav_handle(subpath=subpath)
         filename = os.path.basename(self.request.Filedata.filename)
         basename, ext = os.path.splitext(filename)
 

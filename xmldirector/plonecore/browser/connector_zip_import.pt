@@ -10,7 +10,7 @@
     
 <slot metal:fill-slot="javascript_head_slot">
     <script type="text/javascript" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/uploadify/jquery.uploadifive.min.js"></script>
-    <script type="text/javascript" tal:content="string: UPLOAD_URL = '${context/absolute_url}/@@upload-file'" />
+    <script type="text/javascript" tal:content="string: UPLOAD_URL = '${context/absolute_url}/@@upload-file?subpath=${request/subpath|nothing}'" />
 </slot>
 
 
@@ -47,6 +47,7 @@
           </div>
           <form id="upload-form">
               <input type="submit" id="file_upload" name="file_upload" multiple="true" />
+              <input type="hidden" name="subpath" tal:attributes="value request/subpath | nothing" />
           </form>
           <div id="upload-message"></div>
       </fieldset>
