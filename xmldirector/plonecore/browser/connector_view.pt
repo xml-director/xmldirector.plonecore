@@ -83,20 +83,18 @@
                       <span tal:replace="item/st_mode_text" />
                   </td>
                   <td>
-                      <img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove item" i18n:attributes="title"/>
-                      <a tal:condition="item/editable"
-                         tal:attributes="href item/edit_url"
-                         i18n:attributes="title"
-                         title="Edit"
-                          ><img src="++resource++xmldirector.plonecore/images/edit.png" /></a>
                       <a tal:attributes="href item/remove_url"
                          class="confirm-action" 
                          data-text="Do you really want to remove this item?"
                          i18n:attributes="data-text"
                          i18n:translate=""
                          title="Remove"
-                         >
-                     </a>
+                         ><img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove item" i18n:attributes="title"/> </a>
+                      <a tal:condition="item/editable"
+                         tal:attributes="href item/edit_url"
+                         i18n:attributes="title"
+                         title="Edit"
+                          ><img src="++resource++xmldirector.plonecore/images/edit.png" /></a>
                   </td>
               </tr>
           </tbody>
