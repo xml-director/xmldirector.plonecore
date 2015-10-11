@@ -342,7 +342,6 @@ class Connector(BrowserView):
         """ Store .DOCX file """
 
         subpath = self.request.get('subpath')
-        import pdb; pdb.set_trace() 
         webdav_handle = self.context.webdav_handle(subpath=subpath)
         filename = os.path.basename(self.request.Filedata.filename)
         basename, ext = os.path.splitext(filename)
