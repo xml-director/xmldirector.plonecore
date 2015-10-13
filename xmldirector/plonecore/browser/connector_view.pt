@@ -22,7 +22,7 @@
   <metal:content-core define-macro="content-core">
 
       <div id="connection-url">
-          <span i18n:translate="">Connected to:</span>
+          <label i18n:translate="">Connected to:</label>
           <span tal:content="context/webdav_url" />
       </div>
 

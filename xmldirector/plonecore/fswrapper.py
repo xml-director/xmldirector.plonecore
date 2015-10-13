@@ -5,6 +5,7 @@
 # (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
+import urllib
 from furl import furl
 
 from fs.osfs import OSFS
@@ -103,7 +104,8 @@ class BaseWrapper(object):
     def leaf_filename(self):
         __leaf__ = getattr(self, '__leaf__', _marker)
         if __leaf__ != _marker:
-            return self.__leaf_filename__
+            # hack for OSFS, fix this
+            return urllib.unquote(self.__leaf_filename__)
         if isinstance(self, SFTPFSWrapper):
             return '.'
         if self.isFile():
@@ -185,7 +187,9 @@ def get_fs_wrapper(url, credentials=None):
     f = furl(url)
     original_url = url
     if f.scheme == 'file':
-        wrapper = OSFSWrapper(url[7:], encoding='utf-8')
+        # hack for OSFP, fix this
+        path = urllib.unquote(url[7:])
+        wrapper = OSFSWrapper(path, encoding='utf-8')
     elif f.scheme == 'http':
         wrapper = DAVFSWrapper(original_url, credentials)
     elif f.scheme == 'https':
