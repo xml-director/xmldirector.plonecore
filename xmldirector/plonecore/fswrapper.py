@@ -143,10 +143,10 @@ class BaseWrapper(object):
             self._check_lock(path, op='remove')
         return super(BaseWrapper, self).remove(path)
 
-    def move(self, path_old, path_new, lock_check=True):
+    def move(self, path_old, path_new, overwrite=False, chunk_size=16384, lock_check=True):
         if lock_check:
             self._check_lock(path_old, op='move')
-        return super(BaseWrapper, self).move(path_old, path_new)
+        return super(BaseWrapper, self).move(path_old, path_new, overwrite, chunk_size)
 
     def copy(self, src, dst, overwrite=False, chunk_size=None, lock_check=True):
         if lock_check:
