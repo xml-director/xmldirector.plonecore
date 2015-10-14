@@ -48,37 +48,37 @@ class IWebdavSettings(Interface):
     """ ExistDB settings """
 
     webdav_url = schema.TextLine(
-        title=_(u'WebDAV server url'),
-        description=_(u'WebDAV base url'),
+        title=_(u'Connection URL of storage service'),
+        description=_(u'WebDAV: http://host:port/path/to/webdav, Local filesystem: file://path/to/directory, AWS S3: s3://bucketname, SFTP sftp://host/path, FTP: ftp://host/path'),
         default=u'http://localhost:6080/exist/webdav/db',
         required=True
     )
 
     webdav_dexterity_subpath = schema.TextLine(
-        title=_(u'Dexterity WebDAV subpath'),
-        description=_(u'Subpath inside WebDAV for Dexterity content'),
+        title=_(u'Dexterity subpath'),
+        description=_(u'Subpath inside storage for Dexterity content'),
         default=u'',
         required=False
     )
 
     webdav_mode = schema.Choice(
-        title=_(u'WebDAV mode'),
-        description=_(u'WebDAV mode (defaults to Exist-DB)'),
+        title=_(u'Connector mode'),
+        description=_(u'Connector mode (defaults to Exist-DB)'),
         default=u'existdb',
         required=True,
         vocabulary=WEBDAV_MODE_VOCAB
     )
 
     webdav_username = schema.TextLine(
-        title=_(u'WebDAV username'),
-        description=_(u'WebDAV username'),
+        title=_(u'Username for external storage'),
+        description=_(u'Username'),
         default=u'admin',
         required=True
     )
 
     webdav_password = schema.Password(
-        title=_(u'WebDAV password'),
-        description=_(u'WebDAV password'),
+        title=_(u'Password for external storage'),
+        description=_(u'Password'),
         default=u'',
         required=False
     )

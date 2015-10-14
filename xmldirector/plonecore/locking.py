@@ -64,6 +64,23 @@ class LockManager(object):
     @property
     def webdav_handle(self):
         """ Return webdav handle as property """
+        from xmldirector.plonecore.fswrapper import get_fs_wrapper
+        if self.context:
+            context = self.context
+        else:
+            try:
+                context = plone.api.portal.get().REQUEST.PUBLISHED.context
+            except AttributeError:
+                context = None
+        if context:
+            context_webdav_url = getattr(context, 'webdav_url', None)
+            if context_webdav_url:
+                username = context.webdav_username
+                password = context.webdav_password
+                if username and password:
+                    return get_fs_wrapper(context_webdav_url, credentials=dict(username=username, password=password))
+                else:
+                    return get_fs_wrapper(context_webdav_url)
         return getUtility(IWebdavHandle).webdav_handle()
 
     def lock_filename(self, path):

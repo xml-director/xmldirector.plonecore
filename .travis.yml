@@ -1,32 +1,68 @@
-
 service_name: travis-pro
 repo_token: 9Gz8lbFOfnCehczzQnPMy49awudPW4Rzz
 
-sudo: false
+sudo: required
 language: python
-python:
-- '2.7'
-env:
-  matrix:
-  - PLONE_VERSION=plone-4.3
-  global:
-    secure: W2O1Nhru3ZqgoUZuKf1NxnOfsmM4GzD+xSadM4HhetN1V3oNWrJ4gYnIaJ7wK3qWv8zcwKcWj0KtXETnSOIfyEEn3RS+5Y3l1Ltl3AnRz2vdwKWjeJut+xHcyEfLpUaouIp2JTu96xnMcO8qvWGKnX5jHDTXaIHNq5BKUZtQi/U=
 
+services:
+ - docker
+
+matrix:
+  include:
+
+  - python: "2.7"
+    env: PLONE_VERSION=4.3 WEBDAV_URL=file:///tmp/testing
+
+  - python: "2.7"
+    env: PLONE_VERSION=5.0 WEBDAV_URL=file:///tmp/testing
+
+  - python: "2.7"
+    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-22
+
+  - python: "2.7"
+    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-22
+
+  - python: "2.7"
+    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-30
+
+  - python: "2.7"
+    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-30
+
+  - python: "2.7"
+#    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:8080/webdav DOCKER=zopyx/basex-83
+    env: PLONE_VERSION=4.3 WEBDAV_URL=http://zopyx.com:22080/webdav DOCKER=zopyx/basex-83
+
+  - python: "2.7"
+#    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/webdav DOCKER=zopyx/basex-83
+    env: PLONE_VERSION=5.0 WEBDAV_URL=http://zopyx.com:22080/webdav DOCKER=zopyx/basex-83
+
+#  - python: "2.7"
+#    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:8080/remote.php/webdav DOCKER=owncloud:8.1
+#
+#  - python: "2.7"
+#    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/remote.php/webdav DOCKER=owncloud:8.1
 
 cache:
   directories:
     - eggs
 
+before_install:
+- sudo apt-get -y update 
+#- sudo apt-get -y upgrade lxc-docker
+- docker version
+#- docker pull gui81/alfresco
+#- docker pull owncloud:8.1
+
 after_success:
  - test -v QA && pip install python-coveralls==2.4.0 || true
  - test -v QA && coveralls || true
 
-matrix:
-  include:
-  - python: 2.7
-    env: PLONE_VERSION=plone-5.0
 script:
-- bash build_test.sh $PLONE_VERSION
+- pwd
+- ls -la
+- mkdir -p /tmp/testing
+- rm -fr /tmp/testing/*
+- bash build_test.sh 
 
 
 notifications:
@@ -35,4 +71,3 @@ notifications:
     - irc.freenode.org#xml-director
     template:
     - '%{repository}/#%{build_number}/%{branch} (%{author}): %{message} %{build_url}'
-

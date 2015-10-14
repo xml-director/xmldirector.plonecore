@@ -23,7 +23,8 @@ from zope.configuration import xmlconfig
 from AccessControl.SecurityManagement import newSecurityManager
 
 from xmldirector.plonecore.interfaces import IWebdavSettings
-from xmldirector.plonecore.davfs import DAVFSWrapper as DAVFS
+from xmldirector.plonecore.fswrapper import get_fs_wrapper
+from xmldirector.plonecore.logger import LOG
 
 import xmldirector.plonecore
 import plone.app.dexterity
@@ -69,6 +70,11 @@ class PolicyFixture(PloneSandboxLayer):
         self.testing_directory = settings.webdav_dexterity_subpath = u'testing-dexterity-{}'.format(
             uuid.uuid4())
 
+        handle = get_fs_wrapper(WEBDAV_URL, credentials=dict(username=WEBDAV_USERNAME,
+                                                             password=WEBDAV_PASSWORD))
+        if not handle.exists(self.testing_directory):
+            handle.makedir(self.testing_directory)
+
         self.connector = plone.api.content.create(
             container=portal,
             type='xmldirector.plonecore.connector',
@@ -76,11 +82,14 @@ class PolicyFixture(PloneSandboxLayer):
 
     def tearDownZope(self, app):
 
-        handle = DAVFS(WEBDAV_URL, credentials=dict(username=WEBDAV_USERNAME,
-                                                    password=WEBDAV_PASSWORD))
+        handle = get_fs_wrapper(WEBDAV_URL, credentials=dict(username=WEBDAV_USERNAME,
+                                                             password=WEBDAV_PASSWORD))
         if handle.exists(self.testing_directory):
-            handle.removedir(
-                self.testing_directory, recursive=True, force=True)
+            try:
+                handle.removedir(
+                    self.testing_directory, recursive=True, force=True)
+            except Exception as e:
+                LOG.error('tearDownZope() failed ({})'.format(e))
         z2.uninstallProduct(app, 'xmldirector.plonecore')
 
 

@@ -1,6 +1,13 @@
 hangelog
 =========
 
+1.3.0 (unreleased)
+------------------
+
+- support for OSFS (local filesystem)
+- individual per-connector URL configuration
+- support for multi-file upload  
+
 1.2.1 (unreleased)
 ------------------
 - unicode fixes in the context of testing federated cloud

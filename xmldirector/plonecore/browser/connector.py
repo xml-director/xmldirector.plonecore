@@ -7,6 +7,7 @@
 
 import os
 import fs
+import stat
 import datetime
 import fs.errors
 import fs.path
@@ -41,6 +42,16 @@ LOG = logging.getLogger('xmldirector.plonecore')
 
 TZ = os.environ.get('TZ', 'UTC')
 LOG.info('Local timezone: {}'.format(TZ))
+
+
+def stmode2unix(st_mode):
+    if st_mode:
+        is_dir = 'd' if stat.S_ISDIR(st_mode) else '-'
+        dic = {'7':'rwx', '6' :'rw-', '5' : 'r-x', '4':'r--', '0': '---'}
+        perm = str(oct(st_mode)[-3:])
+        return is_dir + ''.join(dic.get(x,x) for x in perm)
+    else:
+        return u''
 
 
 class Dispatcher(BrowserView):
@@ -151,9 +162,7 @@ class Connector(BrowserView):
     def __call__(self, *args, **kw):
 
         handle = self.webdav_handle()
-
-        if handle.isdir('.'):
-
+        if handle.isDirectory():
             context_url = self.context.absolute_url()
             view_prefix = '@@view'
             edit_prefix = '@@view-editor'
@@ -177,20 +186,24 @@ class Connector(BrowserView):
                                           context_url, edit_prefix, info[0]),
                                       title=info[0],
                                       editable=self.is_ace_editable(info[0]),
-                                      st_mode=info[1]['st_mode'],
-                                      size_original=info[1]['size'],
+                                      st_mode=info[1].get('st_mode'),
+                                      st_mode_text=stmode2unix(info[1].get('st_mode')),
+                                      size_original=info[1].get('size'),
                                       size=size,
-                                      modified_original=info[1]['modified_time'],
+                                      modified_original=info[
+                                          1]['modified_time'],
                                       modified=self.human_readable_datetime(info[1]['modified_time'])))
 
             dirs = list()
             for info in handle.listdirinfo(dirs_only=True):
                 url = '{}/{}/{}'.format(context_url, view_prefix, info[0].encode('utf8'))
+                modified = info[1].get('modified_time')
                 dirs.append(dict(url=url,
                                  title=info[0],
-                                 st_mode=info[1]['st_mode'],
-                                 modified_original=info[1]['modified_time'],
-                                 modified=self.human_readable_datetime(info[1]['modified_time'])))
+                                 st_mode=info[1].get('st_mode'),
+                                 st_mode_text=stmode2unix(info[1].get('st_mode')),
+                                 modified_original=modified,
+                                 modified=self.human_readable_datetime(modified)))
 
             dirs = sorted(dirs, key=operator.itemgetter('title'))
             files = sorted(files, key=operator.itemgetter('title'))
@@ -201,7 +214,7 @@ class Connector(BrowserView):
                 files=files,
                 dirs=dirs)
 
-        elif handle.isfile('.'):
+        elif handle.isFile():
             filename = self.subpath[-1]
             self.request.subpath = self.subpath
             self.request.context = self.context
@@ -305,12 +318,13 @@ class Connector(BrowserView):
         dt = dt.replace(tzinfo=tz.gettz('UTC'))
         return dt.astimezone(to_tz).strftime('%d.%m.%Y %H:%M:%Sh')
 
-    def human_readable_datetime(self, dt):
+    def human_readable_datetime(self, dt=None):
         """ Convert with `dt` datetime string into a human readable
             representation using humanize module.
         """
-        diff = datetime.datetime.utcnow() - dt
-        return humanize.naturaltime(diff)
+        if dt:
+            diff = datetime.datetime.utcnow() - dt
+            return humanize.naturaltime(diff)
 
     def clear_contents(self):
         """ Remove all sub content """
@@ -323,6 +337,24 @@ class Connector(BrowserView):
                 handle.removedir(name, force=True, recursive=False)
 
         return self.redirect(_(u'eXist-db collection cleared'))
+
+    def upload_file(self):
+        """ Store .DOCX file """
+
+        subpath = self.request.get('subpath')
+        webdav_handle = self.context.webdav_handle(subpath=subpath)
+        filename = os.path.basename(self.request.Filedata.filename)
+        basename, ext = os.path.splitext(filename)
+
+        with webdav_handle.open(filename, 'wb') as fp:
+            self.request.Filedata.seek(0)
+            data = self.request.Filedata.read()
+            fp.write(data)
+
+        self.logger.log(
+            u'{} uploaded ({} Byte)'.format(repr(filename), len(data)))
+        self.request.response.setStatus(200)
+        self.request.response.write('OK')
 
     def zip_export(self, download=True, dirs=None, subpath=u''):
         """ Export WebDAV subfolder to a ZIP file.
@@ -369,7 +401,8 @@ class Connector(BrowserView):
         """ Import WebDAV subfolder from an uploaded ZIP file """
 
         try:
-            imported_files = self.zip_import(zip_file, subpath, clean_directories)
+            imported_files = self.zip_import(
+                zip_file, subpath, clean_directories)
         except Exception as e:
             msg = u'ZIP import failed'
             LOG.error(msg, exc_info=True)
@@ -408,7 +441,8 @@ class Connector(BrowserView):
             else:
                 target_filename = zip_filename
             if not target_filename:
-                raise ValueError(u'No filename detected, did you really upload a file?')
+                raise ValueError(
+                    u'No filename detected, did you really upload a file?')
             with handle.open(target_filename, 'wb') as fp:
                 fp.write(zip_file.read())
 
@@ -446,9 +480,11 @@ class Connector(BrowserView):
                     if show_progress:
                         pbar.update(i)
 
-                    target_filename = unicodedata.normalize('NFC', name).lstrip('/')
+                    target_filename = unicodedata.normalize(
+                        'NFC', name).lstrip('/')
                     if subpath:
-                        target_filename = u'{}/{}'.format(subpath, target_filename)
+                        target_filename = u'{}/{}'.format(
+                            subpath, target_filename)
 
                     target_dirname = '/'.join(target_filename.split('/')[:-1])
                     if target_dirname not in dirs_created:

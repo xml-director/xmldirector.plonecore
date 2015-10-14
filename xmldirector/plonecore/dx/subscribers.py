@@ -56,7 +56,7 @@ def copied_handler(obj, event):
         handle.copydir(storage_dir_original, storage_dir_copied)
 
 
-#def version_handler(obj, event):
+# def version_handler(obj, event):
 #    """ Copy XML resources to new object """
 #
 #    # Is this Dexterity content object related to XML resources?
