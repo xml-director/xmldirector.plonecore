@@ -2,9 +2,6 @@ service_name: travis-pro
 repo_token: 9Gz8lbFOfnCehczzQnPMy49awudPW4Rzz
 
 
-# AWS KEYS
-secure: "FRkjSxGRHASr4MixBJCx/cg/w8U81ZqprLlng5qD6izJNhQCfD5Sf3iQb976l+E0+7YlHAEJ8Z5nlp9Ra4UfbHoMEEvaoIOe4XyvVQ4aqjrWQdMGX2yDSVYKpsumwP5mQQpOlsygwGC1DhqKlXEYerAbEYPMamcz/7C24Vf4+cY="
-secure: "ZfuNeX1qKdkJF3En1WxQ9XvoyLnN0UZsh8DU87s4TSU5DbCDSYOFzajJWT44es8Ft2xT6u6/p6fRCmVzLpAnw6DzrO0H7S5NMDcM47JlMgVDWD6avxR2t0mVvM9ykyFglzy/d1GvwITKiTs95KEcrMuqK6+750t28WGjxGZwdsc="
 
 sudo: required
 dist: trusty
@@ -17,6 +14,8 @@ matrix:
   include:
 
   - python: "2.7"
+    secure: "FRkjSxGRHASr4MixBJCx/cg/w8U81ZqprLlng5qD6izJNhQCfD5Sf3iQb976l+E0+7YlHAEJ8Z5nlp9Ra4UfbHoMEEvaoIOe4XyvVQ4aqjrWQdMGX2yDSVYKpsumwP5mQQpOlsygwGC1DhqKlXEYerAbEYPMamcz/7C24Vf4+cY="
+    secure: "ZfuNeX1qKdkJF3En1WxQ9XvoyLnN0UZsh8DU87s4TSU5DbCDSYOFzajJWT44es8Ft2xT6u6/p6fRCmVzLpAnw6DzrO0H7S5NMDcM47JlMgVDWD6avxR2t0mVvM9ykyFglzy/d1GvwITKiTs95KEcrMuqK6+750t28WGjxGZwdsc="
     env: PLONE_VERSION=4.3 WEBDAV_URL=s3://ajung-xxxxxxxx
 
 #  - python: "2.7"
