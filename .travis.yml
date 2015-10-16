@@ -40,11 +40,11 @@ matrix:
   - python: "2.7"
     env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/alfresco/webdav DOCKER=gui81/alfresco
 
-  - python: "2.7"
-    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:8080/remote.php/webdav DOCKER=owncloud:8.1
-
-  - python: "2.7"
-    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/remote.php/webdav DOCKER=owncloud:8.1
+#  - python: "2.7"
+#    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:8080/remote.php/webdav DOCKER=owncloud:8.1
+#
+#  - python: "2.7"
+#    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/remote.php/webdav DOCKER=owncloud:8.1
 
   - python: "2.7"
     env: 
