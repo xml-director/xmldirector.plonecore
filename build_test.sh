@@ -9,6 +9,7 @@ echo $WEBDAV_USERNAME
 echo $WEBDAV_PASSWORD
 echo $PLONE_VERSION
 echo $DOCKER
+env | sort
 
 config=buildout-plone-$PLONE_VERSION.cfg
 
