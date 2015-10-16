@@ -14,43 +14,43 @@ matrix:
   include:
 
   - python: "2.7"
+    env: PLONE_VERSION=5.0 WEBDAV_URL=file:///tmp/testing
+
+  - python: "2.7"
+    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-22
+
+  - python: "2.7"
+    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-22
+
+  - python: "2.7"
+    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-30
+
+  - python: "2.7"
+    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-30
+
+  - python: "2.7"
+    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:8080/webdav DOCKER=zopyx/basex-83
+
+  - python: "2.7"
+    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/webdav DOCKER=zopyx/basex-83
+
+  - python: "2.7"
+    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:8080/alfresco/webdav DOCKER=gui81/alfresco
+
+  - python: "2.7"
+    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/alfresco/webdav DOCKER=gui81/alfresco
+
+  - python: "2.7"
+    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:8080/remote.php/webdav DOCKER=owncloud:8.1
+
+  - python: "2.7"
+    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/remote.php/webdav DOCKER=owncloud:8.1
+
+  - python: "2.7"
     env: 
       - PLONE_VERSION=4.3 WEBDAV_URL=s3://ajung-xxxxxxxx
       - secure: "FRkjSxGRHASr4MixBJCx/cg/w8U81ZqprLlng5qD6izJNhQCfD5Sf3iQb976l+E0+7YlHAEJ8Z5nlp9Ra4UfbHoMEEvaoIOe4XyvVQ4aqjrWQdMGX2yDSVYKpsumwP5mQQpOlsygwGC1DhqKlXEYerAbEYPMamcz/7C24Vf4+cY="
       - secure: "ZfuNeX1qKdkJF3En1WxQ9XvoyLnN0UZsh8DU87s4TSU5DbCDSYOFzajJWT44es8Ft2xT6u6/p6fRCmVzLpAnw6DzrO0H7S5NMDcM47JlMgVDWD6avxR2t0mVvM9ykyFglzy/d1GvwITKiTs95KEcrMuqK6+750t28WGjxGZwdsc="
-
-#  - python: "2.7"
-#    env: PLONE_VERSION=5.0 WEBDAV_URL=file:///tmp/testing
-#
-#  - python: "2.7"
-#    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-22
-#
-#  - python: "2.7"
-#    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-22
-#
-#  - python: "2.7"
-#    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-30
-#
-#  - python: "2.7"
-#    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-30
-#
-#  - python: "2.7"
-#    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:8080/webdav DOCKER=zopyx/basex-83
-#
-#  - python: "2.7"
-#    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/webdav DOCKER=zopyx/basex-83
-#
-#  - python: "2.7"
-#    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:8080/alfresco/webdav DOCKER=gui81/alfresco
-#
-#  - python: "2.7"
-#    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/alfresco/webdav DOCKER=gui81/alfresco
-
-#  - python: "2.7"
-#    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:8080/remote.php/webdav DOCKER=owncloud:8.1
-#
-#  - python: "2.7"
-#    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/remote.php/webdav DOCKER=owncloud:8.1
 
 cache:
   directories:
