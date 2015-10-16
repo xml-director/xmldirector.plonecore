@@ -52,6 +52,12 @@ matrix:
       - secure: "FRkjSxGRHASr4MixBJCx/cg/w8U81ZqprLlng5qD6izJNhQCfD5Sf3iQb976l+E0+7YlHAEJ8Z5nlp9Ra4UfbHoMEEvaoIOe4XyvVQ4aqjrWQdMGX2yDSVYKpsumwP5mQQpOlsygwGC1DhqKlXEYerAbEYPMamcz/7C24Vf4+cY="
       - secure: "ZfuNeX1qKdkJF3En1WxQ9XvoyLnN0UZsh8DU87s4TSU5DbCDSYOFzajJWT44es8Ft2xT6u6/p6fRCmVzLpAnw6DzrO0H7S5NMDcM47JlMgVDWD6avxR2t0mVvM9ykyFglzy/d1GvwITKiTs95KEcrMuqK6+750t28WGjxGZwdsc="
 
+  - python: "2.7"
+    env: 
+      - PLONE_VERSION=5.0 WEBDAV_URL=s3://ajung-xxxxxxxx
+      - secure: "FRkjSxGRHASr4MixBJCx/cg/w8U81ZqprLlng5qD6izJNhQCfD5Sf3iQb976l+E0+7YlHAEJ8Z5nlp9Ra4UfbHoMEEvaoIOe4XyvVQ4aqjrWQdMGX2yDSVYKpsumwP5mQQpOlsygwGC1DhqKlXEYerAbEYPMamcz/7C24Vf4+cY="
+      - secure: "ZfuNeX1qKdkJF3En1WxQ9XvoyLnN0UZsh8DU87s4TSU5DbCDSYOFzajJWT44es8Ft2xT6u6/p6fRCmVzLpAnw6DzrO0H7S5NMDcM47JlMgVDWD6avxR2t0mVvM9ykyFglzy/d1GvwITKiTs95KEcrMuqK6+750t28WGjxGZwdsc="
+
 cache:
   directories:
     - eggs
