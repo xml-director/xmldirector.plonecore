@@ -29,7 +29,7 @@ class BasicTests(TestBase):
         handle = self.portal.connector.webdav_handle()
         if handle.exists(PREFIX):
             handle.removedir(PREFIX, False, True)
-        handle.makedir(PREFIX)
+        handle.makedir(PREFIX, allow_recreate=True)
         handle.makedir(PREFIX + '/foo')
         handle.makedir(PREFIX + '/foo2')
         if is_mac:
