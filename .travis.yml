@@ -1,8 +1,6 @@
 service_name: travis-pro
 repo_token: 9Gz8lbFOfnCehczzQnPMy49awudPW4Rzz
 
-
-
 sudo: required
 dist: trusty
 language: python
@@ -49,9 +47,13 @@ matrix:
       - secure: "MAeU/I4sdpjNFIwzwHFYOJOBAu+qYH0ugertqHSZtY6KprjPbHN1Yu48VG7oLYeBCPxPUiym0fDWyR8KO7DGhOMZMybEho+nL7DHOaKCJEmddu6V5Ld+Ox4dIQgyVL6iQ/dGZc70/fPBd7Je3sNEJquV9OQjuUoQ5OatyXsLQm0="
       - secure: "Qe5vVt2+FuspeEcSXHVbQCq3hCzPthlILHKAwCPseAPZQl3Hmz96R3aF3SkJCJ5WljPx3lC7mFdMcs2zJ9VJCsX4d3g6KDiwgqf8yeKvf04QkjTwReDO9vmHg/sWNgo0imiicjQ1xOEF/POOtXys5QbCKm1T2AFVsjDaTKfTslY="
       - secure: "HOXlp4LbR6AKlKCwlBLoHSw4dEhckofImkuSybSWaAAhEtQ8s9kV1+Gem/tD1/7s+3sWgmfFunck+BN/kAUlgJ1BvXFsCbAbDqO+2uG1gC4+g3L/EXo9x9OQqigS9jEio9xMh/i726HJ29MtMPNqC5FdbNiodCPJxcRDdGO8WAg="
-#
-#  - python: "2.7"
-#    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/remote.php/webdav DOCKER=owncloud:8.1
+
+  - python: "2.7"
+    env: 
+      - PLONE_VERSION=5.0
+      - secure: "MAeU/I4sdpjNFIwzwHFYOJOBAu+qYH0ugertqHSZtY6KprjPbHN1Yu48VG7oLYeBCPxPUiym0fDWyR8KO7DGhOMZMybEho+nL7DHOaKCJEmddu6V5Ld+Ox4dIQgyVL6iQ/dGZc70/fPBd7Je3sNEJquV9OQjuUoQ5OatyXsLQm0="
+      - secure: "Qe5vVt2+FuspeEcSXHVbQCq3hCzPthlILHKAwCPseAPZQl3Hmz96R3aF3SkJCJ5WljPx3lC7mFdMcs2zJ9VJCsX4d3g6KDiwgqf8yeKvf04QkjTwReDO9vmHg/sWNgo0imiicjQ1xOEF/POOtXys5QbCKm1T2AFVsjDaTKfTslY="
+      - secure: "HOXlp4LbR6AKlKCwlBLoHSw4dEhckofImkuSybSWaAAhEtQ8s9kV1+Gem/tD1/7s+3sWgmfFunck+BN/kAUlgJ1BvXFsCbAbDqO+2uG1gC4+g3L/EXo9x9OQqigS9jEio9xMh/i726HJ29MtMPNqC5FdbNiodCPJxcRDdGO8WAg="
 
   - python: "2.7"
     env: 
