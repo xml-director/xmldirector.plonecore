@@ -111,7 +111,7 @@ class Connector(Item):
         except fs.errors.ResourceNotFoundError:
             LOG.error(u'Error accessing {}::{}::{}'.format(
                 self.absolute_url(), url, self.REQUEST.get('HTTP_USER_AGENT')), exc_info=True)
-            raise zExceptions.Unauthorized(url)
+            raise zExceptions.NotFound(url)
         except fs.errors.ResourceInvalidError:
             parts = url.rsplit('/', 1)
             wrapper = get_fs_wrapper(parts[0], credentials=dict(username=username, password=password))
