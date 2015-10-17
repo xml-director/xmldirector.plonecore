@@ -9,7 +9,9 @@
 import os
 import sys
 import uuid
+import shutil
 import datetime
+import tempfile
 from zipfile import ZipFile
 from .base import TestBase
 from .base import WEBDAV_URL
@@ -225,7 +227,6 @@ class BasicTests(TestBase):
         self.login('god')
         view = self.portal.restrictedTraverse('@@xmldirector-core-settings')
         view()
-
 
 def test_suite():
     from unittest import TestSuite, makeSuite
