@@ -89,7 +89,6 @@ script:
 - rm -fr /tmp/testing/*
 - bash build_test.sh 
 
-
 notifications:
   irc:
     channels:
