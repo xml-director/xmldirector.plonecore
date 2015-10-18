@@ -70,7 +70,7 @@ Requirements
   
 - Plone 5.0 (experimental, in progress)
 
-- Supported XML backends:
+- Supported backends:
 
     - eXist-db 2.2 and 3.0
 
@@ -82,43 +82,75 @@ Requirements
 
     - Dropbox (via dropdav.com (Dropbox to WebDAV bridge, paid SaaS))
 
+    - AWS S3
+
+    - Cloud federation services
+
+      - Otixo.com
+      - Storagemadeeasy.com
+
 
 Configuration
 -------------
 
 Goto the Plone control panel and click on the ``XML-Director Core`` configlet and
-configure the 
+configure the your service
 
-- Connection URL to your XML database or WebDAV storage
-
-  ExistDB:
+ExistDB
++++++++
   
-    http://localhost:6080/existdb/webdav/db
+- http://localhost:6080/existdb/webdav/db
+- username and password required to access your XML database over WebDAV
 
-  BaseX:
+BaseX
++++++
 
-    http://localhost:8984/webdav
+- http://localhost:8984/webdav                                     
+- username and password required to access your XML database over WebDAV
 
-  Owncloud:
+Owncloud
+++++++++
 
-    http://hostname:port/remote.php/webdav
+- http://hostname:port/remote.php/webdav
+- username and password required to access your Owncloud instance over WebDAV
 
-  Alfresco:
+Alfresco
+++++++++
 
-    http://hostname:port/webdav
+- http://hostname:port/webdav
+- username and password required to access your Alfresco instance over WebDAV
 
-  Dropbox (via dropdav.com SaaS):
+Dropbox (via dropdav.com SaaS)
+++++++++++++++++++++++++++++++
 
-    https://dav.dropdav.com
+- https://dav.dropdav.com
+- username and password required of your dropdav.com account
 
-- local filesystem
+SME (storagemadeeasy.com)
++++++++++++++++++++++++++
 
-    file:///path/to/some/directory
+- https://webdaveu.storagemadeeasy.com   (EU)
+- https://webdav.storagemadeeasy.com (US)
+- username and password required of your storagemadeeasy.com account
 
+Otixo.com
++++++++++
 
-- WebDAV username
+- https://otixo.com
+- username and password required of your otixo.com account
 
-- WebDAV password
+Local filesystem
+++++++++++++++++
+
+- file:///path/to/some/directory
+- no support for credentials, the referenced filesystem must be readable (and writable)
+
+AWS S3
+++++++
+    
+- s3://bucketname
+- enter your AWS access key as username and the AWS secret key as password
+- you need to install the ``boto`` module (either using ``pip`` or using zc.buildout)
 
 
 Using xmldirector.plonecore
