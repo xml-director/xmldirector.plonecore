@@ -46,8 +46,9 @@ class BasicTests(TestBase):
     def tearDown(self):
         self.portal.connector.webdav_subpath = None
         handle = self.webdav_handle
+        handle.ignore_errors = True
         if handle.exists(PREFIX):
-            handle.removedir(PREFIX, False, True)
+            handle.removedir(PREFIX, True, True)
 
     @property
     def lock_manager(self):

@@ -114,6 +114,9 @@ class BaseWrapper(object):
 
     def _check_lock(self, path, op):
 
+        # flag set by tests in order to avoid false posititves
+        ignore_errors = getattr(self, 'ignore_errors', False)
+
         lm = LockManager(None)
         try:
             log_info = lm.get_lock(path)
@@ -127,9 +130,9 @@ class BaseWrapper(object):
             lockstate(mode=lock_mode, op=op, lock_owner=lock_owner), _marker)
         msg = '(lock_mode={}, op={}, lock_owner={}'.format(
             lock_mode, op, lock_owner)
-        if allowed is _marker:
+        if allowed is _marker and not ignore_errors:
             raise ValueError('No entry found for ({})'.format(msg))
-        if not allowed:
+        if not allowed and not ignore_errors:
             raise FileIsLocked('File is locked ({})'.format(msg))
 
     @iotools.filelike_to_stream
@@ -137,6 +140,9 @@ class BaseWrapper(object):
         if lock_check:
             self._check_lock(path, op='open_{}'.format(mode[0]))
         return super(BaseWrapper, self).open(path, mode, **kwargs)
+
+    def removedir(self, path, recursive=False, force=False):
+        return super(BaseWrapper, self).removedir(path, recursive, force)
 
     def remove(self, path, lock_check=True):
         if lock_check:
