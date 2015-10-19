@@ -12,10 +12,14 @@
         </value>
     </records>
 
-    <records prefix="plone.bundles/plone-legacy"
-         interface='Products.CMFPlone.interfaces.IBundleRegistry'>
-        <value key="resources">
-            <element>xmldirector.plonecore</element>
-        </value>
+    <records prefix="plone.bundles/xmldirector"
+        interface='Products.CMFPlone.interfaces.IBundleRegistry'>
+        <value key="enabled">True</value>
+        <value key="jscompilation">++resource++xmldirector.plonecore/ace-builds/src-min/ace.js</value>
+        <value key="jscompilation">++resource++xmldirector.plonecore/local.js</value>
+        <value key="csscompilation">++resource++xmldirector.plonecore/styles.css</value>
+        <value key="last_compilation">2019-11-26 00:00:00</value>
+        <value key="compile">False</value>
+        <value key="depends">plone</value>
     </records>
 </registry>

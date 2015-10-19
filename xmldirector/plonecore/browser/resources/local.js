@@ -1,7 +1,5 @@
-alert(1);
 
 $(document).ready(function() {
-alert(2);
     var plone5 = $('[data-bundle="plone-legacy"]').length > 0;
     if (plone5) {
         ace.config.set("basePath", $('body').attr('data-portal-url') + '/++resource++xmldirector.plonecore/ace-builds/src-min');
@@ -234,4 +232,3 @@ alert(2);
     }
 });
 
-});
