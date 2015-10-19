@@ -205,14 +205,15 @@ def get_fs_wrapper(url, credentials=None):
             raise ImportError('boto module is not installed (required for S3 access)')
     elif f.scheme == 'sftp':
 
+        f_path = urllib.unquote(str(f.path))
         if have_paramiko:
             wrapper = SFTPFSWrapper(connection=f.host,
-                                    root_path=str(f.path),
+                                    root_path=f_path,
                                     username=f.username,
                                     password=f.password)
 
             if wrapper.isfile('.') and wrapper.isdir('.'):
-                parts = filter(None, str(f.path).split('/'))
+                parts = filter(None, f_path.split('/'))
                 wrapper = SFTPFSWrapper(connection=f.host,
                                         root_path='/'.join(parts[:-1]),
                                         username=f.username,
