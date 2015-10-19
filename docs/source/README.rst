@@ -89,6 +89,13 @@ Requirements
       - Otixo.com
       - Storagemadeeasy.com
 
+- expermimental support for the following backends/protocols (don't
+  use XML Director with these protocols/backends in production):
+
+    - FTP (working in general, open issues with the connection pool)
+    
+    - SFTP (working in general, open issues with the connection pool)
+
 
 Configuration
 -------------
@@ -152,6 +159,22 @@ AWS S3
 - enter your AWS access key as username and the AWS secret key as password
 - you need to install the ``boto`` module (either using ``pip`` or using zc.buildout)
 
+FTP
++++
+
+- ftp://hostname/path/to/directory
+- username and password that are necessary to access the configured directory path
+  through FTP
+
+SFTP
+++++
+
+- sftp://hostname/path/to/directory
+- username and password that are necessary to access the configured directory path
+  through SFTP. Username and password can be omitted in case the XML Director server (your
+  Plone instance) has access using SSH keys (without passphrase) to the remote SFTP
+  service. The handling of username + password vs. SSH authentication using SSH keys is
+  currently under investigation and might change in a further release.
 
 Using xmldirector.plonecore
 ---------------------------
