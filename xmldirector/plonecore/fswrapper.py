@@ -213,17 +213,18 @@ def get_fs_wrapper(url, credentials=None):
 
         f_path = urllib.unquote(str(f.path))
         if have_paramiko:
-            wrapper = SFTPFSWrapper(connection=(f.host, f.port),
+            import pdb; pdb.set_trace() 
+            wrapper = SFTPFSWrapper(connection=(f.host, f.port or 22),
                                     root_path=f_path,
-                                    username=credentials['username'],
-                                    password=credentials['password'])
+                                    username=(credentials['username'] or None),
+                                    password=(credentials['password'] or None))
 
             if wrapper.isfile('.') and wrapper.isdir('.'):
                 parts = filter(None, f_path.split('/'))
-                wrapper = SFTPFSWrapper(connection=(f.host, f.port),
+                wrapper = SFTPFSWrapper(connection=(f.host, f.port or 22),
                                         root_path='/'.join(parts[:-1]),
-                                        username=credentials['username'],
-                                        password=credentials['password'])
+                                        username=(credentials['username'] or None),
+                                        password=(credentials['password'] or None))
                 wrapper.__leaf__ = True
                 wrapper.__leaf_filename__ = parts[-1]
         else:
