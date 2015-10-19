@@ -48,7 +48,7 @@ class BasicTests(TestBase):
         handle = self.webdav_handle
         handle.ignore_errors = True
         if handle.exists(PREFIX):
-            handle.removedir(PREFIX, True, True)
+            handle.removedir(PREFIX, False, True)
 
     @property
     def lock_manager(self):
