@@ -231,6 +231,7 @@ def get_fs_wrapper(url, credentials=None):
 
     elif f.scheme == 'ftp':
         wrapper = FTPFSWrapper(host=f.host,
+                               port=f.port,
                                user=credentials['username'],
                                passwd=credentials['password'])
     else:
