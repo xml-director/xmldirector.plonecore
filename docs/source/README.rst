@@ -176,6 +176,23 @@ SFTP
   service. The handling of username + password vs. SSH authentication using SSH keys is
   currently under investigation and might change in a further release.
 
+
+
+================    ==============  ======================
+Protocol/Service    Native support  3rd-party SaaS support (e.g. Otixo.com, storagemadeeasy.com)
+================    ==============  ======================
+Local filesystem    Yes             No
+WebDAV              Yes             Yes
+ExistDB 2.2/3.0     Yes             Yes
+BaseX 8.3           Yes             Yes
+Amazon AWS S3       Yes             Yes
+Alfresco            Yes             Yes
+Owncloud            Yes             Yes
+Dropbox             (experimental)  Yes
+SFTP                (experimental)  Yes
+FTP                 (experimental)  Yes
+================    ==============  ======================
+
 Using xmldirector.plonecore
 ---------------------------
 
@@ -264,6 +281,13 @@ See https://bitbucket.org/onkopedia/xmldirector.plonecore
 
 Travis-CI
 ---------
+
+All releases and code changes to XML Director are automatically tested against
+various combinations of Plone and backend versions. The current test setup
+consists of 14 different combinations against the most common databases and
+services. See
+https://github.com/xml-director/xmldirector.plonecore/blob/master/.travis.yml
+for testing details. A complete test run consists of over 1400 single tests. 
 
 See https://travis-ci.org/xml-director/xmldirector.plonecore
 
