@@ -234,10 +234,16 @@ def get_fs_wrapper(url, credentials=None):
             raise ImportError('paramiko module is not installed (required for SFTP access)')
 
     elif f.scheme == 'ftp':
+        if credentials:
+            user = credentials['username']
+            passwd = credentials['password']
+        else:
+            user = passwd = ''
+
         wrapper = FTPFSWrapper(host=f.host,
                                port=f.port,
-                               user=credentials['username'],
-                               passwd=credentials['password'])
+                               user=user,
+                               passwd=passwd)
         if f.path:
             wrapper = SubFSWrapper(wrapper, str(f.path))
 
