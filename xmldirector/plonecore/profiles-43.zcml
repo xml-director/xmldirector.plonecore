@@ -1,0 +1,30 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup">
+
+    <genericsetup:registerProfile
+        name="default"
+        title="XML-Director (Plone 4.3)"
+        directory="profiles/default-43"
+        description="XML-Director core"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+    />
+
+    <genericsetup:registerProfile
+        name="common"
+        title="XML-Director (common)"
+        directory="profiles/common"
+        description="XML-Director (common)"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+    />
+
+
+    <genericsetup:registerProfile
+        name="testing"
+        title="XML-Director (testing)"
+        directory="profiles/testing"
+        description="XML-Director core (testing)"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+    />
+
+</configure>

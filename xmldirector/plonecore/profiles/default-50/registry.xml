@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<registry 
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="plone">
+    <records interface="xmldirector.plonecore.interfaces.IWebdavSettings" />
+
+    <records prefix="plone.resources/xmldirector.plonecore-local"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+        <value key="js">++resource++xmldirector.plonecore/ace-builds/src-min/ace.js</value>
+        <value key="css">
+            <element>++resource++xmldirector.plonecore/styles.css</element>
+        </value>
+    </records>
+
+    <records prefix="plone.resources/xmldirector.plonecore-ace"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+        <value key="js">++resource++xmldirector.plonecore/ace-builds/src-min/ace.js</value>
+    </records>
+
+    <records prefix="plone.bundles/xmldirector.plonecore"
+            interface='Products.CMFPlone.interfaces.IBundleRegistry'>
+      <value key="resources">
+        <element>xmldirector.plonecore-local</element>
+        <element>xmldirector.plonecore-ace</element>
+      </value>
+      <value key="jscompilation">++plone++static/xmldirector-compiled.js</value>
+      <value key="csscompilation">++plone++static/xmldirector-compiled.css</value>
+      <value key="enabled">True</value>
+      <value key="compile">False</value>
+      <value key="last_compilation">2014-08-14 00:00:00</value>
+    </records>
+</registry>

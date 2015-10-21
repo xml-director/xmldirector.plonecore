@@ -2,6 +2,7 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:i18n="http://namespaces.zope.org/i18n"
     xmlns:pp="http://namespaces.zopyx.com/pp"
@@ -35,20 +36,9 @@
         for="*"
     />
 
-    <genericsetup:registerProfile
-        name="default"
-        title="XML-Director"
-        directory="profiles/default"
-        description="XML-Director core"
-        provides="Products.GenericSetup.interfaces.EXTENSION"
-    />
-
-    <genericsetup:registerProfile
-        name="testing"
-        title="XML-Director (testing)"
-        directory="profiles/testing"
-        description="XML-Director core (testing)"
-        provides="Products.GenericSetup.interfaces.EXTENSION"
-    />
+    <!-- Plone 4.3 -->
+    <include zcml:condition="not-have plone-5" file="profiles-43.zcml" />
+    <!-- Plone 5.0 -->
+    <include zcml:condition="have plone-5" file="profiles-50.zcml" />
 
 </configure>
