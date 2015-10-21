@@ -102,8 +102,8 @@ class Connector(Item):
         password = settings.webdav_password or ''
 
         # local credentials override the system credentials
-        if adapted.webdav_username and adapted.webdav_password:
-            username = adapted.webdav_username
+        if adapted.webdav_url:
+            username = adapted.webdav_username or ''
             password = adapted.webdav_password or ''
 
         try:

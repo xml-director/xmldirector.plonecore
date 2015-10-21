@@ -213,7 +213,6 @@ def get_fs_wrapper(url, credentials=None):
 
         f_path = urllib.unquote(str(f.path))
         if have_paramiko:
-            import pdb; pdb.set_trace() 
             wrapper = SFTPFSWrapper(connection=(f.host, f.port or 22),
                                     root_path=f_path,
                                     username=(credentials['username'] or None),
