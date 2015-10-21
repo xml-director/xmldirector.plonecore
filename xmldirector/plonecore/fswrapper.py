@@ -168,7 +168,11 @@ class OSFSWrapper(BaseWrapper, OSFS):
     pass
 
 
+from fs.wrapfs.subfs import SubFS
 class FTPFSWrapper(BaseWrapper, FTPFS):
+    pass
+
+class SubFSWrapper(BaseWrapper, SubFS):
     pass
 
 
@@ -234,6 +238,9 @@ def get_fs_wrapper(url, credentials=None):
                                port=f.port,
                                user=credentials['username'],
                                passwd=credentials['password'])
+        if f.path:
+            wrapper = SubFSWrapper(wrapper, str(f.path))
+
     else:
         raise ValueError('Unsupported URL schema {}'.format(original_url))
 
