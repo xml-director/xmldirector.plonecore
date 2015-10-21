@@ -192,7 +192,7 @@ class Connector(BrowserView):
                                       size=size,
                                       modified_original=info[
                                           1]['modified_time'],
-                                      modified=self.human_readable_datetime(info[1]['modified_time'])))
+                                      modified=self.human_readable_datetime(info[1]['modified_time']), to_utc=False))
 
             dirs = list()
             for info in handle.listdirinfo(dirs_only=True):
@@ -203,7 +203,7 @@ class Connector(BrowserView):
                                  st_mode=info[1].get('st_mode'),
                                  st_mode_text=stmode2unix(info[1].get('st_mode')),
                                  modified_original=modified,
-                                 modified=self.human_readable_datetime(modified)))
+                                 modified=self.human_readable_datetime(modified), to_utc=False))
 
             dirs = sorted(dirs, key=operator.itemgetter('title'))
             files = sorted(files, key=operator.itemgetter('title'))
@@ -318,13 +318,16 @@ class Connector(BrowserView):
         dt = dt.replace(tzinfo=tz.gettz('UTC'))
         return dt.astimezone(to_tz).strftime('%d.%m.%Y %H:%M:%Sh')
 
-    def human_readable_datetime(self, dt=None):
+    def human_readable_datetime(self, dt=None, to_utc=False):
         """ Convert with `dt` datetime string into a human readable
             representation using humanize module.
         """
         if dt:
-            diff = datetime.datetime.utcnow() - dt
-            return humanize.naturaltime(diff)
+            if to_utc:
+                diff = datetime.datetime.utcnow() - dt
+                return humanize.naturaltime(diff)
+            else:
+                return humanize.naturaltime(dt)
 
     def clear_contents(self):
         """ Remove all sub content """
