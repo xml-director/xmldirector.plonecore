@@ -182,7 +182,7 @@ class BasicTests(TestBase):
     def testHumanReadableDatetime(self):
         view = self._get_view()
         now = datetime.datetime.utcnow()
-        result = view.human_readable_datetime(now)
+        result = view.human_readable_datetime(now, to_utc=True)
         self.assertEqual(result, 'now')
 
     def testHumanReadableFilesize(self):
