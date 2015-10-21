@@ -37,7 +37,7 @@ class IConnector(model.Schema):
         required=False
     )
 
-    webdav_password = schema.TextLine(
+    webdav_password = schema.Password(
         title=_(u'(optional) password overriding the system settings'),
         required=False
     )
