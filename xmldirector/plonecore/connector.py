@@ -118,6 +118,11 @@ class Connector(Item):
             wrapper.__leaf__ = True
             wrapper.__leaf_filename__ = parts[1]
             return wrapper
+        except fs.errors.RemoteConnectionError as e:
+            #  LOG.error(u'Error accessing {}::{}::{}'.format(self.absolute_url(), url, self.REQUEST.get('HTTP_USER_AGENT')), exc_info=True)
+            exc = RuntimeError(url)
+            exc.url = url
+            raise exc
         except Exception as e:
             LOG.error(u'Error accessing {}::{}::{}'.format(
                 self.absolute_url(), url, self.REQUEST.get('HTTP_USER_AGENT')), exc_info=True)
