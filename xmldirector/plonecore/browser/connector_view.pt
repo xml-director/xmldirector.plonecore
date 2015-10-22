@@ -124,7 +124,7 @@
               </tfoot>
           </table>
 
-          <input type="submit" name="action" action="delete" value="delete"/>
+          <button type="submit" name="action" action="delete" value="delete">Delete</button>
       </form>
 
       <div class="actions">
@@ -145,6 +145,21 @@
                       Rename collection
                   </a>
               </li>
+              <li>
+                  <a id="connector-zip-import" class="action" tal:attributes="href string:${context/absolute_url}/connector-zip-import?subpath=${options/subpath}" i18n:translate="">ZIP import</a>
+              </li>
+              <li>
+                  <a id="connector-zip-export" class="action" tal:attributes="href string:${context/absolute_url}/connector-zip-export?subpath=${options/subpath}" i18n:translate="">ZIP export</a>
+              </li>
+              <li>
+                  <a id="connector-reindex" class="action" tal:attributes="href string:${context/absolute_url}/connector-reindex" i18n:translate="">Reindex</a>
+              </li>
+              <li>
+                  <a id="connector-log" class="action" tal:attributes="href string:${context/absolute_url}/connector-log" i18n:translate="">Log</a>
+              </li>
+              <li>
+                  <a id="connector-log-clear" class="action" tal:attributes="href string:${context/absolute_url}/connector-log-clear" i18n:translate="">Clear log</a>
+              </li>
           </ul>
           <form tal:attributes="action string:${context/absolute_url}/create-collection" method="post" id="create-collection-form" style="display: none">
               <label for="name" i18n:translate="">Create collection</label>
@@ -164,23 +179,6 @@
               <input type="text" name="new_name" size="20" />
               <input type="submit" i18n:attributes="value" value="Rename" />
           </form>
-          <ul>
-              <li>
-                  <a id="connector-zip-import" class="action" tal:attributes="href string:${context/absolute_url}/connector-zip-import?subpath=${options/subpath}" i18n:translate="">ZIP import</a>
-              </li>
-              <li>
-                  <a id="connector-zip-export" class="action" tal:attributes="href string:${context/absolute_url}/connector-zip-export?subpath=${options/subpath}" i18n:translate="">ZIP export</a>
-              </li>
-              <li>
-                  <a id="connector-reindex" class="action" tal:attributes="href string:${context/absolute_url}/connector-reindex" i18n:translate="">Reindex</a>
-              </li>
-              <li>
-                  <a id="connector-log" class="action" tal:attributes="href string:${context/absolute_url}/connector-log" i18n:translate="">Log</a>
-              </li>
-              <li>
-                  <a id="connector-log-clear" class="action" tal:attributes="href string:${context/absolute_url}/connector-log-clear" i18n:translate="">Clear log</a>
-              </li>
-          </ul>
       </div>
 
       <script type="text/javascript">
