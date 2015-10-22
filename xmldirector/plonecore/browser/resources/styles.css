@@ -91,6 +91,7 @@
     padding-right: 0.15em;
 }
 
+button.button,
 button.xml-editor {
     margin-top: 5px;
     margin-bottom: 5px;

@@ -30,8 +30,8 @@
           <table class="datatable">
               <thead>
                   <tr>
-                      <th i18n:translate="">Type</th>
                       <th i18n:translate="">Name</th>
+                      <th i18n:translate="">Type</th>
                       <th i18n:translate="">Size</th>
                       <th i18n:translate="">Last modified</th>
                       <th i18n:translate="">Permissions</th>
@@ -40,14 +40,14 @@
               </thead>
               <tbody>
                   <tr>
-                      <td>
-                          <span i18n:translate="">COLLECTION</span>
-                      </td>
                       <td>                                     
                           <a class="dir" 
                              title="One level up"
                              i18n:attributes="title"
                              tal:attributes="href python: '{}/@@view/{}'.format(context.absolute_url(), '/'.join(view.subpath[:-1]))">..</a>
+                      </td>
+                      <td>
+                          <span i18n:translate="">COLLECTION</span>
                       </td>
                       <td data-order="0"/>
                       <td data-order="0"/>
@@ -57,10 +57,10 @@
                   <tr tal:repeat="item options/dirs">
                       <td>
                           <input type="checkbox" name="paths:list" tal:attributes="value item/fullpath" />
-                          <span i18n:translate="">COLLECTION</span>
+                          <a class="dir" tal:attributes="href item/url"><span tal:replace="item/title" /></a>
                       </td>
                       <td>
-                          <a class="dir" tal:attributes="href item/url"><span tal:replace="item/title" /></a>
+                          <span i18n:translate="">COLLECTION</span>
                       </td>
                       <td data-order="0"></td>
                       <td tal:attributes="data-order python: item['modified_original'].isoformat()" tal:on-error="nothing">
@@ -82,10 +82,10 @@
                   <tr tal:repeat="item options/files">
                       <td>
                           <input type="checkbox" name="paths:list" tal:attributes="value item/fullpath" />
-                          <span i18n:translate="">FILE</span>
+                          <a class="file" tal:attributes="href item/url"><span tal:replace="item/title" /></a>
                       </td>
                       <td>
-                          <a class="file" tal:attributes="href item/url"><span tal:replace="item/title" /></a>
+                          <span i18n:translate="">FILE</span>
                       </td>
                       <td tal:attributes="data-sort item/size_original">
                           <span tal:replace="item/size" />
@@ -124,7 +124,7 @@
               </tfoot>
           </table>
 
-          <button type="submit" name="action" action="delete" value="delete">Delete</button>
+          <button class="button" type="submit" name="action" action="delete" value="delete">Delete</button>
       </form>
 
       <div class="actions">
@@ -182,6 +182,8 @@
       </div>
 
       <script type="text/javascript">
+          DATATABLES_ORDER = [1, "asc"];
+
           $(document).ready(function() {
             $('#action-create-collection').click(function() {
                 $('.actions form').hide();

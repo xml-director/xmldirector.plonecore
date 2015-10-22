@@ -168,10 +168,11 @@ class Connector(BrowserView):
                     if handle.isfile(path):
                         handle.remove(path)
                     elif handle.isdir(path):
-                        handle.removedir(path, True, True)
+                        handle.removedir(path, recursive=True, force=False)
 
             msg = u'Selected files/directories removed'
-            self.redirect(msg, subpath=self.subpath)
+            return self.redirect(msg, subpath=self.subpath)
+        raise ValueError(u'No such action "{}"'.format(action))
 
     def __call__(self, *args, **kw):
 
