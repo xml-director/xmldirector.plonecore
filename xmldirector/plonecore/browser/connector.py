@@ -159,6 +159,20 @@ class Connector(BrowserView):
             url = '{}/@@view/{}'.format(url, subpath)
         return self.request.response.redirect(url)
 
+
+    def collection_action(self, paths=[], action=None):
+        handle = self.context.webdav_handle()
+        if action == 'delete':
+            for path in paths:
+                if handle.exists(path):
+                    if handle.isfile(path):
+                        handle.remove(path)
+                    elif handle.isdir(path):
+                        handle.removedir(path, True, True)
+
+            msg = u'Selected files/directories removed'
+            self.redirect(msg, subpath=self.subpath)
+
     def __call__(self, *args, **kw):
 
         handle = self.webdav_handle()
@@ -174,12 +188,14 @@ class Connector(BrowserView):
 
             files = list()
             for info in handle.listdirinfo(files_only=True):
+                fullpath = '{}/{}'.format('/'.join(self.subpath), info[0])
                 if not info[0].startswith('.'):
                     try:
                         size = self.human_readable_filesize(info[1]['size'])
                     except KeyError:
                         size = u'n/a'
                     files.append(dict(url=u'{}/{}/{}'.format(context_url, view_prefix, info[0]),
+                                      fullpath=fullpath,
                                       remove_url=u'{}/{}&name={}'.format(
                                           context_url, remove_prefix, info[0]),
                                       edit_url=u'{}/{}/{}'.format(
@@ -196,9 +212,11 @@ class Connector(BrowserView):
 
             dirs = list()
             for info in handle.listdirinfo(dirs_only=True):
+                fullpath = '{}/{}'.format('/'.join(self.subpath), info[0])
                 url = '{}/{}/{}'.format(context_url, view_prefix, info[0].encode('utf8'))
                 modified = info[1].get('modified_time')
                 dirs.append(dict(url=url,
+                                 fullpath=fullpath,
                                  title=info[0],
                                  st_mode=info[1].get('st_mode'),
                                  st_mode_text=stmode2unix(info[1].get('st_mode')),

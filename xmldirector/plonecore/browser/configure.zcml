@@ -71,6 +71,13 @@
 
     <browser:page
         for="xmldirector.plonecore.connector.IConnector"
+        name="collection-action"
+        attribute="collection_action"
+        class=".connector.Connector"
+        permission="cmf.ModifyPortalContent"
+    />
+    <browser:page
+        for="xmldirector.plonecore.connector.IConnector"
         name="view-editor-readonly"
         class=".connector.AceEditorReadonly"
         permission="zope2.View"
