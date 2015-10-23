@@ -6,7 +6,7 @@
 
     <records prefix="plone.resources/xmldirector.plonecore-local"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-        <value key="js">++resource++xmldirector.plonecore/ace-builds/src-min/ace.js</value>
+        <value key="js">++resource++xmldirector.plonecore/local.js</value>
         <value key="css">
             <element>++resource++xmldirector.plonecore/styles.css</element>
         </value>
