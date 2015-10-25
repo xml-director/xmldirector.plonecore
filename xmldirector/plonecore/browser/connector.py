@@ -189,7 +189,6 @@ class Connector(BrowserView):
 
             files = list()
             for info in handle.listdirinfo(files_only=True):
-                print info
                 fullpath = '{}/{}'.format('/'.join(self.subpath), info[0])
                 if not info[0].startswith('.'):
                     try:
