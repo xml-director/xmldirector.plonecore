@@ -2,6 +2,7 @@ service_name: travis-pro
 repo_token: 9Gz8lbFOfnCehczzQnPMy49awudPW4Rzz
 
 sudo: required
+dist: trusty
 language: python
 
 services:
@@ -29,18 +30,42 @@ matrix:
     env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-30
 
   - python: "2.7"
-#    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:8080/webdav DOCKER=zopyx/basex-83
-    env: PLONE_VERSION=4.3 WEBDAV_URL=http://zopyx.com:22080/webdav DOCKER=zopyx/basex-83
+    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:8080/webdav DOCKER=zopyx/basex-83
 
   - python: "2.7"
-#    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/webdav DOCKER=zopyx/basex-83
-    env: PLONE_VERSION=5.0 WEBDAV_URL=http://zopyx.com:22080/webdav DOCKER=zopyx/basex-83
+    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/webdav DOCKER=zopyx/basex-83
 
-#  - python: "2.7"
-#    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:8080/remote.php/webdav DOCKER=owncloud:8.1
-#
-#  - python: "2.7"
-#    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/remote.php/webdav DOCKER=owncloud:8.1
+  - python: "2.7"
+    env: PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:8080/alfresco/webdav DOCKER=gui81/alfresco
+
+  - python: "2.7"
+    env: PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/alfresco/webdav DOCKER=gui81/alfresco
+
+  - python: "2.7"
+    env: 
+      - PLONE_VERSION=4.3 
+      - secure: "MAeU/I4sdpjNFIwzwHFYOJOBAu+qYH0ugertqHSZtY6KprjPbHN1Yu48VG7oLYeBCPxPUiym0fDWyR8KO7DGhOMZMybEho+nL7DHOaKCJEmddu6V5Ld+Ox4dIQgyVL6iQ/dGZc70/fPBd7Je3sNEJquV9OQjuUoQ5OatyXsLQm0="
+      - secure: "Qe5vVt2+FuspeEcSXHVbQCq3hCzPthlILHKAwCPseAPZQl3Hmz96R3aF3SkJCJ5WljPx3lC7mFdMcs2zJ9VJCsX4d3g6KDiwgqf8yeKvf04QkjTwReDO9vmHg/sWNgo0imiicjQ1xOEF/POOtXys5QbCKm1T2AFVsjDaTKfTslY="
+      - secure: "HOXlp4LbR6AKlKCwlBLoHSw4dEhckofImkuSybSWaAAhEtQ8s9kV1+Gem/tD1/7s+3sWgmfFunck+BN/kAUlgJ1BvXFsCbAbDqO+2uG1gC4+g3L/EXo9x9OQqigS9jEio9xMh/i726HJ29MtMPNqC5FdbNiodCPJxcRDdGO8WAg="
+
+  - python: "2.7"
+    env: 
+      - PLONE_VERSION=5.0
+      - secure: "MAeU/I4sdpjNFIwzwHFYOJOBAu+qYH0ugertqHSZtY6KprjPbHN1Yu48VG7oLYeBCPxPUiym0fDWyR8KO7DGhOMZMybEho+nL7DHOaKCJEmddu6V5Ld+Ox4dIQgyVL6iQ/dGZc70/fPBd7Je3sNEJquV9OQjuUoQ5OatyXsLQm0="
+      - secure: "Qe5vVt2+FuspeEcSXHVbQCq3hCzPthlILHKAwCPseAPZQl3Hmz96R3aF3SkJCJ5WljPx3lC7mFdMcs2zJ9VJCsX4d3g6KDiwgqf8yeKvf04QkjTwReDO9vmHg/sWNgo0imiicjQ1xOEF/POOtXys5QbCKm1T2AFVsjDaTKfTslY="
+      - secure: "HOXlp4LbR6AKlKCwlBLoHSw4dEhckofImkuSybSWaAAhEtQ8s9kV1+Gem/tD1/7s+3sWgmfFunck+BN/kAUlgJ1BvXFsCbAbDqO+2uG1gC4+g3L/EXo9x9OQqigS9jEio9xMh/i726HJ29MtMPNqC5FdbNiodCPJxcRDdGO8WAg="
+
+  - python: "2.7"
+    env: 
+      - PLONE_VERSION=4.3 WEBDAV_URL=s3://ajung-xxxxxxxx
+      - secure: "FRkjSxGRHASr4MixBJCx/cg/w8U81ZqprLlng5qD6izJNhQCfD5Sf3iQb976l+E0+7YlHAEJ8Z5nlp9Ra4UfbHoMEEvaoIOe4XyvVQ4aqjrWQdMGX2yDSVYKpsumwP5mQQpOlsygwGC1DhqKlXEYerAbEYPMamcz/7C24Vf4+cY="
+      - secure: "ZfuNeX1qKdkJF3En1WxQ9XvoyLnN0UZsh8DU87s4TSU5DbCDSYOFzajJWT44es8Ft2xT6u6/p6fRCmVzLpAnw6DzrO0H7S5NMDcM47JlMgVDWD6avxR2t0mVvM9ykyFglzy/d1GvwITKiTs95KEcrMuqK6+750t28WGjxGZwdsc="
+
+  - python: "2.7"
+    env: 
+      - PLONE_VERSION=5.0 WEBDAV_URL=s3://ajung-xxxxxxxx
+      - secure: "FRkjSxGRHASr4MixBJCx/cg/w8U81ZqprLlng5qD6izJNhQCfD5Sf3iQb976l+E0+7YlHAEJ8Z5nlp9Ra4UfbHoMEEvaoIOe4XyvVQ4aqjrWQdMGX2yDSVYKpsumwP5mQQpOlsygwGC1DhqKlXEYerAbEYPMamcz/7C24Vf4+cY="
+      - secure: "ZfuNeX1qKdkJF3En1WxQ9XvoyLnN0UZsh8DU87s4TSU5DbCDSYOFzajJWT44es8Ft2xT6u6/p6fRCmVzLpAnw6DzrO0H7S5NMDcM47JlMgVDWD6avxR2t0mVvM9ykyFglzy/d1GvwITKiTs95KEcrMuqK6+750t28WGjxGZwdsc="
 
 cache:
   directories:
@@ -48,7 +73,7 @@ cache:
 
 before_install:
 - sudo apt-get -y update 
-- sudo apt-get -y upgrade lxc-docker
+#- sudo apt-get -y upgrade lxc-docker
 - docker version
 #- docker pull gui81/alfresco
 #- docker pull owncloud:8.1
@@ -63,7 +88,6 @@ script:
 - mkdir -p /tmp/testing
 - rm -fr /tmp/testing/*
 - bash build_test.sh 
-
 
 notifications:
   irc:

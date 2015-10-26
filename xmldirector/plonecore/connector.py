@@ -26,12 +26,11 @@ from xmldirector.plonecore.logger import LOG
 
 class IConnector(model.Schema):
 
-
     webdav_url = schema.TextLine(
         title=_(u'(optional) connection URL of storage'),
+        description=_(u'WebDAV: http://host:port/path/to/webdav, Local filesystem: file://path/to/directory, AWS S3: s3://bucketname, SFTP sftp://host/path, FTP: ftp://host/path'),
         required=False
     )
-
 
     webdav_username = schema.TextLine(
         title=_(u'(optional) username overriding the system settings'),
@@ -112,7 +111,7 @@ class Connector(Item):
         except fs.errors.ResourceNotFoundError:
             LOG.error(u'Error accessing {}::{}::{}'.format(
                 self.absolute_url(), url, self.REQUEST.get('HTTP_USER_AGENT')), exc_info=True)
-            raise zExceptions.Unauthorized(url)
+            raise zExceptions.NotFound(url)
         except fs.errors.ResourceInvalidError:
             parts = url.rsplit('/', 1)
             wrapper = get_fs_wrapper(parts[0], credentials=dict(username=username, password=password))

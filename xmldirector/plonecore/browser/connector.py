@@ -7,6 +7,7 @@
 
 import os
 import fs
+import stat
 import datetime
 import fs.errors
 import fs.path
@@ -41,6 +42,16 @@ LOG = logging.getLogger('xmldirector.plonecore')
 
 TZ = os.environ.get('TZ', 'UTC')
 LOG.info('Local timezone: {}'.format(TZ))
+
+
+def stmode2unix(st_mode):
+    if st_mode:
+        is_dir = 'd' if stat.S_ISDIR(st_mode) else '-'
+        dic = {'7':'rwx', '6' :'rw-', '5' : 'r-x', '4':'r--', '0': '---'}
+        perm = str(oct(st_mode)[-3:])
+        return is_dir + ''.join(dic.get(x,x) for x in perm)
+    else:
+        return u''
 
 
 class Dispatcher(BrowserView):
@@ -151,9 +162,7 @@ class Connector(BrowserView):
     def __call__(self, *args, **kw):
 
         handle = self.webdav_handle()
-
         if handle.isDirectory():
-
             context_url = self.context.absolute_url()
             view_prefix = '@@view'
             edit_prefix = '@@view-editor'
@@ -177,7 +186,8 @@ class Connector(BrowserView):
                                           context_url, edit_prefix, info[0]),
                                       title=info[0],
                                       editable=self.is_ace_editable(info[0]),
-                                      st_mode=info[1]['st_mode'],
+                                      st_mode=info[1].get('st_mode'),
+                                      st_mode_text=stmode2unix(info[1].get('st_mode')),
                                       size_original=info[1].get('size'),
                                       size=size,
                                       modified_original=info[
@@ -190,7 +200,8 @@ class Connector(BrowserView):
                 modified = info[1].get('modified_time')
                 dirs.append(dict(url=url,
                                  title=info[0],
-                                 st_mode=info[1]['st_mode'],
+                                 st_mode=info[1].get('st_mode'),
+                                 st_mode_text=stmode2unix(info[1].get('st_mode')),
                                  modified_original=modified,
                                  modified=self.human_readable_datetime(modified)))
 
@@ -326,6 +337,24 @@ class Connector(BrowserView):
                 handle.removedir(name, force=True, recursive=False)
 
         return self.redirect(_(u'eXist-db collection cleared'))
+
+    def upload_file(self):
+        """ Store .DOCX file """
+
+        subpath = self.request.get('subpath')
+        webdav_handle = self.context.webdav_handle(subpath=subpath)
+        filename = os.path.basename(self.request.Filedata.filename)
+        basename, ext = os.path.splitext(filename)
+
+        with webdav_handle.open(filename, 'wb') as fp:
+            self.request.Filedata.seek(0)
+            data = self.request.Filedata.read()
+            fp.write(data)
+
+        self.logger.log(
+            u'{} uploaded ({} Byte)'.format(repr(filename), len(data)))
+        self.request.response.setStatus(200)
+        self.request.response.write('OK')
 
     def zip_export(self, download=True, dirs=None, subpath=u''):
         """ Export WebDAV subfolder to a ZIP file.

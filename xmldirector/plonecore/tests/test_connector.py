@@ -9,7 +9,9 @@
 import os
 import sys
 import uuid
+import shutil
 import datetime
+import tempfile
 from zipfile import ZipFile
 from .base import TestBase
 from .base import WEBDAV_URL
@@ -27,7 +29,7 @@ class BasicTests(TestBase):
         handle = self.portal.connector.webdav_handle()
         if handle.exists(PREFIX):
             handle.removedir(PREFIX, False, True)
-        handle.makedir(PREFIX)
+        handle.makedir(PREFIX, allow_recreate=True)
         handle.makedir(PREFIX + '/foo')
         handle.makedir(PREFIX + '/foo2')
         if is_mac:
@@ -225,7 +227,6 @@ class BasicTests(TestBase):
         self.login('god')
         view = self.portal.restrictedTraverse('@@xmldirector-core-settings')
         view()
-
 
 def test_suite():
     from unittest import TestSuite, makeSuite
