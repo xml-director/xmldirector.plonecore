@@ -14,28 +14,25 @@
 
     <records prefix="plone.resources/xmldirector.plonecore-datatables1"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-            <value key="js"> ++resource++xmldirector.plonecore/DataTables/media/js/jquery.dataTables.js </value>
+            <value key="js">++resource++xmldirector.plonecore/DataTables/media/js/jquery.dataTables.js</value>
         <value key="css">
-            <element> ++resource++xmldirector.plonecore/DataTables/media/css/jquery.dataTables.css </element>
+            <element>++resource++xmldirector.plonecore/DataTables/media/css/jquery.dataTables.css</element>
         </value>
     </records>
 
     <records prefix="plone.resources/xmldirector.plonecore-datatables2"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-            <value key="js"> ++resource++xmldirector.plonecore/DataTables/extensions/FixedHeader/js/dataTables.fixedHeader.min.js </value>
+        <value key="js">++resource++xmldirector.plonecore/DataTables/extensions/FixedHeader/js/dataTables.fixedHeader.min.js</value>
         <value key="css">
-            <element> ++resource++xmldirector.plonecore/DataTables/extensions/FixedHeader/css/dataTables.fixedHeader.min.css </element>
+            <element>++resource++xmldirector.plonecore/DataTables/extensions/FixedHeader/css/dataTables.fixedHeader.min.css</element>
         </value>
     </records>
 
 
     <records prefix="plone.resources/xmldirector.plonecore-datatables3"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-            <value key="js"> ++resource++xmldirector.plonecore/DataTables/extensions/TableTools/js/dataTables.tableTools.min.js</value>
+            <value key="js">++resource++xmldirector.plonecore/DataTables/extensions/TableTools/js/dataTables.tableTools.min.js</value>
     </records>
-
-
-
 
 
     <records prefix="plone.resources/xmldirector.plonecore-ace"
@@ -51,8 +48,6 @@
           <element>xmldirector.plonecore-datatables2</element>
           <element>xmldirector.plonecore-datatables3</element>
       </value>
-      <value key="jscompilation">++plone++static/xmldirector-compiled.js</value>
-      <value key="csscompilation">++plone++static/xmldirector-compiled.css</value>
       <value key="enabled">True</value>
       <value key="compile">False</value>
       <value key="last_compilation">2014-08-14 00:00:00</value>
