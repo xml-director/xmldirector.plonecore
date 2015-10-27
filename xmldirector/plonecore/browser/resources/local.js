@@ -230,6 +230,10 @@ function init_ace() {
             editor.setValue('');
         }
     });
+}
+
+
+function init_others()  {
 
     $('.confirm-action').on('click', function(e) {
         var text = $(this).data('text');
@@ -243,6 +247,9 @@ function init_ace() {
 $(document).ready(function() {
     init_datatables();
     init_controlpanel();
+    init_others();
+
 //    init_ace();
 });
+
 

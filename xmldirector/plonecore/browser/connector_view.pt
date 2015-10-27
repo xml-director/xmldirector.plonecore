@@ -77,13 +77,15 @@
                       <span tal:replace="item/st_mode_text" />
                   </td>
                   <td>
-                      <a tal:attributes="href item/remove_url"
-                         class="confirm-action" 
-                         data-text="Do you really want to remove this item?"
-                         i18n:attributes="data-text"
-                         i18n:translate=""
-                         title="Remove"
-                         ><img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove item" i18n:attributes="title"/> </a>
+                      <form method="post" tal:attributes="action item/remove_url">
+                         <input type="image" 
+                             src="++resource++xmldirector.plonecore/images/remove.png" 
+                             class="confirm-action" 
+                             data-text="Do you really want to remove this item?"
+                             title="Remove item" 
+                             alt="Remove item" 
+                             i18n:attributes="title;alt;data-text"/>
+                      </form>
                       <a tal:condition="item/editable"
                          tal:attributes="href item/edit_url"
                          i18n:attributes="title"
