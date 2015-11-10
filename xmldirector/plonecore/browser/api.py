@@ -49,7 +49,12 @@ class API(BrowserView):
         pr = urlparse.urlparse(settings.webdav_url)
         url = '{}://{}/exist/restxq/{}.{}'.format(
             pr.scheme, pr.netloc, script_path, output_format)
-        result = requests.get(url,
+
+        session = requests.Session()
+        adapter = requests.adapters.HTTPAdapter(max_retries=3)
+        session.mount('http://', adapter)
+        session.mount('https://', adapter)
+        result = session.get(url,
                               auth=HTTPBasicAuth(settings.webdav_username,
                                                  settings.webdav_password or ''),
                               params=kw)
