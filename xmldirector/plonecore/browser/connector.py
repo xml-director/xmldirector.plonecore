@@ -195,6 +195,12 @@ class Connector(BrowserView):
                         size = self.human_readable_filesize(info[1]['size'])
                     except KeyError:
                         size = u'n/a'
+                    
+                    modified = None
+                    modified_original=info[1].get('modified_time')
+                    if modified_original:
+                        modified = self.human_readable_datetime(info[1]['modified_time'], to_utc=False)
+
                     files.append(dict(url=u'{}/{}/{}'.format(context_url, view_prefix, info[0]),
                                       fullpath=fullpath,
                                       remove_url=u'{}/{}&name={}'.format(
@@ -207,9 +213,8 @@ class Connector(BrowserView):
                                       st_mode_text=stmode2unix(info[1].get('st_mode')),
                                       size_original=info[1].get('size'),
                                       size=size,
-                                      modified_original=info[
-                                          1]['modified_time'],
-                                      modified=self.human_readable_datetime(info[1]['modified_time']), to_utc=False))
+                                      modified_original=modified_original,
+                                      modified=modified))
 
             dirs = list()
             for info in handle.listdirinfo(dirs_only=True):
