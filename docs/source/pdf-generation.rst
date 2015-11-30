@@ -22,7 +22,7 @@ The following PDF features are supported.
 - Footnotes, headers, footers
 - PDF metadata, PDF comments             
 
-The PDF generation is based on the Produce & Publisher framework
+The PDF generation is based on the Produce & Publish framework
 (https://www.produce-and-publish.com) - in particular on the Produce & Publish
 Server and its counter part Produce & Publish Client. The PDF conversion is
 accomplished using an external like PrinceXML (http://www.princexml.com) or
