@@ -1,6 +1,6 @@
 
 function init_dt() {
-    console.log('dt1');
+
     try {
         var order = DATATABLES_ORDER;
     } catch(e) {
@@ -68,20 +68,17 @@ function init_dt() {
             } );
         } );
     }
-
-    console.log('dt2');
 }
 
 $(document).ready(function() {
 
     init_dt();
-    return;
 
     var plone5 = $('[data-bundle="plone-legacy"]').length > 0;
     if (plone5) {
 //        ace.config.set("basePath", $('body').attr('data-portal-url') + '/++resource++xmldirector.plonecore/ace-builds/src-min');
     }
-    alert(1);
+
     var editors = [];
     var num_editors = 0;
 
