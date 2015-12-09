@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.3.0b2 (unreleased)
+--------------------
+- added 'create_if_not_existing' parameter to webdav_handle() method
+
 1.3.0b1 (2015-10-15)
 --------------------
 

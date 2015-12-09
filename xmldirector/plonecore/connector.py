@@ -20,6 +20,7 @@ from plone.registry.interfaces import IRegistry
 
 from xmldirector.plonecore.i18n import MessageFactory as _
 from xmldirector.plonecore.interfaces import IWebdavSettings
+from xmldirector.plonecore.interfaces import IWebdavHandle
 from xmldirector.plonecore.fswrapper import get_fs_wrapper
 from xmldirector.plonecore.logger import LOG
 
@@ -79,7 +80,7 @@ class Connector(Item):
     webdav_password = None
     webdav_subpath = None
 
-    def webdav_handle(self, subpath=None):
+    def webdav_handle(self, subpath=None, create_if_not_existing=False):
         """ Return WebDAV handle to root of configured connector object
             including configured webdav_subpath.
         """
@@ -105,6 +106,12 @@ class Connector(Item):
         if adapted.webdav_url:
             username = adapted.webdav_username or ''
             password = adapted.webdav_password or ''
+
+        if create_if_not_existing:
+            util = getUtility(IWebdavHandle)
+            handle = util.webdav_handle()
+            if not handle.exists(adapted.webdav_subpath):
+                handle.makedir(adapted.webdav_subpath, recursive=True)
 
         try:
             return get_fs_wrapper(url, credentials=dict(username=username, password=password))
