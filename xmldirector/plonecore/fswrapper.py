@@ -5,9 +5,11 @@
 # (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
+import os
 import urllib
 from furl import furl
 
+import fs.errors
 from fs.osfs import OSFS
 from fs.ftpfs import FTPFS
 from fs import iotools
@@ -159,6 +161,12 @@ class BaseWrapper(object):
             self._check_lock(src, op='copy')
         return super(BaseWrapper, self).copy(src, dst, overwrite, chunk_size)
 
+    def ensuredir(self, filename):
+        dirname = os.path.dirname(filename)
+        try:
+            self.makedir(dirname, recursive=True)
+        except fs.errors.DestinationExistsError:
+            pass
 
 class DAVFSWrapper(BaseWrapper, DAVFS):
     pass
