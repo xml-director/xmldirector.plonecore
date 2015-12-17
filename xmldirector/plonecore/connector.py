@@ -112,7 +112,7 @@ class Connector(Item):
             handle = util.webdav_handle()
             if not handle.exists(adapted.webdav_subpath):
                 handle.makedir(adapted.webdav_subpath, recursive=True)
-            url = '{}/{}'.format(handle.url, adapted.webdav_subpath)
+            url = '{}/{}'.format(handle.url.strip('/'), adapted.webdav_subpath)
 
         try:
             return get_fs_wrapper(url, credentials=dict(username=username, password=password))
