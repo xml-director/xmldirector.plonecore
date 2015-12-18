@@ -45,6 +45,7 @@ setup(name='xmldirector.plonecore',
           'grampg',
           'defusedxml',
           'cssselect',
+          'plone.app.testing',
           # -*- Extra requirements: -*-
       ],
       tests_require=['zope.testing'],
