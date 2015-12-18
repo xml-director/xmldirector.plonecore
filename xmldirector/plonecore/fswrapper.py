@@ -162,11 +162,14 @@ class BaseWrapper(object):
         return super(BaseWrapper, self).copy(src, dst, overwrite, chunk_size)
 
     def ensuredir(self, filename):
+
         dirname = os.path.dirname(filename)
-        try:
-            self.makedir(dirname, recursive=True)
-        except fs.errors.DestinationExistsError:
-            pass
+        if dirname:
+            try:
+                self.makedir(dirname, recursive=True)
+            except fs.errors.DestinationExistsError:
+                pass
+
 
 class DAVFSWrapper(BaseWrapper, DAVFS):
     pass
