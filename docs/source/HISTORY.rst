@@ -11,7 +11,7 @@ Changelog
 
 - support for OSFS (local filesystem), S3
 - individual per-connector URL configuration
-- support for multi-file upload  
+- support for multi-file uploads  
 - unicode fixes in the context of testing federated cloud solutions
 - massive amount of smaller internal and UI fixes
 - lots of testing with different storage backends
