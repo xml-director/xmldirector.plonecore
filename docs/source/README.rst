@@ -89,7 +89,7 @@ Requirements
       - Otixo.com
       - Storagemadeeasy.com
 
-- expermimental support for the following backends/protocols (don't
+- experimental support for the following backends/protocols (don't
   use XML Director with these protocols/backends in production):
 
     - FTP (working in general, open issues with the connection pool)

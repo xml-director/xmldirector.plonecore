@@ -162,7 +162,7 @@ class BaseWrapper(object):
         return super(BaseWrapper, self).copy(src, dst, overwrite, chunk_size)
 
     def ensuredir(self, filename):
-
+        """ Ensure that the directory path for ``filename`` exists """
         dirname = os.path.dirname(filename)
         if dirname:
             try:

@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.3.0b2 (unreleased)
+1.3.0 (2015-12-20)
 --------------------
 - added 'create_if_not_existing' parameter to webdav_handle() method
 - added ensuredir() to wrapper base class

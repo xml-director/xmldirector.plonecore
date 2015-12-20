@@ -228,8 +228,19 @@ class BasicTests(TestBase):
         view = self.portal.restrictedTraverse('@@xmldirector-core-settings')
         view()
 
+
+class MiscTests(TestBase):
+
+    def test_ensuredir(self):
+
+        handle = self.portal.connector.webdav_handle()
+        handle.ensuredir('hello/world/abc.txt')
+        self.assertTrue(handle.exists('hello/world'))
+
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
     suite.addTest(makeSuite(BasicTests))
+    suite.addTest(makeSuite(MiscTests))
     return suite
