@@ -4,22 +4,53 @@
     i18n:domain="plone">
     <records interface="xmldirector.plonecore.interfaces.IWebdavSettings" />
 
-    <records prefix="plone.resources/xmldirector.plonecore"
-          interface="Products.CMFPlone.interfaces.IResourceRegistry">
+    <records prefix="plone.resources/xmldirector.plonecore-local"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
         <value key="js">++resource++xmldirector.plonecore/local.js</value>
         <value key="css">
             <element>++resource++xmldirector.plonecore/styles.css</element>
         </value>
     </records>
 
-    <records prefix="plone.bundles/xmldirector"
-        interface='Products.CMFPlone.interfaces.IBundleRegistry'>
-        <value key="enabled">True</value>
-        <value key="jscompilation">++resource++xmldirector.plonecore/ace-builds/src-min/ace.js</value>
-        <value key="jscompilation">++resource++xmldirector.plonecore/local.js</value>
-        <value key="csscompilation">++resource++xmldirector.plonecore/styles.css</value>
-        <value key="last_compilation">2019-11-26 00:00:00</value>
-        <value key="compile">False</value>
-        <value key="depends">plone</value>
+    <records prefix="plone.resources/xmldirector.plonecore-datatables1"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+            <value key="js">++resource++xmldirector.plonecore/DataTables/media/js/jquery.dataTables.js</value>
+        <value key="css">
+            <element>++resource++xmldirector.plonecore/DataTables/media/css/jquery.dataTables.css</element>
+        </value>
+    </records>
+
+    <records prefix="plone.resources/xmldirector.plonecore-datatables2"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+        <value key="js">++resource++xmldirector.plonecore/DataTables/extensions/FixedHeader/js/dataTables.fixedHeader.min.js</value>
+        <value key="css">
+            <element>++resource++xmldirector.plonecore/DataTables/extensions/FixedHeader/css/dataTables.fixedHeader.min.css</element>
+        </value>
+    </records>
+
+
+    <records prefix="plone.resources/xmldirector.plonecore-datatables3"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+            <value key="js">++resource++xmldirector.plonecore/DataTables/extensions/TableTools/js/dataTables.tableTools.min.js</value>
+    </records>
+
+
+    <records prefix="plone.resources/xmldirector.plonecore-ace"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+        <value key="js">++resource++xmldirector.plonecore/ace-builds/src-min/ace.js</value>
+    </records>
+
+    <records prefix="plone.bundles/plone-legacy"
+            interface='Products.CMFPlone.interfaces.IBundleRegistry'>
+      <value key="resources">
+          <element>xmldirector.plonecore-local</element>
+          <element>xmldirector.plonecore-datatables1</element>
+          <element>xmldirector.plonecore-datatables2</element>
+          <element>xmldirector.plonecore-datatables3</element>
+          <!--          <element>xmldirector.plonecore-ace</element> -->
+      </value>
+      <value key="enabled">True</value>
+      <value key="compile">False</value>
+      <value key="last_compilation">2014-08-14 00:00:00</value>
     </records>
 </registry>

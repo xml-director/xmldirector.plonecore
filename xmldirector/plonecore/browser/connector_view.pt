@@ -7,17 +7,6 @@
       i18n:domain="xmldirector.plonecore">
 <body>
 
-    <metal:slot fill-slot="style_slot">
-        <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/DataTables/media/css/jquery.dataTables.css" />
-        <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/DataTables/extensions/FixedHeader/css/dataTables.fixedHeader.min.css" />
-    </metal:slot>
-
-    <metal:slot fill-slot="javascript_head_slot">
-        <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/DataTables/media/js/jquery.dataTables.js"></script>
-        <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/DataTables/extensions/FixedHeader/js/dataTables.fixedHeader.min.js"></script>
-        <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/DataTables/extensions/TableTools/js/dataTables.tableTools.min.js"></script>
-    </metal:slot>
-
 <metal:main fill-slot="content-core">
   <metal:content-core define-macro="content-core">
 
@@ -88,13 +77,15 @@
                       <span tal:replace="item/st_mode_text" />
                   </td>
                   <td>
-                      <a tal:attributes="href item/remove_url"
-                         class="confirm-action" 
-                         data-text="Do you really want to remove this item?"
-                         i18n:attributes="data-text"
-                         i18n:translate=""
-                         title="Remove"
-                         ><img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove item" i18n:attributes="title"/> </a>
+                      <form method="post" tal:attributes="action item/remove_url">
+                         <input type="image" 
+                             src="++resource++xmldirector.plonecore/images/remove.png" 
+                             class="confirm-action" 
+                             data-text="Do you really want to remove this item?"
+                             title="Remove item" 
+                             alt="Remove item" 
+                             i18n:attributes="title;alt;data-text"/>
+                      </form>
                       <a tal:condition="item/editable"
                          tal:attributes="href item/edit_url"
                          i18n:attributes="title"
