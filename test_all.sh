@@ -13,6 +13,8 @@ echo Tests against EXISTDB 3.0
 echo $WEBDAV_URL
 echo '######################################################'
 bin/test xmldirector.plonecore
+bin/test-crex xmldirector.crex
+
 
 export WEBDAV_URL=http://demo.xml-director.info:22081/exist/webdav/db
 echo '######################################################'
@@ -20,6 +22,7 @@ echo Tests against EXISTDB 2.2
 echo $WEBDAV_URL
 echo '######################################################'
 bin/test xmldirector.plonecore
+bin/test-crex xmldirector.crex
 
 export WEBDAV_URL=http://demo.xml-director.info:22080/webdav
 echo '######################################################'
@@ -27,6 +30,7 @@ echo Tests against BASEX  8.3
 echo $WEBDAV_URL
 echo '######################################################'
 bin/test xmldirector.plone
+bin/test-crex xmldirector.crex
 
 mkdir /tmp/testing
 rm -fr /tmp/testing/*
@@ -36,3 +40,4 @@ echo Tests against LOCALFS
 echo $WEBDAV_URL
 echo '######################################################'
 bin/test xmldirector.plone
+bin/test-crex xmldirector.crex

@@ -33,6 +33,7 @@ upload-docs:
 
 test:
 	bin/test xmldirector
+	bin/test-crex xmldirector
 
 test-coverage:
 	unbuffer bin/test --coverage=${PWD}/coverage xmldirector | tee coverage.txt
