@@ -19,4 +19,5 @@ pip install boto
 python bootstrap.py -c $config --setuptools-version 18.4 --version 2.2.5
 bin/buildout -c $config
 bin/test -s xmldirector.plonecore
+bin/test-crex -s xmldirector.crex
 ##bin/coverage run bin/test
