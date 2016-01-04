@@ -250,4 +250,3 @@ def get_fs_wrapper(url, credentials=None):
 
     wrapper.url = url
     return wrapper
-

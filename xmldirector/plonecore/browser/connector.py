@@ -47,9 +47,9 @@ LOG.info('Local timezone: {}'.format(TZ))
 def stmode2unix(st_mode):
     if st_mode:
         is_dir = 'd' if stat.S_ISDIR(st_mode) else '-'
-        dic = {'7':'rwx', '6' :'rw-', '5' : 'r-x', '4':'r--', '0': '---'}
+        dic = {'7': 'rwx', '6': 'rw-', '5': 'r-x', '4': 'r--', '0': '---'}
         perm = str(oct(st_mode)[-3:])
-        return is_dir + ''.join(dic.get(x,x) for x in perm)
+        return is_dir + ''.join(dic.get(x, x) for x in perm)
     else:
         return u''
 
@@ -159,7 +159,6 @@ class Connector(BrowserView):
             url = '{}/@@view/{}'.format(url, subpath)
         return self.request.response.redirect(url)
 
-
     def collection_action(self, paths=[], action=None):
         handle = self.context.webdav_handle()
         if action == 'delete':
@@ -195,9 +194,9 @@ class Connector(BrowserView):
                         size = self.human_readable_filesize(info[1]['size'])
                     except KeyError:
                         size = u'n/a'
-                    
+
                     modified = None
-                    modified_original=info[1].get('modified_time')
+                    modified_original = info[1].get('modified_time')
                     if modified_original:
                         modified = self.human_readable_datetime(info[1]['modified_time'], to_utc=False)
 

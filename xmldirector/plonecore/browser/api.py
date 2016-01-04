@@ -55,9 +55,9 @@ class API(BrowserView):
         session.mount('http://', adapter)
         session.mount('https://', adapter)
         result = session.get(url,
-                              auth=HTTPBasicAuth(settings.webdav_username,
-                                                 settings.webdav_password or ''),
-                              params=kw)
+                             auth=HTTPBasicAuth(settings.webdav_username,
+                                                settings.webdav_password or ''),
+                             params=kw)
         if result.status_code != 200:
             raise APIError(
                 'eXist-db return an response with HTTP code {} for {}'.format(result.status_code, url))

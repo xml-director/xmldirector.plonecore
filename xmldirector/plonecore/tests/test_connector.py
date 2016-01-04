@@ -9,9 +9,7 @@
 import os
 import sys
 import uuid
-import shutil
 import datetime
-import tempfile
 from zipfile import ZipFile
 from .base import TestBase
 from .base import WEBDAV_URL

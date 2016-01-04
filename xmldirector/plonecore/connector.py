@@ -45,7 +45,8 @@ class IConnector(model.Schema):
 
     webdav_subpath = schema.TextLine(
         title=_(u'Subdirectory relative to the global connection URL'),
-        description=_(u'Use this value for configuring a more specific subpath'),
+        description=_(
+            u'Use this value for configuring a more specific subpath'),
         required=False
     )
 
@@ -122,7 +123,8 @@ class Connector(Item):
             raise zExceptions.NotFound(url)
         except fs.errors.ResourceInvalidError:
             parts = url.rsplit('/', 1)
-            wrapper = get_fs_wrapper(parts[0], credentials=dict(username=username, password=password))
+            wrapper = get_fs_wrapper(parts[0], credentials=dict(
+                username=username, password=password))
             wrapper.__leaf__ = True
             wrapper.__leaf_filename__ = parts[1]
             return wrapper
