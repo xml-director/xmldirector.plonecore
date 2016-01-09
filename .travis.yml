@@ -58,14 +58,15 @@ matrix:
   - python: "2.7"
     env: 
       - TYPE=S3 PLONE_VERSION=4.3 WEBDAV_URL=s3://ajung-xxxxxxxx
-      - secure: "FRkjSxGRHASr4MixBJCx/cg/w8U81ZqprLlng5qD6izJNhQCfD5Sf3iQb976l+E0+7YlHAEJ8Z5nlp9Ra4UfbHoMEEvaoIOe4XyvVQ4aqjrWQdMGX2yDSVYKpsumwP5mQQpOlsygwGC1DhqKlXEYerAbEYPMamcz/7C24Vf4+cY="
-      - secure: "ZfuNeX1qKdkJF3En1WxQ9XvoyLnN0UZsh8DU87s4TSU5DbCDSYOFzajJWT44es8Ft2xT6u6/p6fRCmVzLpAnw6DzrO0H7S5NMDcM47JlMgVDWD6avxR2t0mVvM9ykyFglzy/d1GvwITKiTs95KEcrMuqK6+750t28WGjxGZwdsc="
+      - secure: "L7Mf2yHXnAQ19EuxiNzykToJr6eKnOveYRQQp7C8pw0s1hAn0uIgdKESrF0e7FrgKC+cmsAB11NFKj4uffYdJut593JENJSWo8PLoGfytF3Mw18bRIwT+zvj1sd3rvkMCOuFgBgxR3lnuaDE23+4MRNMCw1I3XOmEvUlc0gFJHQ="
+      - secure: "nHgJn+Ui9INQKVaKQ3Zj8w4F8p9kAPj4yy94qeuQJJS44RMVGpkX1re93LAKL0M2VmcqUGreqDFaaTX8/6LJpNnB832QWM4nhojD/jjHJZW6r0CPnkxS7SNaxCUfYD7avFbb99jroKRvUgmPBLR56yYPj10rl9bmwbff7P48UOs="
+
 
   - python: "2.7"
     env: 
       - TYPE=S3 PLONE_VERSION=5.0 WEBDAV_URL=s3://ajung-xxxxxxxx
-      - secure: "FRkjSxGRHASr4MixBJCx/cg/w8U81ZqprLlng5qD6izJNhQCfD5Sf3iQb976l+E0+7YlHAEJ8Z5nlp9Ra4UfbHoMEEvaoIOe4XyvVQ4aqjrWQdMGX2yDSVYKpsumwP5mQQpOlsygwGC1DhqKlXEYerAbEYPMamcz/7C24Vf4+cY="
-      - secure: "ZfuNeX1qKdkJF3En1WxQ9XvoyLnN0UZsh8DU87s4TSU5DbCDSYOFzajJWT44es8Ft2xT6u6/p6fRCmVzLpAnw6DzrO0H7S5NMDcM47JlMgVDWD6avxR2t0mVvM9ykyFglzy/d1GvwITKiTs95KEcrMuqK6+750t28WGjxGZwdsc="
+      - secure: "L7Mf2yHXnAQ19EuxiNzykToJr6eKnOveYRQQp7C8pw0s1hAn0uIgdKESrF0e7FrgKC+cmsAB11NFKj4uffYdJut593JENJSWo8PLoGfytF3Mw18bRIwT+zvj1sd3rvkMCOuFgBgxR3lnuaDE23+4MRNMCw1I3XOmEvUlc0gFJHQ="
+      - secure: "nHgJn+Ui9INQKVaKQ3Zj8w4F8p9kAPj4yy94qeuQJJS44RMVGpkX1re93LAKL0M2VmcqUGreqDFaaTX8/6LJpNnB832QWM4nhojD/jjHJZW6r0CPnkxS7SNaxCUfYD7avFbb99jroKRvUgmPBLR56yYPj10rl9bmwbff7P48UOs="
 
 cache:
   directories:
