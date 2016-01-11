@@ -4,7 +4,9 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     >
     <!-- load permissions.zcml -->
+
     <include package="Products.CMFCore" />
+    <include file="api.zcml" />
 
     <browser:page
         for="*"

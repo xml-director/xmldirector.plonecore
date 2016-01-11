@@ -45,6 +45,8 @@ setup(name='xmldirector.plonecore',
           'grampg',
           'defusedxml',
           'cssselect',
+          'plone.rest',
+          'zopyx.plone.persistentlogger',
           'plone.app.testing',
           # -*- Extra requirements: -*-
       ],

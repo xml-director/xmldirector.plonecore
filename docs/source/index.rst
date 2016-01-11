@@ -24,6 +24,7 @@ Contents:
    transformation-pipeline.rst
    security.rst
    pdf-generation.rst
+   api.rst
    logging.rst
    testing.rst
    demo.rst
