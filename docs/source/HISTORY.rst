@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.4.0 (2016-01-11)
+--------------------
+- new REST API
+
 1.3.0 (2015-12-20)
 --------------------
 - added 'create_if_not_existing' parameter to webdav_handle() method
