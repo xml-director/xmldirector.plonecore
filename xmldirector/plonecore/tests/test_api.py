@@ -13,8 +13,6 @@ import tempfile
 import requests
 
 import transaction
-from plone.app.testing import setRoles
-from plone.app.testing import TEST_USER_ID
 from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import SITE_OWNER_PASSWORD
 
@@ -60,7 +58,8 @@ class TestAPI(TestBase):
         response = requests.post(
             '{}/xmldirector-set-metadata'.format(url),
             data=json.dumps(data),
-            headers={'Accept': 'application/json', 'content-type': 'application/json'},
+            headers={'Accept': 'application/json',
+                     'content-type': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD))
         self.assertEqual(response.status_code, 500)
         self.assertTrue('API access disabled' in response.content)
@@ -70,11 +69,12 @@ class TestAPI(TestBase):
         self.assertEqual(response.status_code, 201)
 
         response = requests.get(self.portal.absolute_url() + '/xmldirector-search',
-            headers={'Accept': 'application/json', 'content-type': 'application/json'},
-            auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD))
+                                headers={'Accept': 'application/json',
+                                         'content-type': 'application/json'},
+                                auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD))
         self.assertEqual(response.status_code, 200)
         payload = response.json()
-        self.assertTrue(len(payload) >= 1) 
+        self.assertTrue(len(payload) >= 1)
 
     def test_create(self):
         response = self._make_one()
@@ -92,20 +92,20 @@ class TestAPI(TestBase):
         payload = response.json()
         self.assertEqual(payload['id'], id)
 
-
     def test_set_get_metadata(self):
         response = self._make_one()
         payload = response.json()
         url = payload['url']
 
         data = dict(
-                title=u'hello world',
-                description=u'my description',
-                custom=dict(a=2, b=42))
+            title=u'hello world',
+            description=u'my description',
+            custom=dict(a=2, b=42))
         response = requests.post(
             '{}/xmldirector-set-metadata'.format(url),
             data=json.dumps(data),
-            headers={'Accept': 'application/json', 'content-type': 'application/json'},
+            headers={'Accept': 'application/json',
+                     'content-type': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD))
         self.assertEqual(response.status_code, 200)
 
@@ -119,7 +119,6 @@ class TestAPI(TestBase):
         self.assertEqual(metadata['description'], data['description'])
         self.assertEqual(metadata['custom'], data['custom'])
 
-    
     def test_store_get(self):
 
         response = self._make_one()
@@ -139,14 +138,16 @@ class TestAPI(TestBase):
         response = requests.get(
             '{}/xmldirector-get'.format(url),
             params=dict(name='DOES.NOT.EXIST'),
-            headers={'Accept': 'application/json', 'content-type': 'application/json'},
+            headers={'Accept': 'application/json',
+                     'content-type': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD))
         self.assertEqual(response.status_code, 404)
 
         response = requests.get(
             '{}/xmldirector-get'.format(url),
             params=dict(name='src/dummy/sample.docx'),
-            headers={'Accept': 'application/json', 'content-type': 'application/json'},
+            headers={'Accept': 'application/json',
+                     'content-type': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD))
         self.assertEqual(response.status_code, 200)
 
@@ -154,14 +155,15 @@ class TestAPI(TestBase):
         with open(os.path.join(cwd, 'sample.docx'), 'rb') as fp:
             docx_data = fp.read()
         self.assertEqual(data, docx_data)
-    
+
     def test_store_get_zip(self):
 
         response = self._make_one()
         self.assertEqual(response.status_code, 201)
         url = response.json()['url']
-        
-        files = [('zipfile', ('sample.zip', open(os.path.join(cwd, 'sample.zip'), 'rb'), 'application/zip'))]
+
+        files = [('zipfile', ('sample.zip', open(
+            os.path.join(cwd, 'sample.zip'), 'rb'), 'application/zip'))]
         response = requests.post(
             '{}/xmldirector-store-zip'.format(url),
             files=files,
@@ -175,7 +177,8 @@ class TestAPI(TestBase):
 
         response = requests.get(
             '{}/xmldirector-get-zip'.format(url),
-            headers={'Accept': 'application/json', 'content-type': 'application/json'},
+            headers={'Accept': 'application/json',
+                     'content-type': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD))
         self.assertEqual(response.status_code, 200)
         zip_tmp = tempfile.mktemp(suffix='.zip')
@@ -189,7 +192,8 @@ class TestAPI(TestBase):
 
         response = requests.get(
             '{}/xmldirector-list'.format(url),
-            headers={'Accept': 'application/json', 'content-type': 'application/json'},
+            headers={'Accept': 'application/json',
+                     'content-type': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD))
         self.assertEqual(response.status_code, 200)
         payload = response.json()
@@ -200,7 +204,8 @@ class TestAPI(TestBase):
 
         response = requests.get(
             '{}/xmldirector-list-full'.format(url),
-            headers={'Accept': 'application/json', 'content-type': 'application/json'},
+            headers={'Accept': 'application/json',
+                     'content-type': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD))
         self.assertEqual(response.status_code, 200)
         payload = response.json()
@@ -212,43 +217,50 @@ class TestAPI(TestBase):
         response = self._make_one()
         self.assertEqual(response.status_code, 201)
         url = response.json()['url']
-        
-        files = [('zipfile', ('sample.zip', open(os.path.join(cwd, 'sample.zip'), 'rb'), 'application/zip'))]
+
+        files = [('zipfile', ('sample.zip', open(
+            os.path.join(cwd, 'sample.zip'), 'rb'), 'application/zip'))]
         response = requests.post(
             '{}/xmldirector-store-zip'.format(url),
             files=files,
             headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD))
         self.assertEqual(response.status_code, 200)
-        
+
         response = requests.get(
             '{}/xmldirector-hashes'.format(url),
-            headers={'Accept': 'application/json', 'content-type': 'application/json'},
+            headers={'Accept': 'application/json',
+                     'content-type': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD))
         self.assertEqual(response.status_code, 200)
         payload = response.json()
-        self.assertEqual(payload['src/folder/1.txt']['sha256'], 'a948904f2f0f479b8f8197694b30184b0d2ed1c1cd2a1ec0fb85d299a192a447')
-        self.assertEqual(payload['src/folder/2.txt']['sha256'], '6355baea1348fe93f7d9c0c56a5cfeff34682aeb6f24a61ce7b06fdb94927a8d')
-        self.assertEqual(payload['src/folder/3.txt']['sha256'], 'a8e82d2a65f75a68e82ea8835522dd67f1fede950bfedef9ccd1b2608dd70cb5')
+        self.assertEqual(payload['src/folder/1.txt']['sha256'],
+                         'a948904f2f0f479b8f8197694b30184b0d2ed1c1cd2a1ec0fb85d299a192a447')
+        self.assertEqual(payload['src/folder/2.txt']['sha256'],
+                         '6355baea1348fe93f7d9c0c56a5cfeff34682aeb6f24a61ce7b06fdb94927a8d')
+        self.assertEqual(payload['src/folder/3.txt']['sha256'],
+                         'a8e82d2a65f75a68e82ea8835522dd67f1fede950bfedef9ccd1b2608dd70cb5')
 
     def test_delete_content(self):
         response = self._make_one()
         self.assertEqual(response.status_code, 201)
         url = response.json()['url']
-        
-        files = [('zipfile', ('sample.zip', open(os.path.join(cwd, 'sample.zip'), 'rb'), 'application/zip'))]
+
+        files = [('zipfile', ('sample.zip', open(
+            os.path.join(cwd, 'sample.zip'), 'rb'), 'application/zip'))]
         response = requests.post(
             '{}/xmldirector-store-zip'.format(url),
             files=files,
             headers={'Accept': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD))
         self.assertEqual(response.status_code, 200)
-        
+
         to_delete = ['src/folder/1.txt', 'src/folder/2.txt', 'xxx']
         response = requests.post(
             '{}/xmldirector-delete-content'.format(url),
             data=json.dumps(dict(files=to_delete)),
-            headers={'Accept': 'application/json', 'content-type': 'application/json'},
+            headers={'Accept': 'application/json',
+                     'content-type': 'application/json'},
             auth=(SITE_OWNER_NAME, SITE_OWNER_PASSWORD))
         self.assertEqual(response.status_code, 200)
         payload = response.json()

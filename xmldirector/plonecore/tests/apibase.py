@@ -53,7 +53,6 @@ class APILayer(PloneSandboxLayer):
                     ]:
             xmlconfig.file('configure.zcml', mod, context=configurationContext)
 
-
     def setUpPloneSite(self, portal):
         # Install into Plone site using portal_setup
         applyProfile(portal, 'xmldirector.plonecore:testing')
@@ -97,13 +96,13 @@ class APILayer(PloneSandboxLayer):
 
 API_FIXTURE = APILayer()
 API_INTEGRATION_TESTING = IntegrationTesting(
-            bases=(API_FIXTURE,),
-                name="API:Integration"
-                )
+    bases=(API_FIXTURE,),
+    name="API:Integration"
+)
 API_FUNCTIONAL_TESTING = FunctionalTesting(
-            bases=(API_FIXTURE, z2.ZSERVER_FIXTURE),
-                name="API:Functional"
-                )
+    bases=(API_FIXTURE, z2.ZSERVER_FIXTURE),
+    name="API:Functional"
+)
 
 
 class TestBase(unittest.TestCase):

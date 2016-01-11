@@ -9,22 +9,16 @@
 import os
 import json
 import time
-import furl
 import uuid
 import hashlib
-import datetime
 import tempfile
-import requests
-import fnmatch
 import mimetypes
 import fs.zipfs
 from contextlib import contextmanager
 
 import plone.api
 import zExceptions
-import transaction
 from plone.rest import Service
-from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
 from zope.annotation.interfaces import IAnnotations
 from zope.interface import implements
@@ -190,7 +184,7 @@ class BaseService(Service):
     def get_crex_info(self):
         annotations = IAnnotations(self.context)
         return annotations.get(ANNOTATION_CREX_INFO_KEY, {})
-        
+
     def set_crex_info(self, info):
         annotations = IAnnotations(self.context)
         annotations[ANNOTATION_CREX_INFO_KEY] = info
@@ -330,7 +324,7 @@ class api_store_zip(BaseService):
         check_permission(permissions.ModifyPortalContent, self.context)
         IPersistentLogger(self.context).log('store')
 
-        if not 'zipfile' in self.request.form:
+        if 'zipfile' not in self.request.form:
             raise ValueError('No parameter "zipfile" found')
 
         # cleanup source folder
@@ -366,7 +360,7 @@ class api_store_zip(BaseService):
 class api_get_zip(BaseService):
 
     def _render(self):
-        
+
         check_permission(permissions.ModifyPortalContent, self.context)
 
         handle = self.context.webdav_handle(create_if_not_existing=True)

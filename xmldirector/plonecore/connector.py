@@ -29,7 +29,11 @@ class IConnector(model.Schema):
 
     webdav_url = schema.TextLine(
         title=_(u'(optional) connection URL of storage'),
-        description=_(u'WebDAV: http://host:port/path/to/webdav, Local filesystem: file://path/to/directory, AWS S3: s3://bucketname, SFTP sftp://host/path, FTP: ftp://host/path'),
+        description=_(u'WebDAV: http://host:port/path/to/webdav, '
+                      'Local filesystem: file://path/to/directory, '
+                      'AWS S3: s3://bucketname, ',
+                      'SFTP sftp://host/path, '
+                      'FTP: ftp://host/path'),
         required=False
     )
 
@@ -129,7 +133,11 @@ class Connector(Item):
             wrapper.__leaf_filename__ = parts[1]
             return wrapper
         except fs.errors.RemoteConnectionError as e:
-            #  LOG.error(u'Error accessing {}::{}::{}'.format(self.absolute_url(), url, self.REQUEST.get('HTTP_USER_AGENT')), exc_info=True)
+            #  LOG.error(u'Error accessing {}::{}::{}'.format(
+            #    self.absolute_url(),
+            #    url,
+            #   self.REQUEST.get('HTTP_USER_AGENT')),
+            #    exc_info=True)
             exc = RuntimeError(url)
             exc.url = url
             raise exc
