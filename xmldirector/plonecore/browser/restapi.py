@@ -34,19 +34,10 @@ from xmldirector.plonecore.connector import IConnector
 from zopyx.plone.persistentlogger.logger import IPersistentLogger
 
 
-ANNOTATION_KEY = 'xmldirector.plonecore.crex'
-ANNOTATION_CREX_INFO_KEY = 'xmldirector.plonecore.crex.queue'
+ANNOTATION_KEY = 'xmldirector.plonecore.api'
 
-CREX_STATUS_PENDING = u'pending'
-CREX_STATUS_RUNNING = u'running'
-CREX_STATUS_ERROR = u'error'
-CREX_STATUS_SUCCESS = u'success'
 
 SRC_PREFIX = 'src'
-
-
-class CRexConversionError(Exception):
-    """ A generic C-Rex error """
 
 
 def check_permission(permission, context):
@@ -180,14 +171,6 @@ class BaseService(Service):
             LOG.error(self.request.text())
             LOG.error(e, exc_info=True)
             raise e
-
-    def get_crex_info(self):
-        annotations = IAnnotations(self.context)
-        return annotations.get(ANNOTATION_CREX_INFO_KEY, {})
-
-    def set_crex_info(self, info):
-        annotations = IAnnotations(self.context)
-        annotations[ANNOTATION_CREX_INFO_KEY] = info
 
 
 class api_create(BaseService):
