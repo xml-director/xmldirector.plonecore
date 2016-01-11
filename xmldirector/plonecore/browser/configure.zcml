@@ -6,7 +6,7 @@
     <!-- load permissions.zcml -->
 
     <include package="Products.CMFCore" />
-    <include file="api.zcml" />
+    <include file="restapi.zcml" />
 
     <browser:page
         for="*"
