@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.4.1 (2016-01-18)
+--------------------
+
+- pass query string down to redirection call within __call__()
+
 1.4.0 (2016-01-11)
 --------------------
 - new REST API
