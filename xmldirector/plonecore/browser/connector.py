@@ -58,6 +58,7 @@ class Dispatcher(BrowserView):
 
     def __call__(self, *args, **kw):
 
+        qs = self.request.QUERY_STRING
         user = getSecurityManager().getUser()
 
         # request/force_default_view can be used to force a redirect to the
@@ -66,6 +67,8 @@ class Dispatcher(BrowserView):
         if force_default_view:
             if user.has_permission(permissions.View, self.context):
                 default_view = self.context.default_view_anonymous
+                if qs:
+                    default_view += '?' + qs
                 return self.request.response.redirect(
                     '{}/{}'.format(self.context.absolute_url(), default_view))
             else:
@@ -76,11 +79,15 @@ class Dispatcher(BrowserView):
 
         if user.has_permission(permissions.ModifyPortalContent, self.context):
             default_view = self.context.default_view_authenticated
+            if qs:
+                default_view += '?' + qs
             return self.request.response.redirect(
                 '{}/{}'.format(self.context.absolute_url(), default_view))
         else:
             default_view = self.context.default_view_anonymous
             if default_view:
+                if qs:
+                    default_view += '?' + qs
                 return self.request.response.redirect(
                     '{}/{}'.format(self.context.absolute_url(), default_view))
             else:
