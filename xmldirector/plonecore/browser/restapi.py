@@ -409,16 +409,20 @@ class api_list_full(BaseService):
 
         handle = self.context.webdav_handle(create_if_not_existing=True)
         result = dict()
+
         for dirname in handle.walkdirs():
             for name, data in handle.ilistdirinfo(dirname, full=True, files_only=True):
                 if name.endswith('.sha256'):
                     continue
                 # datetime not JSONifyable
-                data['modified_time'] = data['modified_time'].isoformat()
+                for key in ['accessed_time', 'modified_time', 'created_time']:
+                    if key in data:
+                        data[key] = data[key].isoformat()
                 if handle.isfile(name):
                     with handle.open(name, 'rb') as fp:
                         data['sha256'] = sha256_fp(fp)
-                result[name] = data
+                result[name.lstrip('/')] = data
+        
         return result
 
 
