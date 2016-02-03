@@ -123,7 +123,7 @@ class TestAPI(TestBase):
 
         # ignore this test on Travis
         if 'TYPE' in os.environ:
-            return TRUE
+            return True
 
         response = self._make_one()
         self.assertEqual(response.status_code, 201)
