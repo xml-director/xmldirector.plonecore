@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.4.2 (2016-02-02)
+--------------------
+
+- fix in restapi in the context of local fs tests
+
+
 1.4.1 (2016-01-18)
 --------------------
 
