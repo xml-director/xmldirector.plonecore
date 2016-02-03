@@ -122,7 +122,7 @@ class Connector(Item):
         try:
             return get_fs_wrapper(url, credentials=dict(username=username, password=password))
         except fs.errors.ResourceNotFoundError:
-            LOG.error(u'Error accessing {}::{}::{}'.format(
+            LOG.warn(u'Error accessing {}::{}::{}'.format(
                 self.absolute_url(), url, self.REQUEST.get('HTTP_USER_AGENT')), exc_info=True)
             raise zExceptions.NotFound(url)
         except fs.errors.ResourceInvalidError:
@@ -142,7 +142,7 @@ class Connector(Item):
             exc.url = url
             raise exc
         except Exception as e:
-            LOG.error(u'Error accessing {}::{}::{}'.format(
+            LOG.warn(u'Error accessing {}::{}::{}'.format(
                 self.absolute_url(), url, self.REQUEST.get('HTTP_USER_AGENT')), exc_info=True)
             e.url = url
             raise e
