@@ -149,3 +149,35 @@ class Connector(Item):
 
     # aliases
     webdav_handle = get_handle
+
+    def set_webdav_url(self, value):
+        self.connector_url = value
+
+    def get_webdav_url(self):
+        return self.connector_url
+
+    webdav_url = property(get_webdav_url, set_webdav_url)
+    
+    def set_webdav_username(self, value):
+        self.connector_username = value
+
+    def get_webdav_username(self):
+        return self.connector_username
+
+    webdav_username = property(get_webdav_username, set_webdav_username)
+
+    def set_webdav_password(self, value):
+        self.connector_password = value
+
+    def get_webdav_password(self):
+        return self.connector_password
+
+    webdav_password = property(get_webdav_password, set_webdav_password)
+    
+    def set_webdav_subpath(self, value):
+        self.connector_subpath = value
+
+    def get_webdav_subpath(self):
+        return self.connector_subpath
+
+    webdav_subpath = property(get_webdav_subpath, set_webdav_subpath)
