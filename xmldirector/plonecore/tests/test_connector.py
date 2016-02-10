@@ -43,10 +43,10 @@ class BasicTests(TestBase):
         if is_mac:
             with handle.open(PREFIX + '/üöä/üöä.xml', 'wb') as fp:
                 fp.write('<?xml version="1.0" ?>\n<hello>world</hello>')
-        self.portal.connector.webdav_subpath = PREFIX
+        self.portal.connector.connector_subpath = PREFIX
 
     def tearDown(self):
-        self.portal.connector.webdav_subpath = None
+        self.portal.connector.connector_subpath = None
         handle = self.portal.connector.get_handle()
         if handle.exists(PREFIX):
             handle.removedir(PREFIX, False, True)

@@ -193,7 +193,7 @@ class api_create(BaseService):
             title=title,
             description=description)
 
-        connector.webdav_subpath = 'plone.api-{}/{}'.format(
+        connector.connector_subpath = 'plone.api-{}/{}'.format(
             plone.api.portal.get().getId(), id)
         connector.api_enabled = True
         connector.get_handle(create_if_not_existing=True)
@@ -293,7 +293,7 @@ class api_delete(BaseService):
         util = getUtility(IWebdavHandle)
 
         handle = util.get_handle()
-        handle.removedir(self.context.webdav_subpath, True, True)
+        handle.removedir(self.context.connector_subpath, True, True)
 
         parent = self.context.aq_parent
         parent.manage_delObjects(self.context.getId())

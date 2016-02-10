@@ -40,11 +40,11 @@ class BasicTests(TestBase):
         self.sample_xml = '{}/index.xml'.format(PREFIX)
         with handle.open(self.sample_xml, 'wb') as fp:
             fp.write(sample_xml)
-        self.portal.connector.webdav_subpath = PREFIX
+        self.portal.connector.connector_subpath = PREFIX
         makerequest(self.portal)
 
     def tearDown(self):
-        self.portal.connector.webdav_subpath = None
+        self.portal.connector.connector_subpath = None
         handle = self.get_handle
         handle.ignore_errors = True
         if handle.exists(PREFIX):

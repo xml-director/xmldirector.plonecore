@@ -64,9 +64,9 @@ class PolicyFixture(PloneSandboxLayer):
 
         registry = getUtility(IRegistry)
         settings = registry.forInterface(IWebdavSettings)
-        settings.webdav_username = unicode(WEBDAV_USERNAME)
-        settings.webdav_password = unicode(WEBDAV_PASSWORD)
-        settings.webdav_url = unicode(WEBDAV_URL)
+        settings.connector_username = unicode(WEBDAV_USERNAME)
+        settings.connector_password = unicode(WEBDAV_PASSWORD)
+        settings.connector_url = unicode(WEBDAV_URL)
         self.testing_directory = settings.webdav_dexterity_subpath = u'testing-dexterity-{}'.format(
             uuid.uuid4())
 

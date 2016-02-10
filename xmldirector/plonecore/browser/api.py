@@ -46,7 +46,7 @@ class API(BrowserView):
 
         registry = getUtility(IRegistry)
         settings = registry.forInterface(IWebdavSettings)
-        pr = urlparse.urlparse(settings.webdav_url)
+        pr = urlparse.urlparse(settings.connector_url)
         url = '{}://{}/exist/restxq/{}.{}'.format(
             pr.scheme, pr.netloc, script_path, output_format)
 
@@ -55,8 +55,8 @@ class API(BrowserView):
         session.mount('http://', adapter)
         session.mount('https://', adapter)
         result = session.get(url,
-                             auth=HTTPBasicAuth(settings.webdav_username,
-                                                settings.webdav_password or ''),
+                             auth=HTTPBasicAuth(settings.connector_username,
+                                                settings.connector_password or ''),
                              params=kw)
         if result.status_code != 200:
             raise APIError(

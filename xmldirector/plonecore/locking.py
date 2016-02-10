@@ -73,14 +73,14 @@ class LockManager(object):
             except AttributeError:
                 context = None
         if context:
-            context_webdav_url = getattr(context, 'webdav_url', None)
-            if context_webdav_url:
-                username = context.webdav_username
-                password = context.webdav_password
+            context_connector_url = getattr(context, 'connector_url', None)
+            if context_connector_url:
+                username = context.connector_username
+                password = context.connector_password
                 if username and password:
-                    return get_fs_wrapper(context_webdav_url, credentials=dict(username=username, password=password))
+                    return get_fs_wrapper(context_connector_url, credentials=dict(username=username, password=password))
                 else:
-                    return get_fs_wrapper(context_webdav_url)
+                    return get_fs_wrapper(context_connector_url)
         return getUtility(IWebdavHandle).get_handle()
 
     def lock_filename(self, path):

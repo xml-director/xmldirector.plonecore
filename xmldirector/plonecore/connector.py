@@ -27,7 +27,7 @@ from xmldirector.plonecore.logger import LOG
 
 class IConnector(model.Schema):
 
-    webdav_url = schema.TextLine(
+    connector_url = schema.TextLine(
         title=_(u'(optional) connection URL of storage'),
         description=_(u'WebDAV: http://host:port/path/to/webdav, '
                       'Local filesystem: file://path/to/directory, '
@@ -37,17 +37,17 @@ class IConnector(model.Schema):
         required=False
     )
 
-    webdav_username = schema.TextLine(
+    connector_username = schema.TextLine(
         title=_(u'(optional) username overriding the system settings'),
         required=False
     )
 
-    webdav_password = schema.Password(
+    connector_password = schema.Password(
         title=_(u'(optional) password overriding the system settings'),
         required=False
     )
 
-    webdav_subpath = schema.TextLine(
+    connector_subpath = schema.TextLine(
         title=_(u'Subdirectory relative to the global connection URL'),
         description=_(
             u'Use this value for configuring a more specific subpath'),
@@ -80,14 +80,14 @@ class Connector(Item):
 
     implements(IConnector)
 
-    webdav_url = None
-    webdav_username = None
-    webdav_password = None
-    webdav_subpath = None
+    connector_url = None
+    connector_username = None
+    connector_password = None
+    connector_subpath = None
 
     def get_handle(self, subpath=None, create_if_not_existing=False):
         """ Return WebDAV handle to root of configured connector object
-            including configured webdav_subpath.
+            including configured connector_subpath.
         """
 
         registry = getUtility(IRegistry)
@@ -95,29 +95,29 @@ class Connector(Item):
 
         adapted = IConnector(self)
 
-        url = adapted.webdav_url or settings.webdav_url
+        url = adapted.connector_url or settings.connector_url
 
-        if adapted.webdav_subpath:
-            url += '/{}'.format(adapted.webdav_subpath)
+        if adapted.connector_subpath:
+            url += '/{}'.format(adapted.connector_subpath)
 
         if subpath:
             url += '/{}'.format(urllib.quote(subpath))
 
         # system-wide credentials
-        username = settings.webdav_username
-        password = settings.webdav_password or ''
+        username = settings.connector_username
+        password = settings.connector_password or ''
 
         # local credentials override the system credentials
-        if adapted.webdav_url:
-            username = adapted.webdav_username or ''
-            password = adapted.webdav_password or ''
+        if adapted.connector_url:
+            username = adapted.connector_username or ''
+            password = adapted.connector_password or ''
 
         if create_if_not_existing:
             util = getUtility(IWebdavHandle)
             handle = util.get_handle()
-            if not handle.exists(adapted.webdav_subpath):
-                handle.makedir(adapted.webdav_subpath, recursive=True)
-            url = '{}/{}'.format(handle.url.strip('/'), adapted.webdav_subpath)
+            if not handle.exists(adapted.connector_subpath):
+                handle.makedir(adapted.connector_subpath, recursive=True)
+            url = '{}/{}'.format(handle.url.strip('/'), adapted.connector_subpath)
 
         try:
             return get_fs_wrapper(url, credentials=dict(username=username, password=password))
@@ -150,34 +150,34 @@ class Connector(Item):
     # aliases
     webdav_handle = get_handle
 
-    def set_webdav_url(self, value):
+    def set_connector_url(self, value):
         self.connector_url = value
 
-    def get_webdav_url(self):
+    def get_connector_url(self):
         return self.connector_url
 
-    webdav_url = property(get_webdav_url, set_webdav_url)
+    connector_url = property(get_connector_url, set_connector_url)
     
-    def set_webdav_username(self, value):
+    def set_connector_username(self, value):
         self.connector_username = value
 
-    def get_webdav_username(self):
+    def get_connector_username(self):
         return self.connector_username
 
-    webdav_username = property(get_webdav_username, set_webdav_username)
+    connector_username = property(get_connector_username, set_connector_username)
 
-    def set_webdav_password(self, value):
+    def set_connector_password(self, value):
         self.connector_password = value
 
-    def get_webdav_password(self):
+    def get_connector_password(self):
         return self.connector_password
 
-    webdav_password = property(get_webdav_password, set_webdav_password)
+    connector_password = property(get_connector_password, set_connector_password)
     
-    def set_webdav_subpath(self, value):
+    def set_connector_subpath(self, value):
         self.connector_subpath = value
 
-    def get_webdav_subpath(self):
+    def get_connector_subpath(self):
         return self.connector_subpath
 
-    webdav_subpath = property(get_webdav_subpath, set_webdav_subpath)
+    connector_subpath = property(get_connector_subpath, set_connector_subpath)

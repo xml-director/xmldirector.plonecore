@@ -47,7 +47,7 @@ class IWebdavSettings(Interface):
 
     """ ExistDB settings """
 
-    webdav_url = schema.TextLine(
+    connector_url = schema.TextLine(
         title=_(u'Connection URL of storage service'),
         description=_(u'WebDAV: http://host:port/path/to/webdav,'
                       'Local filesystem: file://path/to/directory, '
@@ -72,14 +72,14 @@ class IWebdavSettings(Interface):
         vocabulary=WEBDAV_MODE_VOCAB
     )
 
-    webdav_username = schema.TextLine(
+    connector_username = schema.TextLine(
         title=_(u'Username for external storage'),
         description=_(u'Username'),
         default=u'admin',
         required=True
     )
 
-    webdav_password = schema.Password(
+    connector_password = schema.Password(
         title=_(u'Password for external storage'),
         description=_(u'Password'),
         default=u'',

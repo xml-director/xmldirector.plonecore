@@ -25,9 +25,9 @@ class WebdavHandle(object):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(IWebdavSettings)
 
-        root_url = settings.webdav_url
-        username = settings.webdav_username
-        password = settings.webdav_password or ''
+        root_url = settings.connector_url
+        username = settings.connector_username
+        password = settings.connector_password or ''
 
         if settings.webdav_dexterity_subpath:
             url = '{}/{}'.format(root_url, settings.webdav_dexterity_subpath)
