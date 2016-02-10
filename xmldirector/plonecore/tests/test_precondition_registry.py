@@ -14,21 +14,21 @@ from xmldirector.plonecore.browser.view_registry import PreconditionRegistry
 cwd = os.path.dirname(__file__)
 
 
-def view_handler(webdav_handle, filename, view_name, request):
+def view_handler(get_handle, filename, view_name, request):
     return u'hello world'
 
 
-def view_handler2(webdav_handle, filename, view_name, request):
+def view_handler2(get_handle, filename, view_name, request):
     return u'world hello'
 
 
-def default_handler(webdav_handle, filename, view_name, request):
+def default_handler(get_handle, filename, view_name, request):
     return u'default handler'
 
 
 class class_view_handler(object):
 
-    def __call__(self, webdav_handle, filename, view_name, request):
+    def __call__(self, get_handle, filename, view_name, request):
         return 'i am a class view handler'
 
 
@@ -53,7 +53,7 @@ class PreconditionTests(unittest.TestCase):
     def test_precondition_handle_view(self):
         p = Precondition(
             suffixes=('html',), view_names = ['htmlview'], view_handler=view_handler)
-        result = p.handle_view(webdav_handle=None,
+        result = p.handle_view(get_handle=None,
                                filename='test.html',
                                view_name='view',
                                request=None)
@@ -70,7 +70,7 @@ class PreconditionRegistryTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             # nothing registered
             self.registry.dispatch(
-                webdav_handle=None, filename='test.html', view_name='htmlview', request=None)
+                get_handle=None, filename='test.html', view_name='htmlview', request=None)
 
     def test_correct_entries(self):
         p = Precondition(
@@ -81,28 +81,28 @@ class PreconditionRegistryTests(unittest.TestCase):
         self.registry.register(p)
 
         result = self.registry.dispatch(
-            webdav_handle=None, filename='test.html', view_name='htmlview', request=None)
+            get_handle=None, filename='test.html', view_name='htmlview', request=None)
         self.assertEqual(result, u'hello world')
 
         result = self.registry.dispatch(
-            webdav_handle=None, filename='test.xml', view_name='xmlview', request=None)
+            get_handle=None, filename='test.xml', view_name='xmlview', request=None)
         self.assertEqual(result, u'world hello')
 
         with self.assertRaises(ValueError):
             self.registry.dispatch(
-                webdav_handle=None, filename='test.xml', view_name='htmlview', request=None)
+                get_handle=None, filename='test.xml', view_name='htmlview', request=None)
 
     def test_default_fallback(self):
         self.registry.set_default(Precondition(view_handler=default_handler))
         result = self.registry.dispatch(
-            webdav_handle=None, filename='xxxxx', view_name='xxxxxx', request=None)
+            get_handle=None, filename='xxxxx', view_name='xxxxxx', request=None)
         self.assertEqual(result, u'default handler')
 
     def test_class_as_view_handler(self):
         self.registry.set_default(
             Precondition(view_handler=class_view_handler))
         result = self.registry.dispatch(
-            webdav_handle=None, filename='xxxxx', view_name='xxxxxx', request=None)
+            get_handle=None, filename='xxxxx', view_name='xxxxxx', request=None)
         self.assertEqual(result, u'i am a class view handler')
 
     def test_register_improper_tyoe(self):

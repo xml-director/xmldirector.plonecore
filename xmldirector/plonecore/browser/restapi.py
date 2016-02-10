@@ -75,7 +75,7 @@ def sha256_fp(fp, blocksize=2 ** 20):
 def store_zip(context, zip_filename, target_directory):
     """ Unzip a ZIP file within the given target directory """
 
-    handle = context.webdav_handle()
+    handle = context.get_handle()
     if handle.exists(target_directory):
         handle.removedir(target_directory, recursive=True, force=True)
     handle.makedir(target_directory)
@@ -196,7 +196,7 @@ class api_create(BaseService):
         connector.webdav_subpath = 'plone.api-{}/{}'.format(
             plone.api.portal.get().getId(), id)
         connector.api_enabled = True
-        connector.webdav_handle(create_if_not_existing=True)
+        connector.get_handle(create_if_not_existing=True)
         connector.reindexObject()
 
         if custom:
@@ -292,7 +292,7 @@ class api_delete(BaseService):
 
         util = getUtility(IWebdavHandle)
 
-        handle = util.webdav_handle()
+        handle = util.get_handle()
         handle.removedir(self.context.webdav_subpath, True, True)
 
         parent = self.context.aq_parent
@@ -311,11 +311,11 @@ class api_store_zip(BaseService):
             raise ValueError('No parameter "zipfile" found')
 
         # cleanup source folder
-        webdav_handle = self.context.webdav_handle(create_if_not_existing=True)
+        get_handle = self.context.get_handle(create_if_not_existing=True)
         target_dir = SRC_PREFIX
-        if webdav_handle.exists(target_dir):
-            webdav_handle.removedir(target_dir, force=True)
-        webdav_handle.makedir(target_dir)
+        if get_handle.exists(target_dir):
+            get_handle.removedir(target_dir, force=True)
+        get_handle.makedir(target_dir)
 
         # Write payload/data to ZIP file
         zip_out = temp_zip(suffix='.zip')
@@ -329,11 +329,11 @@ class api_store_zip(BaseService):
                 for name in zip_handle.walkfiles():
                     name = name.lstrip('/')
                     dest_name = '{}/{}'.format(target_dir, name)
-                    webdav_handle.ensuredir(dest_name)
+                    get_handle.ensuredir(dest_name)
                     data = zip_handle.open(name, 'rb').read()
-                    with webdav_handle.open(dest_name, 'wb') as fp:
+                    with get_handle.open(dest_name, 'wb') as fp:
                         fp.write(data)
-                    with webdav_handle.open(dest_name + '.sha256', 'wb') as fp:
+                    with get_handle.open(dest_name + '.sha256', 'wb') as fp:
                         fp.write(hashlib.sha256(data).hexdigest())
                     result['mapping'][name] = dest_name
 
@@ -346,7 +346,7 @@ class api_get_zip(BaseService):
 
         check_permission(permissions.ModifyPortalContent, self.context)
 
-        handle = self.context.webdav_handle(create_if_not_existing=True)
+        handle = self.context.get_handle(create_if_not_existing=True)
         zip_out = temp_zip(suffix='.zip')
         with fs.zipfs.ZipFS(zip_out, 'w') as zip_handle:
             for name in handle.walkfiles():
@@ -374,7 +374,7 @@ class api_get(BaseService):
             raise ValueError('Parameter "name" is missing')
 
         mt, encoding = mimetypes.guess_type(os.path.basename(name))
-        handle = self.context.webdav_handle(create_if_not_existing=True)
+        handle = self.context.get_handle(create_if_not_existing=True)
         if handle.exists(name):
             fp = handle.open(name, 'rb')
             size = handle.getsize(name)
@@ -395,7 +395,7 @@ class api_list(BaseService):
 
         check_permission(permissions.View, self.context)
 
-        handle = self.context.webdav_handle(create_if_not_existing=True)
+        handle = self.context.get_handle(create_if_not_existing=True)
         files = list(handle.walkfiles())
         files = [fn.lstrip('/') for fn in files if not fn.endswith('.sha256')]
         return dict(files=files)
@@ -407,7 +407,7 @@ class api_list_full(BaseService):
 
         check_permission(permissions.View, self.context)
 
-        handle = self.context.webdav_handle(create_if_not_existing=True)
+        handle = self.context.get_handle(create_if_not_existing=True)
         result = dict()
 
         for dirname in handle.walkdirs():
@@ -431,7 +431,7 @@ class api_hashes(BaseService):
     def _render(self):
 
         check_permission(permissions.View, self.context)
-        handle = self.context.webdav_handle(create_if_not_existing=True)
+        handle = self.context.get_handle(create_if_not_existing=True)
         result = dict()
         for name in handle.walkfiles():
             if name.endswith('.sha256'):
@@ -453,7 +453,7 @@ class api_store(BaseService):
 
     def _render(self):
 
-        handle = self.context.webdav_handle(create_if_not_existing=True)
+        handle = self.context.get_handle(create_if_not_existing=True)
         for file_item in self.request.form.get('files', ()):
             filename = file_item.filename
             handle.ensuredir(filename)
@@ -469,7 +469,7 @@ class api_delete_content(BaseService):
     def _render(self):
 
         check_permission(permissions.ModifyPortalContent, self.context)
-        handle = self.context.webdav_handle(create_if_not_existing=True)
+        handle = self.context.get_handle(create_if_not_existing=True)
         payload = decode_json_payload(self.request)
 
         if 'files' not in payload:

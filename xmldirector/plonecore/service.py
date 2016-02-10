@@ -19,7 +19,7 @@ class WebdavHandle(object):
 
     zope.interface.implements(IWebdavHandle)
 
-    def webdav_handle(self):
+    def get_handle(self):
         """ Return WebDAV handle """
 
         registry = getUtility(IRegistry)

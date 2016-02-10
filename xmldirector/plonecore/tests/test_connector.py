@@ -24,7 +24,7 @@ is_mac = False
 class BasicTests(TestBase):
 
     def setUp(self):
-        handle = self.portal.connector.webdav_handle()
+        handle = self.portal.connector.get_handle()
         if handle.exists(PREFIX):
             handle.removedir(PREFIX, False, True)
         handle.makedir(PREFIX, allow_recreate=True)
@@ -47,7 +47,7 @@ class BasicTests(TestBase):
 
     def tearDown(self):
         self.portal.connector.webdav_subpath = None
-        handle = self.portal.connector.webdav_handle()
+        handle = self.portal.connector.get_handle()
         if handle.exists(PREFIX):
             handle.removedir(PREFIX, False, True)
 
@@ -67,12 +67,12 @@ class BasicTests(TestBase):
         assert self.portal.connector.portal_type == 'xmldirector.plonecore.connector'
 
     def testCheckWebdavHandle(self):
-        handle = self.portal.connector.webdav_handle()
+        handle = self.portal.connector.get_handle()
         self.assertEqual(
             handle.url, WEBDAV_URL + '/{}/'.format(PREFIX))
 
     def testFileCheck(self):
-        handle = self.portal.connector.webdav_handle()
+        handle = self.portal.connector.get_handle()
         self.assertEqual(handle.exists('foo/index.html'), True)
         self.assertEqual(handle.exists('foo/index.xml'), True)
         self.assertEqual(handle.exists('foo/xxxx.html'), False)
@@ -81,7 +81,7 @@ class BasicTests(TestBase):
         self.login('god')
         view = self._get_view()
         view.rename_collection('', 'foo', 'bar')
-        handle = self.portal.connector.webdav_handle()
+        handle = self.portal.connector.get_handle()
         self.assertEqual(handle.exists('bar/index.html'), True)
         self.assertEqual(handle.exists('bar/index.xml'), True)
 
@@ -89,14 +89,14 @@ class BasicTests(TestBase):
         self.login('god')
         view = self._get_view()
         view.create_collection('', 'new')
-        handle = self.portal.connector.webdav_handle()
+        handle = self.portal.connector.get_handle()
         self.assertEqual(handle.exists('new'), True)
 
     def testRemoveCollection(self):
         self.login('god')
         view = self._get_view()
         view.remove_collection('', 'foo')
-        handle = self.portal.connector.webdav_handle()
+        handle = self.portal.connector.get_handle()
         self.assertEqual(handle.exists('foo'), False)
 
     def testZipExport(self):
@@ -124,7 +124,7 @@ class BasicTests(TestBase):
         os.unlink(fn)
 
     def testZipExportReimport(self):
-        handle = self.portal.connector.webdav_handle()
+        handle = self.portal.connector.get_handle()
         self.login('god')
 
         view = self._get_view()
@@ -145,13 +145,13 @@ class BasicTests(TestBase):
         fn = os.path.join(os.path.dirname(__file__), 'zip_data', 'sample.zip')
         view = self._get_view()
         view.zip_import(fn)
-        handle = self.portal.connector.webdav_handle()
+        handle = self.portal.connector.get_handle()
         self.assertEqual(handle.exists('import/test.xml'), True)
         self.assertEqual(handle.exists('import/test.html'), True)
 
     def __testZipImportMacFinder(self):
         self.login('god')
-        handle = self.portal.connector.webdav_handle()
+        handle = self.portal.connector.get_handle()
         for name in handle.listdir():
             handle.removedir(name, False, True)
 
@@ -165,7 +165,7 @@ class BasicTests(TestBase):
 
     def __testZipImportMacZip(self):
         self.login('god')
-        handle = self.portal.connector.webdav_handle()
+        handle = self.portal.connector.get_handle()
         for name in handle.listdir():
             handle.removedir(name, False, True)
 
@@ -231,7 +231,7 @@ class MiscTests(TestBase):
 
     def test_ensuredir(self):
 
-        handle = self.portal.connector.webdav_handle()
+        handle = self.portal.connector.get_handle()
         handle.ensuredir('hello/world/abc.txt')
         self.assertTrue(handle.exists('hello/world'))
 

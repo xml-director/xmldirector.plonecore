@@ -41,7 +41,7 @@ class webdav_iterator(file):
 
 # Default view  for connector
 
-def default_html_handler(webdav_handle, filename, view_name, request):
+def default_html_handler(get_handle, filename, view_name, request):
 
     html_template = ViewPageTemplateFile('html_view.pt')
 
@@ -50,7 +50,7 @@ def default_html_handler(webdav_handle, filename, view_name, request):
                                    '/'.join(request.subpath[:-1]))
 
     # get HTML
-    html = webdav_handle.open(webdav_handle.leaf_filename, 'rb').read()
+    html = get_handle.open(get_handle.leaf_filename, 'rb').read()
     root = lxml.html.fromstring(html)
 
     # rewrite relative image urls
@@ -75,12 +75,12 @@ def default_html_handler(webdav_handle, filename, view_name, request):
             html=html)))
 
 
-def ace_editor(webdav_handle, filename, view_name, request,
+def ace_editor(get_handle, filename, view_name, request,
                readonly=False, template_name='ace_editor.pt'):
     """ Default handler for showing/editing textish content through the ACE editor """
 
     mt, encoding = mimetypes.guess_type(filename)
-    content = webdav_handle.open(webdav_handle.leaf_filename, 'rb').read()
+    content = get_handle.open(get_handle.leaf_filename, 'rb').read()
     ace_mode = config.ACE_MODES.get(mt, 'text')
     template = ViewPageTemplateFile(template_name)
     action_url = '{}/view-editor/{}'.format(request.context.absolute_url(),
@@ -96,16 +96,16 @@ def ace_editor(webdav_handle, filename, view_name, request,
                      ace_mode=ace_mode)))
 
 
-def ace_editor_readonly(webdav_handle, filename, view_name,
+def ace_editor_readonly(get_handle, filename, view_name,
                         request, readonly=True, template_name='ace_editor.pt'):
     return ace_editor(
-        webdav_handle, filename, view_name, request, readonly, template_name)
+        get_handle, filename, view_name, request, readonly, template_name)
 
 
-def default_view_handler(webdav_handle, filename, view_name, request):
+def default_view_handler(get_handle, filename, view_name, request):
     """ Default handler for images and other binary resources """
 
-    info = webdav_handle.getinfo(webdav_handle.leaf_filename)
+    info = get_handle.getinfo(get_handle.leaf_filename)
     mt, encoding = mimetypes.guess_type(filename)
     if not mt:
         mt = 'application/octet-stream'
@@ -115,9 +115,9 @@ def default_view_handler(webdav_handle, filename, view_name, request):
             'Content-Disposition', 'attachment;filename={}'.format(request['filename']))
     if 'size' in info:
         request.response.setHeader('Content-Length', info['size'])
-        return webdav_iterator(webdav_handle)
+        return webdav_iterator(get_handle)
     else:
-        data = webdav_handle.open(webdav_handle.leaf_filename, 'rb').read()
+        data = get_handle.open(get_handle.leaf_filename, 'rb').read()
         request.response.setHeader('Content-Length', len(data))
         return data
 

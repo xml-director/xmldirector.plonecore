@@ -62,7 +62,7 @@ class LockManager(object):
         self.context = context
 
     @property
-    def webdav_handle(self):
+    def get_handle(self):
         """ Return webdav handle as property """
         from xmldirector.plonecore.fswrapper import get_fs_wrapper
         if self.context:
@@ -81,7 +81,7 @@ class LockManager(object):
                     return get_fs_wrapper(context_webdav_url, credentials=dict(username=username, password=password))
                 else:
                     return get_fs_wrapper(context_webdav_url)
-        return getUtility(IWebdavHandle).webdav_handle()
+        return getUtility(IWebdavHandle).get_handle()
 
     def lock_filename(self, path):
         """ Canoncial lock filename for a given path """
@@ -91,7 +91,7 @@ class LockManager(object):
 
     def has_lock(self, path):
         """ Return True if the given file is locked, False otherwise """
-        handle = self.webdav_handle
+        handle = self.get_handle
         return handle.exists(self.lock_filename(path))
 
     def get_lock(self, path):
@@ -99,7 +99,7 @@ class LockManager(object):
         if not isinstance(path, unicode):
             path = unicode(path, 'utf8')
 
-        handle = self.webdav_handle
+        handle = self.get_handle
         lock_filename = self.lock_filename(path)
         try:
             with handle.open(lock_filename, 'rb', lock_check=False) as fp:
@@ -130,7 +130,7 @@ class LockManager(object):
         if mode not in ('shared', 'exclusive'):
             raise LockError(u'mode must be either "shared" or "exclusive"')
 
-        handle = self.webdav_handle
+        handle = self.get_handle
         if not handle.exists(path):
             raise LockError('Lock target does not exist ({})'.format(path))
 
@@ -162,7 +162,7 @@ class LockManager(object):
             in order to release the lock successfully.
         """
 
-        handle = self.webdav_handle
+        handle = self.get_handle
 
         lock_info = self.get_lock(path)
         lock_token = lock_info['token']

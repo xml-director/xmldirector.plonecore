@@ -26,14 +26,14 @@ sample_xml = '<hello>world</hello>'
 class BasicTests(TestBase):
 
     @property
-    def webdav_handle(self):
+    def get_handle(self):
         from zope.component import getUtility
         from xmldirector.plonecore.interfaces import IWebdavHandle
-        return getUtility(IWebdavHandle).webdav_handle()
+        return getUtility(IWebdavHandle).get_handle()
 
     def setUp(self):
 
-        handle = self.webdav_handle
+        handle = self.get_handle
         if handle.exists(PREFIX):
             handle.removedir(PREFIX, False, True)
         handle.makedir(PREFIX)
@@ -45,7 +45,7 @@ class BasicTests(TestBase):
 
     def tearDown(self):
         self.portal.connector.webdav_subpath = None
-        handle = self.webdav_handle
+        handle = self.get_handle
         handle.ignore_errors = True
         if handle.exists(PREFIX):
             handle.removedir(PREFIX, False, True)
@@ -56,7 +56,7 @@ class BasicTests(TestBase):
 
     def test_hasLock(self):
         lm = self.lock_manager
-        handle = self.webdav_handle
+        handle = self.get_handle
         self.assertTrue(handle.exists(self.sample_xml))
         self.assertFalse(lm.has_lock(self.sample_xml))
 
@@ -121,7 +121,7 @@ class BasicTests(TestBase):
 
     def test_write_to_locked_file_as_different_user(self):
         lm = self.lock_manager
-        handle = self.webdav_handle
+        handle = self.get_handle
 
         self.login('god')
         lm.lock(self.sample_xml, mode='shared')
@@ -133,7 +133,7 @@ class BasicTests(TestBase):
 
     def test_write_to_locked_file_as_same_user(self):
         lm = self.lock_manager
-        handle = self.webdav_handle
+        handle = self.get_handle
 
         self.login('god')
         lm.lock(self.sample_xml, mode='shared')
@@ -142,7 +142,7 @@ class BasicTests(TestBase):
 
     def test_remove_locked_file_as_different_user(self):
         lm = self.lock_manager
-        handle = self.webdav_handle
+        handle = self.get_handle
         self.login('god')
         lm.lock(self.sample_xml, mode='shared')
         self.login('god2')
@@ -151,14 +151,14 @@ class BasicTests(TestBase):
 
     def test_remove_locked_file_as_same_user(self):
         lm = self.lock_manager
-        handle = self.webdav_handle
+        handle = self.get_handle
         self.login('god')
         lm.lock(self.sample_xml, mode='shared')
         handle.remove(self.sample_xml)
 
     def test_move_locked_file_as_different_user(self):
         lm = self.lock_manager
-        handle = self.webdav_handle
+        handle = self.get_handle
         self.login('god')
         lm.lock(self.sample_xml, mode='shared')
         self.login('god2')
@@ -167,13 +167,13 @@ class BasicTests(TestBase):
 
     def test_move_locked_file_as_same_user(self):
         lm = self.lock_manager
-        handle = self.webdav_handle
+        handle = self.get_handle
         lm.lock(self.sample_xml, mode='shared')
         handle.move(self.sample_xml, 'somewhere.xml')
 
     def test_exclusive_lock(self):
         lm = self.lock_manager
-        handle = self.webdav_handle
+        handle = self.get_handle
 
         # Lock owner can read and write
         self.login('god')

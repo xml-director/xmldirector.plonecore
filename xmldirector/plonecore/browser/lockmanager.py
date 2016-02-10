@@ -21,7 +21,7 @@ class LockManager(BrowserView):
 
         release_uri = self.request.get('release')
         if release_uri:
-            handle = getUtility(IWebdavHandle).webdav_handle()
+            handle = getUtility(IWebdavHandle).get_handle()
             release_uri = release_uri.lstrip('/db')
             if handle.exists(release_uri):
                 handle.remove(release_uri)

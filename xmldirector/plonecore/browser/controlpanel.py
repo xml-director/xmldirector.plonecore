@@ -63,7 +63,7 @@ class DBSettingsControlPanel(controlpanel.ControlPanelFormWrapper):
         errors = []
 
         try:
-            service.webdav_handle()
+            service.get_handle()
         except fs.errors.PermissionDeniedError as e:
             errors.append(
                 u'Permission denied error - improper credentials? ({})'.format(e))
@@ -157,7 +157,7 @@ class Installer(BrowserView):
     def install_scripts(self):
 
         service = getUtility(IWebdavHandle)
-        handle = service.webdav_handle()
+        handle = service.get_handle()
 
         for exist_name, local_name in [('scripts/all-locks.xql', 'scripts/existdb/all-locks.xql')]:
             src = pkg_resources.resource_string(

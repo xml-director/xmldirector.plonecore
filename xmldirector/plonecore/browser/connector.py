@@ -113,7 +113,7 @@ class Connector(BrowserView):
         """ Traversal hook for (un)restrictedTraverse() """
         self.traversal_subpath.append(entryname)
         traversal_subpath = '/'.join(self.traversal_subpath)
-        handle = self.webdav_handle()
+        handle = self.get_handle()
         if handle.exists(traversal_subpath):
             if handle.isdir(traversal_subpath):
                 return self
@@ -132,7 +132,7 @@ class Connector(BrowserView):
     def logger(self):
         return IPersistentLogger(self.context)
 
-    def webdav_handle(self, subpath=None, root=False):
+    def get_handle(self, subpath=None, root=False):
         """ Returns a webdav handle for the current subpath """
 
         if not root:
@@ -140,7 +140,7 @@ class Connector(BrowserView):
                 subpath = '/'.join(self.subpath)
 
         try:
-            return self.context.webdav_handle(subpath)
+            return self.context.get_handle(subpath)
         except fs.errors.ResourceNotFoundError as e:
             msg = 'eXist-db path {} does not exist'.format(e.url)
             self.context.plone_utils.addPortalMessage(msg, 'error')
@@ -153,8 +153,8 @@ class Connector(BrowserView):
             LOG.error(msg)
             raise zExceptions.Unauthorized()
 
-    def webdav_handle_root(self):
-        return self.webdav_handle(root=True)
+    def get_handle_root(self):
+        return self.get_handle(root=True)
 
     def redirect(self, message=None, level='info', subpath=None):
         if message:
@@ -167,7 +167,7 @@ class Connector(BrowserView):
         return self.request.response.redirect(url)
 
     def collection_action(self, paths=[], action=None):
-        handle = self.context.webdav_handle()
+        handle = self.context.get_handle()
         if action == 'delete':
             for path in paths:
                 if handle.exists(path):
@@ -182,7 +182,7 @@ class Connector(BrowserView):
 
     def __call__(self, *args, **kw):
 
-        handle = self.webdav_handle()
+        handle = self.get_handle()
         if handle.isDirectory():
             context_url = self.context.absolute_url()
             view_prefix = '@@view'
@@ -274,7 +274,7 @@ class Connector(BrowserView):
         if not name:
             raise ValueError(_(u'No "name" given'))
 
-        handle = self.webdav_handle(subpath)
+        handle = self.get_handle(subpath)
         if handle.exists(name):
             msg = u'Collection already exists'
             self.context.plone_utils.addPortalMessage(msg, 'error')
@@ -289,7 +289,7 @@ class Connector(BrowserView):
     def remove_collection(self, subpath, name):
         """ Remove a collection """
 
-        handle = self.webdav_handle(subpath)
+        handle = self.get_handle(subpath)
         if handle.exists(name):
             handle.removedir(name, force=True)
             msg = u'Collection removed'
@@ -304,7 +304,7 @@ class Connector(BrowserView):
     def remove_from_collection(self, subpath, name):
         """ Remove a collection """
 
-        handle = self.webdav_handle(subpath)
+        handle = self.get_handle(subpath)
         if handle.exists(name):
             handle.remove(name)
             msg = u'Removed {}'.format(name)
@@ -323,7 +323,7 @@ class Connector(BrowserView):
         if not new_name:
             raise ValueError(_(u'No new "name" given'))
 
-        handle = self.webdav_handle(subpath)
+        handle = self.get_handle(subpath)
         if handle.exists(name):
             handle.rename(name, new_name)
             msg = u'Collection renamed'
@@ -362,7 +362,7 @@ class Connector(BrowserView):
     def clear_contents(self):
         """ Remove all sub content """
 
-        handle = self.webdav_handle()
+        handle = self.get_handle()
         for name in handle.listdir():
             if handle.isfile(name):
                 handle.remove(name)
@@ -375,11 +375,11 @@ class Connector(BrowserView):
         """ Store .DOCX file """
 
         subpath = self.request.get('subpath')
-        webdav_handle = self.context.webdav_handle(subpath=subpath)
+        get_handle = self.context.get_handle(subpath=subpath)
         filename = os.path.basename(self.request.Filedata.filename)
         basename, ext = os.path.splitext(filename)
 
-        with webdav_handle.open(filename, 'wb') as fp:
+        with get_handle.open(filename, 'wb') as fp:
             self.request.Filedata.seek(0)
             data = self.request.Filedata.read()
             fp.write(data)
@@ -401,7 +401,7 @@ class Connector(BrowserView):
         if not isinstance(subpath, unicode):
             subpath = unicode(subpath, 'utf8')
 
-        handle = self.webdav_handle()
+        handle = self.get_handle()
         zip_filename = tempfile.mktemp(suffix='.zip')
         with ZipFS(zip_filename, 'w', encoding='utf8') as zip_fs:
             for dirname, filenames in handle.walk(subpath):
@@ -454,7 +454,7 @@ class Connector(BrowserView):
         if clean_directories is None:
             clean_directories = []
 
-        handle = self.webdav_handle()
+        handle = self.get_handle()
 
         if not zip_file:
             zip_filename = self.request.zipfile.filename
@@ -556,7 +556,7 @@ class AceEditor(Connector):
         if method == 'GET':
             return super(AceEditor, self).__call__(*args, **kw)
         elif method == 'POST':
-            handle = self.webdav_handle_root()
+            handle = self.get_handle_root()
             fp = handle.open('/'.join(self.subpath), 'wb')
             fp.write(self.request.data)
             # does not work ParentDirectoryMissingError: ParentDi...ngError()

@@ -47,15 +47,15 @@ class Precondition(object):
 
         return True
 
-    def handle_view(self, webdav_handle, filename, view_name, request):
+    def handle_view(self, get_handle, filename, view_name, request):
         if inspect.isfunction(self.view_handler):
             return self.view_handler(
-                webdav_handle, filename, view_name, request)
+                get_handle, filename, view_name, request)
         elif inspect.isclass(self.view_handler):
             if issubclass(self.view_handler, BrowserView):
-                return self.view_handler(webdav_handle, filename, view_name, request)()
+                return self.view_handler(get_handle, filename, view_name, request)()
             else:
-                return self.view_handler()(webdav_handle, filename, view_name, request)
+                return self.view_handler()(get_handle, filename, view_name, request)
         raise TypeError(
             'Unsupported kind of view_handler {}'.format(self.view_handler))
 
@@ -84,16 +84,16 @@ class PreconditionRegistry(object):
     def set_default(self, precondition):
         self._p_default = precondition
 
-    def dispatch(self, webdav_handle, filename, view_name, request):
+    def dispatch(self, get_handle, filename, view_name, request):
 
         for precondition in self._p:
             if precondition.can_handle(filename, view_name):
                 return precondition.handle_view(
-                    webdav_handle, filename, view_name, request)
+                    get_handle, filename, view_name, request)
 
         if self._p_default:
             return self._p_default.handle_view(
-                webdav_handle, filename, view_name, request)
+                get_handle, filename, view_name, request)
         raise ValueError('No matching precondition found')
 
 

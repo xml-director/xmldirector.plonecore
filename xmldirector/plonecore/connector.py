@@ -85,7 +85,7 @@ class Connector(Item):
     webdav_password = None
     webdav_subpath = None
 
-    def webdav_handle(self, subpath=None, create_if_not_existing=False):
+    def get_handle(self, subpath=None, create_if_not_existing=False):
         """ Return WebDAV handle to root of configured connector object
             including configured webdav_subpath.
         """
@@ -114,7 +114,7 @@ class Connector(Item):
 
         if create_if_not_existing:
             util = getUtility(IWebdavHandle)
-            handle = util.webdav_handle()
+            handle = util.get_handle()
             if not handle.exists(adapted.webdav_subpath):
                 handle.makedir(adapted.webdav_subpath, recursive=True)
             url = '{}/{}'.format(handle.url.strip('/'), adapted.webdav_subpath)
@@ -146,3 +146,6 @@ class Connector(Item):
                 self.absolute_url(), url, self.REQUEST.get('HTTP_USER_AGENT')), exc_info=True)
             e.url = url
             raise e
+
+    # aliases
+    webdav_handle = get_handle
