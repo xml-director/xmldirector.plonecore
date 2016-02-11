@@ -57,14 +57,14 @@ class IWebdavSettings(Interface):
         required=True
     )
 
-    webdav_dexterity_subpath = schema.TextLine(
+    connector_dexterity_subpath = schema.TextLine(
         title=_(u'Dexterity subpath'),
         description=_(u'Subpath inside storage for Dexterity content'),
         default=u'',
         required=False
     )
 
-    webdav_mode = schema.Choice(
+    connector_mode = schema.Choice(
         title=_(u'Connector mode'),
         description=_(u'Connector mode (defaults to Exist-DB)'),
         default=u'existdb',

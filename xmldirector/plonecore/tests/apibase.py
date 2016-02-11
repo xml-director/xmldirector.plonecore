@@ -67,7 +67,7 @@ class APILayer(PloneSandboxLayer):
         settings.connector_username = unicode(WEBDAV_USERNAME)
         settings.connector_password = unicode(WEBDAV_PASSWORD)
         settings.connector_url = unicode(WEBDAV_URL)
-        self.testing_directory = settings.webdav_dexterity_subpath = u'testing-dexterity-{}'.format(
+        self.testing_directory = settings.connector_dexterity_subpath = u'testing-dexterity-{}'.format(
             uuid.uuid4())
 
         handle = get_fs_wrapper(WEBDAV_URL, credentials=dict(username=WEBDAV_USERNAME,

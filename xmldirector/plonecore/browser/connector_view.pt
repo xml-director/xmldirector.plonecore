@@ -23,7 +23,7 @@
 
       <div id="connection-url">
           <label i18n:translate="">Connected to:</label>
-          <span tal:content="context/webdav_url" />
+          <span tal:content="context/connector_url" />
       </div>
 
       <form tal:attributes="action string:${context/absolute_url}/collection-action" method="POST">

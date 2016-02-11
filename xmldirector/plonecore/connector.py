@@ -156,7 +156,7 @@ class Connector(Item):
     def get_connector_url(self):
         return self.connector_url
 
-    connector_url = property(get_connector_url, set_connector_url)
+    webdav_url = property(get_connector_url, set_connector_url)
     
     def set_connector_username(self, value):
         self.connector_username = value
@@ -164,7 +164,7 @@ class Connector(Item):
     def get_connector_username(self):
         return self.connector_username
 
-    connector_username = property(get_connector_username, set_connector_username)
+    webdav_username = property(get_connector_username, set_connector_username)
 
     def set_connector_password(self, value):
         self.connector_password = value
@@ -172,7 +172,7 @@ class Connector(Item):
     def get_connector_password(self):
         return self.connector_password
 
-    connector_password = property(get_connector_password, set_connector_password)
+    webdav_password = property(get_connector_password, set_connector_password)
     
     def set_connector_subpath(self, value):
         self.connector_subpath = value
@@ -180,4 +180,4 @@ class Connector(Item):
     def get_connector_subpath(self):
         return self.connector_subpath
 
-    connector_subpath = property(get_connector_subpath, set_connector_subpath)
+    webdav_subpath = property(get_connector_subpath, set_connector_subpath)

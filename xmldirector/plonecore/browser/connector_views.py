@@ -17,7 +17,7 @@ from .view_registry import Precondition
 from . import config
 
 
-class webdav_iterator(file):
+class connector_iterator(file):
 
     implements(IStreamIterator)
 
@@ -115,7 +115,7 @@ def default_view_handler(get_handle, filename, view_name, request):
             'Content-Disposition', 'attachment;filename={}'.format(request['filename']))
     if 'size' in info:
         request.response.setHeader('Content-Length', info['size'])
-        return webdav_iterator(get_handle)
+        return connector_iterator(get_handle)
     else:
         data = get_handle.open(get_handle.leaf_filename, 'rb').read()
         request.response.setHeader('Content-Length', len(data))

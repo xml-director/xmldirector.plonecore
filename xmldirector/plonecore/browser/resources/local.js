@@ -220,7 +220,7 @@ $(document).ready(function() {
                     window.location.href = '@@xmldirector-connection-test'; 
                 });
 
-                if (settings['webdav_mode'] == 'existdb') {
+                if (settings['connector_mode'] == 'existdb') {
                     var button3 = button.clone();
                     button3.attr('value', 'Install Exist-DB scripts');
                     button3.attr('name', 'form-button-install-scripts');
