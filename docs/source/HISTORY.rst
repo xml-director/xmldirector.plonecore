@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.5.0 (unreleased)
+--------------------
+
+- huge internal renaming: renamed all webdav_* variables
+  to connector_* 
+
 1.4.2 (2016-02-02)
 --------------------
 
