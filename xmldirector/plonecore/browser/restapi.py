@@ -38,6 +38,7 @@ ANNOTATION_KEY = 'xmldirector.plonecore.api'
 
 
 SRC_PREFIX = 'src'
+_marker = object
 
 
 def check_permission(permission, context):
@@ -264,20 +265,20 @@ class api_set_metadata(BaseService):
         payload = decode_json_payload(self.request)
         IPersistentLogger(self.context).log('set_metadata', details=payload)
 
-        title = payload.get('title')
-        if title:
+        title = payload.get('title', _marker)
+        if title is not _marker:
             self.context.setTitle(title)
 
-        description = payload.get('description')
-        if description:
-            self.context.setDescription(description)
+        description = payload.get('description', _marker)
+        if description is not _marker:
+            self.context.setDescription(description, _marker)
 
-        subject = payload.get('subject')
-        if subject:
+        subject = payload.get('subject', _marker)
+        if subject is not _marker:
             self.context.setSubject(subject)
 
-        custom = payload.get('custom')
-        if custom:
+        custom = payload.get('custom', _marker)
+        if custom is not _marker:
             annotations = IAnnotations(self.context)
             annotations[ANNOTATION_KEY] = custom
 
