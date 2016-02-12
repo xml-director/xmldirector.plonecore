@@ -271,7 +271,7 @@ class api_set_metadata(BaseService):
 
         description = payload.get('description', _marker)
         if description is not _marker:
-            self.context.setDescription(description, _marker)
+            self.context.setDescription(description)
 
         subject = payload.get('subject', _marker)
         if subject is not _marker:
