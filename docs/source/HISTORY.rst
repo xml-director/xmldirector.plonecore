@@ -6,6 +6,7 @@ Changelog
 
 - huge internal renaming: renamed all webdav_* variables
   to connector_* 
+- adjusted tests to Marc Logic Server
 
 1.4.2 (2016-02-02)
 --------------------
