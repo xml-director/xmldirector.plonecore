@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.5.0 (unreleased)
+1.5.0 (2016-02-17)
 --------------------
 
 - huge internal renaming: renamed all webdav_* variables

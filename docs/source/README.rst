@@ -80,6 +80,8 @@ Requirements
     
     - Alfresco
 
+    - Marklogic Server
+
     - Dropbox (via dropdav.com (Dropbox to WebDAV bridge, paid SaaS))
 
     - AWS S3
