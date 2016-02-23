@@ -29,7 +29,7 @@ from ZPublisher.Iterators import filestream_iterator
 from ZPublisher.Iterators import IStreamIterator
 
 from xmldirector.plonecore.logger import LOG
-from xmldirector.plonecore.interfaces import IWebdavHandle
+from xmldirector.plonecore.interfaces import IConnectorHandle
 from xmldirector.plonecore.connector import IConnector
 from zopyx.plone.persistentlogger.logger import IPersistentLogger
 
@@ -291,7 +291,7 @@ class api_delete(BaseService):
 
         check_permission(permissions.DeleteObjects, self.context)
 
-        util = getUtility(IWebdavHandle)
+        util = getUtility(IConnectorHandle)
 
         handle = util.get_handle()
         handle.removedir(self.context.connector_subpath, True, True)

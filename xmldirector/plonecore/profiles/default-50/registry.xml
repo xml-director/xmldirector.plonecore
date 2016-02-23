@@ -2,7 +2,7 @@
 <registry 
     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
     i18n:domain="plone">
-    <records interface="xmldirector.plonecore.interfaces.IWebdavSettings" />
+    <records interface="xmldirector.plonecore.interfaces.IConnectorSettings" />
 
     <records prefix="plone.resources/xmldirector.plonecore-local"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>

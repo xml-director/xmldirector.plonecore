@@ -20,7 +20,7 @@ from plone.namedfile import NamedFile
 from plone.namedfile.field import NamedFile as NamedFileField
 
 from xmldirector.plonecore.i18n import MessageFactory as _
-from xmldirector.plonecore.interfaces import IWebdavHandle
+from xmldirector.plonecore.interfaces import IConnectorHandle
 from xmldirector.plonecore.dx import util
 
 
@@ -63,7 +63,7 @@ class XMLBinaryDataManager(AttributeDataManager):
     def get(self):
         """See z3c.form.interfaces.IDataManager"""
 
-        handle = zope.component.getUtility(IWebdavHandle).get_handle()
+        handle = zope.component.getUtility(IConnectorHandle).get_handle()
         storage_key = self.storage_key
         if handle.exists(storage_key):
             with handle.open(storage_key, 'rb') as fp:
@@ -83,7 +83,7 @@ class XMLBinaryDataManager(AttributeDataManager):
     def set(self, value):
         """See z3c.form.interfaces.IDataManager"""
 
-        handle = zope.component.getUtility(IWebdavHandle).get_handle()
+        handle = zope.component.getUtility(IConnectorHandle).get_handle()
         storage_key = self.storage_key
 
         if not value:

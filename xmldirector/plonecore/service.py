@@ -10,20 +10,20 @@ import fs.errors
 import zope.interface
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
-from xmldirector.plonecore.interfaces import IWebdavSettings
-from xmldirector.plonecore.interfaces import IWebdavHandle
+from xmldirector.plonecore.interfaces import IConnectorSettings
+from xmldirector.plonecore.interfaces import IConnectorHandle
 from xmldirector.plonecore.fswrapper import get_fs_wrapper
 
 
-class WebdavHandle(object):
+class ConnectorHandle(object):
 
-    zope.interface.implements(IWebdavHandle)
+    zope.interface.implements(IConnectorHandle)
 
     def get_handle(self):
-        """ Return WebDAV handle """
+        """ Return Connector handle """
 
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(IWebdavSettings)
+        settings = registry.forInterface(IConnectorSettings)
 
         root_url = settings.connector_url
         username = settings.connector_username
@@ -44,4 +44,4 @@ class WebdavHandle(object):
                                                         password=password))
 
 
-WebdavHandleUtility = WebdavHandle()
+ConnectorHandleUtility = ConnectorHandle()

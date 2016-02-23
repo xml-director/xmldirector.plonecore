@@ -28,8 +28,8 @@ class BasicTests(TestBase):
     @property
     def get_handle(self):
         from zope.component import getUtility
-        from xmldirector.plonecore.interfaces import IWebdavHandle
-        return getUtility(IWebdavHandle).get_handle()
+        from xmldirector.plonecore.interfaces import IConnectorHandle
+        return getUtility(IConnectorHandle).get_handle()
 
     def setUp(self):
 

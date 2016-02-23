@@ -22,7 +22,7 @@ from datetime import datetime
 
 import plone.api
 from zope.component import getUtility
-from xmldirector.plonecore.interfaces import IWebdavHandle
+from xmldirector.plonecore.interfaces import IConnectorHandle
 
 
 lock_xml_template = u'''<lock version="1.0"
@@ -81,7 +81,7 @@ class LockManager(object):
                     return get_fs_wrapper(context_connector_url, credentials=dict(username=username, password=password))
                 else:
                     return get_fs_wrapper(context_connector_url)
-        return getUtility(IWebdavHandle).get_handle()
+        return getUtility(IConnectorHandle).get_handle()
 
     def lock_filename(self, path):
         """ Canoncial lock filename for a given path """

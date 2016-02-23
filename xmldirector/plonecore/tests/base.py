@@ -22,7 +22,7 @@ from zope.component import getUtility
 from zope.configuration import xmlconfig
 from AccessControl.SecurityManagement import newSecurityManager
 
-from xmldirector.plonecore.interfaces import IWebdavSettings
+from xmldirector.plonecore.interfaces import IConnectorSettings
 from xmldirector.plonecore.fswrapper import get_fs_wrapper
 from xmldirector.plonecore.logger import LOG
 
@@ -63,7 +63,7 @@ class PolicyFixture(PloneSandboxLayer):
         login(portal, 'god')
 
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(IWebdavSettings)
+        settings = registry.forInterface(IConnectorSettings)
         settings.connector_username = unicode(WEBDAV_USERNAME)
         settings.connector_password = unicode(WEBDAV_PASSWORD)
         settings.connector_url = unicode(WEBDAV_URL)

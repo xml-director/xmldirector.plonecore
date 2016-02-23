@@ -23,13 +23,13 @@ from plone.app.registry.browser import controlpanel
 from Products.Five.browser import BrowserView
 
 from xmldirector.plonecore.i18n import MessageFactory as _
-from xmldirector.plonecore.interfaces import IWebdavSettings
-from xmldirector.plonecore.interfaces import IWebdavHandle
+from xmldirector.plonecore.interfaces import IConnectorSettings
+from xmldirector.plonecore.interfaces import IConnectorHandle
 
 
 class DBSettingsEditForm(controlpanel.RegistryEditForm):
 
-    schema = IWebdavSettings
+    schema = IConnectorSettings
     label = _(u'XML Director core settings')
     description = _(u'')
 
@@ -47,7 +47,7 @@ class DBSettingsControlPanel(controlpanel.ControlPanelFormWrapper):
     def settings(self):
         """ Returns setting as dict """
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(IWebdavSettings)
+        settings = registry.forInterface(IConnectorSettings)
         result = dict()
         for name in settings.__schema__:
             result[name] = getattr(settings, name)
@@ -59,7 +59,7 @@ class DBSettingsControlPanel(controlpanel.ControlPanelFormWrapper):
 
     def connection_test(self):
 
-        service = getUtility(IWebdavHandle)
+        service = getUtility(IConnectorHandle)
         errors = []
 
         try:
@@ -156,7 +156,7 @@ class Installer(BrowserView):
 
     def install_scripts(self):
 
-        service = getUtility(IWebdavHandle)
+        service = getUtility(IConnectorHandle)
         handle = service.get_handle()
 
         for exist_name, local_name in [('scripts/all-locks.xql', 'scripts/existdb/all-locks.xql')]:

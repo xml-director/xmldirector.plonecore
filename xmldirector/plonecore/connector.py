@@ -19,8 +19,8 @@ from plone.supermodel import model
 from plone.registry.interfaces import IRegistry
 
 from xmldirector.plonecore.i18n import MessageFactory as _
-from xmldirector.plonecore.interfaces import IWebdavSettings
-from xmldirector.plonecore.interfaces import IWebdavHandle
+from xmldirector.plonecore.interfaces import IConnectorSettings
+from xmldirector.plonecore.interfaces import IConnectorHandle
 from xmldirector.plonecore.fswrapper import get_fs_wrapper
 from xmldirector.plonecore.logger import LOG
 
@@ -91,7 +91,7 @@ class Connector(Item):
         """
 
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(IWebdavSettings)
+        settings = registry.forInterface(IConnectorSettings)
 
         adapted = IConnector(self)
 
@@ -113,7 +113,7 @@ class Connector(Item):
             password = adapted.connector_password or ''
 
         if create_if_not_existing:
-            util = getUtility(IWebdavHandle)
+            util = getUtility(IConnectorHandle)
             handle = util.get_handle()
             if not handle.exists(adapted.connector_subpath):
                 handle.makedir(adapted.connector_subpath, recursive=True)

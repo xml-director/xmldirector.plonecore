@@ -17,10 +17,9 @@ class IBrowserLayer(Interface):
     """A brower layer specific to my product """
 
 
-class IWebdavHandle(Interface):
+class IConnectorHandle(Interface):
 
-    """ Return a DAVFS handle for the system-wide configured
-        WebDav/database server """
+    """ Return a DAVFS handle for the system-wide configured conector handle """
 
 
 class ITransformerRegistry(Interface):
@@ -33,7 +32,7 @@ class IValidatorRegistry(Interface):
     """ Marker interface for ValidatorRegistry """
 
 
-WEBDAV_MODE_VOCAB = SimpleVocabulary([
+CONNECTOR_MODE_VOCAB = SimpleVocabulary([
     SimpleTerm(u'existdb', title=u'Exist-DB'),
     SimpleTerm(u'basex', title=u'BaseX'),
     SimpleTerm(u'alfresco', title=u'Alfresco'),
@@ -43,9 +42,8 @@ WEBDAV_MODE_VOCAB = SimpleVocabulary([
 ])
 
 
-class IWebdavSettings(Interface):
-
-    """ ExistDB settings """
+class IConnectorSettings(Interface):
+    """ Connector settings """
 
     connector_url = schema.TextLine(
         title=_(u'Connection URL of storage service'),
@@ -69,7 +67,7 @@ class IWebdavSettings(Interface):
         description=_(u'Connector mode (defaults to Exist-DB)'),
         default=u'existdb',
         required=True,
-        vocabulary=WEBDAV_MODE_VOCAB
+        vocabulary=CONNECTOR_MODE_VOCAB
     )
 
     connector_username = schema.TextLine(

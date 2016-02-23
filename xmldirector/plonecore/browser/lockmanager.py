@@ -9,7 +9,7 @@
 from zope.component import getUtility
 
 from Products.Five.browser import BrowserView
-from xmldirector.plonecore.interfaces import IWebdavHandle
+from xmldirector.plonecore.interfaces import IConnectorHandle
 from xmldirector.plonecore.browser.api import API
 from xmldirector.plonecore.browser.api import APIError
 from xmldirector.plonecore.logger import LOG
@@ -21,7 +21,7 @@ class LockManager(BrowserView):
 
         release_uri = self.request.get('release')
         if release_uri:
-            handle = getUtility(IWebdavHandle).get_handle()
+            handle = getUtility(IConnectorHandle).get_handle()
             release_uri = release_uri.lstrip('/db')
             if handle.exists(release_uri):
                 handle.remove(release_uri)

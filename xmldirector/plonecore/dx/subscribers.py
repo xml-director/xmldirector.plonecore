@@ -11,8 +11,8 @@ from xmldirector.plonecore.dx import util
 from xmldirector.plonecore.dx.xpath_field import get_all_xml_fields
 from xmldirector.plonecore.dx.dexterity_base import xml_get
 from xmldirector.plonecore.dx.dexterity_base import xml_set
-from xmldirector.plonecore.interfaces import IWebdavSettings
-from xmldirector.plonecore.interfaces import IWebdavHandle
+from xmldirector.plonecore.interfaces import IConnectorSettings
+from xmldirector.plonecore.interfaces import IConnectorHandle
 
 
 def removal_handler(obj, event):
@@ -23,7 +23,7 @@ def removal_handler(obj, event):
     if not util.is_xml_content(event.object):
         return
 
-    handle = getUtility(IWebdavHandle).get_handle()
+    handle = getUtility(IConnectorHandle).get_handle()
     storage_dir = util.get_storage_path(event.object)
     storage_parent_dir = util.get_storage_path_parent(event.object)
     if handle.exists(storage_dir):
@@ -48,7 +48,7 @@ def copied_handler(obj, event):
         util.new_storage_key(copied)
 
         # an copy over XML content from original content object
-        handle = getUtility(IWebdavHandle).get_handle()
+        handle = getUtility(IConnectorHandle).get_handle()
         storage_dir_original = util.get_storage_path(original)
         storage_dir_copied = util.get_storage_path(copied)
         storage_dir_copied_parent = util.get_storage_path_parent(copied)

@@ -18,7 +18,7 @@ from Products.Five.browser import BrowserView
 from zExceptions import Forbidden
 from zExceptions import NotFound
 
-from xmldirector.plonecore.interfaces import IWebdavSettings
+from xmldirector.plonecore.interfaces import IConnectorSettings
 
 
 class APIError(Exception):
@@ -45,7 +45,7 @@ class API(BrowserView):
                 'Unsupported output format "{}"'.format(output_format))
 
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(IWebdavSettings)
+        settings = registry.forInterface(IConnectorSettings)
         pr = urlparse.urlparse(settings.connector_url)
         url = '{}://{}/exist/restxq/{}.{}'.format(
             pr.scheme, pr.netloc, script_path, output_format)

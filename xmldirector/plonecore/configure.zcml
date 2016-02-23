@@ -11,8 +11,8 @@
     >
 
     <utility
-        provides="xmldirector.plonecore.interfaces.IWebdavHandle"
-        component="xmldirector.plonecore.service.WebdavHandleUtility"
+        provides="xmldirector.plonecore.interfaces.IConnectorHandle"
+        component="xmldirector.plonecore.service.ConnectorHandleUtility"
     />
 
     <utility

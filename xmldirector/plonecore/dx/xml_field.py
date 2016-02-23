@@ -20,7 +20,7 @@ import plone.supermodel.exportimport
 from plone.schemaeditor.fields import FieldFactory
 
 from xmldirector.plonecore.i18n import MessageFactory as _
-from xmldirector.plonecore.interfaces import IWebdavHandle
+from xmldirector.plonecore.interfaces import IConnectorHandle
 from xmldirector.plonecore.dx import util
 
 
@@ -93,7 +93,7 @@ class XMLFieldDataManager(z3c.form.datamanager.AttributeField):
     def get(self):
         """See z3c.form.interfaces.IDataManager"""
 
-        handle = zope.component.getUtility(IWebdavHandle).get_handle()
+        handle = zope.component.getUtility(IConnectorHandle).get_handle()
         storage_key = self.storage_key
         if handle.exists(storage_key):
             with handle.open(storage_key, 'rb') as fp:
@@ -107,7 +107,7 @@ class XMLFieldDataManager(z3c.form.datamanager.AttributeField):
     def set(self, value):
         """See z3c.form.interfaces.IDataManager"""
 
-        handle = zope.component.getUtility(IWebdavHandle).get_handle()
+        handle = zope.component.getUtility(IConnectorHandle).get_handle()
         storage_key = self.storage_key
         dirname = os.path.dirname(storage_key)
 
