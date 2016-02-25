@@ -581,15 +581,27 @@ class DropboxFS(FS):
 
 
 def main():
+
+    from ConfigParser import ConfigParser
+
+    cp = ConfigParser()
+    cp.read(['dropbox.ini'])
+
+    section = 'test'
+    app_key = cp.get(section, 'app_key')
+    app_secret = cp.get(section, 'app_secret')
+
     parser = optparse.OptionParser(prog="dropboxfs",
                                    description="CLI harness for DropboxFS.")
     parser.add_option(
         "-k",
         "--app-key",
+        default=app_key,
         help="Your Dropbox app key.")
     parser.add_option(
         "-s",
         "--app-secret",
+        default=app_secret,
         help="Your Dropbox app secret.")
     parser.add_option(
         "-t",
