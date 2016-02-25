@@ -590,6 +590,9 @@ def main():
     section = 'test'
     app_key = cp.get(section, 'app_key')
     app_secret = cp.get(section, 'app_secret')
+    access_token = cp.get(section, 'access_token')
+    access_token_secret = cp.get(section, 'access_token_secret')
+
 
     parser = optparse.OptionParser(prog="dropboxfs",
                                    description="CLI harness for DropboxFS.")
@@ -612,10 +615,12 @@ def main():
     parser.add_option(
         "-a",
         "--token-key",
+        default=access_token,
         help="Your access token key (if you previously obtained one.")
     parser.add_option(
         "-b",
         "--token-secret",
+        default=access_token_secret,
         help="Your access token secret (if you previously obtained one.")
 
     (options, args) = parser.parse_args()
