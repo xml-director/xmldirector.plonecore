@@ -152,7 +152,7 @@ class BaseWrapper(object):
                 return super(BaseWrapper, self).open(path, mode, **kwargs)
             except fs.errors.OperationFailedError:
                 time.sleep(1 + 2*i)
-        raise fs.errors.OperationFailedError('Unable to open('{}') after 3 retries'.format(path))
+        raise fs.errors.OperationFailedError('Unable to open(\'{}\') after 3 retries'.format(path))
 
     def removedir(self, path, recursive=False, force=False):
         return super(BaseWrapper, self).removedir(path, recursive, force)
