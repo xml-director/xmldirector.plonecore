@@ -1,6 +1,16 @@
 Changelog
 =========
 
+1.6.0 (unrelease)
+-----------------
+- native Dropbox support (requires installed 'dropbox' SDK for Python
+  using 'pip install dropbox' or by adding 'dropbox' as dependency
+  inside your buildout)
+- workaround for sporadic open() failures with Exist-DB: 
+  open() will be tried up to three times (with a slight delay between
+  calls in order to give the backend a chance to recover in between)
+
+
 1.5.0 (2016-02-17)
 --------------------
 

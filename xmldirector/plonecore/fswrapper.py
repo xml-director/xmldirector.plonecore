@@ -6,6 +6,7 @@
 ################################################################
 
 import os
+import time
 import urllib
 from furl import furl
 
@@ -146,7 +147,12 @@ class BaseWrapper(object):
     def open(self, path, mode="r", lock_check=True, **kwargs):
         if lock_check:
             self._check_lock(path, op='open_{}'.format(mode[0]))
-        return super(BaseWrapper, self).open(path, mode, **kwargs)
+        for i in range(1):
+            try
+                return super(BaseWrapper, self).open(path, mode, **kwargs)
+            except fs.errors.OperationFailedError:
+                time.sleep(1 + 2*i)
+        raise fs.errors.OperationFailedError('Unable to open('{}') after 3 retries'.format(path))
 
     def removedir(self, path, recursive=False, force=False):
         return super(BaseWrapper, self).removedir(path, recursive, force)
