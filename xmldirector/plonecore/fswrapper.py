@@ -35,6 +35,11 @@ try:
 except ImportError:
     have_boto = False
 
+try:
+    import dropbox #NOQA
+    have_dropbox = True
+except ImportError:
+    have_dropbox = False
 
 _marker = object
 
@@ -197,6 +202,13 @@ if have_boto:
         pass
 
 
+if have_dropbox:
+    from xmldirector.plonecore.drivers.dropboxfs import DropboxFS
+
+    class DropboxFSWrapper(BaseWrapper, DropboxFS):
+        pass
+
+
 def get_fs_wrapper(url, credentials=None):
 
     if not url.endswith('/'):
@@ -245,6 +257,12 @@ def get_fs_wrapper(url, credentials=None):
                                port=f.port,
                                user=credentials['username'],
                                passwd=credentials['password'])
+
+    elif f.scheme == 'dropbox':
+        app_key, app_secret = credentials['username'].split('::')
+        access_token, access_token_secret = credentials['password'].split('::')
+        wrapper = DropboxFSWrapper(app_key, app_secret, 'dropbox', access_token, access_token_secret)
+
     else:
         raise ValueError('Unsupported URL schema {}'.format(original_url))
 

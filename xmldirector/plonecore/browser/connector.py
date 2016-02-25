@@ -224,7 +224,7 @@ class Connector(BrowserView):
 
             dirs = list()
             for info in handle.listdirinfo(dirs_only=True):
-                fullpath = '{}/{}'.format('/'.join(self.subpath), info[0])
+                fullpath = '{}/{}'.format('/'.join(self.subpath), info[0].encode('utf8'))
                 url = '{}/{}/{}'.format(context_url, view_prefix, info[0].encode('utf8'))
                 modified = info[1].get('modified_time')
                 dirs.append(dict(url=url,
