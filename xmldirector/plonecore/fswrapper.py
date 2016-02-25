@@ -148,7 +148,7 @@ class BaseWrapper(object):
         if lock_check:
             self._check_lock(path, op='open_{}'.format(mode[0]))
         for i in range(1):
-            try
+            try:
                 return super(BaseWrapper, self).open(path, mode, **kwargs)
             except fs.errors.OperationFailedError:
                 time.sleep(1 + 2*i)
