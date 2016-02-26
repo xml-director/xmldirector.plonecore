@@ -265,9 +265,18 @@ def get_fs_wrapper(url, credentials=None):
                                passwd=credentials['password'])
 
     elif f.scheme == 'dropbox':
-        app_key, app_secret = credentials['username'].split('::')
-        access_token, access_token_secret = credentials['password'].split('::')
-        wrapper = DropboxFSWrapper(app_key, app_secret, 'dropbox', access_token, access_token_secret)
+        if not '+' in credentials['username']:
+            raise ValueError('username value for dropbox:// must be \'<app-key>+<app-key-secret>\' (both values combined using the plus character)')
+        app_key, app_secret = credentials['username'].split('+')
+        if not '+' in credentials['password']:
+            raise ValueError('password value for dropbox:// must be \'<access-token>+<access-token-secret>\' (both values combined using the plus character)')
+        access_token, access_token_secret = credentials['password'].split('+')
+        wrapper = DropboxFSWrapper(
+                app_key, 
+                app_secret, 
+                'dropbox', 
+                access_token, 
+                access_token_secret)
 
     else:
         raise ValueError('Unsupported URL schema {}'.format(original_url))
