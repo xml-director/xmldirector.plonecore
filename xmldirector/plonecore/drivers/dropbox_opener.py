@@ -40,5 +40,5 @@ opener.add(DropboxOpener)
 
 
 
-url = 'dropbox://kar5pgeebgvga5i+my1vxyoshfswd8q:3bv6ralr1wuwlc58+1a6l66m4iva6p5y@dropbox.com/'
-dfs, path = opener.open(url)
+#url = 'dropbox://kar5pgeebgvga5i+my1vxyoshfswd8q:3bv6ralr1wuwlc58+1a6l66m4iva6p5y@dropbox.com/'
+#dfs, path = opener.open(url)
