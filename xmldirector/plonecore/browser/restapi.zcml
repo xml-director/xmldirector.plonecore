@@ -15,12 +15,14 @@
     <plone:service
       method="PUT"
         for="*"
+        permission="cmf.ModifyPortalContent"
         factory=".restapi.api_create"
         name="xmldirector-create"
     />
 
     <plone:service
       method="GET"
+        permission="zope2.View"
         for="xmldirector.plonecore.connector.IConnector"
         factory=".restapi.api_get_metadata"
         name="xmldirector-get-metadata"
@@ -28,6 +30,7 @@
 
     <plone:service
       method="POST"
+        permission="cmf.ModifyPortalContent"
         for="xmldirector.plonecore.connector.IConnector"
         factory=".restapi.api_set_metadata"
         name="xmldirector-set-metadata"
@@ -35,6 +38,7 @@
 
     <plone:service
       method="GET"
+        permission="zope2.View"
         for="xmldirector.plonecore.connector.IConnector"
         factory=".restapi.api_get"
         name="xmldirector-get"
@@ -42,6 +46,7 @@
 
     <plone:service
       method="GET"
+        permission="zope2.View"
         for="xmldirector.plonecore.connector.IConnector"
         factory=".restapi.api_get_zip"
         name="xmldirector-get-zip"
@@ -49,6 +54,7 @@
 
     <plone:service
       method="POST"
+        permission="cmf.ModifyPortalContent"
         for="xmldirector.plonecore.connector.IConnector"
         factory=".restapi.api_store_zip"
         name="xmldirector-store-zip"
@@ -56,6 +62,7 @@
 
     <plone:service
       method="POST"
+        permission="cmf.ModifyPortalContent"
         for="xmldirector.plonecore.connector.IConnector"
         factory=".restapi.api_store"
         name="xmldirector-store"
@@ -63,6 +70,7 @@
 
     <plone:service
       method="GET"
+        permission="zope2.View"
         for="xmldirector.plonecore.connector.IConnector"
         factory=".restapi.api_list"
         name="xmldirector-list"
@@ -70,6 +78,7 @@
 
     <plone:service
       method="GET"
+        permission="zope2.View"
         for="xmldirector.plonecore.connector.IConnector"
         factory=".restapi.api_list_full"
         name="xmldirector-list-full"
@@ -78,6 +87,7 @@
     <plone:service
       method="DELETE"
         for="xmldirector.plonecore.connector.IConnector"
+        permission="cmf.ModifyPortalContent"
         factory=".restapi.api_delete"
         name="xmldirector-delete"
     />
@@ -85,12 +95,14 @@
     <plone:service
       method="GET"
         for="*"
+        permission="zope2.View"
         factory=".restapi.api_search"
         name="xmldirector-search"
     />
 
     <plone:service
       method="GET"
+        permission="zope2.View"
         for="xmldirector.plonecore.connector.IConnector"
         factory=".restapi.api_hashes"
         name="xmldirector-hashes"
@@ -98,6 +110,7 @@
 
     <plone:service
       method="POST"
+        permission="cmf.ModifyPortalContent"
         for="xmldirector.plonecore.connector.IConnector"
         factory=".restapi.api_delete_content"
         name="xmldirector-delete-content"
