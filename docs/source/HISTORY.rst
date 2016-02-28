@@ -11,6 +11,7 @@ Changelog
   calls in order to give the backend a chance to recover in between)
 - support for latest plone.api releases (which minor monkey patch)
 - move restapi permission checks to ZCML configuration
+- updated to ACE 1.2.3
 
 1.5.0 (2016-02-17)
 --------------------
