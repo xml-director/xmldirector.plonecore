@@ -398,7 +398,7 @@ class api_list_full(BaseService):
                     with handle.open(name, 'rb') as fp:
                         data['sha256'] = sha256_fp(fp)
                 result[name.lstrip('/')] = data
-        
+
         return result
 
 

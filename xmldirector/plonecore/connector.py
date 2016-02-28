@@ -117,7 +117,8 @@ class Connector(Item):
             handle = util.get_handle()
             if not handle.exists(adapted.connector_subpath):
                 handle.makedir(adapted.connector_subpath, recursive=True)
-            url = '{}/{}'.format(handle.url.strip('/'), adapted.connector_subpath)
+            url = '{}/{}'.format(handle.url.strip('/'),
+                                 adapted.connector_subpath)
 
         try:
             return get_fs_wrapper(url, credentials=dict(username=username, password=password))
@@ -157,7 +158,7 @@ class Connector(Item):
         return self.connector_url
 
     webdav_url = property(get_connector_url, set_connector_url)
-    
+
     def set_connector_username(self, value):
         self.connector_username = value
 
@@ -173,7 +174,7 @@ class Connector(Item):
         return self.connector_password
 
     webdav_password = property(get_connector_password, set_connector_password)
-    
+
     def set_connector_subpath(self, value):
         self.connector_subpath = value
 

@@ -30,7 +30,8 @@ class ConnectorHandle(object):
         password = settings.connector_password or ''
 
         if settings.connector_dexterity_subpath:
-            url = '{}/{}'.format(root_url, settings.connector_dexterity_subpath)
+            url = '{}/{}'.format(root_url,
+                                 settings.connector_dexterity_subpath)
         else:
             url = root_url
         try:
@@ -39,7 +40,8 @@ class ConnectorHandle(object):
         except fs.errors.ResourceNotFoundError:
             root_handle = get_fs_wrapper(root_url, credentials=dict(username=username,
                                                                     password=password))
-            root_handle.makedir(settings.connector_dexterity_subpath, True, True)
+            root_handle.makedir(
+                settings.connector_dexterity_subpath, True, True)
             return get_fs_wrapper(url, credentials=dict(username=username,
                                                         password=password))
 

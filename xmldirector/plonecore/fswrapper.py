@@ -37,7 +37,7 @@ except ImportError:
     have_boto = False
 
 try:
-    import dropbox #NOQA
+    import dropbox  # NOQA
     have_dropbox = True
 except ImportError:
     have_dropbox = False
@@ -151,8 +151,9 @@ class BaseWrapper(object):
             try:
                 return super(BaseWrapper, self).open(path, mode, **kwargs)
             except fs.errors.OperationFailedError:
-                time.sleep(1 + 2*i)
-        raise fs.errors.OperationFailedError('Unable to open(\'{}\') after 3 retries'.format(path))
+                time.sleep(1 + 2 * i)
+        raise fs.errors.OperationFailedError(
+            'Unable to open(\'{}\') after 3 retries'.format(path))
 
     def removedir(self, path, recursive=False, force=False):
         return super(BaseWrapper, self).removedir(path, recursive, force)
@@ -237,7 +238,8 @@ def get_fs_wrapper(url, credentials=None):
                 aws_access_key=credentials['username'],
                 aws_secret_key=credentials['password'])
         else:
-            raise ImportError('boto module is not installed (required for S3 access)')
+            raise ImportError(
+                'boto module is not installed (required for S3 access)')
     elif f.scheme == 'sftp':
 
         f_path = urllib.unquote(str(f.path))
@@ -251,12 +253,14 @@ def get_fs_wrapper(url, credentials=None):
                 parts = filter(None, f_path.split('/'))
                 wrapper = SFTPFSWrapper(connection=(f.host, f.port or 22),
                                         root_path='/'.join(parts[:-1]),
-                                        username=(credentials['username'] or None),
+                                        username=(
+                                            credentials['username'] or None),
                                         password=(credentials['password'] or None))
                 wrapper.__leaf__ = True
                 wrapper.__leaf_filename__ = parts[-1]
         else:
-            raise ImportError('paramiko module is not installed (required for SFTP access)')
+            raise ImportError(
+                'paramiko module is not installed (required for SFTP access)')
 
     elif f.scheme == 'ftp':
         wrapper = FTPFSWrapper(host=f.host,
@@ -266,17 +270,19 @@ def get_fs_wrapper(url, credentials=None):
 
     elif f.scheme == 'dropbox':
         if not '+' in credentials['username']:
-            raise ValueError('username value for dropbox:// must be \'<app-key>+<app-key-secret>\' (both values combined using the plus character)')
+            raise ValueError(
+                'username value for dropbox:// must be \'<app-key>+<app-key-secret>\' (both values combined using the plus character)')
         app_key, app_secret = credentials['username'].split('+')
         if not '+' in credentials['password']:
-            raise ValueError('password value for dropbox:// must be \'<access-token>+<access-token-secret>\' (both values combined using the plus character)')
+            raise ValueError(
+                'password value for dropbox:// must be \'<access-token>+<access-token-secret>\' (both values combined using the plus character)')
         access_token, access_token_secret = credentials['password'].split('+')
         wrapper = DropboxFSWrapper(
-                app_key, 
-                app_secret, 
-                'dropbox', 
-                access_token, 
-                access_token_secret)
+            app_key,
+            app_secret,
+            'dropbox',
+            access_token,
+            access_token_secret)
 
     else:
         raise ValueError('Unsupported URL schema {}'.format(original_url))
