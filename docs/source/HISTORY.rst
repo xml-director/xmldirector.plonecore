@@ -9,7 +9,8 @@ Changelog
 - workaround for sporadic open() failures with Exist-DB: 
   open() will be tried up to three times (with a slight delay between
   calls in order to give the backend a chance to recover in between)
-
+- support for latest plone.api releases (which minor monkey patch)
+- move restapi permission checks to ZCML configuration
 
 1.5.0 (2016-02-17)
 --------------------

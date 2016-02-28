@@ -41,14 +41,6 @@ SRC_PREFIX = 'src'
 _marker = object
 
 
-def check_permission(permission, context):
-    """ Check the given Zope permission against a context object """
-
-    if not getSecurityManager().checkPermission(permission, context):
-        raise Unauthorized(
-            'You don\'t have the \'{}\' permission'.format(permission))
-
-
 def decode_json_payload(request):
     """ Extract JSON data from the body of a Zope request """
 
@@ -179,7 +171,6 @@ class api_create(BaseService):
     def _render(self):
         """ Create a new content object in Plone """
 
-        check_permission(permissions.ModifyPortalContent, self.context)
         payload = decode_json_payload(self.request)
 
         id = str(uuid.uuid4())
@@ -216,8 +207,6 @@ class api_search(BaseService):
 
     def _render(self):
 
-        check_permission(permissions.View, self.context)
-
         catalog = plone.api.portal.get_tool('portal_catalog')
         query = dict(
             portal_type='xmldirector.plonecore.connector',
@@ -240,8 +229,6 @@ class api_get_metadata(BaseService):
 
     def _render(self):
 
-        check_permission(permissions.View, self.context)
-
         annotations = IAnnotations(self.context)
         custom = annotations.get(ANNOTATION_KEY)
 
@@ -259,8 +246,6 @@ class api_get_metadata(BaseService):
 class api_set_metadata(BaseService):
 
     def _render(self):
-
-        check_permission(permissions.ModifyPortalContent, self.context)
 
         payload = decode_json_payload(self.request)
         IPersistentLogger(self.context).log('set_metadata', details=payload)
@@ -289,8 +274,6 @@ class api_delete(BaseService):
 
     def _render(self):
 
-        check_permission(permissions.DeleteObjects, self.context)
-
         util = getUtility(IConnectorHandle)
 
         handle = util.get_handle()
@@ -305,7 +288,6 @@ class api_store_zip(BaseService):
 
     def _render(self):
 
-        check_permission(permissions.ModifyPortalContent, self.context)
         IPersistentLogger(self.context).log('store')
 
         if 'zipfile' not in self.request.form:
@@ -345,8 +327,6 @@ class api_get_zip(BaseService):
 
     def _render(self):
 
-        check_permission(permissions.ModifyPortalContent, self.context)
-
         handle = self.context.get_handle(create_if_not_existing=True)
         zip_out = temp_zip(suffix='.zip')
         with fs.zipfs.ZipFS(zip_out, 'w') as zip_handle:
@@ -369,7 +349,6 @@ class api_get(BaseService):
 
     def _render(self):
 
-        check_permission(permissions.View, self.context)
         name = self.request.form.get('name')
         if not name:
             raise ValueError('Parameter "name" is missing')
@@ -394,8 +373,6 @@ class api_list(BaseService):
 
     def _render(self):
 
-        check_permission(permissions.View, self.context)
-
         handle = self.context.get_handle(create_if_not_existing=True)
         files = list(handle.walkfiles())
         files = [fn.lstrip('/') for fn in files if not fn.endswith('.sha256')]
@@ -405,8 +382,6 @@ class api_list(BaseService):
 class api_list_full(BaseService):
 
     def _render(self):
-
-        check_permission(permissions.View, self.context)
 
         handle = self.context.get_handle(create_if_not_existing=True)
         result = dict()
@@ -431,7 +406,6 @@ class api_hashes(BaseService):
 
     def _render(self):
 
-        check_permission(permissions.View, self.context)
         handle = self.context.get_handle(create_if_not_existing=True)
         result = dict()
         for name in handle.walkfiles():
@@ -469,7 +443,6 @@ class api_delete_content(BaseService):
 
     def _render(self):
 
-        check_permission(permissions.ModifyPortalContent, self.context)
         handle = self.context.get_handle(create_if_not_existing=True)
         payload = decode_json_payload(self.request)
 
