@@ -22,9 +22,6 @@ from plone.rest import Service
 from zope.component import getUtility
 from zope.annotation.interfaces import IAnnotations
 from zope.interface import implements
-from AccessControl import Unauthorized
-from AccessControl import getSecurityManager
-from Products.CMFCore import permissions
 from ZPublisher.Iterators import filestream_iterator
 from ZPublisher.Iterators import IStreamIterator
 

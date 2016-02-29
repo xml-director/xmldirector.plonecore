@@ -23,22 +23,17 @@ class DropboxOpener(Opener):
         f = furl.furl(url)
         username = str(f.username)
         password = str(f.password)
-        if not '+' in username:
+        if '+' not in username:
             raise ValueError('username must be \'<app_key>+<app_secret>\'')
         app_key, app_secret = username.split('+')
-        if not '+' in password:
-            raise ValueError('password must be \'<access_token>+<access_token_secret>\'')
+        if '+' not in password:
+            raise ValueError(
+                'password must be \'<access_token>+<access_token_secret>\'')
         access_token, access_token_secret = password.split('+')
-        path = str(f.path)
-        import pdb; pdb.set_trace() 
-        fs = dropboxfs.DropboxFS(app_key, app_secret, 'dropbox', access_token, access_token_secret)
+        fs = dropboxfs.DropboxFS(
+            app_key, app_secret, 'dropbox', access_token, access_token_secret)
         return fs, ''
 
 
 from fs.opener import opener
 opener.add(DropboxOpener)
-
-
-
-#url = 'dropbox://kar5pgeebgvga5i+my1vxyoshfswd8q:3bv6ralr1wuwlc58+1a6l66m4iva6p5y@dropbox.com/'
-#dfs, path = opener.open(url)
