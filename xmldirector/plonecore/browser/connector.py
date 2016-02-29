@@ -166,10 +166,10 @@ class Connector(BrowserView):
             url = '{}/@@view/{}'.format(url, subpath)
         return self.request.response.redirect(url)
 
-    def collection_action(self, paths=[], action=None):
+    def collection_action(self, paths=None, action=None):
         handle = self.context.get_handle()
         if action == 'delete':
-            for path in paths:
+            for path in paths or []:
                 if handle.exists(path):
                     if handle.isfile(path):
                         handle.remove(path)

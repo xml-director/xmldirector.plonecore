@@ -83,7 +83,6 @@ class ValidatorRegistry(BrowserView):
 
     @property
     def registry(self):
-        from zope.component import getUtility
         from xmldirector.plonecore.interfaces import IValidatorRegistry
         return getUtility(IValidatorRegistry)
 
@@ -116,7 +115,6 @@ class TransformerRegistry(BrowserView):
 
     @property
     def registry(self):
-        from zope.component import getUtility
         from xmldirector.plonecore.interfaces import ITransformerRegistry
         return getUtility(ITransformerRegistry)
 
