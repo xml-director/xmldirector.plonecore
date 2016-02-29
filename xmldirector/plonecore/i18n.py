@@ -10,4 +10,4 @@ try:
     from zope.i18nmessageid import MessageFactory
     MessageFactory = MessageFactory('xmldirector.plonecore')
 except ImportError:
-    pass
+    MessageFactory = None
