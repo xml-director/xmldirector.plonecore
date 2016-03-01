@@ -50,6 +50,7 @@
   font-size: 1em !important;
   min-height: inherit !important;
   min-height: auto !important;
+  white-space: nowrap;
 }
 
 .syntaxhighlighter {
@@ -58,6 +59,7 @@
   position: relative !important;
   overflow: auto !important;
   font-size: 1em !important;
+  clear: both;
 }
 .syntaxhighlighter.source {
   overflow: hidden !important;
@@ -134,7 +136,7 @@
 .syntaxhighlighter .toolbar {
   position: absolute !important;
   right: 1px !important;
-  top: 1px !important;
+  top: -18px !important;
   font-size: 10px !important;
   z-index: 7 !important;
 }

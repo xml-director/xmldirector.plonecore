@@ -120,7 +120,7 @@ var sh = {
         multiLineDoubleQuotedString : XRegExp('"([^\\\\"]|\\\\.)*"', 'gs'),
         multiLineSingleQuotedString : XRegExp("'([^\\\\']|\\\\.)*'", 'gs'),
         xmlComments                 : XRegExp('(&lt;|<)!--.*?--(&gt;|>)', 'gs'),
-        url                         : /\w+:\/\/[\w-.\/?%&=:@;#]*/g,
+        url                         : /\w+:\/\/[\w-.\/?%&=:@;#,]*/g,
         phpScriptTags               : { left: /(&lt;|<)\?(?:=|php)?/g, right: /\?(&gt;|>)/g, 'eof' : true },
         aspScriptTags               : { left: /(&lt;|<)%=?/g, right: /%(&gt;|>)/g },
         scriptScriptTags            : { left: /(&lt;|<)\s*script.*?(&gt;|>)/gi, right: /(&lt;|<)\/\s*script\s*(&gt;|>)/gi }
@@ -193,8 +193,9 @@ var sh = {
                 ;
 
             // execute the toolbar command
-            if (highlighter && commandName && sh.toolbar.items[commandName].execute)
+            if (highlighter && commandName && sh.toolbar.items[commandName] && sh.toolbar.items[commandName].execute) {
                 sh.toolbar.items[commandName].execute(highlighter);
+            }
 
             // disable default A click behaviour
             e.preventDefault();
@@ -302,10 +303,10 @@ var sh = {
      */
     highlight: function(globalParams, element)
     {
-        // Don't run the syntax highlighter on IE6/7 as it absolutely kills
+        // Don't run the syntax highlighter on IE6/7/8 as it absolutely kills
         // performance
         var userAgent = navigator.appVersion;
-        if (userAgent.indexOf("MSIE 7.") !== -1 || userAgent.indexOf("MSIE 6.") !== -1) {
+        if (userAgent.indexOf("MSIE 8.") !== -1 || userAgent.indexOf("MSIE 7.") !== -1 || userAgent.indexOf("MSIE 6.") !== -1) {
             return;
         }
 

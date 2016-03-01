@@ -9,13 +9,12 @@
 
     <metal:slot fill-slot="style_slot">
         <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/DataTables/media/css/jquery.dataTables.css" />
-        <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/DataTables/extensions/FixedHeader/css/dataTables.fixedHeader.min.css" />
+        <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/DataTables/extensions/FixedHeader/css/fixedHeader.dataTables.min.css" />
     </metal:slot>
 
     <metal:slot fill-slot="javascript_head_slot">
         <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/DataTables/media/js/jquery.dataTables.js"></script>
         <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/DataTables/extensions/FixedHeader/js/dataTables.fixedHeader.min.js"></script>
-        <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/DataTables/extensions/TableTools/js/dataTables.tableTools.min.js"></script>
     </metal:slot>
 
 <metal:main fill-slot="content-core">
