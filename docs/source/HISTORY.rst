@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.6.0 (unrelease)
------------------
+1.6.0 (unreleased)
+------------------
 - native Dropbox support (requires installed 'dropbox' SDK for Python
   using 'pip install dropbox' or by adding 'dropbox' as dependency
   inside your buildout)
