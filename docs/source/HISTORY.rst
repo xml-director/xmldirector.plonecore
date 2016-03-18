@@ -1,11 +1,11 @@
 Changelog
 =========
 
-1.6.0 (unreleased)
+1.6.0 (2016-03-18)
 ------------------
-- native Dropbox support (requires installed 'dropbox' SDK for Python
-  using 'pip install dropbox' or by adding 'dropbox' as dependency
-  inside your buildout)
+- experimental native Dropbox support (requires installed 'dropbox' SDK for
+  Python using 'pip install dropbox' or by adding 'dropbox' as dependency
+  inside your buildout) - not ready for production
 - workaround for sporadic open() failures with Exist-DB: 
   open() will be tried up to three times (with a slight delay between
   calls in order to give the backend a chance to recover in between)
@@ -13,6 +13,7 @@ Changelog
 - move restapi permission checks to ZCML configuration
 - updated to ACE 1.2.3
 - updated to DataTables 1.10.11
+- support for latest plone.api release
 
 1.5.0 (2016-02-17)
 --------------------
