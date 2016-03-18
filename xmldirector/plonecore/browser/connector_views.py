@@ -46,8 +46,9 @@ def default_html_handler(get_handle, filename, view_name, request):
     html_template = ViewPageTemplateFile('html_view.pt')
 
     # exist-db base url
-    base_url = '{}/@@view/{}'.format(request.context.absolute_url(1),
-                                   '/'.join(request.subpath[:-1]))
+    base_url = '{}/@@view/{}'.format(
+        request.context.absolute_url(1),
+        '/'.join(request.subpath[:-1]))
 
     # get HTML
     html = get_handle.open(get_handle.leaf_filename, 'rb').read()

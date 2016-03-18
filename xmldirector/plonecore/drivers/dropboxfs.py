@@ -36,6 +36,7 @@ MAX_BUFFER = 1024 ** 2 * 5
 
 
 class ContextManagerStream(object):
+
     def __init__(self, temp, name):
         self.temp = temp
         self.name = name
@@ -64,6 +65,7 @@ class ContextManagerStream(object):
 class SpooledWriter(ContextManagerStream):
     """Spools bytes to a StringIO buffer until it reaches max_buffer. At that
     point it switches to a temporary file."""
+
     def __init__(self, client, name, max_buffer=MAX_BUFFER):
         self.client = client
         self.max_buffer = max_buffer
@@ -100,6 +102,7 @@ class SpooledReader(ContextManagerStream):
     file. It can then satisfy read(), seek() and other calls using the local
     file.
     """
+
     def __init__(self, client, name, max_buffer=MAX_BUFFER):
         self.client = client
         r = self.client.get_file(name)
@@ -120,12 +123,13 @@ class ChunkedReader(ContextManagerStream):
     """ A file-like that provides access to a file with dropbox API"""
     """Reads the file from the remote server as requested.
     It can then satisfy read()."""
+
     def __init__(self, client, name):
         self.client = client
         try:
             self.r = self.client.get_file(name)
         except rest.ErrorResponse, e:
-            LOGGER.error(e, exc_info=True, extra={'stack': True,})
+            LOGGER.error(e, exc_info=True, extra={'stack': True, })
             raise RemoteConnectionError(opname='get_file', path=name,
                                         details=e)
         self.bytes = int(self.r.getheader('Content-Length'))
@@ -224,6 +228,7 @@ class ChunkedReader(ContextManagerStream):
 class CacheItem(object):
     """Represents a path in the cache. There are two components to a path.
     It's individual metadata, and the children contained within it."""
+
     def __init__(self, metadata=None, children=None, timestamp=None):
         self.metadata = metadata
         self.children = children
@@ -256,6 +261,7 @@ class CacheItem(object):
 
 
 class DropboxCache(UserDict):
+
     def set(self, path, metadata):
         self[path] = CacheItem(metadata)
         dname, bname = pathsplit(path)
@@ -275,6 +281,7 @@ class DropboxCache(UserDict):
 class DropboxClient(client.DropboxClient):
     """A wrapper around the official DropboxClient. This wrapper performs
     caching as well as converting errors to fs exceptions."""
+
     def __init__(self, *args, **kwargs):
         super(DropboxClient, self).__init__(*args, **kwargs)
         self.cache = DropboxCache()
@@ -293,7 +300,7 @@ class DropboxClient(client.DropboxClient):
             except rest.ErrorResponse, e:
                 if e.status == 404:
                     raise ResourceNotFoundError(path)
-                LOGGER.error(e, exc_info=True, extra={'stack': True,})
+                LOGGER.error(e, exc_info=True, extra={'stack': True, })
                 raise RemoteConnectionError(opname='metadata', path=path,
                                             details=e)
             if metadata.get('is_deleted', False):
@@ -332,7 +339,7 @@ class DropboxClient(client.DropboxClient):
                 item = self.cache[path] = CacheItem(metadata, children)
             except rest.ErrorResponse, e:
                 if not item or e.status != 304:
-                    LOGGER.error(e, exc_info=True, extra={'stack': True,})
+                    LOGGER.error(e, exc_info=True, extra={'stack': True, })
                     raise RemoteConnectionError(opname='metadata', path=path,
                                                 details=e)
                 # We have an item from cache (perhaps expired), but it's
@@ -350,7 +357,7 @@ class DropboxClient(client.DropboxClient):
                 raise ParentDirectoryMissingError(path)
             if e.status == 403:
                 raise DestinationExistsError(path)
-            LOGGER.error(e, exc_info=True, extra={'stack': True,})
+            LOGGER.error(e, exc_info=True, extra={'stack': True, })
             raise RemoteConnectionError(opname='file_create_folder', path=path,
                                         details=e)
         self.cache.set(path, metadata)
@@ -363,7 +370,7 @@ class DropboxClient(client.DropboxClient):
                 raise ResourceNotFoundError(src)
             if e.status == 403:
                 raise DestinationExistsError(dst)
-            LOGGER.error(e, exc_info=True, extra={'stack': True,})
+            LOGGER.error(e, exc_info=True, extra={'stack': True, })
             raise RemoteConnectionError(opname='file_copy', path=path,
                                         details=e)
         self.cache.set(dst, metadata)
@@ -376,7 +383,7 @@ class DropboxClient(client.DropboxClient):
                 raise ResourceNotFoundError(src)
             if e.status == 403:
                 raise DestinationExistsError(dst)
-            LOGGER.error(e, exc_info=True, extra={'stack': True,})
+            LOGGER.error(e, exc_info=True, extra={'stack': True, })
             raise RemoteConnectionError(opname='file_move', path=path,
                                         details=e)
         self.cache.pop(src, None)
@@ -397,7 +404,7 @@ class DropboxClient(client.DropboxClient):
         try:
             super(DropboxClient, self).put_file(path, f, overwrite=overwrite)
         except rest.ErrorResponse, e:
-            LOGGER.error(e, exc_info=True, extra={'stack': True,})
+            LOGGER.error(e, exc_info=True, extra={'stack': True, })
             raise RemoteConnectionError(opname='put_file', path=path,
                                         details=e)
         self.cache.pop(dirname(path), None)
@@ -568,7 +575,7 @@ class DropboxFS(FS):
 
     # This does not work, httplib refuses to send a Content-Length: 0 header
     # even though the header is required. We can't make a 0-length file.
-    #def createfile(self, path, wipe=False):
+    # def createfile(self, path, wipe=False):
     #    self.client.put_file(path, '', overwrite=False)
 
     def remove(self, path):
@@ -592,7 +599,6 @@ def main():
     app_secret = cp.get(section, 'app_secret')
     access_token = cp.get(section, 'access_token')
     access_token_secret = cp.get(section, 'access_token_secret')
-
 
     parser = optparse.OptionParser(prog="dropboxfs",
                                    description="CLI harness for DropboxFS.")
@@ -627,7 +633,8 @@ def main():
 
     # Can't operate without these parameters.
     if not options.app_key or not options.app_secret:
-        parser.error('You must obtain an app key and secret from Dropbox at the following URL.\n\nhttps://www.dropbox.com/developers/apps')
+        parser.error(
+            'You must obtain an app key and secret from Dropbox at the following URL.\n\nhttps://www.dropbox.com/developers/apps')
 
     # Instantiate a client one way or another.
     if not options.token_key and not options.token_secret:
