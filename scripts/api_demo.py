@@ -26,11 +26,11 @@ print data_json
 endpoint_url = data_json['url']
 post_url = endpoint_url + '/xmldirector-store'
 print post_url
-files = {
-    'sample.docx': ('sample.docx', open('test.docx', 'rb'), 'application/octet-stream'),
-    'api_demo.py': ('api_demo.py', open('api_demo.py', 'rb'), 'application/octet-stream')
-}
-result = requests.post(post_url, auth=auth, files=files, headers=headers)
+files = [
+    ('files', ('sample.docx', open('test.docx', 'rb'), 'application/octet-stream')),
+    ('files', ('api_demo.py', open('api_demo.py', 'rb'), 'application/octet-stream'))
+]
+result = requests.post(post_url, auth=auth, files=files, headers={'accept': 'application/json'})
 print result
 if result.status_code != 200:
     print 'STORE failed'
