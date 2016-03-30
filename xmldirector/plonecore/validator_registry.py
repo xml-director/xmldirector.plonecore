@@ -56,7 +56,7 @@ class ValidatorRegistry(object):
 
         for name in handle.listdir():
             fullname = os.path.join(directory, name)
-            LOG.info(u'Parsing "{}"'.format(fullname))
+            LOG.debug(u'Parsing "{}"'.format(fullname))
             base, ext = os.path.splitext(name)
 
             registered_name = name
