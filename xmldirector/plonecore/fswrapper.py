@@ -26,8 +26,6 @@ from plone.registry.interfaces import IRegistry
 from xmldirector.plonecore.locking import LockManager
 from xmldirector.plonecore.locking import FileIsLocked
 from xmldirector.plonecore.locking import LockError
-from xmldirector.dropbox.browser import dropbox_authentication
-from xmldirector.dropbox.interfaces import IDropboxSettings
 
 
 try:
@@ -45,6 +43,8 @@ except ImportError:
 
 try:
     import dropbox  # NOQA
+    from xmldirector.dropbox.browser import dropbox_authentication
+    from xmldirector.dropbox.interfaces import IDropboxSettings
     have_dropbox = True
 except ImportError:
     have_dropbox = False
@@ -131,14 +131,18 @@ class BaseWrapper(object):
 
     def _check_lock(self, path, op):
 
-        if not self.support_locks:
+        if not self.supports_locks:
             return True
 
         # flag set by tests in order to avoid false posititves
         ignore_errors = getattr(self, 'ignore_errors', False)
 
-        context = zope.globalrequest.getRequest().PUBLISHED.context
-        lm = LockManager(context)
+        try:
+            context = zope.globalrequest.getRequest().PUBLISHED.context
+            lm = LockManager(context)
+        except AttributeError:
+            lm = LockManager(None)
+
 
         try:
             log_info = lm.get_lock(path)
@@ -228,7 +232,7 @@ if have_dropbox:
 
     class DropboxFSWrapper(BaseWrapper, DropboxFS):
 
-        support_locks = False
+        supports_locks = False
 
 
 def get_fs_wrapper(url, credentials=None, context=None):
