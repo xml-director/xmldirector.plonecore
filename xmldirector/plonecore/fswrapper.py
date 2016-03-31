@@ -297,6 +297,12 @@ def get_fs_wrapper(url, credentials=None, context=None):
                 annotation[dropbox_authentication.DROPBOX_TOKEN_SECRET],
                 root_path=str(f.path)
                 )
+        if wrapper.isfile('.'):
+            f_path = urllib.unquote(str(f.path))
+            parts = filter(None, f_path.split('/'))
+            wrapper.__leaf__ = True
+            wrapper.__leaf_filename__ = '.'
+
     else:
         raise ValueError('Unsupported URL schema {}'.format(original_url))
 

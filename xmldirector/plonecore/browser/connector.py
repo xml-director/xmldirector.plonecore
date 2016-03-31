@@ -183,6 +183,9 @@ class Connector(BrowserView):
     def __call__(self, *args, **kw):
 
         handle = self.get_handle()
+        print '-'
+        print 'dir', handle.isDirectory()
+        print 'file', handle.isFile()
         if handle.isDirectory():
             context_url = self.context.absolute_url()
             view_prefix = '@@view'
