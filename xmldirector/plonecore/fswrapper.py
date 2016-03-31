@@ -18,9 +18,15 @@ from fs.contrib.davfs import DAVFS
 from collections import namedtuple
 
 import plone.api
+from zope.component import getUtility
+from zope.annotation import IAnnotations
+from plone.registry.interfaces import IRegistry
+
 from xmldirector.plonecore.locking import LockManager
 from xmldirector.plonecore.locking import FileIsLocked
 from xmldirector.plonecore.locking import LockError
+from xmldirector.dropbox.browser import dropbox_authentication
+from xmldirector.dropbox.interfaces import IDropboxSettings
 
 
 try:
@@ -210,13 +216,13 @@ if have_boto:
 
 
 if have_dropbox:
-    from xmldirector.plonecore.drivers.dropboxfs import DropboxFS
+    from xmldirector.dropbox.browser.dropboxfs import DropboxFS
 
     class DropboxFSWrapper(BaseWrapper, DropboxFS):
         pass
 
 
-def get_fs_wrapper(url, credentials=None):
+def get_fs_wrapper(url, credentials=None, context=None):
 
     if not url.endswith('/'):
         url += '/'
@@ -269,22 +275,19 @@ def get_fs_wrapper(url, credentials=None):
                                passwd=credentials['password'])
 
     elif f.scheme == 'dropbox':
-        if '+' not in credentials['username']:
-            raise ValueError(
-                'username value for dropbox:// must be \'<app-key>+<app-key-secret>\ '
-                '(both values combined using the plus character)')
-        app_key, app_secret = credentials['username'].split('+')
-        if '+' not in credentials['password']:
-            raise ValueError(
-                'password value for dropbox:// must be \'<access-token>+<access-token-secret>\ '
-                '(both values combined using the plus character)')
-        access_token, access_token_secret = credentials['password'].split('+')
-        wrapper = DropboxFSWrapper(
-            app_key,
-            app_secret,
-            'dropbox',
-            access_token,
-            access_token_secret)
+
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(IDropboxSettings)
+        annotation = IAnnotations(context)
+
+        wrapper = DropboxFS(
+                settings.dropbox_app_key,
+                settings.dropbox_app_secret,
+                'dropbox',
+                annotation[dropbox_authentication.DROPBOX_TOKEN_KEY],
+                annotation[dropbox_authentication.DROPBOX_TOKEN_SECRET],
+                root_path='/')
+        
 
     else:
         raise ValueError('Unsupported URL schema {}'.format(original_url))

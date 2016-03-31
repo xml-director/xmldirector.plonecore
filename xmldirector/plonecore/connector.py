@@ -121,7 +121,7 @@ class Connector(Item):
                                  adapted.connector_subpath)
 
         try:
-            return get_fs_wrapper(url, credentials=dict(username=username, password=password))
+            return get_fs_wrapper(url, credentials=dict(username=username, password=password), context=self)
         except fs.errors.ResourceNotFoundError:
             LOG.warn(u'Error accessing {}::{}::{}'.format(
                 self.absolute_url(), url, self.REQUEST.get('HTTP_USER_AGENT')), exc_info=True)
@@ -129,7 +129,8 @@ class Connector(Item):
         except fs.errors.ResourceInvalidError:
             parts = url.rsplit('/', 1)
             wrapper = get_fs_wrapper(parts[0], credentials=dict(
-                username=username, password=password))
+                username=username, password=password),
+                context=self)
             wrapper.__leaf__ = True
             wrapper.__leaf_filename__ = parts[1]
             return wrapper
