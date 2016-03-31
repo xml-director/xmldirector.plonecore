@@ -280,14 +280,13 @@ def get_fs_wrapper(url, credentials=None, context=None):
         settings = registry.forInterface(IDropboxSettings)
         annotation = IAnnotations(context)
 
-        wrapper = DropboxFS(
+        wrapper = DropboxFSWrapper(
                 settings.dropbox_app_key,
                 settings.dropbox_app_secret,
                 'dropbox',
                 annotation[dropbox_authentication.DROPBOX_TOKEN_KEY],
                 annotation[dropbox_authentication.DROPBOX_TOKEN_SECRET],
-                root_path='/')
-        
+                root_path='ajung')
 
     else:
         raise ValueError('Unsupported URL schema {}'.format(original_url))
