@@ -297,6 +297,7 @@ def get_fs_wrapper(url, credentials=None, context=None):
                 annotation[dropbox_authentication.DROPBOX_TOKEN_SECRET],
                 root_path=str(f.path)
                 )
+
         if wrapper.isfile('.'):
             f_path = urllib.unquote(str(f.path))
             parts = filter(None, f_path.split('/'))
