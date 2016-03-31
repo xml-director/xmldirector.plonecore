@@ -289,18 +289,23 @@ def get_fs_wrapper(url, credentials=None, context=None):
         settings = registry.forInterface(IDropboxSettings)
         annotation = IAnnotations(context)
 
+        token_key = annotation.get(dropbox_authentication.DROPBOX_TOKEN_KEY)
+        token_secret = annotation.get(dropbox_authentication.DROPBOX_TOKEN_SECRET)
+        if not token_key or not token_secret:
+            context = zope.globalrequest.getRequest().PUBLISHED.context
+            authorization_url = '{}/authorize-dropbox'.format(context.absolute_url())
+            raise RuntimeError('Connector does not seem to be authorized with Dropbox (use {})'.format(authorization_url))
+
         wrapper = DropboxFSWrapper(
                 settings.dropbox_app_key,
                 settings.dropbox_app_secret,
                 'dropbox',
                 annotation[dropbox_authentication.DROPBOX_TOKEN_KEY],
                 annotation[dropbox_authentication.DROPBOX_TOKEN_SECRET],
-                root_path=str(f.path)
+                root_path=urllib.unquote(str(f.path))
                 )
 
         if wrapper.isfile('.'):
-            f_path = urllib.unquote(str(f.path))
-            parts = filter(None, f_path.split('/'))
             wrapper.__leaf__ = True
             wrapper.__leaf_filename__ = '.'
 
