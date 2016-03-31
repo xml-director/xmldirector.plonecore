@@ -18,6 +18,7 @@ from fs.contrib.davfs import DAVFS
 from collections import namedtuple
 
 import plone.api
+import zope.globalrequest
 from zope.component import getUtility
 from zope.annotation import IAnnotations
 from plone.registry.interfaces import IRegistry
@@ -96,6 +97,8 @@ LOCK_PERMISSION_MAP = dict([
 class BaseWrapper(object):
     """ A wapper for DAVFS """
 
+    supports_locks = True
+
     def isDirectory(self):
         """ Represents a directory """
         __leaf__ = getattr(self, '__leaf__', _marker)
@@ -128,10 +131,15 @@ class BaseWrapper(object):
 
     def _check_lock(self, path, op):
 
+        if not self.support_locks:
+            return True
+
         # flag set by tests in order to avoid false posititves
         ignore_errors = getattr(self, 'ignore_errors', False)
 
-        lm = LockManager(None)
+        context = zope.globalrequest.getRequest().PUBLISHED.context
+        lm = LockManager(context)
+
         try:
             log_info = lm.get_lock(path)
         except LockError:
@@ -219,7 +227,8 @@ if have_dropbox:
     from xmldirector.dropbox.browser.dropboxfs import DropboxFS
 
     class DropboxFSWrapper(BaseWrapper, DropboxFS):
-        pass
+
+        support_locks = False
 
 
 def get_fs_wrapper(url, credentials=None, context=None):
@@ -286,8 +295,8 @@ def get_fs_wrapper(url, credentials=None, context=None):
                 'dropbox',
                 annotation[dropbox_authentication.DROPBOX_TOKEN_KEY],
                 annotation[dropbox_authentication.DROPBOX_TOKEN_SECRET],
-                root_path='ajung')
-
+                root_path=str(f.path)
+                )
     else:
         raise ValueError('Unsupported URL schema {}'.format(original_url))
 
