@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.6.1 (unreleased)
+------------------
+- improved unicode filename handling across drivers
+
 1.6.0 (2016-03-18)
 ------------------
 - experimental native Dropbox support (requires installed 'dropbox' SDK for
