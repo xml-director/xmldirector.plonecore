@@ -54,6 +54,12 @@ def stmode2unix(st_mode):
         return u''
 
 
+def safe_unicode(s):
+    if not isinstance(s, unicode):
+        return unicode(s, 'utf8')
+    return s
+
+
 class Dispatcher(BrowserView):
 
     def __call__(self, *args, **kw):
@@ -183,20 +189,25 @@ class Connector(BrowserView):
     def __call__(self, *args, **kw):
 
         handle = self.get_handle()
+        can_unicode = handle.getmeta('unicode_paths')
+        subpath = self.subpath
         if handle.isDirectory():
             context_url = self.context.absolute_url()
-            view_prefix = '@@view'
-            edit_prefix = '@@view-editor'
-            remove_prefix = '@@remove-from-collection?subpath='
+            view_prefix = u'@@view'
+            edit_prefix = u'@@view-editor'
+            remove_prefix = u'@@remove-from-collection?subpath='
+            joined_subpath = u'/'.join([safe_unicode(s) for s in self.subpath])
+
             if self.subpath:
-                view_prefix += '/' + '/'.join(self.subpath)
-                edit_prefix += '/' + '/'.join(self.subpath)
-                remove_prefix += '/' + '/'.join(self.subpath)
+                view_prefix += u'/{}'.format(joined_subpath)
+                edit_prefix += u'/{}'.format(joined_subpath)
+                remove_prefix += u'/{}'.format(joined_subpath)
 
             files = list()
             for info in handle.listdirinfo(files_only=True):
-                fullpath = '{}/{}'.format('/'.join(self.subpath), info[0])
-                if not info[0].startswith('.'):
+                path_name = safe_unicode(info[0])
+                fullpath = u'{}/{}'.format(joined_subpath, path_name)
+                if not path_name.startswith('.'):
                     try:
                         size = self.human_readable_filesize(info[1]['size'])
                     except KeyError:
@@ -207,14 +218,14 @@ class Connector(BrowserView):
                     if modified_original:
                         modified = self.human_readable_datetime(info[1]['modified_time'], to_utc=False)
 
-                    files.append(dict(url=u'{}/{}/{}'.format(context_url, view_prefix, info[0]),
+                    files.append(dict(url=u'{}/{}/{}'.format(context_url, view_prefix, path_name),
                                       fullpath=fullpath,
                                       remove_url=u'{}/{}&name={}'.format(
-                                          context_url, remove_prefix, info[0]),
+                                          context_url, remove_prefix, path_name),
                                       edit_url=u'{}/{}/{}'.format(
-                                          context_url, edit_prefix, info[0]),
+                                          context_url, edit_prefix, path_name),
                                       title=info[0],
-                                      editable=self.is_ace_editable(info[0]),
+                                      editable=self.is_ace_editable(path_name),
                                       st_mode=info[1].get('st_mode'),
                                       st_mode_text=stmode2unix(info[1].get('st_mode')),
                                       size_original=info[1].get('size'),
@@ -224,12 +235,13 @@ class Connector(BrowserView):
 
             dirs = list()
             for info in handle.listdirinfo(dirs_only=True):
-                fullpath = '{}/{}'.format('/'.join(self.subpath), info[0].encode('utf8'))
-                url = '{}/{}/{}'.format(context_url, view_prefix, info[0].encode('utf8'))
+                path_name = safe_unicode(info[0])
+                fullpath = u'{}/{}'.format(joined_subpath, path_name)
+                url = u'{}/{}/{}'.format(context_url, view_prefix, path_name)
                 modified = info[1].get('modified_time')
                 dirs.append(dict(url=url,
                                  fullpath=fullpath,
-                                 title=info[0],
+                                 title=path_name,
                                  st_mode=info[1].get('st_mode'),
                                  st_mode_text=stmode2unix(info[1].get('st_mode')),
                                  modified_original=modified,

@@ -144,6 +144,7 @@ class Connector(Item):
             exc.url = url
             raise exc
         except Exception as e:
+            print repr(e)
             LOG.warn(u'Error accessing {}::{}::{}'.format(
                 self.absolute_url(), url, self.REQUEST.get('HTTP_USER_AGENT')), exc_info=True)
             e.url = url
