@@ -287,6 +287,7 @@ class Connector(BrowserView):
             raise ValueError(_(u'No "name" given'))
 
         handle = self.get_handle(subpath)
+        can_unicode = handle.getmeta('unicode_paths')
         if handle.exists(name):
             msg = u'Collection already exists'
             self.context.plone_utils.addPortalMessage(msg, 'error')
