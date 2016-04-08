@@ -26,6 +26,7 @@ from plone.registry.interfaces import IRegistry
 from xmldirector.plonecore.locking import LockManager
 from xmldirector.plonecore.locking import FileIsLocked
 from xmldirector.plonecore.locking import LockError
+from xmldirector.plonecore.logger import LOG
 
 
 try:
@@ -245,10 +246,12 @@ def get_fs_wrapper(url, credentials=None, context=None):
         # hack for OSFP, fix this
         path = urllib.unquote(url[7:])
         wrapper = OSFSWrapper(path, encoding='utf-8')
-    elif f.scheme == 'http':
-        wrapper = DAVFSWrapper(original_url, credentials)
-    elif f.scheme == 'https':
-        wrapper = DAVFSWrapper(original_url, credentials)
+    elif f.scheme.startswith(('http', 'https'):
+        try:
+            wrapper = DAVFSWrapper(original_url, credentials)
+        except Exception as e:
+            LOG.error('Failed to get DAVFSWrapper for {}'.format(original_url), exc_info=True)
+            raise e
     elif f.scheme == 's3':
         if have_boto:
             wrapper = S3FSWrapper(
