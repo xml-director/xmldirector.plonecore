@@ -32,10 +32,10 @@ import xmldirector.plonecore
 import plone.app.dexterity
 
 
-WEBDAV_URL = os.environ.get(
-    'WEBDAV_URL', 'http://localhost:6080/exist/webdav/db')
-WEBDAV_USERNAME = os.environ.get('WEBDAV_USERNAME', 'admin')
-WEBDAV_PASSWORD = os.environ.get('WEBDAV_PASSWORD', 'admin')
+CONNECTOR_URL = os.environ.get(
+    'CONNECTOR_URL', 'http://localhost:6080/exist/webdav/db')
+CONNECTOR_USERNAME = os.environ.get('CONNECTOR_USERNAME', 'admin')
+CONNECTOR_PASSWORD = os.environ.get('CONNECTOR_PASSWORD', 'admin')
 
 os.environ['TESTING'] = '1'
 
@@ -64,14 +64,14 @@ class APILayer(PloneSandboxLayer):
 
         registry = getUtility(IRegistry)
         settings = registry.forInterface(IConnectorSettings)
-        settings.connector_username = unicode(WEBDAV_USERNAME)
-        settings.connector_password = unicode(WEBDAV_PASSWORD)
-        settings.connector_url = unicode(WEBDAV_URL)
+        settings.connector_username = unicode(CONNECTOR_USERNAME)
+        settings.connector_password = unicode(CONNECTOR_PASSWORD)
+        settings.connector_url = unicode(CONNECTOR_URL)
         self.testing_directory = settings.connector_dexterity_subpath = u'testing-dexterity-{}'.format(
             uuid.uuid4())
 
-        handle = get_fs_wrapper(WEBDAV_URL, credentials=dict(username=WEBDAV_USERNAME,
-                                                             password=WEBDAV_PASSWORD))
+        handle = get_fs_wrapper(CONNECTOR_URL, credentials=dict(username=CONNECTOR_USERNAME,
+                                                             password=CONNECTOR_PASSWORD))
         if not handle.exists(self.testing_directory):
             handle.makedir(self.testing_directory)
 
@@ -83,8 +83,8 @@ class APILayer(PloneSandboxLayer):
 
     def tearDownZope(self, app):
 
-        handle = get_fs_wrapper(WEBDAV_URL, credentials=dict(username=WEBDAV_USERNAME,
-                                                             password=WEBDAV_PASSWORD))
+        handle = get_fs_wrapper(CONNECTOR_URL, credentials=dict(username=CONNECTOR_USERNAME,
+                                                             password=CONNECTOR_PASSWORD))
         if handle.exists(self.testing_directory):
             try:
                 handle.removedir(

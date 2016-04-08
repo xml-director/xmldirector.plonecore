@@ -12,7 +12,7 @@ import uuid
 import datetime
 from zipfile import ZipFile
 from .base import TestBase
-from .base import WEBDAV_URL
+from .base import CONNECTOR_URL
 import zExceptions
 
 PREFIX = 'testing-{}'.format(uuid.uuid4())
@@ -69,7 +69,7 @@ class BasicTests(TestBase):
     def testCheckWebdavHandle(self):
         handle = self.portal.connector.get_handle()
         self.assertEqual(
-            handle.url, WEBDAV_URL + '/{}/'.format(PREFIX))
+            handle.url, CONNECTOR_URL + '/{}/'.format(PREFIX))
 
     def testFileCheck(self):
         handle = self.portal.connector.get_handle()
