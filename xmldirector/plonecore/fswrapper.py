@@ -249,7 +249,8 @@ def get_fs_wrapper(url, credentials=None, context=None):
         try:
             wrapper = DAVFSWrapper(original_url, credentials)
         except Exception as e:
-            LOG.error('Failed to get DAVFSWrapper for {}'.format(original_url), exc_info=True)
+            LOG.error('Failed to get DAVFSWrapper for {}'.format(
+                original_url), exc_info=True)
             raise e
     elif f.scheme == 's3':
         if have_boto:
@@ -296,10 +297,12 @@ def get_fs_wrapper(url, credentials=None, context=None):
         annotation = IAnnotations(context)
 
         token_key = annotation.get(dropbox_authentication.DROPBOX_TOKEN_KEY)
-        token_secret = annotation.get(dropbox_authentication.DROPBOX_TOKEN_SECRET)
+        token_secret = annotation.get(
+            dropbox_authentication.DROPBOX_TOKEN_SECRET)
         if not token_key or not token_secret:
             context = zope.globalrequest.getRequest().PUBLISHED.context
-            authorization_url = '{}/authorize-dropbox'.format(context.absolute_url())
+            authorization_url = '{}/authorize-dropbox'.format(
+                context.absolute_url())
             raise RuntimeError(
                 'Connector does not seem to be '
                 'authorized with Dropbox (use {})'.format(authorization_url))
@@ -311,7 +314,7 @@ def get_fs_wrapper(url, credentials=None, context=None):
             annotation[dropbox_authentication.DROPBOX_TOKEN_KEY],
             annotation[dropbox_authentication.DROPBOX_TOKEN_SECRET],
             root_path=urllib.unquote(str(f.path))
-            )
+        )
 
         if wrapper.isfile('.'):
             wrapper.__leaf__ = True
