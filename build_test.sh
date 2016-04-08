@@ -4,7 +4,7 @@ export PATH=\
 /opt/buildout.python/bin:\
 $PATH:
 
-echo $WEBDAV_URL
+echo $CONNECTOR_URL
 echo $PLONE_VERSION
 echo $DOCKER
 
