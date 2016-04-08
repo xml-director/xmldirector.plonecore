@@ -144,7 +144,6 @@ class BaseWrapper(object):
         except AttributeError:
             lm = LockManager(None)
 
-
         try:
             log_info = lm.get_lock(path)
         except LockError:
@@ -246,7 +245,7 @@ def get_fs_wrapper(url, credentials=None, context=None):
         # hack for OSFP, fix this
         path = urllib.unquote(url[7:])
         wrapper = OSFSWrapper(path, encoding='utf-8')
-    elif f.scheme.startswith(('http', 'https'):
+    elif f.scheme.startswith(('http', 'https')):
         try:
             wrapper = DAVFSWrapper(original_url, credentials)
         except Exception as e:
@@ -301,16 +300,18 @@ def get_fs_wrapper(url, credentials=None, context=None):
         if not token_key or not token_secret:
             context = zope.globalrequest.getRequest().PUBLISHED.context
             authorization_url = '{}/authorize-dropbox'.format(context.absolute_url())
-            raise RuntimeError('Connector does not seem to be authorized with Dropbox (use {})'.format(authorization_url))
+            raise RuntimeError(
+                'Connector does not seem to be '
+                'authorized with Dropbox (use {})'.format(authorization_url))
 
         wrapper = DropboxFSWrapper(
-                settings.dropbox_app_key,
-                settings.dropbox_app_secret,
-                'dropbox',
-                annotation[dropbox_authentication.DROPBOX_TOKEN_KEY],
-                annotation[dropbox_authentication.DROPBOX_TOKEN_SECRET],
-                root_path=urllib.unquote(str(f.path))
-                )
+            settings.dropbox_app_key,
+            settings.dropbox_app_secret,
+            'dropbox',
+            annotation[dropbox_authentication.DROPBOX_TOKEN_KEY],
+            annotation[dropbox_authentication.DROPBOX_TOKEN_SECRET],
+            root_path=urllib.unquote(str(f.path))
+            )
 
         if wrapper.isfile('.'):
             wrapper.__leaf__ = True

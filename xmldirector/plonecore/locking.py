@@ -78,8 +78,10 @@ class LockManager(object):
                 username = context.connector_username
                 password = context.connector_password
                 if username and password:
-                    import pdb; pdb.set_trace() 
-                    return get_fs_wrapper(context_connector_url, credentials=dict(username=username, password=password), context=self.context)
+                    return get_fs_wrapper(
+                        context_connector_url,
+                        credentials=dict(username=username, password=password),
+                        context=self.context)
                 else:
                     return get_fs_wrapper(context_connector_url, context=self.context)
         return getUtility(IConnectorHandle).get_handle()

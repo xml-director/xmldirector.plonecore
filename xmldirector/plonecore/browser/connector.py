@@ -189,8 +189,8 @@ class Connector(BrowserView):
     def __call__(self, *args, **kw):
 
         handle = self.get_handle()
-        can_unicode = handle.getmeta('unicode_paths')
-        subpath = self.subpath
+#        can_unicode = handle.getmeta('unicode_paths')
+#        subpath = self.subpath
         if handle.isDirectory():
             context_url = self.context.absolute_url()
             view_prefix = u'@@view'
@@ -287,7 +287,7 @@ class Connector(BrowserView):
             raise ValueError(_(u'No "name" given'))
 
         handle = self.get_handle(subpath)
-        can_unicode = handle.getmeta('unicode_paths')
+#        can_unicode = handle.getmeta('unicode_paths')
         if handle.exists(name):
             msg = u'Collection already exists'
             self.context.plone_utils.addPortalMessage(msg, 'error')
