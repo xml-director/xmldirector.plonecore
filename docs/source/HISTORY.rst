@@ -1,9 +1,10 @@
 Changelog
 =========
 
-1.6.1 (unreleased)
+1.6.1 (2016-04-08)
 ------------------
 - improved unicode filename handling across drivers
+- PEP8 fixes
 
 1.6.0 (2016-03-18)
 ------------------
