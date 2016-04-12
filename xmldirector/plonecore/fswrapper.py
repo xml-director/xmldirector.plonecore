@@ -250,7 +250,7 @@ def get_fs_wrapper(url, credentials=None, context=None):
         try:
             wrapper = DAVFSWrapper(original_url, credentials)
         except fs.errors.ResourceNotFoundError:
-            LOG.error('Failed to get DAVFSWrapper for {}'.format(
+            LOG.info('Failed to get DAVFSWrapper for {}'.format(
                 original_url), exc_info=True)
             raise NotFound(original_url)
         except Exception as e:
