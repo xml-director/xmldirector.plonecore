@@ -19,6 +19,7 @@ from collections import namedtuple
 
 import plone.api
 import zope.globalrequest
+from zExceptions import NotFound
 from zope.component import getUtility
 from zope.annotation import IAnnotations
 from plone.registry.interfaces import IRegistry
@@ -248,6 +249,10 @@ def get_fs_wrapper(url, credentials=None, context=None):
     elif f.scheme.startswith(('http', 'https')):
         try:
             wrapper = DAVFSWrapper(original_url, credentials)
+        except fs.errors.ResourceNotFoundError:
+            LOG.info('Failed to get DAVFSWrapper for {}'.format(
+                original_url), exc_info=True)
+            raise NotFound(original_url)
         except Exception as e:
             LOG.error('Failed to get DAVFSWrapper for {}'.format(
                 original_url), exc_info=True)
