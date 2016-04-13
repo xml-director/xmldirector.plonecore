@@ -10,6 +10,13 @@
 
     <browser:page
         for="*"
+        name="demo"
+        template="demo.pt"
+        permission="zope2.View"
+    />
+
+    <browser:page
+        for="*"
         name="lock"
         class=".lock.Lock"
         attribute="lock"
@@ -29,6 +36,14 @@
         name="view"
         class=".connector.Connector"
         template="connector_view.pt"
+        permission="zope2.View"
+    />
+
+    <browser:page
+        for="xmldirector.plonecore.connector.IConnector"
+        name="connector-folder-contents"
+        class=".connector.Connector"
+        attribute="folder_contents"
         permission="zope2.View"
     />
 

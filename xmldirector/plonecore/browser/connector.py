@@ -8,6 +8,7 @@
 import os
 import fs
 import stat
+import json
 import datetime
 import fs.errors
 import fs.path
@@ -60,6 +61,16 @@ def safe_unicode(s):
     return s
 
 
+
+def json_serial(obj):
+    """JSON serializer for objects not serializable by default json code"""
+
+    if isinstance(obj, datetime.datetime):
+        serial = obj.isoformat()
+        return serial
+    raise TypeError ("Type not serializable")
+
+
 class Dispatcher(BrowserView):
 
     def __call__(self, *args, **kw):
@@ -106,7 +117,7 @@ class Dispatcher(BrowserView):
 class Connector(BrowserView):
 
     view_name = 'view'
-    template = ViewPageTemplateFile('connector_view.pt')
+    template = ViewPageTemplateFile('demo.pt')
 
     implements(IViewView)
 
@@ -186,75 +197,81 @@ class Connector(BrowserView):
             return self.redirect(msg, subpath=self.subpath)
         raise ValueError(u'No such action "{}"'.format(action))
 
+    def folder_contents(self):
+        """ AJAX callback """
+
+        handle = self.get_handle()
+        context_url = self.context.absolute_url()
+        view_prefix = u'@@view'
+        edit_prefix = u'@@view-editor'
+        remove_prefix = u'@@remove-from-collection?subpath='
+        joined_subpath = u'/'.join([safe_unicode(s) for s in self.subpath])
+
+        if self.subpath:
+            view_prefix += u'/{}'.format(joined_subpath)
+            edit_prefix += u'/{}'.format(joined_subpath)
+            remove_prefix += u'/{}'.format(joined_subpath)
+
+        files = list()
+        for info in handle.listdirinfo(files_only=True):
+            path_name = safe_unicode(info[0])
+            fullpath = u'{}/{}'.format(joined_subpath, path_name)
+            if not path_name.startswith('.'):
+                try:
+                    size = self.human_readable_filesize(info[1]['size'])
+                except KeyError:
+                    size = u'n/a'
+
+                modified = None
+                modified_original = info[1].get('modified_time')
+                if modified_original:
+                    modified = self.human_readable_datetime(info[1]['modified_time'], to_utc=False)
+
+                files.append(dict(url=u'{}/{}/{}'.format(context_url, view_prefix, path_name),
+                                  type='file',
+                                  fullpath=fullpath,
+                                  remove_url=u'{}/{}&name={}'.format(
+                                      context_url, remove_prefix, path_name),
+                                  edit_url=u'{}/{}/{}'.format(
+                                      context_url, edit_prefix, path_name),
+                                  title=info[0],
+                                  editable=self.is_ace_editable(path_name),
+                                  st_mode=info[1].get('st_mode'),
+                                  st_mode_text=stmode2unix(info[1].get('st_mode')),
+                                  size_original=info[1].get('size'),
+                                  size=size,
+                                  modified_original=modified_original,
+                                  modified=modified))
+
+        dirs = list()
+        for info in handle.listdirinfo(dirs_only=True):
+            path_name = safe_unicode(info[0])
+            fullpath = u'{}/{}'.format(joined_subpath, path_name)
+            url = u'{}/{}/{}'.format(context_url, view_prefix, path_name)
+            modified = info[1].get('modified_time')
+            dirs.append(dict(url=url,
+                             fullpath=fullpath,
+                             type='directory',
+                             title=path_name,
+                             st_mode=info[1].get('st_mode'),
+                             st_mode_text=stmode2unix(info[1].get('st_mode')),
+                             modified_original=modified,
+                             modified=self.human_readable_datetime(modified), to_utc=False))
+
+        dirs = sorted(dirs, key=operator.itemgetter('title'))
+        files = sorted(files, key=operator.itemgetter('title'))
+        result = dict(dirs=dirs, files=files)
+        return json.dumps(result, default=json_serial)
+
     def __call__(self, *args, **kw):
 
         handle = self.get_handle()
 #        can_unicode = handle.getmeta('unicode_paths')
 #        subpath = self.subpath
         if handle.isDirectory():
-            context_url = self.context.absolute_url()
-            view_prefix = u'@@view'
-            edit_prefix = u'@@view-editor'
-            remove_prefix = u'@@remove-from-collection?subpath='
-            joined_subpath = u'/'.join([safe_unicode(s) for s in self.subpath])
-
-            if self.subpath:
-                view_prefix += u'/{}'.format(joined_subpath)
-                edit_prefix += u'/{}'.format(joined_subpath)
-                remove_prefix += u'/{}'.format(joined_subpath)
-
-            files = list()
-            for info in handle.listdirinfo(files_only=True):
-                path_name = safe_unicode(info[0])
-                fullpath = u'{}/{}'.format(joined_subpath, path_name)
-                if not path_name.startswith('.'):
-                    try:
-                        size = self.human_readable_filesize(info[1]['size'])
-                    except KeyError:
-                        size = u'n/a'
-
-                    modified = None
-                    modified_original = info[1].get('modified_time')
-                    if modified_original:
-                        modified = self.human_readable_datetime(info[1]['modified_time'], to_utc=False)
-
-                    files.append(dict(url=u'{}/{}/{}'.format(context_url, view_prefix, path_name),
-                                      fullpath=fullpath,
-                                      remove_url=u'{}/{}&name={}'.format(
-                                          context_url, remove_prefix, path_name),
-                                      edit_url=u'{}/{}/{}'.format(
-                                          context_url, edit_prefix, path_name),
-                                      title=info[0],
-                                      editable=self.is_ace_editable(path_name),
-                                      st_mode=info[1].get('st_mode'),
-                                      st_mode_text=stmode2unix(info[1].get('st_mode')),
-                                      size_original=info[1].get('size'),
-                                      size=size,
-                                      modified_original=modified_original,
-                                      modified=modified))
-
-            dirs = list()
-            for info in handle.listdirinfo(dirs_only=True):
-                path_name = safe_unicode(info[0])
-                fullpath = u'{}/{}'.format(joined_subpath, path_name)
-                url = u'{}/{}/{}'.format(context_url, view_prefix, path_name)
-                modified = info[1].get('modified_time')
-                dirs.append(dict(url=url,
-                                 fullpath=fullpath,
-                                 title=path_name,
-                                 st_mode=info[1].get('st_mode'),
-                                 st_mode_text=stmode2unix(info[1].get('st_mode')),
-                                 modified_original=modified,
-                                 modified=self.human_readable_datetime(modified), to_utc=False))
-
-            dirs = sorted(dirs, key=operator.itemgetter('title'))
-            files = sorted(files, key=operator.itemgetter('title'))
-
-            return self.template(
-                view_prefix=view_prefix,
-                subpath='/'.join(self.subpath),
-                files=files,
-                dirs=dirs)
+            return self.template()
+#                view_prefix=view_prefix,
+#                subpath='/'.join(self.subpath))
 
         elif handle.isFile():
             filename = self.subpath[-1]

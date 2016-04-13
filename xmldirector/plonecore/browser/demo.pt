@@ -1,0 +1,72 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="xmldirector.plonecore">
+<body>
+
+<metal:slot fill-slot="style_slot">
+    <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/jsgrid/jsgrid.min.css" />
+    <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/jsgrid/jsgrid-theme.min.css" />
+</metal:slot>
+
+<metal:slot fill-slot="javascript_head_slot">
+    <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/jsgrid/jsgrid.min.js"></script>
+</metal:slot>
+
+<metal:main fill-slot="content-core">
+  <metal:content-core define-macro="content-core">
+
+      <table id="table">
+      </table>
+
+      <script type="text/javascript" tal:content="string: var URL = '${context/absolute_url}'"></script>
+      <script type="text/javascript">
+
+        function get_data() {
+            var data = Array();
+            var url = URL + "/@@connector-folder-contents";
+            $.ajax({
+                url: url,
+                dataType: 'json',
+                async: false,
+                method: 'GET',
+                success: function(result) {
+                    data.push.apply(data, result['dirs']);
+                    data.push.apply(data, result['files']);
+                } 
+            });
+            return data;
+        }
+
+        $(document).ready(function() {
+            $('#table').jsGrid({
+                width: "100%",
+                height: "400px",
+                autoload: true,
+                sorting: true,
+                paging: true,
+                controller: {
+                    loadData: get_data
+                },
+
+                fields: [
+                    { name: "title", title: "Name", type: "text", width: 200,  },
+                    { name: "type", title: "Type", type: "text", width: 75 },
+                    { name: "st_size", title: "Size", type: "text", width: 50},
+                    { name: "modified", title: "Last modified", type: "text"   },
+                    { name: "st_mode_text", title: "Permissions", type: "text", sorting: false, size: 50 },
+                    { name: "actions", type: "text", title: "Actions", sorting: false }
+                ]
+            });
+        });
+      </script>
+
+  </metal:content-core>
+</metal:main>
+
+</body>
+</html>
+
