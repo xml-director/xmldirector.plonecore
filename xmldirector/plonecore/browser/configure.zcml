@@ -10,6 +10,14 @@
 
     <browser:page
         for="*"
+        name="demo"
+        template="demo.pt"
+        permission="zope2.View"
+    />
+
+
+    <browser:page
+        for="*"
         name="lock"
         class=".lock.Lock"
         attribute="lock"
