@@ -41,6 +41,12 @@
             return data;
         }
 
+        function title_renderer(value, item) {
+            var url = item['url'];
+            var title = item['title'];
+            return '<a href="' + url + '">' + title + '</a>';
+        }
+
         $(document).ready(function() {
             $('#table').jsGrid({
                 width: "100%",
@@ -53,7 +59,7 @@
                 },
 
                 fields: [
-                    { name: "title", title: "Name", type: "text", width: 200,  },
+                    { name: "title", title: "Name", type: "text", width: 200,  itemTemplate: title_renderer},
                     { name: "type", title: "Type", type: "text", width: 75 },
                     { name: "st_size", title: "Size", type: "text", width: 50},
                     { name: "modified", title: "Last modified", type: "text"   },
