@@ -67,4 +67,7 @@ Full documentation
 ------------------
 
 See https://pythonhosted.org/xmldirector.plonecore/
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1180ecce62641ed53e1d0c83b452e48da40b2abc
