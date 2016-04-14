@@ -76,9 +76,9 @@
 
                 fields: [
                     { name: "title", title: "Name", type: "text", width: 200,  itemTemplate: title_renderer},
-                    { name: "type", title: "Type", type: "text", width: 75 },
+                    { name: "type", title: "Type", type: "text", width: 75, css: 'field-type'},
                     { name: "size", title: "Size", type: "text", width: 50, css: 'field-size'},
-                    { name: "modified", title: "Last modified", type: "text"   },
+                    { name: "modified", title: "Last modified", type: "text", css: 'field-modified'  },
                     { name: "st_mode_text", title: "Permissions", type: "text", sorting: false, size: 50 },
                     { name: "actions", type: "text", title: "Actions", sorting: false, itemTemplate: action_renderer}
                 ]

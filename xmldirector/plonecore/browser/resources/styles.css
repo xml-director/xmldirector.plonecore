@@ -209,7 +209,19 @@ input.xmlxpath-field {
 /* Grid */
 td.field-size {
     white-space: nowrap;
+    text-align: right;
 }
+
+td.field-modified {
+    white-space: nowrap;
+    text-align: center;
+}
+
+td.field-type {
+    text-align: center;
+}
+
+
 
 /* ZIP upload */
 .template-connector-zip-import legend {
