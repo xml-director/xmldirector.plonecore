@@ -197,17 +197,17 @@ class Connector(BrowserView):
             return self.redirect(msg, subpath=self.subpath)
         raise ValueError(u'No such action "{}"'.format(action))
 
-    def folder_contents(self):
+    def folder_contents(self, subpath=''):
         """ AJAX callback """
 
-        handle = self.get_handle()
+        handle = self.get_handle(subpath)
         context_url = self.context.absolute_url()
         view_prefix = u'@@view'
         edit_prefix = u'@@view-editor'
         remove_prefix = u'@@remove-from-collection?subpath='
-        joined_subpath = u'/'.join([safe_unicode(s) for s in self.subpath])
+        joined_subpath = u'/{}'.format(safe_unicode(subpath))
 
-        if self.subpath:
+        if subpath:
             view_prefix += u'/{}'.format(joined_subpath)
             edit_prefix += u'/{}'.format(joined_subpath)
             remove_prefix += u'/{}'.format(joined_subpath)
@@ -266,13 +266,9 @@ class Connector(BrowserView):
     def __call__(self, *args, **kw):
 
         handle = self.get_handle()
-#        can_unicode = handle.getmeta('unicode_paths')
-#        subpath = self.subpath
         if handle.isDirectory():
-            return self.template()
-#                view_prefix=view_prefix,
-#                subpath='/'.join(self.subpath))
-
+            return self.template(
+                subpath='/'.join(self.subpath))
         elif handle.isFile():
             filename = self.subpath[-1]
             self.request.subpath = self.subpath

@@ -14,6 +14,7 @@
 
 <metal:slot fill-slot="javascript_head_slot">
     <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/jsgrid/jsgrid.min.js"></script>
+    <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/jquery.sprintf.js"></script>
 </metal:slot>
 
 <metal:main fill-slot="content-core">
@@ -23,11 +24,11 @@
       </table>
 
       <script type="text/javascript" tal:content="string: var URL = '${context/absolute_url}'"></script>
+      <script type="text/javascript" tal:content="string: var SUBPATH = '${options/subpath}'"></script>
       <script type="text/javascript">
-
         function get_data() {
             var data = Array();
-            var url = URL + "/@@connector-folder-contents";
+            var url = URL + "/@@connector-folder-contents?subpath=" + SUBPATH;
             $.ajax({
                 url: url,
                 dataType: 'json',
@@ -38,14 +39,28 @@
                     data.push.apply(data, result['files']);
                 } 
             });
+            console.log(data);
             return data;
         }
 
         function title_renderer(value, item) {
             var url = item['url'];
             var title = item['title'];
-            return '<a href="' + url + '">' + title + '</a>';
+            var fullpath = item['fullpath'];
+            var s = '<input type="checkbox" name="paths:list" value="' + fullpath + '">';
+            s += '<a href="' + url + '">' + title + '</a>';
+            return s;
         }
+
+        function action_renderer(value, item) {
+            var title = item['title'];
+
+            var s = $.sprintf('<a class="confirm-action" data-text="Do you really want to remove this collection?" href="%s/@@remove-collection?subpath=%s&name=%s">', URL, SUBPATH, title);
+            s += '<img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove collection"/>'
+            s += '</a>';
+            return s
+        }
+
 
         $(document).ready(function() {
             $('#table').jsGrid({
@@ -61,10 +76,10 @@
                 fields: [
                     { name: "title", title: "Name", type: "text", width: 200,  itemTemplate: title_renderer},
                     { name: "type", title: "Type", type: "text", width: 75 },
-                    { name: "st_size", title: "Size", type: "text", width: 50},
+                    { name: "size", title: "Size", type: "text", width: 50},
                     { name: "modified", title: "Last modified", type: "text"   },
                     { name: "st_mode_text", title: "Permissions", type: "text", sorting: false, size: 50 },
-                    { name: "actions", type: "text", title: "Actions", sorting: false }
+                    { name: "actions", type: "text", title: "Actions", sorting: false, itemTemplate: action_renderer}
                 ]
             });
         });
