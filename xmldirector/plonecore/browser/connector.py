@@ -206,6 +206,9 @@ class Connector(BrowserView):
         edit_prefix = u'@@view-editor'
         remove_prefix = u'@@remove-from-collection?subpath='
         joined_subpath = u'{}'.format(safe_unicode(subpath))
+        parent_subpath = ''
+        if subpath:
+            parent_subpath = u'/'.join(joined_subpath.split('/')[:-1])
 
         if subpath:
             view_prefix += u'/{}'.format(joined_subpath)
@@ -243,7 +246,13 @@ class Connector(BrowserView):
                                   modified_original=modified_original,
                                   modified=modified))
 
-        dirs = list()
+        dirs = []
+        if subpath:
+            dirs.append(dict(
+                type=u'directory',
+                title='..',
+                url='{}/@@view/{}'.format(self.context.absolute_url(), parent_subpath)
+                ))
         for info in handle.listdirinfo(dirs_only=True):
             path_name = safe_unicode(info[0])
             fullpath = u'{}/{}'.format(joined_subpath, path_name)

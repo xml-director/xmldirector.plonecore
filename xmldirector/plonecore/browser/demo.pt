@@ -48,8 +48,9 @@
             var url = item['url'];
             var title = item['title'];
             var fullpath = item['fullpath'];
-            var s = '<input type="checkbox" name="paths:list" value="' + fullpath + '">';
-            s += '<a href="' + url + '">' + title + '</a>';
+            var type = item['type'];
+            var s = '<input type="checkbox" name="paths:list" value="' + fullpath + '"> ';
+            s += $.sprintf('<a class="type-%s" href="%s">%s</a>', type, url, title);
             return s;
         }
 
