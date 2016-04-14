@@ -206,21 +206,10 @@ input.xmlxpath-field {
     content: '\e846';
 }
 
-/* Datatables */
-
-/* Hide datatables by default and show then upon completion (JS) */
-.datatable {
-    display: none;
+/* Grid */
+td.field-size {
+    white-space: nowrap;
 }
-
-.datatable tbody tr:nth-child(even) {
-    background: #ddd;
-}
-
-.datatable tbody tr:nth-child(odd) {
-    background: #eee;
-}
-
 
 /* ZIP upload */
 .template-connector-zip-import legend {

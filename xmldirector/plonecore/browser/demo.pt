@@ -10,6 +10,7 @@
 <metal:slot fill-slot="style_slot">
     <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/jsgrid/jsgrid.min.css" />
     <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/jsgrid/jsgrid-theme.min.css" />
+    <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/styles.css" />
 </metal:slot>
 
 <metal:slot fill-slot="javascript_head_slot">
@@ -76,7 +77,7 @@
                 fields: [
                     { name: "title", title: "Name", type: "text", width: 200,  itemTemplate: title_renderer},
                     { name: "type", title: "Type", type: "text", width: 75 },
-                    { name: "size", title: "Size", type: "text", width: 50},
+                    { name: "size", title: "Size", type: "text", width: 50, css: 'field-size'},
                     { name: "modified", title: "Last modified", type: "text"   },
                     { name: "st_mode_text", title: "Permissions", type: "text", sorting: false, size: 50 },
                     { name: "actions", type: "text", title: "Actions", sorting: false, itemTemplate: action_renderer}

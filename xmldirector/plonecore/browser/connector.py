@@ -205,7 +205,7 @@ class Connector(BrowserView):
         view_prefix = u'@@view'
         edit_prefix = u'@@view-editor'
         remove_prefix = u'@@remove-from-collection?subpath='
-        joined_subpath = u'/{}'.format(safe_unicode(subpath))
+        joined_subpath = u'{}'.format(safe_unicode(subpath))
 
         if subpath:
             view_prefix += u'/{}'.format(joined_subpath)
