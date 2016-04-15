@@ -9,28 +9,92 @@
 
 <slot metal:fill-slot="javascript_head_slot">
     <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/ace-builds/src-noconflict/ace.js"></script>
+    <script type="text/javascript" tal:content="string: ACE_MODE='${options/ace_mode}'"></script>
+    <script type="text/javascript" tal:content="string: ACE_READONLY=${options/ace_readonly}"></script>
 </slot>
 
 <metal:main fill-slot="content-core">
     <metal:content-core define-macro="content-core">
 
     <style type="text/css" media="screen">
-        #editor { 
+        .editor { 
             position: relative;
             height: 500px;
+            margin-bottom: 1em;
+        }
+        
+        .status-ok {
+            font-weight: bold;
+            color: green;
+        }
+
+        .status-error {
+            font-weight: bold;
+            color: red;
         }
     </style>
 
-    <div id="editor" tal:content="options/content" />
+    <div class="editor-container">
+        <div class="editor" tal:content="options/content" />
+        <div class="editor-messages" tal:condition="python: options['ace_mode'] == 'xml'">
+            <span class="editor-number-chars" tal:content="python: len(options['content'])"/> <span i18n:translate="">chars</span>
+            <span class="editor-verification"></span>
+        </div>
+
+        <div class="editor-actions">
+            <button class="editor-save" type="context" i18n:translate="">Save </button>
+            <button class="editor-validate-xml" type="context" tal:condition="python: options['ace_mode'] == 'xml'" i18n:translate="">Validate XML</button>
+        </div>
+    </div>
 
     <script>
-        var editor = ace.edit("editor");
-        editor.setTheme("ace/theme/monokai");
-        editor.getSession().setMode("ace/mode/javascript");
-        editor.setTheme("ace/theme/chrome");
-        editor.getSession().setMode("ace/mode/xml");
-        editor.setShowPrintMargin(false);
-        editor.setReadOnly(true);
+
+        var EDITORS = Array()
+        $(document).ready(function() {
+            $('.editor-container').each(function(i) {
+                var id_ =  i + 1;
+                $(this).find('.editor').attr('id', 'editor-' + id_);
+                $(this).find('.editor-number-chars').attr('editor-id',  id_);
+                $(this).find('.editor-verification').attr('editor-id', id_);
+                $(this).find('.editor-save').attr('editor-id', id_);
+                $(this).find('.editor-validate-xml').attr('editor-id', id_);
+                
+                var editor = ace.edit('editor-' + id_);
+                EDITORS[id_] = editor;
+                editor.editor_id = id_;
+                editor.setTheme("ace/theme/chrome");
+                editor.getSession().setMode("ace/mode/" + ACE_MODE);
+                editor.setShowPrintMargin(false);
+                editor.setReadOnly(ACE_READONLY);
+                
+                editor.getSession().on('change', function(){
+                    var xml = editor.getSession().getValue();
+                    var editor_id = editor.editor_id;
+                    $('.editor-number-chars[editor-id="' + editor_id + '"]').text(xml.length);
+                });
+            });
+
+
+            $('.editor-validate-xml').on('click', function() {
+                var editor_id = parseInt($(this).attr('editor-id'));
+                var editor = EDITORS[editor_id];
+                var xml = editor.getSession().getValue();
+                var selector = '.editor-verification[editor-id="' + editor_id + '"]';
+                var validation_field = $(selector);
+                try {
+                    $.parseXML(xml);
+                    var msg = 'XML is OK';
+                    var css_class = 'status-ok';
+                } catch(e) {
+                    var msg = 'XML has errors';
+                    var css_class = 'status-error';
+                }
+                validation_field.removeClass('status-ok');
+                validation_field.removeClass('status-error');
+                validation_field.addClass(css_class)
+                validation_field.text(msg).stop(true, true).show().fadeOut(5000);
+            });
+        });
     </script>
 
   </metal:content-core>
