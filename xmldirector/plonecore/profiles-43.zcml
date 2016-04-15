@@ -18,7 +18,6 @@
         provides="Products.GenericSetup.interfaces.EXTENSION"
     />
 
-
     <genericsetup:registerProfile
         name="testing"
         title="XML-Director (testing)"

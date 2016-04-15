@@ -126,6 +126,11 @@ class Connector(BrowserView):
         self.subpath = []
         self.traversal_subpath = []
 
+    def is_plone5(self):
+        import pkg_resources
+        version = pkg_resources.get_distribution('Products.CMFPlone').version
+        return version.startswith('5')
+
     def __bobo_traverse__(self, request, entryname):
         """ Traversal hook for (un)restrictedTraverse() """
         self.traversal_subpath.append(entryname)

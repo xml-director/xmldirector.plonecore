@@ -31,14 +31,12 @@
           <ul>
               <li>
                   <a class="action" 
-                     href="javascript: void()"
                      id="action-create-collection">
                       New collection
                   </a>
               </li>
               <li>
                   <a class="action" 
-                     href="javascript: void()"
                      i18n:translate=""
                      id="action-rename-collection">
                       Rename collection
@@ -85,9 +83,10 @@
 
       <script type="text/javascript" tal:content="string: var URL = '${context/absolute_url}'"></script>
       <script type="text/javascript" tal:content="string: var SUBPATH = '${options/subpath}'"></script>
+      <script type="text/javascript" tal:content="string: var IS_PLONE5 = '${python: str(view.is_plone5()).lower()}'"></script>
       <script type="text/javascript">
 
-        PAGING = false; /* true does not work on Plone 4.3 */  
+        PAGING = IS_PLONE5; 
 
         function get_data() {
             var data = Array();
@@ -156,7 +155,7 @@
             
             $('#table').jsGrid({
                 width: "100%",
-                height: "400px",
+                height: "600px",
                 autoload: true,
                 sorting: true,
                 paging: PAGING,
