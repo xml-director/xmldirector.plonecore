@@ -9,6 +9,7 @@
 
 <slot metal:fill-slot="javascript_head_slot">
     <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/ace-builds/src-noconflict/ace.js"></script>
+    <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/jquery.sprintf.js"></script>
     <script type="text/javascript" tal:content="string: ACE_MODE='${options/ace_mode}'"></script>
     <script type="text/javascript" tal:content="string: ACE_READONLY=${options/ace_readonly}"></script>
 </slot>
@@ -34,25 +35,35 @@
         }
     </style>
 
-    <div class="editor-container">
-        <div class="editor" 
+        <div class="ace-editable editor" 
             tal:attributes="data-url options/action_url"
             tal:content="options/content" />
-        <div class="editor-messages" tal:condition="python: options['ace_mode'] == 'xml'">
-            <span class="editor-number-chars" tal:content="python: len(options['content'])"/> <span i18n:translate="">chars</span>
-            <span class="editor-verification"></span>
-        </div>
 
-        <div class="editor-actions">
-            <button class="editor-save" type="context" i18n:translate="">Save </button>
-            <button class="editor-validate-xml" type="context" tal:condition="python: options['ace_mode'] == 'xml'" i18n:translate="">Validate XML</button>
-        </div>
-    </div>
+    <script type="text/javascript">
 
-    <script>
+        var container_template = '\
+            <div class="editor-container">\
+                %s\
+                <div class="editor-messages" tal:condition="python: options['ace_mode'] == 'xml'">\
+                    <span class="editor-number-chars" tal:content="python: len(options['content'])"/> <span i18n:translate="">chars</span>\
+                    <span class="editor-verification"></span>\
+                </div>\
+                <div class="editor-actions">\
+                    <button class="editor-save" type="context" i18n:translate="">Save </button>\
+                    <button class="editor-validate-xml" type="context" tal:condition="python: options['ace_mode'] == 'xml'" i18n:translate="">Validate XML</button>\
+                </div>\
+            </div>';
 
         var EDITORS = Array()
+
         $(document).ready(function() {
+
+            $('.ace-editable').each(function() {
+                var html = $(this).clone().wrap('<p>').parent().html();
+                html = $.sprintf(container_template, html);
+                $(this).replaceWith(html);
+            });
+
             $('.editor-container').each(function(i) {
                 var id_ =  i + 1;
                 $(this).find('.editor').attr('id', 'editor-' + id_);
