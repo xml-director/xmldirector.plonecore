@@ -7,122 +7,23 @@
       i18n:domain="xmldirector.plonecore">
 <body>
 
-    <metal:slot fill-slot="style_slot">
-        <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/DataTables/media/css/jquery.dataTables.css" />
-        <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/DataTables/extensions/FixedHeader/css/fixedHeader.dataTables.min.css" />
-    </metal:slot>
+<metal:slot fill-slot="style_slot">
+    <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/jsgrid/jsgrid.min.css" />
+    <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/jsgrid/jsgrid-theme.min.css" />
+    <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/styles.css" />
+</metal:slot>
 
-    <metal:slot fill-slot="javascript_head_slot">
-        <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/DataTables/media/js/jquery.dataTables.js"></script>
-        <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/DataTables/extensions/FixedHeader/js/dataTables.fixedHeader.min.js"></script>
-    </metal:slot>
+<metal:slot fill-slot="javascript_head_slot">
+    <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/jsgrid/jsgrid.min.js"></script>
+    <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/jquery.sprintf.js"></script>
+</metal:slot>
 
 <metal:main fill-slot="content-core">
   <metal:content-core define-macro="content-core">
 
-      <div id="connection-url">
-          <label i18n:translate="">Connected to:</label>
-          <span tal:content="context/connector_url" />
-      </div>
-
       <form tal:attributes="action string:${context/absolute_url}/collection-action" method="POST">
-          <table class="datatable">
-              <thead>
-                  <tr>
-                      <th i18n:translate="">Name</th>
-                      <th i18n:translate="">Type</th>
-                      <th i18n:translate="">Size</th>
-                      <th i18n:translate="">Last modified</th>
-                      <th i18n:translate="">Permissions</th>
-                      <th i18n:translate="">Action</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <tr>
-                      <td>                                     
-                          <a class="dir" 
-                             title="One level up"
-                             i18n:attributes="title"
-                             tal:attributes="href python: '{}/@@view/{}'.format(context.absolute_url(), '/'.join(view.subpath[:-1]))">..</a>
-                      </td>
-                      <td>
-                          <span i18n:translate="">COLLECTION</span>
-                      </td>
-                      <td data-order="0"/>
-                      <td data-order="0"/>
-                      <td />
-                      <td />
-                  </tr>
-                  <tr tal:repeat="item options/dirs">
-                      <td>
-                          <input type="checkbox" name="paths:list" tal:attributes="value item/fullpath" />
-                          <a class="dir" tal:attributes="href item/url"><span tal:replace="item/title" /></a>
-                      </td>
-                      <td>
-                          <span i18n:translate="">COLLECTION</span>
-                      </td>
-                      <td data-order="0"></td>
-                      <td tal:attributes="data-order python: item['modified_original'].isoformat()" tal:on-error="nothing">
-                          <span tal:replace="item/modified" />
-                      </td>
-                      <td>
-                          <span tal:replace="item/st_mode_text" />
-                      </td>
-                      <td>
-                          <a class="confirm-action" 
-                             data-text="Do you really want to remove this collection?"
-                             i18n:attributes="data-text"
-                              tal:attributes="href string:${context/absolute_url}/@@remove-collection?subpath=${options/subpath}&name=${item/title}"
-                             i18n:translate="">
-                             <img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove collection" i18n:attributes="title"/>
-                         </a>
-                      </td>
-                  </tr>
-                  <tr tal:repeat="item options/files">
-                      <td>
-                          <input type="checkbox" name="paths:list" tal:attributes="value item/fullpath" />
-                          <a class="file" tal:attributes="href item/url"><span tal:replace="item/title" /></a>
-                      </td>
-                      <td>
-                          <span i18n:translate="">FILE</span>
-                      </td>
-                      <td tal:attributes="data-sort item/size_original">
-                          <span tal:replace="item/size" />
-                      </td>
-                      <td tal:attributes="data-order python: item['modified_original'].isoformat()" tal:on-error="nothing">
-                          <span tal:replace="item/modified" />
-                      </td>
-                      <td>
-                          <span tal:replace="item/st_mode_text" />
-                      </td>
-                      <td>
-                          <a tal:attributes="href item/remove_url"
-                             class="confirm-action" 
-                             data-text="Do you really want to remove this item?"
-                             i18n:attributes="data-text"
-                             i18n:translate=""
-                             title="Remove"
-                             ><img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove item" i18n:attributes="title"/> </a>
-                          <a tal:condition="item/editable"
-                             tal:attributes="href item/edit_url"
-                             i18n:attributes="title"
-                             title="Edit"
-                              ><img src="++resource++xmldirector.plonecore/images/edit.png" /></a>
-                      </td>
-                  </tr>
-              </tbody>
-              <tfoot>
-                  <tr>
-                      <th class="searchable"></th>
-                      <th class="searchable"></th>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                  </tr>
-              </tfoot>
+          <table id="table">
           </table>
-
           <button class="button" type="submit" name="action" action="delete" value="delete">Delete</button>
       </form>
 
@@ -139,7 +40,6 @@
                   <a class="action" 
                      href="javascript: void()"
                      i18n:translate=""
-                     tal:condition="options/dirs"
                      id="action-rename-collection">
                       Rename collection
                   </a>
@@ -168,11 +68,13 @@
           </form>
           <form tal:attributes="action string:${context/absolute_url}/rename-collection" method="post" id="rename-collection-form" style="display: none">
               <label for="name" i18n:translate="">Rename collection</label>
+              <!--
               <select name="name">
                   <option tal:repeat="item options/dirs" 
                       tal:attributes="value item/title"
                       tal:content="item/title" />
               </select>
+              -->
               <input name="subpath" type="hidden" tal:attributes="value options/subpath" />
               <label for="new_name" i18n:translate="">to</label>
               <input type="text" name="new_name" size="20" />
@@ -180,10 +82,65 @@
           </form>
       </div>
 
-      <script type="text/javascript">
-          DATATABLES_ORDER = [1, "asc"];
 
-          $(document).ready(function() {
+      <script type="text/javascript" tal:content="string: var URL = '${context/absolute_url}'"></script>
+      <script type="text/javascript" tal:content="string: var SUBPATH = '${options/subpath}'"></script>
+      <script type="text/javascript">
+
+        PAGING = false; /* true does not work on Plone 4.3 */  
+
+        function get_data() {
+            var data = Array();
+            var url = URL + "/@@connector-folder-contents?subpath=" + SUBPATH;
+            
+            $.ajax({
+                url: url,
+                dataType: 'json',
+                async: false,
+                method: 'GET',
+                success: function(result) {
+                    data.push.apply(data, result['dirs']);
+                    data.push.apply(data, result['files']);
+                } 
+            });
+            return data;
+        }
+
+        function title_renderer(value, item) {
+            var url = item['url'];
+            var title = item['title'];
+            var fullpath = item['fullpath'];
+            var type = item['type'];
+            var s = '<input type="checkbox" name="paths:list" value="' + fullpath + '"> ';
+            s += $.sprintf('<a class="type-%s" href="%s">%s</a>', type, url, title);
+            return s;
+        }
+
+        function action_renderer(value, item) {
+            var title = item['title'];
+            if (item['type'] == 'directory') {
+                var s = $.sprintf('<a class="confirm-action" data-text="Do you really want to remove this collection?" href="%s/@@remove-collection?subpath=%s&name=%s">', URL, SUBPATH, title);
+                s += '<img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove collection"/>'
+                s += '</a>';
+                return s;
+            } else {
+                var remove_url = item['remove_url'];
+                var editable = item['editable'];
+                var s = $.sprintf('\
+                            <a href="%s" class="confirm-action" data-text="Do you really want to remove this item?" title="Remove">\
+                            <img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove item" i18n:attributes="title"/> </a>', 
+                        remove_url);
+                if (editable) {
+                    var edit_url = item['edit_url'];
+                    s += $.sprintf('<a href="%s" title="Edit" ><img src="++resource++xmldirector.plonecore/images/edit.png" /></a>', edit_url);
+                }
+                return s;
+            }
+        }
+
+
+        $(document).ready(function() {
+
             $('#action-create-collection').click(function() {
                 $('.actions form').hide();
                 $('#create-collection-form').toggle();
@@ -196,7 +153,28 @@
                 $('.actions form').hide();
                 $('#rename-collection-form').toggle();
             });
-          });
+            
+            $('#table').jsGrid({
+                width: "100%",
+                height: "400px",
+                autoload: true,
+                sorting: true,
+                paging: PAGING,
+                controller: {
+                    loadData: get_data
+                },
+
+                fields: [
+                    { name: "title", title: "Name", type: "text", width: 200,  itemTemplate: title_renderer},
+                    { name: "type", title: "Type", type: "text", width: 75, css: 'field-type'},
+                    { name: "size", title: "Size", type: "text", width: 50, css: 'field-size'},
+                    { name: "modified", title: "Last modified", type: "text", css: 'field-modified'  },
+                    { name: "st_mode_text", title: "Permissions", type: "text", sorting: false, size: 50 },
+                    { name: "actions", type: "text", title: "Actions", sorting: false, itemTemplate: action_renderer}
+                ]
+            });
+
+        });
       </script>
 
   </metal:content-core>

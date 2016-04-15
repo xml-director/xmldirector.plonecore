@@ -117,7 +117,7 @@ class Dispatcher(BrowserView):
 class Connector(BrowserView):
 
     view_name = 'view'
-    template = ViewPageTemplateFile('demo.pt')
+    template = ViewPageTemplateFile('connector_view.pt')
 
     implements(IViewView)
 
