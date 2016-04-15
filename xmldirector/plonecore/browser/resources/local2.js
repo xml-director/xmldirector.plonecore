@@ -15,9 +15,9 @@ var container_template = '\
 
 var EDITORS = Array();
 
-function init_ace_editors() {
+function init_ace_editors(selector='.ace-editable') {
 
-    $('.ace-editable').each(function() {
+    $(selector).each(function() {
         var html = $(this).clone().wrap('<div>').parent().html();
         var xml_length = $(this).data('length');
         html = $.sprintf(container_template, html, xml_length);
