@@ -8,6 +8,7 @@ var container_template = '\
         </div>\
         <div class="editor-actions">\
             <button class="editor-save" type="context">Save</button>\
+            <button class="editor-clear" type="context">Clear</button>\
             <button class="editor-validate-xml" type="context">Validate XML</button>\
         </div>\
     </div>';
@@ -30,6 +31,7 @@ function init_ace_editors() {
         $(this).find('.editor-number-chars').attr('editor-id',  id_);
         $(this).find('.editor-verification').attr('editor-id', id_);
         $(this).find('.editor-save').attr('editor-id', id_);
+        $(this).find('.editor-clear').attr('editor-id', id_);
         $(this).find('.editor-validate-xml').attr('editor-id', id_);
         
         var editor = ace.edit('editor-' + id_);
@@ -65,6 +67,15 @@ function init_ace_editors() {
         validation_field.removeClass('status-error');
         validation_field.addClass(css_class)
         validation_field.text(msg).stop(true, true).show().fadeOut(5000);
+    });
+
+    $('.editor-clear').on('click', function(e) {
+        e.preventDefault();
+        var editor_id = parseInt($(this).attr('editor-id'));
+        var editor = EDITORS[editor_id];
+        if (confirm('Do you really to remove the XML content?')) {
+            editor.setValue('');
+        }
     });
 
     $('.editor-save').on('click', function() {
