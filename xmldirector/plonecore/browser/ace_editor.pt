@@ -7,11 +7,31 @@
       i18n:domain="xmldirector.plonecore">
 <body>
 
-<metal:main fill-slot="content-core">
-  <metal:content-core define-macro="content-core">
+<slot metal:fill-slot="javascript_head_slot">
+    <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/ace-builds/src-noconflict/ace.js"></script>
+</slot>
 
-    <div id="editor" 
-        tal:content="options/content" />
+<metal:main fill-slot="content-core">
+    <metal:content-core define-macro="content-core">
+
+    <style type="text/css" media="screen">
+        #editor { 
+            position: relative;
+            height: 500px;
+        }
+    </style>
+
+    <div id="editor" tal:content="options/content" />
+
+    <script>
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/monokai");
+        editor.getSession().setMode("ace/mode/javascript");
+        editor.setTheme("ace/theme/chrome");
+        editor.getSession().setMode("ace/mode/xml");
+        editor.setShowPrintMargin(false);
+        editor.setReadOnly(true);
+    </script>
 
   </metal:content-core>
 </metal:main>
