@@ -10,6 +10,7 @@ var container_template = '\
             <button class="editor-save" type="context">Save</button>\
             <button class="editor-clear" type="context">Clear</button>\
             <button class="editor-validate-xml" type="context">Validate XML</button>\
+            <button class="editor-validate-xml-server" type="context">Validate XML on server</button>\
         </div>\
     </div>';
 
@@ -33,6 +34,7 @@ function init_ace_editors(selector='.ace-editable') {
         $(this).find('.editor-save').attr('editor-id', id_);
         $(this).find('.editor-clear').attr('editor-id', id_);
         $(this).find('.editor-validate-xml').attr('editor-id', id_);
+        $(this).find('.editor-validate-xml-server').attr('editor-id', id_);
         
         var editor = ace.edit('editor-' + id_);
         EDITORS[id_] = editor;
@@ -47,6 +49,32 @@ function init_ace_editors(selector='.ace-editable') {
             var editor_id = editor.editor_id;
             $('.editor-number-chars[editor-id="' + editor_id + '"]').text(xml.length);
         });
+    });
+
+    $('.editor-validate-xml-server').on('click', function(e) {
+        e.preventDefault();
+        var editor_id = parseInt($(this).attr('editor-id'));
+        var editor = EDITORS[editor_id];
+        var xml = editor.getSession().getValue();
+        var selector = '.editor-verification[editor-id="' + editor_id + '"]';
+        var validation_field = $(selector);
+
+        $.post('@@api-validate-xml', {xml: xml}, function(data, textStatus, jqXHR) {
+            var result = $.parseJSON(data);
+            if (result.length == 0) {
+                var msg = 'XML is OK';
+                validation_field.removeClass('status-ok');
+                validation_field.removeClass('status-error');
+                validation_field.addClass('status-ok')
+                validation_field.text(msg).stop(true, true).show().fadeOut(5000);
+            } else {
+                var msg = 'Error in XML (' + data + ')';
+                validation_field.removeClass('status-ok');
+                validation_field.removeClass('status-error');
+                validation_field.addClass('status-ok')
+                validation_field.text(msg).stop(true, true).show().fadeOut(5000);
+            }
+        }); 
     });
 
     $('.editor-validate-xml').on('click', function() {

@@ -90,7 +90,7 @@ class Validation(BrowserView):
         errors = []
         if xml:
             try:
-                defusedxml.lxml.fromstring(xml)
+                defusedxml.lxml.fromstring(unicode(xml, 'utf8'))
             except lxml.etree.ParseError as e:
-                errors.append(u'Parse error {}'.format(e))
+                errors.append(u'Parse error {}'.format(repr(e)))
         return json.dumps(errors)
