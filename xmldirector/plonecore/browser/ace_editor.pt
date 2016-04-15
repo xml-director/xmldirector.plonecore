@@ -35,7 +35,9 @@
     </style>
 
     <div class="editor-container">
-        <div class="editor" tal:content="options/content" />
+        <div class="editor" 
+            tal:attributes="data-url options/action_url"
+            tal:content="options/content" />
         <div class="editor-messages" tal:condition="python: options['ace_mode'] == 'xml'">
             <span class="editor-number-chars" tal:content="python: len(options['content'])"/> <span i18n:translate="">chars</span>
             <span class="editor-verification"></span>
@@ -54,6 +56,7 @@
             $('.editor-container').each(function(i) {
                 var id_ =  i + 1;
                 $(this).find('.editor').attr('id', 'editor-' + id_);
+                $(this).find('.editor').attr('editor-id', id_);
                 $(this).find('.editor-number-chars').attr('editor-id',  id_);
                 $(this).find('.editor-verification').attr('editor-id', id_);
                 $(this).find('.editor-save').attr('editor-id', id_);
@@ -74,7 +77,6 @@
                 });
             });
 
-
             $('.editor-validate-xml').on('click', function() {
                 var editor_id = parseInt($(this).attr('editor-id'));
                 var editor = EDITORS[editor_id];
@@ -94,6 +96,36 @@
                 validation_field.addClass(css_class)
                 validation_field.text(msg).stop(true, true).show().fadeOut(5000);
             });
+
+            $('.editor-save').on('click', function() {
+
+                var editor_id = parseInt($(this).attr('editor-id'));
+                var selector = '.editor[editor-id="' + editor_id + '"]';
+                var editor_field = $(selector);
+                var editor = EDITORS[editor_id];
+                var xml = editor.getSession().getValue();
+                var url = editor_field.data('url');
+                var selector = '.editor-verification[editor-id="' + editor_id + '"]';
+                var validation_field = $(selector);
+                
+                $.post(url, {
+                    data: xml})
+                .done(function() {
+                    validation_field.removeClass('status-ok');
+                    validation_field.removeClass('status-error');
+                    validation_field.addClass('status-ok')
+                    validation_field.text('Saving OK').stop(true, true).show(). fadeOut(2500);
+                    $('#ajax-result').html('<span class="status-ok">Content saved<span>').show().delay(2500).fadeOut(500);
+                })
+                .fail(function() {
+                    validation_field.removeClass('status-ok');
+                    validation_field.removeClass('status-error');
+                    validation_field.addClass('status-error')
+                    validation_field.text('Saving failed').stop(true, true).show(). fadeOut(2500);
+                })
+            });
+
+
         });
     </script>
 
