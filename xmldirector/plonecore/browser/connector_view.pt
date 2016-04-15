@@ -66,13 +66,8 @@
           </form>
           <form tal:attributes="action string:${context/absolute_url}/rename-collection" method="post" id="rename-collection-form" style="display: none">
               <label for="name" i18n:translate="">Rename collection</label>
-              <!--
-              <select name="name">
-                  <option tal:repeat="item options/dirs" 
-                      tal:attributes="value item/title"
-                      tal:content="item/title" />
+              <select name="name" id="collection-list">
               </select>
-              -->
               <input name="subpath" type="hidden" tal:attributes="value options/subpath" />
               <label for="new_name" i18n:translate="">to</label>
               <input type="text" name="new_name" size="20" />
@@ -100,6 +95,12 @@
                 success: function(result) {
                     data.push.apply(data, result['dirs']);
                     data.push.apply(data, result['files']);
+
+                    /* Update #collection-list */
+                    var select = $('#collection-list');
+                    $(result['dirs']).each(function(index, d) {
+                        select.append($.sprintf('<option value="%s">%s</option>', d['fullpath'], d['title']));
+                    });
                 } 
             });
             return data;
@@ -159,6 +160,7 @@
                 autoload: true,
                 sorting: true,
                 paging: PAGING,
+                filtering: true,
                 controller: {
                     loadData: get_data
                 },
@@ -166,10 +168,10 @@
                 fields: [
                     { name: "title", title: "Name", type: "text", width: 200,  itemTemplate: title_renderer},
                     { name: "type", title: "Type", type: "text", width: 75, css: 'field-type'},
-                    { name: "size", title: "Size", type: "text", width: 50, css: 'field-size'},
-                    { name: "modified", title: "Last modified", type: "text", css: 'field-modified'  },
-                    { name: "st_mode_text", title: "Permissions", type: "text", sorting: false, size: 50 },
-                    { name: "actions", type: "text", title: "Actions", sorting: false, itemTemplate: action_renderer}
+                    { name: "size", title: "Size", type: "text", width: 50, css: 'field-size', filtering: false},
+                    { name: "modified", title: "Last modified", type: "text", css: 'field-modified', filtering: false },
+                    { name: "st_mode_text", title: "Permissions", type: "text", sorting: false, size: 50 , filtering: false},
+                    { name: "actions", type: "text", title: "Actions", sorting: false, itemTemplate: action_renderer, filtering: false}
                 ]
             });
 

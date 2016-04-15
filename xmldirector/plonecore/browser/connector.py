@@ -31,11 +31,12 @@ from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore import permissions
 from plone.app.layout.globals.interfaces import IViewView
+from plone.protect.interfaces import IDisableCSRFProtection
+from zope.interface import alsoProvides
+
 from xmldirector.plonecore.i18n import MessageFactory as _
 from xmldirector.plonecore.logger import IPersistentLogger
-
 from .view_registry import precondition_registry
-
 from . import connector_views  # NOQA - needed to initalize the registry
 from . import config
 
@@ -329,6 +330,8 @@ class Connector(BrowserView):
     def remove_collection(self, subpath, name):
         """ Remove a collection """
 
+        alsoProvides(self.request, IDisableCSRFProtection)
+
         handle = self.get_handle(subpath)
         if handle.exists(name):
             handle.removedir(name, force=True)
@@ -343,6 +346,8 @@ class Connector(BrowserView):
 
     def remove_from_collection(self, subpath, name):
         """ Remove a collection """
+
+        alsoProvides(self.request, IDisableCSRFProtection)
 
         handle = self.get_handle(subpath)
         if handle.exists(name):
@@ -617,8 +622,11 @@ class Logging(BrowserView):
 
     def log_clear(self):
         """ Clear connector persistent log """
+
+        alsoProvides(self.request, IDisableCSRFProtection)
+
         IPersistentLogger(self.context).clear()
-        msg = u'Log entries cleared'
+        msg = _(u'Log entries cleared')
         self.context.plone_utils.addPortalMessage(msg)
         return self.request.response.redirect(
             '{}/connector-log'.format(self.context.absolute_url()))
