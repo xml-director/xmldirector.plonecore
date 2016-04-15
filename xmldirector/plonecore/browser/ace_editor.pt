@@ -59,7 +59,7 @@
         $(document).ready(function() {
 
             $('.ace-editable').each(function() {
-                var html = $(this).clone().wrap('<p>').parent().html();
+                var html = $(this).clone().wrap('<div>').parent().html();
                 html = $.sprintf(container_template, html);
                 $(this).replaceWith(html);
             });
@@ -135,7 +135,6 @@
                     validation_field.text('Saving failed').stop(true, true).show(). fadeOut(2500);
                 })
             });
-
 
         });
     </script>
