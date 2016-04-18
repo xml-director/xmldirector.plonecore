@@ -252,3 +252,18 @@ input.zip-upload {
     margin-top: 0.5em;
     margin-bottom: 0.5em;
 }
+        .editor { 
+            position: relative;
+            height: 500px;
+            margin-bottom: 1em;
+        }
+        
+        .status-ok {
+            font-weight: bold;
+            color: green;
+        }
+
+        .status-error {
+            font-weight: bold;
+            color: red;
+        }

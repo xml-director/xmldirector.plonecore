@@ -2,15 +2,19 @@ $(document).ready(function() {
 
     var plone5 = $('[data-bundle="plone-legacy"]').length > 0;
     if (plone5) {
-//        ace.config.set("basePath", $('body').attr('data-portal-url') + '/++resource++xmldirector.plonecore/ace-builds/src-min');
+        var portal_url = $('body').data('portal-url');
+        $('body').append('<script type="text/javascript" src="' + portal_url + '/++resource++xmldirector.plonecore/sprintf.min.js"></script>')
+        $('body').append('<script type="text/javascript" src="' + portal_url + '/++resource++xmldirector.plonecore/local2.js"></script>')
     }
 
     var editors = [];
     var num_editors = 0;
 
-    init_ace_editors('.template-view .xmltext-field');
-    init_ace_editors('textarea.xmltext-field');
+    ACE_MODE = 'xml';
+    ACE_READONLY = false;
 
+    init_ace_editors('.template-view .xmltext-field', true);
+    init_ace_editors('textarea.xmltext-field', true);
 
     // Test connection button for XML Director controlpanel
     var button = $('.template-xmldirector-core-settings #form-buttons-save');

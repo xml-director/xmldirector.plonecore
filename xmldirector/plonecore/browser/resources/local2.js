@@ -3,7 +3,7 @@ var container_template = '\
     <div class="editor-container">\
         %s\
         <div class="editor-messages">\
-            <span class="editor-number-chars">%d</span> <span>chars</span>\
+            <span class="editor-number-chars">%s</span> <span>chars</span>\
             <span class="editor-verification"></span>\
         </div>\
         <div class="editor-actions">\
@@ -16,12 +16,18 @@ var container_template = '\
 
 var EDITORS = Array();
 
-function init_ace_editors(selector='.ace-editable') {
+function init_ace_editors(selector='.ace-editable', add_editor_field=false) {
+    
 
     $(selector).each(function() {
+        console.log($(this));
         var html = $(this).clone().wrap('<div>').parent().html();
         var xml_length = $(this).data('length');
-        html = $.sprintf(container_template, html, xml_length);
+        if (add_editor_field) {
+            html = sprintf(container_template, '<div class="editor"></div>', 0);
+        } else {
+            html = sprintf(container_template, html, xml_length);
+        }
         $(this).replaceWith(html);
     });
 
