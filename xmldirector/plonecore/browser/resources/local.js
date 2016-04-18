@@ -17,14 +17,12 @@ $(document).ready(function() {
         var editors_ok = true;
 
         $('.ace_text').each(function() {
-            var xml = $(this).text();
+            var editor_id = $(this).closest('.editor').attr('editor-id');
             var textarea = $(this).closest('.editor-container').find('textarea');
+            var editor = EDITORS[editor_id]
+            var xml = editor.getSession().getValue();
             textarea.val(xml);
-            console.log(textarea);
-            console.log(xml);
         });
-
-        return false;
     });
 
 

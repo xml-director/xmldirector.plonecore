@@ -16,15 +16,27 @@ var container_template = '\
 
 var EDITORS = Array();
 
+
+if (!String.prototype.encodeHTML) {
+  String.prototype.encodeHTML = function () {
+    return this.replace(/&/g, '&amp;')
+               .replace(/</g, '&lt;')
+               .replace(/>/g, '&gt;')
+               .replace(/"/g, '&quot;')
+               .replace(/'/g, '&apos;');
+  };
+}
+
 function init_ace_editors(selector='.ace-editable', add_editor_field=false) {
-    
 
     $(selector).each(function() {
-        console.log($(this));
+        if(add_editor_field) 
+            $(this).hide();
         var html = $(this).clone().wrap('<div>').parent().html();
         var xml_length = $(this).data('length');
         if (add_editor_field) {
-            html = sprintf(container_template, '<div class="editor"></div>', 0);
+            var inner_xml = $(this).text();
+            html = sprintf(container_template, '<div class="editor">' + inner_xml.encodeHTML() + '</div>' + html, 0);
         } else {
             html = sprintf(container_template, html, xml_length);
         }
