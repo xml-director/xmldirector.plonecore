@@ -14,79 +14,79 @@
 
     <!-- XML content field -->
     <utility
-        name=".xml_field.XML"
-        component=".xml_field.XMLTextFactory"
+        name="xmldirector.plonecore.dx.xml_field.XML"
+        component="xmldirector.plonecore.dx.xml_field.XMLTextFactory"
     />
 
     <utility
-        component=".xml_field.XMLTextHandler"
+        component="xmldirector.plonecore.dx.xml_field.XMLTextHandler"
         name="xmldirector.plonecore.dx.xml_field.XMLText"
         />
 
-    <adapter factory=".xml_field.XMLFieldDataManager" />
+    <adapter factory="xmldirector.plonecore.dx.xml_field.XMLFieldDataManager" />
 
     <!-- XML binary field -->
     <utility
-        name=".xml_binary.XML"
-        component=".xml_binary.XMLBinaryFactory"
+        name="xmldirector.plonecore.dx.xml_binary.XML"
+        component="xmldirector.plonecore.dx.xml_binary.XMLBinaryFactory"
     />
 
     <utility
-        component=".xml_binary.XMLBinaryHandler"
+        component="xmldirector.plonecore.dx.xml_binary.XMLBinaryHandler"
         name="xmldirector.plonecore.dx.xml_binary.XMLBinary"
         />
 
-    <adapter factory=".xml_binary.XMLBinaryDataManager" />
+    <adapter factory="xmldirector.plonecore.dx.xml_binary.XMLBinaryDataManager" />
 
     <!-- XML image field -->
     <utility
-        name=".xml_image.XML"
-        component=".xml_image.XMLImageFactory"
+        name="xmldirector.plonecore.dx.xml_image.XML"
+        component="xmldirector.plonecore.dx.xml_image.XMLImageFactory"
     />
 
     <utility
-        component=".xml_image.XMLImageHandler"
+        component="xmldirector.plonecore.dx.xml_image.XMLImageHandler"
         name="xmldirector.plonecore.dx.xml_image.XMLImage"
         />
 
-    <adapter factory=".xml_image.XMLImageDataManager" />
+    <adapter factory="xmldirector.plonecore.dx.xml_image.XMLImageDataManager" />
 
     <!-- XML XPath field -->
     <utility
-        name=".xpath_field.XMLXPath"
-        component=".xpath_field.XMLXPathFactory"
+        name="xmldirector.plonecore.dx.xpath_field.XMLXPath"
+        component="xmldirector.plonecore.dx.xpath_field.XMLXPathFactory"
     />
 
     <utility
-        component=".xpath_field.XMLXPathHandler"
+        component="xmldirector.plonecore.dx.xpath_field.XMLXPathHandler"
         name="xmldirector.plonecore.dx.xpath_field.XMLXPath"
     />
 
-    <adapter factory=".xpath_field.XMLXPathDataManager" />
+    <adapter factory="xmldirector.plonecore.dx.xpath_field.XMLXPathDataManager" />
 
-    <adapter factory=".xpath_field.XPathFieldWidget"/>
+    <adapter factory="xmldirector.plonecore.dx.xpath_field.XPathFieldWidget"/>
 
-    <class class=".xpath_field.XPathWidget">
+    <class class="xmldirector.plonecore.dx.xpath_field.XPathWidget">
         <require
         permission="zope.Public"
-        interface=".xpath_field.IXPathWidget"
+        interface="xmldirector.plonecore.dx.xpath_field.IXPathWidget"
         />
     </class>
 
-    <class class=".xpath_field.XMLXPath">
-        <implements interface=".xpath_field.IXMLXPath"/>
+    <class class="xmldirector.plonecore.dx.xpath_field.XMLXPath">
+        <implements interface="xmldirector.plonecore.dx.xpath_field.IXMLXPath"/>
     </class>
 
     <z3c:widgetTemplate
         mode="input"
-        widget=".xpath_field.IXPathWidget"
+        widget="xmldirector.plonecore.dx.xpath_field.IXPathWidget"
         layer="z3c.form.interfaces.IFormLayer"
         template="xpath_input.pt"
         />
 
     <z3c:widgetTemplate
         mode="display"
-        widget=".xpath_field.IXPathWidget"
+        widget="xmldirector.plonecore.dx.xpath_field.IXPathWidget"
         layer="z3c.form.interfaces.IFormLayer"
         template="xpath_display.pt"
         />
