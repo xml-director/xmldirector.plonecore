@@ -7,14 +7,26 @@ $(document).ready(function() {
         $('body').append('<script type="text/javascript" src="' + portal_url + '/++resource++xmldirector.plonecore/local2.js"></script>')
     }
 
-    var editors = [];
-    var num_editors = 0;
-
     ACE_MODE = 'xml';
     ACE_READONLY = false;
 
     init_ace_editors('.template-view .xmltext-field', true);
     init_ace_editors('textarea.xmltext-field', true);
+
+    $('#form').on('submit', function(e) {
+        var editors_ok = true;
+
+        $('.ace_text').each(function() {
+            var xml = $(this).text();
+            var textarea = $(this).closest('.editor-container').find('textarea');
+            textarea.val(xml);
+            console.log(textarea);
+            console.log(xml);
+        });
+
+        return false;
+    });
+
 
     // Test connection button for XML Director controlpanel
     var button = $('.template-xmldirector-core-settings #form-buttons-save');
@@ -52,7 +64,6 @@ $(document).ready(function() {
             }
         })
     }            
-
 
 });
 
