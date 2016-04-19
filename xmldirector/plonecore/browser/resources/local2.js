@@ -131,32 +131,4 @@ function init_ace_editors(selector='.ace-editable', add_editor_field=false, read
             editor.setValue('');
         }
     });
-
-    $('.editor-save').on('click', function() {
-
-        var editor_id = parseInt($(this).attr('editor-id'));
-        var selector = '.editor[editor-id="' + editor_id + '"]';
-        var editor_field = $(selector);
-        var editor = EDITORS[editor_id];
-        var xml = editor.getSession().getValue();
-        var url = editor_field.data('url');
-        var selector = '.editor-verification[editor-id="' + editor_id + '"]';
-        var validation_field = $(selector);
-        
-        $.post(url, {
-            data: xml})
-        .done(function() {
-            validation_field.removeClass('status-ok');
-            validation_field.removeClass('status-error');
-            validation_field.addClass('status-ok')
-            validation_field.text('Saving OK').stop(true, true).show(). fadeOut(2500);
-            $('#ajax-result').html('<span class="status-ok">Content saved<span>').show().delay(2500).fadeOut(500);
-        })
-        .fail(function() {
-            validation_field.removeClass('status-ok');
-            validation_field.removeClass('status-error');
-            validation_field.addClass('status-error')
-            validation_field.text('Saving failed').stop(true, true).show(). fadeOut(2500);
-        })
-    });
 }

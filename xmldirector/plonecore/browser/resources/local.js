@@ -8,14 +8,7 @@ $(document).ready(function() {
         $('body').append('<script type="text/javascript" src="' + portal_url + '/++resource++xmldirector.plonecore/local2.js"></script>')
     }
 
-    ACE_MODE = 'xml';
-    ACE_READONLY = false;
-    /*
-    init_ace_editors('textarea.xmltext-field', true);
-    init_ace_editors('.template-view .xmltext-field', true);
-    init_ace_editors('.ace-editable', true, readonly=false);
-    init_ace_editors('.ace-editable-readonly', true, readonly=true);
-    */
+    /* Dexterity edit form subbmission handler */
     $('#form').on('submit', function(e) {
         $('.ace_text-input').each(function() {
             var editor_id = $(this).closest('.editor').attr('editor-id');
@@ -25,7 +18,6 @@ $(document).ready(function() {
             hidden_xml.val(xml);
         });
     });
-
 
     // Test connection button for XML Director controlpanel
     var button = $('.template-xmldirector-core-settings #form-buttons-save');

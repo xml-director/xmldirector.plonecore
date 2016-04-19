@@ -4,62 +4,103 @@
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       lang="en"
       metal:use-macro="context/main_template/macros/master"
-      i18n:domain="xmldirector.plonecore">
+  i18n:domain="xmldirector.plonecore">
 <body>
 
 <slot metal:fill-slot="javascript_head_slot">
-    <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/ace-builds/src-noconflict/ace.js"></script>
-    <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/jquery.sprintf.js"></script>
-    <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/local2.js"></script>
-    <script type="text/javascript" tal:content="string: ACE_MODE='${options/ace_mode}'"></script>
-    <script type="text/javascript" tal:content="string: ACE_READONLY=${options/ace_readonly}"></script>
+<script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/ace-builds/src-noconflict/ace.js"></script>
+<script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/jquery.sprintf.js"></script>
+<script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/local2.js"></script>
+<script type="text/javascript" tal:content="string: ACE_MODE='${options/ace_mode}'"></script>
+<script type="text/javascript" tal:content="string: ACE_READONLY=${options/ace_readonly}"></script>
 </slot>
 
 <metal:main fill-slot="content-core">
-    <metal:content-core define-macro="content-core">
+<metal:content-core define-macro="content-core">
 
-    <style type="text/css" media="screen">
-        .editor { 
-            position: relative;
-            height: 500px;
-            margin-bottom: 1em;
+<style type="text/css" media="screen">
+    .editor { 
+        position: relative;
+        height: 500px;
+        margin-bottom: 1em;
+    }
+    
+    .status-ok {
+        font-weight: bold;
+        color: green;
+    }
+
+    .status-error {
+        font-weight: bold;
+        color: red;
+    }
+</style>
+
+<div class="ace-editable editor" 
+    tal:attributes="data-length python: len(options['content'])"
+    tal:content="options/content" />
+
+<div class="editor-actions" style="margin-top: 1em">
+    <input type="button" class="context" id="save-xml" i18n:attributes="value" value="Save"/>
+    <input type="button" class="context" id="save-xml-leave" i18n:attributes="value" value="Save and leave editor"/>
+</div>
+
+<script type="text/javascript" tal:content="string: ACTION_URL = '${options/action_url}'"></script>
+<script type="text/javascript" tal:content="string: VIEW_URL = '${options/view_url}'"></script>
+<script type="text/javascript">
+
+    function save_xml() {
+        var editor = EDITORS[1];
+        var xml = editor.getSession().getValue();
+        var validation_field = $('.editor-verification');
+
+        try {
+            $.parseXML(xml);
+        } catch(e) {
+            validation_field.removeClass('status-ok');
+            validation_field.removeClass('status-error');
+            validation_field.addClass('status-error')
+            validation_field.text('XML has errors, not saved').stop(true, true).show(). fadeOut(2500);
+            return;
         }
         
-        .status-ok {
-            font-weight: bold;
-            color: green;
+        $.post(ACTION_URL, {
+            data: xml})
+        .done(function() {
+            validation_field.removeClass('status-ok');
+            validation_field.removeClass('status-error');
+            validation_field.addClass('status-ok')
+            validation_field.text('Saving OK').stop(true, true).show(). fadeOut(2500);
+            $('#ajax-result').html('<span class="status-ok">Content saved<span>').show().delay(2500).fadeOut(500);
+        })
+        .fail(function() {
+            validation_field.removeClass('status-ok');
+            validation_field.removeClass('status-error');
+            validation_field.addClass('status-error')
+            validation_field.text('Saving failed').stop(true, true).show(). fadeOut(2500);
+        })
+    }
+
+    $(document).ready(function() {
+
+        if (ACE_READONLY) {
+            init_ace_editors('.ace-editable', true, true);
+        } else {
+            init_ace_editors('.ace-editable', true, false);
         }
 
-        .status-error {
-            font-weight: bold;
-            color: red;
-        }
-    </style>
-
-    <div class="ace-editable editor" 
-        tal:attributes="data-url options/action_url; data-length python: len(options['content'])"
-        tal:content="options/content" />
-
-    <br/>
-    <input type="button" class="context" id="save-xml" i18n:attributes="value" value="Save"/>
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            init_ace_editors('.ace-editable');
-
-
-            $('#save-xml').on('click', function(e) {
-                e.preventDefault();
-                alert(1);
-                var editor = EDITORS[1];
-                var xml = editor.getSession().getValue();
-                alert(xml);
-                return false;
-            });  
+        $('#save-xml').on('click', function() {
+            save_xml();
         });
-    </script>
 
-  </metal:content-core>
+        $('#save-xml-leave').on('click', function() {
+            save_xml();
+            window.location.href = VIEW_URL;
+        });
+    });
+</script>
+
+</metal:content-core>
 </metal:main>
 
 </body>

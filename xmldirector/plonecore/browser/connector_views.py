@@ -88,12 +88,15 @@ def ace_editor(get_handle, filename, view_name, request,
     template = ViewPageTemplateFile(template_name)
     action_url = '{}/view-editor/{}'.format(request.context.absolute_url(),
                                             '/'.join(request.subpath))
+    view_url = '{}/view-editor-readonly/{}'.format(request.context.absolute_url(),
+                                            '/'.join(request.subpath))
     return template.pt_render(dict(
         template='ace_editor.pt',
         request=request,
         context=request.context,
         options=dict(content=content,
                      action_url=action_url,
+                     view_url=view_url,
                      readonly=readonly,
                      ace_readonly=str(readonly).lower(),  # JS
                      ace_mode=ace_mode)))
