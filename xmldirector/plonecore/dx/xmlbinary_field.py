@@ -39,7 +39,7 @@ class XMLBinary(NamedFileField):
 
 
 XMLBinaryFactory = FieldFactory(
-    XMLBinary, _(u'label_xml_binary_field', default=u'XML (binary data)'))
+    XMLBinary, _(u'label_xmlbinary_field_field', default=u'XML (binary data)'))
 XMLBinaryHandler = plone.supermodel.exportimport.BaseHandler(XMLBinary)
 
 

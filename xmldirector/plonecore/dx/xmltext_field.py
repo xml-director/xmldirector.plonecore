@@ -78,7 +78,7 @@ class XMLText(Text):
 
 
 XMLTextFactory = FieldFactory(
-    XMLText, _(u'label_xml_field', default=u'XML (Text)'))
+    XMLText, _(u'label_xmltext_field', default=u'XML (Text)'))
 XMLTextHandler = plone.supermodel.exportimport.BaseHandler(XMLText)
 
 

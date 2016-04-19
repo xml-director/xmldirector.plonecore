@@ -11,8 +11,8 @@
 
 try:
     from plone.app.dexterity.browser.types import ALLOWED_FIELDS
-    ALLOWED_FIELDS.append('xmldirector.plonecore.dx.xml_field.XML')
-    ALLOWED_FIELDS.append('xmldirector.plonecore.dx.xml_image.XML')
-    ALLOWED_FIELDS.append('xmldirector.plonecore.dx.xml_binary.XML')
+    ALLOWED_FIELDS.append('xmldirector.plonecore.dx.xmltext_field.XML')
+    ALLOWED_FIELDS.append('xmldirector.plonecore.dx.xmlimage_field.XML')
+    ALLOWED_FIELDS.append('xmldirector.plonecore.dx.xmlbinary_field.XML')
 except:
     pass

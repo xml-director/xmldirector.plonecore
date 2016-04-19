@@ -17,7 +17,7 @@ from plone.schemaeditor.fields import FieldFactory
 from plone.namedfile import NamedImage
 
 from xmldirector.plonecore.i18n import MessageFactory as _
-from xmldirector.plonecore.dx.xml_binary import XMLBinaryDataManager
+from xmldirector.plonecore.dx.xmlbinary_field import XMLBinaryDataManager
 
 
 ################################################################

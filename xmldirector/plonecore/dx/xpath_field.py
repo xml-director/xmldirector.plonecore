@@ -31,9 +31,9 @@ from plone.schemaeditor.fields import FieldFactory
 from z3c.form.datamanager import AttributeField as AttributeDataManager
 
 from xmldirector.plonecore.i18n import MessageFactory as _
-from xmldirector.plonecore.dx.xml_field import XMLText
-from xmldirector.plonecore.dx.xml_image import XMLImage
-from xmldirector.plonecore.dx.xml_binary import XMLBinary
+from xmldirector.plonecore.dx.xmltext_field import XMLText
+from xmldirector.plonecore.dx.xmlimage_field import XMLImage
+from xmldirector.plonecore.dx.xmlbinary_field import XMLBinary
 
 
 regex = re.compile('field=([\w]*),xpath=(.*)', re.UNICODE)
@@ -70,7 +70,7 @@ def get_all_fields(context):
     return fields
 
 
-def get_all_xml_fields(context):
+def get_all_xmltext_fields(context):
     """ Return all XML-ish field of given context object """
 
     fields = get_all_fields(context)
@@ -106,7 +106,7 @@ XMLXPathFactory = FieldFactory(XMLXPath, _(
     u'label_xml_xpath_field', default=u'XML (extended XPath expression)'))
 XMLXPathHandler = plone.supermodel.exportimport.BaseHandler(XMLXPath)
 
-from xmldirector.plonecore.dx.xml_field import XMLFieldDataManager
+from xmldirector.plonecore.dx.xmltext_field import XMLFieldDataManager
 
 
 class IXPathWidget(IWidget):
@@ -145,15 +145,15 @@ class XMLXPathDataManager(AttributeDataManager):
 
         fields = get_all_fields(self.context)
         field_name, xpath_expr = parse_field_expression(xpath_expr)
-        xml_field = fields.get(field_name)
-        if xml_field is None:
+        xmltext_field = fields.get(field_name)
+        if xmltext_field is None:
             error = u'XML field "{}" does not exist'.format(field_name)
             return dict(errors=[error], data=None)
 
         # get the dedicated datamanager for the XMLText field
         # that knows how to pull data from the database
 
-        adapter = XMLFieldDataManager(context=self.context, field=xml_field)
+        adapter = XMLFieldDataManager(context=self.context, field=xmltext_field)
         xml = adapter.get()
         if not xml:
             error = u'XML field is empty'

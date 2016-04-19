@@ -8,12 +8,12 @@
 
 from xmldirector.plonecore.dx.xpath_field import get_all_fields
 
-from xmldirector.plonecore.dx.xml_field import XMLText
-from xmldirector.plonecore.dx.xml_field import XMLFieldDataManager
-from xmldirector.plonecore.dx.xml_image import XMLImage
-from xmldirector.plonecore.dx.xml_image import XMLImageDataManager
-from xmldirector.plonecore.dx.xml_binary import XMLBinary
-from xmldirector.plonecore.dx.xml_binary import XMLBinaryDataManager
+from xmldirector.plonecore.dx.xmltext_field import XMLText
+from xmldirector.plonecore.dx.xmltext_field import XMLFieldDataManager
+from xmldirector.plonecore.dx.xmlimage_field import XMLImage
+from xmldirector.plonecore.dx.xmlimage_field import XMLImageDataManager
+from xmldirector.plonecore.dx.xmlbinary_field import XMLBinary
+from xmldirector.plonecore.dx.xmlbinary_field import XMLBinaryDataManager
 from xmldirector.plonecore.dx.xpath_field import XMLXPath
 from xmldirector.plonecore.dx.xpath_field import XMLXPathDataManager
 

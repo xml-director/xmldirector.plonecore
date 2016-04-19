@@ -7,7 +7,6 @@ var container_template = '\
             <span class="editor-verification"></span>\
         </div>\
         <div class="editor-actions">\
-            <button class="editor-save" type="context">Save</button>\
             <button class="editor-clear" type="context">Clear</button>\
             <button class="editor-validate-xml" type="context">Validate XML</button>\
             <button class="editor-validate-xml-server" type="context">Validate XML on server</button>\
@@ -27,10 +26,10 @@ if (!String.prototype.encodeHTML) {
   };
 }
 
-function init_ace_editors(selector='.ace-editable', add_editor_field=false) {
+function init_ace_editors(selector='.ace-editable', add_editor_field=false, readonly=false) {
 
     $(selector).each(function() {
-        alert('found');
+
         if(add_editor_field) 
             $(this).hide();
         var html = $(this).clone().wrap('<div>').parent().html();
@@ -45,12 +44,14 @@ function init_ace_editors(selector='.ace-editable', add_editor_field=false) {
     });
 
     $('.editor-container').each(function(i) {
+
+        alert(readonly);
         var id_ =  i + 1;
         $(this).find('.editor').attr('id', 'editor-' + id_);
         $(this).find('.editor').attr('editor-id', id_);
         $(this).find('.editor-number-chars').attr('editor-id',  id_);
         $(this).find('.editor-verification').attr('editor-id', id_);
-        $(this).find('.editor-save').attr('editor-id', id_);
+/*        $(this).find('.editor-save').attr('editor-id', id_);*/
         $(this).find('.editor-clear').attr('editor-id', id_);
         $(this).find('.editor-validate-xml').attr('editor-id', id_);
         $(this).find('.editor-validate-xml-server').attr('editor-id', id_);
@@ -61,7 +62,7 @@ function init_ace_editors(selector='.ace-editable', add_editor_field=false) {
         editor.setTheme("ace/theme/chrome");
         editor.getSession().setMode("ace/mode/" + ACE_MODE);
         editor.setShowPrintMargin(false);
-        editor.setReadOnly(ACE_READONLY);
+        editor.setReadOnly(readonly);
         
         editor.getSession().on('change', function(){
             var xml = editor.getSession().getValue();

@@ -11,8 +11,8 @@ from plone.indexer import indexer
 
 from xmldirector.plonecore.dx import util
 from xmldirector.plonecore.dx.xpath_field import get_all_fields
-from xmldirector.plonecore.dx.xml_field import XMLFieldDataManager
-from xmldirector.plonecore.dx.xml_field import XMLText
+from xmldirector.plonecore.dx.xmltext_field import XMLFieldDataManager
+from xmldirector.plonecore.dx.xmltext_field import XMLText
 
 from xmldirector.plonecore.logger import LOG
 
@@ -38,8 +38,8 @@ def _SearchableText(obj):
 
     # Throw all XML content of all fields into the huge SearchableText bag
     result = []
-    for xml_field in [field for field in get_all_fields(obj).values() if isinstance(field, XMLText)]:
-        adapter = XMLFieldDataManager(context=obj, field=xml_field)
+    for xmltext_field in [field for field in get_all_fields(obj).values() if isinstance(field, XMLText)]:
+        adapter = XMLFieldDataManager(context=obj, field=xmltext_field)
         xml = adapter.get()
         if xml:
             root = defusedxml.lxml.fromstring(xml)

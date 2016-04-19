@@ -14,63 +14,70 @@
 
     <!-- XML content field -->
     <utility
-        name="xmldirector.plonecore.dx.xml_field.XML"
-        component="xmldirector.plonecore.dx.xml_field.XMLTextFactory"
+        name="xmldirector.plonecore.dx.xmltext_field.XML"
+        component="xmldirector.plonecore.dx.xmltext_field.XMLTextFactory"
     />
 
     <utility
-        component="xmldirector.plonecore.dx.xml_field.XMLTextHandler"
-        name="xmldirector.plonecore.dx.xml_field.XMLText"
+        component="xmldirector.plonecore.dx.xmltext_field.XMLTextHandler"
+        name="xmldirector.plonecore.dx.xmltext_field.XMLText"
         />
 
-    <adapter factory="xmldirector.plonecore.dx.xml_field.XMLFieldDataManager" />
+    <adapter factory="xmldirector.plonecore.dx.xmltext_field.XMLFieldDataManager" />
 
 
-    <adapter factory="xmldirector.plonecore.dx.xml_field.XMLTextFieldWidget"/>
+    <adapter factory="xmldirector.plonecore.dx.xmltext_field.XMLTextFieldWidget"/>
 
-    <class class="xmldirector.plonecore.dx.xml_field.XMLTextWidget">
+    <class class="xmldirector.plonecore.dx.xmltext_field.XMLTextWidget">
         <require
         permission="zope.Public"
-        interface="xmldirector.plonecore.dx.xml_field.IXMLText"
+        interface="xmldirector.plonecore.dx.xmltext_field.IXMLText"
         />
     </class>
 
-    <class class="xmldirector.plonecore.dx.xml_field.XMLText">
-        <implements interface="xmldirector.plonecore.dx.xml_field.IXMLText"/>
+    <class class="xmldirector.plonecore.dx.xmltext_field.XMLText">
+        <implements interface="xmldirector.plonecore.dx.xmltext_field.IXMLText"/>
     </class>
 
     <z3c:widgetTemplate
         mode="input"
-        widget="xmldirector.plonecore.dx.xml_field.IXMLTextWidget"
+        widget="xmldirector.plonecore.dx.xmltext_field.IXMLTextWidget"
         layer="z3c.form.interfaces.IFormLayer"
-        template="input.pt"
+        template="xmltext_input.pt"
+        />
+
+    <z3c:widgetTemplate
+        mode="display"
+        widget="xmldirector.plonecore.dx.xmltext_field.IXMLTextWidget"
+        layer="z3c.form.interfaces.IFormLayer"
+        template="xmltext_display.pt"
         />
 
     <!-- XML binary field -->
     <utility
-        name="xmldirector.plonecore.dx.xml_binary.XML"
-        component="xmldirector.plonecore.dx.xml_binary.XMLBinaryFactory"
+        name="xmldirector.plonecore.dx.xmlbinary_field.XML"
+        component="xmldirector.plonecore.dx.xmlbinary_field.XMLBinaryFactory"
     />
 
     <utility
-        component="xmldirector.plonecore.dx.xml_binary.XMLBinaryHandler"
-        name="xmldirector.plonecore.dx.xml_binary.XMLBinary"
+        component="xmldirector.plonecore.dx.xmlbinary_field.XMLBinaryHandler"
+        name="xmldirector.plonecore.dx.xmlbinary_field.XMLBinary"
         />
 
-    <adapter factory="xmldirector.plonecore.dx.xml_binary.XMLBinaryDataManager" />
+    <adapter factory="xmldirector.plonecore.dx.xmlbinary_field.XMLBinaryDataManager" />
 
     <!-- XML image field -->
     <utility
-        name="xmldirector.plonecore.dx.xml_image.XML"
-        component="xmldirector.plonecore.dx.xml_image.XMLImageFactory"
+        name="xmldirector.plonecore.dx.xmlimage_field.XML"
+        component="xmldirector.plonecore.dx.xmlimage_field.XMLImageFactory"
     />
 
     <utility
-        component="xmldirector.plonecore.dx.xml_image.XMLImageHandler"
-        name="xmldirector.plonecore.dx.xml_image.XMLImage"
+        component="xmldirector.plonecore.dx.xmlimage_field.XMLImageHandler"
+        name="xmldirector.plonecore.dx.xmlimage_field.XMLImage"
         />
 
-    <adapter factory="xmldirector.plonecore.dx.xml_image.XMLImageDataManager" />
+    <adapter factory="xmldirector.plonecore.dx.xmlimage_field.XMLImageDataManager" />
 
     <!-- XML XPath field -->
     <utility

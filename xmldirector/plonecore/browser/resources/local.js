@@ -10,11 +10,12 @@ $(document).ready(function() {
 
     ACE_MODE = 'xml';
     ACE_READONLY = false;
-
-    init_ace_editors('.template-view .xmltext-field', true);
-    init_ace_editors('.ace-editable', true);
+    /*
     init_ace_editors('textarea.xmltext-field', true);
-
+    init_ace_editors('.template-view .xmltext-field', true);
+    init_ace_editors('.ace-editable', true, readonly=false);
+    init_ace_editors('.ace-editable-readonly', true, readonly=true);
+    */
     $('#form').on('submit', function(e) {
         var editors_ok = true;
 
