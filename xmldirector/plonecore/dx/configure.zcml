@@ -81,40 +81,40 @@
 
     <!-- XML XPath field -->
     <utility
-        name="xmldirector.plonecore.dx.xpath_field.XMLXPath"
-        component="xmldirector.plonecore.dx.xpath_field.XMLXPathFactory"
+        name="xmldirector.plonecore.dx.xmlxpath_field.XMLXPath"
+        component="xmldirector.plonecore.dx.xmlxpath_field.XMLXPathFactory"
     />
 
     <utility
-        component="xmldirector.plonecore.dx.xpath_field.XMLXPathHandler"
-        name="xmldirector.plonecore.dx.xpath_field.XMLXPath"
+        component="xmldirector.plonecore.dx.xmlxpath_field.XMLXPathHandler"
+        name="xmldirector.plonecore.dx.xmlxpath_field.XMLXPath"
     />
 
-    <adapter factory="xmldirector.plonecore.dx.xpath_field.XMLXPathDataManager" />
+    <adapter factory="xmldirector.plonecore.dx.xmlxpath_field.XMLXPathDataManager" />
 
-    <adapter factory="xmldirector.plonecore.dx.xpath_field.XPathFieldWidget"/>
+    <adapter factory="xmldirector.plonecore.dx.xmlxpath_field.XPathFieldWidget"/>
 
-    <class class="xmldirector.plonecore.dx.xpath_field.XPathWidget">
+    <class class="xmldirector.plonecore.dx.xmlxpath_field.XPathWidget">
         <require
         permission="zope.Public"
-        interface="xmldirector.plonecore.dx.xpath_field.IXPathWidget"
+        interface="xmldirector.plonecore.dx.xmlxpath_field.IXPathWidget"
         />
     </class>
 
-    <class class="xmldirector.plonecore.dx.xpath_field.XMLXPath">
-        <implements interface="xmldirector.plonecore.dx.xpath_field.IXMLXPath"/>
+    <class class="xmldirector.plonecore.dx.xmlxpath_field.XMLXPath">
+        <implements interface="xmldirector.plonecore.dx.xmlxpath_field.IXMLXPath"/>
     </class>
 
     <z3c:widgetTemplate
         mode="input"
-        widget="xmldirector.plonecore.dx.xpath_field.IXPathWidget"
+        widget="xmldirector.plonecore.dx.xmlxpath_field.IXPathWidget"
         layer="z3c.form.interfaces.IFormLayer"
         template="xpath_input.pt"
         />
 
     <z3c:widgetTemplate
         mode="display"
-        widget="xmldirector.plonecore.dx.xpath_field.IXPathWidget"
+        widget="xmldirector.plonecore.dx.xmlxpath_field.IXPathWidget"
         layer="z3c.form.interfaces.IFormLayer"
         template="xpath_display.pt"
         />

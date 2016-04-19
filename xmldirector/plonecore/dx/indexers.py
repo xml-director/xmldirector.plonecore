@@ -10,7 +10,7 @@ import zope.interface
 from plone.indexer import indexer
 
 from xmldirector.plonecore.dx import util
-from xmldirector.plonecore.dx.xpath_field import get_all_fields
+from xmldirector.plonecore.dx.xmlxpath_field import get_all_fields
 from xmldirector.plonecore.dx.xmltext_field import XMLFieldDataManager
 from xmldirector.plonecore.dx.xmltext_field import XMLText
 

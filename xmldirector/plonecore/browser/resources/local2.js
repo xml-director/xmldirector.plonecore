@@ -68,6 +68,12 @@ function init_ace_editors(selector='.ace-editable', add_editor_field=false, read
             var editor_id = editor.editor_id;
             $('.editor-number-chars[editor-id="' + editor_id + '"]').text(xml.length);
         });
+
+        if (readonly) {
+            $('.editor-actions').remove();
+            $('.editor-messages').remove();
+        }
+
     });
 
     $('.editor-validate-xml-server').on('click', function(e) {

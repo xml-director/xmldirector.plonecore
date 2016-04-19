@@ -14,5 +14,6 @@ try:
     ALLOWED_FIELDS.append('xmldirector.plonecore.dx.xmltext_field.XML')
     ALLOWED_FIELDS.append('xmldirector.plonecore.dx.xmlimage_field.XML')
     ALLOWED_FIELDS.append('xmldirector.plonecore.dx.xmlbinary_field.XML')
+    ALLOWED_FIELDS.append('xmldirector.plonecore.dx.xmlxpath_field.XML')
 except:
     pass

@@ -70,7 +70,7 @@ def get_all_fields(context):
     return fields
 
 
-def get_all_xmltext_fields(context):
+def get_all_xml_fields(context):
     """ Return all XML-ish field of given context object """
 
     fields = get_all_fields(context)
