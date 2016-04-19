@@ -36,13 +36,26 @@
         }
     </style>
 
-        <div class="ace-editable editor" 
-            tal:attributes="data-url options/action_url; data-length python: len(options['content'])"
-            tal:content="options/content" />
+    <div class="ace-editable editor" 
+        tal:attributes="data-url options/action_url; data-length python: len(options['content'])"
+        tal:content="options/content" />
+
+    <br/>
+    <input type="button" class="context" id="save-xml" i18n:attributes="value" value="Save"/>
 
     <script type="text/javascript">
         $(document).ready(function() {
-            init_ace_editors();
+            init_ace_editors('.ace-editable');
+
+
+            $('#save-xml').on('click', function(e) {
+                e.preventDefault();
+                alert(1);
+                var editor = EDITORS[1];
+                var xml = editor.getSession().getValue();
+                alert(xml);
+                return false;
+            });  
         });
     </script>
 
