@@ -1,4 +1,3 @@
-
 $(document).ready(function() {
 
     var plone5 = $('[data-bundle="plone-legacy"]').length > 0;
@@ -8,6 +7,16 @@ $(document).ready(function() {
         $('body').append('<script type="text/javascript" src="' + portal_url + '/++resource++xmldirector.plonecore/local2.js"></script>')
     }
 
+
+    /* Deletion confirmation */
+    $('.confirm-action').on('click', function(e) {
+        var text = $(this).data('text');
+        if (! confirm(text)) {
+            return false;
+        }
+    });
+
+    
     /* Dexterity edit form subbmission handler */
     $('#form').on('submit', function(e) {
         $('.ace_text-input').each(function() {
