@@ -45,7 +45,6 @@ function init_ace_editors(selector='.ace-editable', add_editor_field=false, read
 
     $('.editor-container').each(function(i) {
 
-        alert(readonly);
         var id_ =  i + 1;
         $(this).find('.editor').attr('id', 'editor-' + id_);
         $(this).find('.editor').attr('editor-id', id_);
@@ -97,7 +96,8 @@ function init_ace_editors(selector='.ace-editable', add_editor_field=false, read
         }); 
     });
 
-    $('.editor-validate-xml').on('click', function() {
+    $('.editor-validate-xml').on('click', function(e) {
+        e.preventDefault();
         var editor_id = parseInt($(this).attr('editor-id'));
         var editor = EDITORS[editor_id];
         var xml = editor.getSession().getValue();

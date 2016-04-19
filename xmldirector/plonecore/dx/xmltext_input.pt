@@ -18,13 +18,18 @@
 </style>
 
 <tal:def define="portal_url view/portal_url;
-                 field_name view/field/getName">
+                 field_name view/field/getName;
+                 xml_content python: request.get('form.widgets.{}'.format(field_name), view.xml_content())">
     <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/ace-builds/src-noconflict/ace.js"></script>
     <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/jquery.sprintf.js"></script>
     <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/local2.js"></script>
 
-    <div class="xmltext widget" i18n:domain="xmldirector.plonecore">
-        <div class="editor" tal:attributes="id string:editor-${field_name}"><span tal:replace="view/xml_content" /></div>
+    <div class="xmltext-widget" i18n:domain="xmldirector.plonecore">
+        <div class="editor" tal:attributes="id string:editor-${field_name}"><span tal:replace="xml_content" /></div>
+        <input type="hidden"
+            class="hidden-xml"
+            tal:attributes="id view/id; name view/name"
+        />
     </div>
 
     <script type="text/javascript" tal:content="string: EDITOR_ID = 'editor-${field_name}'">
@@ -33,6 +38,4 @@
             init_ace_editors('#' + EDITOR_ID, true, false)
         });
     </script>
-
 </tal:def>
-

@@ -17,14 +17,12 @@ $(document).ready(function() {
     init_ace_editors('.ace-editable-readonly', true, readonly=true);
     */
     $('#form').on('submit', function(e) {
-        var editors_ok = true;
-
-        $('.ace_text').each(function() {
+        $('.ace_text-input').each(function() {
             var editor_id = $(this).closest('.editor').attr('editor-id');
-            var textarea = $(this).closest('.editor-container').find('textarea');
+            var hidden_xml = $(this).closest('.xmltext-widget').find('.hidden-xml');
             var editor = EDITORS[editor_id]
             var xml = editor.getSession().getValue();
-            textarea.val(xml);
+            hidden_xml.val(xml);
         });
     });
 
