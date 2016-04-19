@@ -30,6 +30,7 @@ if (!String.prototype.encodeHTML) {
 function init_ace_editors(selector='.ace-editable', add_editor_field=false) {
 
     $(selector).each(function() {
+        alert('found');
         if(add_editor_field) 
             $(this).hide();
         var html = $(this).clone().wrap('<div>').parent().html();

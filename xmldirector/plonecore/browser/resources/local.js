@@ -1,3 +1,4 @@
+
 $(document).ready(function() {
 
     var plone5 = $('[data-bundle="plone-legacy"]').length > 0;
@@ -11,6 +12,7 @@ $(document).ready(function() {
     ACE_READONLY = false;
 
     init_ace_editors('.template-view .xmltext-field', true);
+    init_ace_editors('.ace-editable', true);
     init_ace_editors('textarea.xmltext-field', true);
 
     $('#form').on('submit', function(e) {

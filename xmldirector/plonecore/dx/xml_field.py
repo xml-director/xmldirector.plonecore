@@ -15,7 +15,14 @@ import zope.interface
 import zope.component
 from zope.schema import Text
 from zope.schema.interfaces import IField
+from z3c.form.browser import text
+from z3c.form.interfaces import IFormLayer
+from z3c.form.interfaces import IFieldWidget
+from z3c.form.widget import FieldWidget
 import z3c.form.datamanager
+from zope.interface import implementer
+from zope.component import adapter
+from z3c.form.interfaces import IWidget
 import plone.supermodel.exportimport
 from plone.schemaeditor.fields import FieldFactory
 
@@ -54,6 +61,10 @@ class IXMLText(IField):
 
 class XMLText(Text):
     zope.interface.implements(IXMLText)
+
+    def render(self):
+        import pdb; pdb.set_trace() 
+
 
     def validate(self, value):
         """ Perform XML validation """
@@ -127,3 +138,25 @@ class XMLFieldDataManager(z3c.form.datamanager.AttributeField):
                 metadata = dict(sha256=value_sha256)
                 fp_metadata_xml.write(
                     util.metadata_to_xml(context=self.context, metadata=metadata))
+
+
+class IXMLTextWidget(IWidget):
+    pass
+
+
+class XMLTextWidget(text.TextWidget):
+    """ Widget for XPath expressions."""
+    zope.interface.implementsOnly(IXMLTextWidget)
+
+    def xml_content(self):
+        dm = XMLFieldDataManager(context=self.context, field=self.field)
+        return dm.get()
+
+    def portal_url(self):
+        return plone.api.portal.get().absolute_url()
+
+@implementer(IFieldWidget)
+@adapter(IXMLText, IFormLayer)
+def XMLTextFieldWidget(field, request):
+    """IFieldWidget factory for RecurrenceWidget."""
+    return FieldWidget(field, XMLTextWidget(request))

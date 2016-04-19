@@ -25,6 +25,27 @@
 
     <adapter factory="xmldirector.plonecore.dx.xml_field.XMLFieldDataManager" />
 
+
+    <adapter factory="xmldirector.plonecore.dx.xml_field.XMLTextFieldWidget"/>
+
+    <class class="xmldirector.plonecore.dx.xml_field.XMLTextWidget">
+        <require
+        permission="zope.Public"
+        interface="xmldirector.plonecore.dx.xml_field.IXMLText"
+        />
+    </class>
+
+    <class class="xmldirector.plonecore.dx.xml_field.XMLText">
+        <implements interface="xmldirector.plonecore.dx.xml_field.IXMLText"/>
+    </class>
+
+    <z3c:widgetTemplate
+        mode="input"
+        widget="xmldirector.plonecore.dx.xml_field.IXMLTextWidget"
+        layer="z3c.form.interfaces.IFormLayer"
+        template="input.pt"
+        />
+
     <!-- XML binary field -->
     <utility
         name="xmldirector.plonecore.dx.xml_binary.XML"
