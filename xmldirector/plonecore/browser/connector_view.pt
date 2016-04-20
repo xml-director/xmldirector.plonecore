@@ -15,8 +15,6 @@
 
 <metal:slot fill-slot="javascript_head_slot">
     <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/jsgrid/jsgrid.min.js"></script>
-    <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/jquery.sprintf.js"></script>
-    <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/local2.js"></script>
 </metal:slot>
 
 <metal:main fill-slot="content-core">
@@ -102,7 +100,7 @@
                     /* Update #collection-list */
                     var select = $('#collection-list');
                     $(result['dirs']).each(function(index, d) {
-                        select.append($.sprintf('<option value="%s">%s</option>', d['fullpath'], d['title']));
+                        select.append(sprintf('<option value="%s">%s</option>', d['fullpath'], d['title']));
                     });
                 } 
             });
@@ -115,27 +113,27 @@
             var fullpath = item['fullpath'];
             var type = item['type'];
             var s = '<input type="checkbox" name="paths:list" value="' + fullpath + '"> ';
-            s += $.sprintf('<a class="type-%s" href="%s">%s</a>', type, url, title);
+            s += sprintf('<a class="type-%s" href="%s">%s</a>', type, url, title);
             return s;
         }
 
         function action_renderer(value, item) {
             var title = item['title'];
             if (item['type'] == 'directory') {
-                var s = $.sprintf('<a class="confirm-action" data-text="Do you really want to remove this collection?" href="%s/@@remove-collection?subpath=%s&name=%s">', URL, SUBPATH, title);
+                var s = sprintf('<a class="confirm-action" data-text="Do you really want to remove this collection?" href="%s/@@remove-collection?subpath=%s&name=%s">', URL, SUBPATH, title);
                 s += '<img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove collection"/>'
                 s += '</a>';
                 return s;
             } else {
                 var remove_url = item['remove_url'];
                 var editable = item['editable'];
-                var s = $.sprintf('\
+                var s = sprintf('\
                             <a href="%s" class="confirm-action" data-text="Do you really want to remove this item?" title="Remove">\
                             <img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove item" i18n:attributes="title"/> </a>', 
                         remove_url);
                 if (editable) {
                     var edit_url = item['edit_url'];
-                    s += $.sprintf('<a href="%s" title="Edit" ><img src="++resource++xmldirector.plonecore/images/edit.png" /></a>', edit_url);
+                    s += sprintf('<a href="%s" title="Edit" ><img src="++resource++xmldirector.plonecore/images/edit.png" /></a>', edit_url);
                 }
                 return s;
             }

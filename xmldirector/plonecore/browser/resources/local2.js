@@ -1,4 +1,34 @@
 
+/* encodeHTML() */
+
+
+if (!String.prototype.encodeHTML) {
+  String.prototype.encodeHTML = function () {
+    return this.replace(/&/g, '&amp;')
+               .replace(/</g, '&lt;')
+               .replace(/>/g, '&gt;')
+               .replace(/"/g, '&quot;')
+               .replace(/'/g, '&apos;');
+  };
+}
+
+
+/* A custom sprintf() impelementation */
+
+
+function sprintf(){
+    var args = Array.prototype.slice.call(arguments);
+    return args.shift().replace(/%s/g, function(){
+        return args.shift();
+    });
+}
+
+
+/* ACE editor integration */
+
+/* template for wrapping the ACE editor into*/
+
+
 var container_template = '\
     <div class="editor-container">\
         %s\
@@ -13,18 +43,17 @@ var container_template = '\
         </div>\
     </div>';
 
+
+/* Global variable for all ACE editor instances within page */
+
+
 var EDITORS = Array();
 
 
-if (!String.prototype.encodeHTML) {
-  String.prototype.encodeHTML = function () {
-    return this.replace(/&/g, '&amp;')
-               .replace(/</g, '&lt;')
-               .replace(/>/g, '&gt;')
-               .replace(/"/g, '&quot;')
-               .replace(/'/g, '&apos;');
-  };
-}
+/* Initialize all ACE editors for a given ``selector``.
+ * ``add_editor_field`` is usually always true
+ * ``readonly`` = true|false for setting the ACE editor into readonly mode
+ */
 
 function init_ace_editors(selector='.ace-editable', add_editor_field=false, readonly=false) {
 
