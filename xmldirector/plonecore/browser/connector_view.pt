@@ -97,7 +97,6 @@
 
 
                     /* Update #collection-list */
-                    console.log(result['dirs'].length);
                     if (result['dirs'].length > 0) {
                         var select = $('#collection-list');
                         $(result['dirs']).each(function(index, d) {
