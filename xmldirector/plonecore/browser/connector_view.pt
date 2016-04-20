@@ -23,7 +23,7 @@
       <form tal:attributes="action string:${context/absolute_url}/collection-action" method="POST">
           <table id="table">
           </table>
-          <button class="button" type="submit" name="action" action="delete" value="delete">Delete</button>
+          <button class="confirm-action button" type="submit" name="action" action="delete" value="delete" data-text="Do you really want to remove the selected items?">Delete</button>
       </form>
 
       <div class="actions">
