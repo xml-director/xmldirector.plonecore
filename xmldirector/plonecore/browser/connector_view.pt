@@ -82,35 +82,49 @@
 
         PAGING = IS_PLONE5; 
 
-        function get_data() {
-            var data = Array();
+        DATA = new Array;
+
+        function get_data(filter) {
             var url = URL + "/@@connector-folder-contents?subpath=" + SUBPATH;
-            
-            $.ajax({
-                url: url,
-                dataType: 'json',
-                async: false,
-                method: 'GET',
-                success: function(result) {
-                    data.push.apply(data, result['dirs']);
-                    data.push.apply(data, result['files']);
 
+            if (DATA.length == 0) {
 
-                    /* Update #collection-list */
-                    if (result['dirs'].length > 0) {
-                        var select = $('#collection-list');
-                        $(result['dirs']).each(function(index, d) {
-                            if (d['title'] != '..') 
-                                select.append(sprintf('<option value="%s">%s</option>', d['title'], d['title']));
-                        });
-                        if (select.find('option').length == 0)
+                $.ajax({
+                    url: url,
+                    dataType: 'json',
+                    async: false,
+                    method: 'GET',
+                    success: function(result) {
+                        DATA.push.apply(DATA, result['dirs']);
+                        DATA.push.apply(DATA, result['files']);
+
+                        /* Update #collection-list */
+                        if (result['dirs'].length > 0) {
+                            var select = $('#collection-list');
+                            $(result['dirs']).each(function(index, d) {
+                                if (d['title'] != '..') 
+                                    select.append(sprintf('<option value="%s">%s</option>', d['title'], d['title']));
+                            });
+                            if (select.find('option').length == 0)
+                                $('#action-rename-collection').remove();
+                        } else {
                             $('#action-rename-collection').remove();
-                    } else {
-                        $('#action-rename-collection').remove();
+                        }
+                    } 
+                });
+            }
+
+            var result = $.grep(DATA, function(item, idx) {
+                for (var key in filter) {
+                    var value = filter[key];
+                    if (value.length > 0) {
+                        if (item[key].indexOf(value) == -1)
+                            return false;
                     }
-                } 
+                }
+                return true;
             });
-            return data;
+            return result;
         }
 
         function title_renderer(value, item) {
