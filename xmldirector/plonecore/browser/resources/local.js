@@ -170,8 +170,6 @@ $(document).ready(function() {
     var plone5 = $('[data-bundle="plone-legacy"]').length > 0;
     if (plone5) {
         var portal_url = $('body').data('portal-url');
-        $('body').append('<script type="text/javascript" src="' + portal_url + '/++resource++xmldirector.plonecore/sprintf.min.js"></script>')
-        $('body').append('<script type="text/javascript" src="' + portal_url + '/++resource++xmldirector.plonecore/local2.js"></script>')
     }
 
 
