@@ -364,7 +364,6 @@ class Connector(BrowserView):
 
     def rename_collection(self, subpath, name, new_name):
         """ Rename a collection """
-
         if not new_name:
             raise ValueError(_(u'No new "name" given'))
 

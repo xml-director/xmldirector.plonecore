@@ -28,16 +28,14 @@
 
       <div class="actions">
           <ul>
-              <li>
-                  <a class="action" 
-                     id="action-create-collection">
+              <li id="action-create-collection">
+                  <a class="action"> 
                       New collection
                   </a>
               </li>
-              <li>
+              <li id="action-rename-collection">
                   <a class="action" 
-                     i18n:translate=""
-                     id="action-rename-collection">
+                     i18n:translate="">
                       Rename collection
                   </a>
               </li>
@@ -97,11 +95,20 @@
                     data.push.apply(data, result['dirs']);
                     data.push.apply(data, result['files']);
 
+
                     /* Update #collection-list */
-                    var select = $('#collection-list');
-                    $(result['dirs']).each(function(index, d) {
-                        select.append(sprintf('<option value="%s">%s</option>', d['fullpath'], d['title']));
-                    });
+                    console.log(result['dirs'].length);
+                    if (result['dirs'].length > 0) {
+                        var select = $('#collection-list');
+                        $(result['dirs']).each(function(index, d) {
+                            if (d['title'] != '..') 
+                                select.append(sprintf('<option value="%s">%s</option>', d['title'], d['title']));
+                        });
+                        if (select.find('option').length == 0)
+                            $('#action-rename-collection').remove();
+                    } else {
+                        $('#action-rename-collection').remove();
+                    }
                 } 
             });
             return data;
