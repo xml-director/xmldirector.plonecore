@@ -631,4 +631,5 @@ class Logging(BrowserView):
             '{}/connector-log'.format(self.context.absolute_url()))
 
     def __call__(self):
+        alsoProvides(self.request, IDisableCSRFProtection)
         return self.template()
