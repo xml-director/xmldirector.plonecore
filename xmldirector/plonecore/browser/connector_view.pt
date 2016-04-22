@@ -49,10 +49,7 @@
                   <a id="connector-reindex" class="action" tal:attributes="href string:${context/absolute_url}/connector-reindex" i18n:translate="">Reindex</a>
               </li>
               <li>
-                  <a id="connector-log" class="action" tal:attributes="href string:${context/absolute_url}/connector-log" i18n:translate="">Log</a>
-              </li>
-              <li>
-                  <a id="connector-log-clear" class="action" tal:attributes="href string:${context/absolute_url}/connector-log-clear" i18n:translate="">Clear log</a>
+                  <a id="connector-log" class="action" tal:attributes="href string:${context/absolute_url}/persistent-log" i18n:translate="">Log</a>
               </li>
           </ul>
           <form tal:attributes="action string:${context/absolute_url}/create-collection" method="post" id="create-collection-form" style="display: none">
