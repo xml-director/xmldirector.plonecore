@@ -1,6 +1,10 @@
 xmldirector.plonecore
 =====================
 
+.. image:: https://badges.gitter.im/xml-director/xmldirector.plonecore.svg
+   :alt: Join the chat at https://gitter.im/xml-director/xmldirector.plonecore
+   :target: https://gitter.im/xml-director/xmldirector.plonecore?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+
 .. image:: docs/source/images/xml-director-logo.jpg
             :width: 500
 
