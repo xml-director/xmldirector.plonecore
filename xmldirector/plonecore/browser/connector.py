@@ -612,24 +612,3 @@ class AceEditorReadonly(Connector):
     view_name = 'view-editor-readonly'
 
 
-class Logging(BrowserView):
-
-    template = ViewPageTemplateFile('connector_log.pt')
-
-    def entries(self):
-        return IPersistentLogger(self.context).entries
-
-    def log_clear(self):
-        """ Clear connector persistent log """
-
-        alsoProvides(self.request, IDisableCSRFProtection)
-
-        IPersistentLogger(self.context).clear()
-        msg = _(u'Log entries cleared')
-        self.context.plone_utils.addPortalMessage(msg)
-        return self.request.response.redirect(
-            '{}/connector-log'.format(self.context.absolute_url()))
-
-    def __call__(self):
-        alsoProvides(self.request, IDisableCSRFProtection)
-        return self.template()
