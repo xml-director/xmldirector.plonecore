@@ -35,7 +35,8 @@ from plone.protect.interfaces import IDisableCSRFProtection
 from zope.interface import alsoProvides
 
 from xmldirector.plonecore.i18n import MessageFactory as _
-from xmldirector.plonecore.logger import IPersistentLogger
+from zopyx.plone.persistentlogger.logger import IPersistentLogger
+
 from .view_registry import precondition_registry
 from . import connector_views  # NOQA - needed to initalize the registry
 from . import config

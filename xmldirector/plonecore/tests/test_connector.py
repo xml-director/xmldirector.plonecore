@@ -188,19 +188,6 @@ class BasicTests(TestBase):
         result = view.human_readable_filesize(1000000)
         self.assertEqual(result, '976 KB')
 
-    def testLogger(self):
-
-        from xmldirector.plonecore.logger import IPersistentLogger
-
-        c = self.portal.connector
-        logger = IPersistentLogger(c)
-        self.assertEqual(len(logger), 0)
-        logger.log(u'error', 'error')
-        logger.log(u'info', 'info')
-        self.assertEqual(len(logger), 2)
-        logger.clear()
-        self.assertEqual(len(logger), 0)
-
     def testTraversalExistingPath(self):
         path = 'connector/@@view/foo/index.html'
         result = self.portal.restrictedTraverse(path)

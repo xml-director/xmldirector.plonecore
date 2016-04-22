@@ -30,12 +30,6 @@
     <include package=".browser" />
     <include package=".dx" />
 
-    <adapter
-        factory="xmldirector.plonecore.logger.PersistentLoggerAdapter"
-        provides="xmldirector.plonecore.logger.IPersistentLogger"
-        for="*"
-    />
-
     <!-- Plone 4.3 -->
     <include zcml:condition="not-have plone-5" file="profiles-43.zcml" />
     <!-- Plone 5.0 -->
