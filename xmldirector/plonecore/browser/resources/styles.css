@@ -287,10 +287,11 @@ input.zip-upload {
     color: red;
 }
 
+.action-zip-download,
 .action-download,
 .action-edit,
 .action-delete,
 .action-rename {
     float: right;
-    margin-left: 0.25em;
+    margin-left: 0.5em;
 }

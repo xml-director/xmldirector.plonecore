@@ -438,9 +438,8 @@ class Connector(BrowserView):
         self.request.response.setStatus(200)
         self.request.response.write('OK')
 
-    def zip_export(self, download=True, subpath=None, dirs=[]):
+    def zip_export(self, subpath=None, download=True):
         """ Export WebDAV subfolder to a ZIP file.
-            ``dirs`` optional comma separated list of top-level
             directory names to be exported.
         """
 
@@ -448,17 +447,16 @@ class Connector(BrowserView):
 
         zip_filename = tempfile.mktemp(suffix='.zip')
         with ZipFS(zip_filename, 'w', encoding='utf8') as zip_fs:
-            for root_dir in dirs:
-                for dirname, filenames in handle.walk(root_dir):
-                    if dirname.startswith('/'):
-                        dirname = dirname.lstrip('/')
-                    for filename in filenames:
-                        local_filename = fs.path.join(dirname, filename)
-                        z_filename = fs.path.join(root_dir, dirname, filename)
-                        z_filename = unicodedata.normalize('NFKD', z_filename).encode('ascii','ignore')
-                        with handle.open(local_filename, 'rb') as fp:
-                            with zip_fs.open(z_filename, 'wb') as zip_out:
-                                zip_out.write(fp.read())
+            for dirname, filenames in handle.walk():
+                if dirname.startswith('/'):
+                    dirname = dirname.lstrip('/')
+                for filename in filenames:
+                    local_filename = fs.path.join(dirname, filename)
+                    z_filename = fs.path.join(dirname, filename)
+                    z_filename = unicodedata.normalize('NFKD', z_filename).encode('ascii','ignore')
+                    with handle.open(local_filename, 'rb') as fp:
+                        with zip_fs.open(z_filename, 'wb') as zip_out:
+                            zip_out.write(fp.read())
 
         if download:
             self.request.response.setHeader('content-type', 'application/zip')
@@ -682,13 +680,9 @@ class Connector(BrowserView):
         self.request.response.setStatus(200)
         return msg
 
-    def filemanager_export_zip(self, subpath, names):
+    def filemanager_zip_download(self, directory):
         alsoProvides(self.request, IDisableCSRFProtection)
-        handle = self.get_handle(subpath)
-        names = handle.convert_string(names).split(',')
-        return self.zip_export(
-                subpath=subpath, 
-                dirs=names)
+        return self.zip_export(subpath=directory) 
 
     def filemanager_download(self, filename):
 

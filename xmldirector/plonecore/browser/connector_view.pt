@@ -25,7 +25,6 @@
       </table>
       <div id="table-actions">
           <button class="action-create-collection button" name="action-create-collection" i18n:translate="">Create Collection</button>
-          <button class="action-zip-export button" name="action-zip-export" i18n:translate="">Export</button>
           <a id="connector-zip-import" class="action" tal:attributes="href string:${context/absolute_url}/connector-zip-import?subpath=${options/subpath}">
               <button class="button" i18n:translate="">Import</button>
           </a>
@@ -96,7 +95,7 @@
             var title = item['title'];
             var fullpath = item['fullpath'];
             var type = item['type'];
-            var s = sprintf('<input type="checkbox" name="paths:list" value="%s"> ', title);
+            var s = '';
                 
             var title = item['title'];
             if (item['type'] == 'directory') {
@@ -106,6 +105,7 @@
                     s += '<img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove collection"/>'
                     s += '</a>';
                     s += sprintf('<a title="Rename" class="action-rename" data-fullpath="%s" data-title="%s"><img src="++resource++xmldirector.plonecore/images/rename.png" ></a>', fullpath, title);
+                    s += sprintf('<a title="ZIP Download" class="action-zip-download" data-fullpath="%s" data-title="%s"><img src="++resource++xmldirector.plonecore/images/zip.png" ></a>', fullpath, title);
                         }
                 return s;
             } else {
@@ -199,38 +199,18 @@
                 window.location.href = url;
             });
 
+            $('body').on('click', '.action-zip-download', function(e) {
+                e.preventDefault();
+                var fullpath = $(this).data('fullpath');
+                var url = sprintf("%s/@@filemanager-zip-download?directory=%s", URL, fullpath);
+                window.location.href = url;
+            });
+
             $('.action-refresh').on('click', function(e) {
                 e.preventDefault();
                 spinner_start();
                 refresh_table();
                 spinner_stop();
-            });
-            
-            $('body').on('click', '.action-zip-export ', function(e) {
-                e.preventDefault();
-                var names = $('input[name="paths:list"]:checked').map(function(idx, el) {
-                    return $(el).val();
-                });
-                if (names.length > 0) {
-                    spinner_start();
-                    var url = sprintf('%s/@@filemanager-zip-export', URL);
-                    $.ajax({
-                        type: 'GET',
-                        url: url,
-                        data: {
-                            'subpath:utf8:ustring': SUBPATH,
-                            'names:utf8:ustring': $.makeArray(names).join(',')
-                        },
-                        success: ajax_success,
-                        error: ajax_error
-
-                    });
-
-
-                } else {
-                    alert('Nothing to be exported');
-                }
-
             });
             
             $('body').on('click', '.action-create-collection', function(e) {

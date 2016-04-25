@@ -211,19 +211,19 @@
     />
 
     <browser:page
-        name="filemanager-zip-export"
-        for="xmldirector.plonecore.connector.IConnector"
-        class=".connector.Connector"
-        attribute="filemanager_export_zip"
-        permission="cmf.ModifyPortalContent"
-        layer="xmldirector.plonecore.interfaces.IBrowserLayer"
-    />
-
-    <browser:page
         name="filemanager-download"
         for="xmldirector.plonecore.connector.IConnector"
         class=".connector.Connector"
         attribute="filemanager_download"
+        permission="zope2.View"
+        layer="xmldirector.plonecore.interfaces.IBrowserLayer"
+    />
+
+    <browser:page
+        name="filemanager-zip-download"
+        for="xmldirector.plonecore.connector.IConnector"
+        class=".connector.Connector"
+        attribute="filemanager_zip_download"
         permission="zope2.View"
         layer="xmldirector.plonecore.interfaces.IBrowserLayer"
     />
@@ -236,7 +236,6 @@
         permission="cmf.ModifyPortalContent"
         layer="xmldirector.plonecore.interfaces.IBrowserLayer"
     />
-
 
     <browser:page
         name="xmldirector-core-settings"
