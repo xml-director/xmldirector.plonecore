@@ -107,17 +107,17 @@ button.xml-editor {
 
 /* mimetype icons */
 
-a.dir,
-a.file {
+a.type-dir,
+a.type-file {
     border: none !important;
 }
 
 
-a.file span {
+a.type-file span {
     display: inline-block;
 }
 
-a.file:before {
+a.type-file:before {
     content: '';
     background-size: contain;
     width: 32px;
@@ -127,43 +127,43 @@ a.file:before {
     vertical-align: middle;
 }
 
-a.file:before {
+a.type-file:before {
     background-image: url(++resource++xmldirector.plonecore/images/svg/raw2.svg) !important;
 }
 
-a.file[href*='.xml']:before {
+a.type-file[href*='.xml']:before {
     background-image: url(++resource++xmldirector.plonecore/images/svg/xml5.svg) !important;
 }
 
-a.file[href*='.html']:before {
+a.type-file[href*='.html']:before {
     background-image: url(++resource++xmldirector.plonecore/images/svg/html9.svg) !important;
 }
 
-a.file[href*='.pdf']:before {
+a.type-file[href*='.pdf']:before {
     background-image: url(++resource++xmldirector.plonecore/images/svg/pdf19.svg) !important;
 }
 
-a.file[href*='.css']:before {
+a.type-file[href*='.css']:before {
     background-image: url(++resource++xmldirector.plonecore/images/svg/css5.svg) !important;
 }
 
-a.file[href*='.png']:before {
+a.type-file[href*='.png']:before {
     background-image: url(++resource++xmldirector.plonecore/images/svg/png3.svg) !important;
 }
 
-a.file[href*='.gif']:before {
+a.type-file[href*='.gif']:before {
     background-image: url(++resource++xmldirector.plonecore/images/svg/gif3.svg) !important;
 }
 
-a.file[href*='.jpg']:before {
+a.type-file[href*='.jpg']:before {
     background-image: url(++resource++xmldirector.plonecore/images/svg/jpg3.svg) !important;
 }
 
-a.file[href*='.svg']:before {
+a.type-file[href*='.svg']:before {
     background-image: url(++resource++xmldirector.plonecore/images/svg/svg1.svg) !important;
 }
 
-a.file[href*='.docx']:before {
+a.type-file[href*='.docx']:before {
     background-image: url(++resource++xmldirector.plonecore/images/svg/docx.svg) !important;
 }
 
@@ -252,18 +252,26 @@ input.zip-upload {
     margin-top: 0.5em;
     margin-bottom: 0.5em;
 }
-        .editor { 
-            position: relative;
-            height: 500px;
-            margin-bottom: 1em;
-        }
-        
-        .status-ok {
-            font-weight: bold;
-            color: green;
-        }
 
-        .status-error {
-            font-weight: bold;
-            color: red;
-        }
+.editor { 
+    position: relative;
+    height: 500px;
+    margin-bottom: 1em;
+}
+
+.status-ok {
+    font-weight: bold;
+    color: green;
+}
+
+.status-error {
+    font-weight: bold;
+    color: red;
+}
+
+.action-edit,
+.action-delete,
+.action-rename {
+    float: right;
+    margin-left: 0.25em;
+}

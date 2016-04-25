@@ -23,7 +23,8 @@
       <form tal:attributes="action string:${context/absolute_url}/collection-action" method="POST">
           <table id="table">
           </table>
-          <button class="confirm-action button" type="submit" name="action" action="delete" value="delete" data-text="Do you really want to remove the selected items?">Delete</button>
+          <button class="confirm-action button" type="submit" name="action" action="delete" value="delete" data-text="Do you really want to remove the selected items?" i18n:translate="">Delete</button>
+          <button class="action-refresh button" name="action-refresh" i18n:translate="">Refresh</button>
       </form>
 
       <div class="actions">
@@ -83,7 +84,7 @@
 
         function get_data(filter) {
             var url = URL + "/@@connector-folder-contents?subpath=" + SUBPATH;
-
+            console.log('get data');
             if (DATA.length == 0) {
 
                 $.ajax({
@@ -130,32 +131,65 @@
             var fullpath = item['fullpath'];
             var type = item['type'];
             var s = '<input type="checkbox" name="paths:list" value="' + fullpath + '"> ';
-            s += sprintf('<a class="type-%s" href="%s">%s</a>', type, url, title);
-            return s;
-        }
-
-        function action_renderer(value, item) {
+                s += sprintf('<a class="type-%s" href="%s">%s</a>', type, url, title);
+                
             var title = item['title'];
             if (item['type'] == 'directory') {
-                var s = sprintf('<a class="confirm-action" data-text="Do you really want to remove this collection?" href="%s/@@remove-collection?subpath=%s&name=%s">', URL, SUBPATH, title);
+                s += sprintf('<a class="confirm-action action-delete" data-text="Do you really want to remove this collection?" href="%s/@@remove-collection?subpath=%s&name=%s">', URL, SUBPATH, title);
                 s += '<img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove collection"/>'
                 s += '</a>';
+                s += sprintf('<a title="Rename" class="action-rename" data-fullpath="%s" data-title="%s"><img src="++resource++xmldirector.plonecore/images/rename.png" ></a>', fullpath, title);
                 return s;
             } else {
                 var remove_url = item['remove_url'];
                 var editable = item['editable'];
-                var s = sprintf('\
-                            <a href="%s" class="confirm-action" data-text="Do you really want to remove this item?" title="Remove">\
+                s += sprintf('\
+                            <a href="%s" class="confirm-action action-delete" data-text="Do you really want to remove this item?" title="Remove">\
                             <img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove item" i18n:attributes="title"/> </a>', 
                         remove_url);
                 if (editable) {
                     var edit_url = item['edit_url'];
-                    s += sprintf('<a href="%s" title="Edit" ><img src="++resource++xmldirector.plonecore/images/edit.png" /></a>', edit_url);
+                    s += sprintf('<a href="%s" title="Edit" class="action-edit" ><img src="++resource++xmldirector.plonecore/images/edit.png" /></a>', edit_url);
+                    s += sprintf('<a title="Rename" class="action-rename" data-fullpath="%s" data-title="%s"><img src="++resource++xmldirector.plonecore/images/rename.png" ></a>', fullpath, title);
                 }
                 return s;
             }
+                ;
+            return s;
         }
 
+        function init_table() {            
+            $('#table').jsGrid({
+                width: "100%",
+                height: "600px",
+                autoload: true,
+                sorting: true,
+                paging: PAGING,
+                filtering: true,
+                controller: {
+                    loadData: get_data
+                },
+
+                fields: [
+                    { name: "title", title: "Name", type: "text", width: 200,  itemTemplate: title_renderer},
+                    /*
+                    { name: "type", title: "Type", type: "text", width: 40, css: 'field-type'},
+                    */
+                    { name: "size", title: "Size", type: "text", width: 40, css: 'field-size', filtering: false},
+                    { name: "modified", title: "Last modified", type: "text", width: 50, css: 'field-modified', filtering: false },
+                    /*
+                    { name: "st_mode_text", title: "Permissions", type: "text", sorting: false, size: 50 , filtering: false},
+                    { name: "actions", type: "text", title: "Actions", sorting: false, itemTemplate: action_renderer, filtering: false}
+                    */
+                ]
+            });
+        }
+
+        function refresh_table() {
+            DATA =  new Array;
+            $("#table").jsGrid("refresh");
+            init_table();
+        }
 
         $(document).ready(function() {
 
@@ -171,28 +205,22 @@
                 $('.actions form').hide();
                 $('#rename-collection-form').toggle();
             });
-            
-            $('#table').jsGrid({
-                width: "100%",
-                height: "600px",
-                autoload: true,
-                sorting: true,
-                paging: PAGING,
-                filtering: true,
-                controller: {
-                    loadData: get_data
-                },
-
-                fields: [
-                    { name: "title", title: "Name", type: "text", width: 200,  itemTemplate: title_renderer},
-                    { name: "type", title: "Type", type: "text", width: 75, css: 'field-type'},
-                    { name: "size", title: "Size", type: "text", width: 50, css: 'field-size', filtering: false},
-                    { name: "modified", title: "Last modified", type: "text", css: 'field-modified', filtering: false },
-                    { name: "st_mode_text", title: "Permissions", type: "text", sorting: false, size: 50 , filtering: false},
-                    { name: "actions", type: "text", title: "Actions", sorting: false, itemTemplate: action_renderer, filtering: false}
-                ]
+            $('.action-refresh').on('click', function(e) {
+                e.preventDefault();
+                refresh_table();
+            });
+            $('body').on('click', '.action-rename', function(e) {
+                e.preventDefault();
+                var title = $(this).data('title');
+                var fullpath = $(this).data('fullpath');
+                var msg = sprintf('Rename "%s" to', title);
+                var new_path = window.prompt(msg, title);
+                if (new_path != null) {
+                    refresh_table();
+                }
             });
 
+            init_table();
         });
       </script>
 

@@ -14,8 +14,8 @@
 
       <link rel="stylesheet" type="text/css" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css" />
       <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-      <script type="text/javascript" src="++resource++xmldirector.plonecore/elFinder-2.1.11/js/elfinder.full.js"></script>
-        <link rel="stylesheet" type="text/css" media="screen" href="++resource++xmldirector.plonecore/elFinder-2.1.11/css/elfinder.min.css">
+      <script type="text/javascript" src="++resource++xmldirector.plonecore/elFinder/js/elfinder.full.js"></script>
+        <link rel="stylesheet" type="text/css" media="screen" href="++resource++xmldirector.plonecore/elFinder/css/elfinder.min.css">
 
 <script type="text/javascript" charset="utf-8">
     $().ready(function() {
