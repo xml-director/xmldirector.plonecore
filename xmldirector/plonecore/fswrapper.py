@@ -206,8 +206,8 @@ class BaseWrapper(object):
         """ Convert string according to FS unicode_paths metadata """
         if issubclass(self.__class__, fs.osfs.OSFS):
             return unicodedata.normalize('NFKD', s).encode('ascii','ignore')
-        if self.getmeta('unicode_paths') and isinstance(s, unicode):
-            return unicode(s, 'utf-8')
+        if not self.getmeta('unicode_paths') and isinstance(s, unicode):
+            return s.encode('utf-8')
         return s
 
 

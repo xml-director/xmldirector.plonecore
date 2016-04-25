@@ -17,6 +17,7 @@ import operator
 import hurry.filesize
 import tempfile
 import mimetypes
+import unicodedata
 import logging
 import unicodedata
 import zExceptions
@@ -257,7 +258,7 @@ class Connector(BrowserView):
             dirs.append(dict(
                 type=u'directory',
                 title='..',
-                url='{}/@@view/{}'.format(self.context.absolute_url(), parent_subpath)
+                url=u'{}/@@view/{}'.format(self.context.absolute_url(), parent_subpath)
                 ))
         for info in handle.listdirinfo(dirs_only=True):
             path_name = safe_unicode(info[0])
@@ -418,6 +419,8 @@ class Connector(BrowserView):
     def upload_file(self):
         """ Store .DOCX file """
 
+        alsoProvides(self.request, IDisableCSRFProtection)
+
         subpath = self.request.get('subpath')
         get_handle = self.context.get_handle(subpath=subpath)
         filename = os.path.basename(self.request.Filedata.filename)
@@ -433,33 +436,27 @@ class Connector(BrowserView):
         self.request.response.setStatus(200)
         self.request.response.write('OK')
 
-    def zip_export(self, download=True, dirs=None, subpath=u''):
+    def zip_export(self, download=True, subpath=None, dirs=[]):
         """ Export WebDAV subfolder to a ZIP file.
             ``dirs`` optional comma separated list of top-level
             directory names to be exported.
         """
 
-        if dirs:
-            dirs = dirs.split(',')
-
-        if not isinstance(subpath, unicode):
-            subpath = unicode(subpath, 'utf8')
-
         handle = self.get_handle(subpath)
+
         zip_filename = tempfile.mktemp(suffix='.zip')
         with ZipFS(zip_filename, 'w', encoding='utf8') as zip_fs:
-            for dirname, filenames in handle.walk():
-                if dirname.startswith('/'):
-                    dirname = dirname.lstrip('/')
-                if dirs:
-                    dir_paths = dirname.split('/')
-                    if dir_paths[0] not in dirs:
-                        continue
-                for filename in filenames:
-                    z_filename = fs.path.join(dirname, filename)
-                    with handle.open(z_filename, 'rb') as fp:
-                        with zip_fs.open(z_filename, 'wb') as zip_out:
-                            zip_out.write(fp.read())
+            for root_dir in dirs:
+                for dirname, filenames in handle.walk(root_dir):
+                    if dirname.startswith('/'):
+                        dirname = dirname.lstrip('/')
+                    for filename in filenames:
+                        local_filename = fs.path.join(dirname, filename)
+                        z_filename = fs.path.join(root_dir, dirname, filename)
+                        z_filename = unicodedata.normalize('NFKD', z_filename).encode('ascii','ignore')
+                        with handle.open(local_filename, 'rb') as fp:
+                            with zip_fs.open(z_filename, 'wb') as zip_out:
+                                zip_out.write(fp.read())
 
         if download:
             self.request.response.setHeader('content-type', 'application/zip')
@@ -684,9 +681,12 @@ class Connector(BrowserView):
         return msg
 
     def filemanager_export_zip(self, subpath, names):
-
         alsoProvides(self.request, IDisableCSRFProtection)
-        return self.zip_export(dirs=names)
+        handle = self.get_handle(subpath)
+        names = handle.convert_string(names).split(',')
+        return self.zip_export(
+                subpath=subpath, 
+                dirs=names)
 
 
 class AceEditor(Connector):
