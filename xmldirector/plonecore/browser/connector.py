@@ -594,18 +594,83 @@ class Connector(BrowserView):
 
     def filemanager_rename(self, subpath, old_id, new_id):
 
+        alsoProvides(self.request, IDisableCSRFProtection)
         handle = self.get_handle(subpath)
+
         if not handle.exists(old_id):
             msg = u'{}/{} not found'.format(subpath, old_id)
             raise zExceptions.NotFound(msg)
 
+        if handle.exists(new_id):
+            msg = u'{}/{} already exists'.format(subpath, new_id)
+            self.request.response.setStatus(500)
+            return msg
+
         try:
             handle.rename(old_id, new_id)
         except Exception as e:
-            msg = u'{}/{} could not be renamed to "{}" ({})'.format(subpath, old_id, new_id, str(e))
-            raise RuntimeError(msg)
+            msg = u'{}/{} could not be renamed to "{}/{}" ({})'.format(subpath, old_id, subpath, new_id, str(e))
+            self.request.response.setStatus(500)
+            return msg
 
         msg = u'Renamed {}/{} to {}/{}'.format(subpath, old_id, subpath, new_id)
+        self.logger.log(msg)
+        self.request.response.setStatus(200)
+        return msg
+
+    def filemanager_delete(self, subpath, id):
+
+        alsoProvides(self.request, IDisableCSRFProtection)
+        handle = self.get_handle(subpath)
+
+        if not handle.exists(id):
+            msg = u'{}/{} not found'.format(subpath, id)
+            raise zExceptions.NotFound(msg)
+
+        if handle.isdir(id):
+
+            try:
+                handle.removedir(id, recursive=True)
+            except Exception as e:
+                msg = u'{}/{} could not be deleted ({})'.format(subpath, id, str(e))
+                self.request.response.setStatus(500)
+                return msg
+
+        elif handle.isfile(id):
+
+            try:
+                handle.remove(id)
+            except Exception as e:
+                msg = u'{}/{} could not be deleted ({})'.format(subpath, id, str(e))
+                self.request.response.setStatus(500)
+                return msg
+
+        else:
+            raise RuntimeError(u'Unhandled file type {}/{}'.format(subpath, id))
+
+        msg = u'Deleted {}/{}'.format(subpath, id)
+        self.logger.log(msg)
+        self.request.response.setStatus(200)
+        return msg
+
+    def filemanager_create_collection(self, subpath, new_id):
+
+        alsoProvides(self.request, IDisableCSRFProtection)
+        handle = self.get_handle(subpath)
+
+        if handle.exists(new_id):
+            msg = u'{}/{} already exists found'.format(subpath, new_id)
+            self.request.response.setStatus(500)
+            return msg
+
+        try:
+            handle.makedir(new_id)
+        except Exception as e:
+            msg = u'{}/{} could not be created ({})'.format(subpath, new_id, str(e))
+            self.request.response.setStatus(500)
+            return msg
+
+        msg = u'Created {}/{}'.format(subpath, new_id)
         self.logger.log(msg)
         self.request.response.setStatus(200)
         return msg

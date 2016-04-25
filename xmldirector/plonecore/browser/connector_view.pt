@@ -21,25 +21,16 @@
   <metal:content-core define-macro="content-core">
 
       <form tal:attributes="action string:${context/absolute_url}/collection-action" method="POST">
+          <div id="table-info">hello</div>
           <table id="table">
           </table>
           <button class="confirm-action button" type="submit" name="action" action="delete" value="delete" data-text="Do you really want to remove the selected items?" i18n:translate="">Delete</button>
           <button class="action-refresh button" name="action-refresh" i18n:translate="">Refresh</button>
+          <button class="action-create-collection button" name="action-create-collection" i18n:translate="">Create Collection</button>
       </form>
 
       <div class="actions">
           <ul>
-              <li id="action-create-collection">
-                  <a class="action"> 
-                      New collection
-                  </a>
-              </li>
-              <li id="action-rename-collection">
-                  <a class="action" 
-                     i18n:translate="">
-                      Rename collection
-                  </a>
-              </li>
               <li>
                   <a id="connector-zip-import" class="action" tal:attributes="href string:${context/absolute_url}/connector-zip-import?subpath=${options/subpath}" i18n:translate="">ZIP import</a>
               </li>
@@ -89,7 +80,7 @@
 
         function get_data(filter) {
             var url = URL + "/@@connector-folder-contents?subpath=" + SUBPATH;
-            console.log('get data');
+
             if (DATA.length == 0) {
 
                 $.ajax({
@@ -140,7 +131,7 @@
                 
             var title = item['title'];
             if (item['type'] == 'directory') {
-                s += sprintf('<a class="confirm-action action-delete" data-text="Do you really want to remove this collection?" href="%s/@@remove-collection?subpath=%s&name=%s">', URL, SUBPATH, title);
+                s += sprintf('<a class="action-delete" title="Remove" data-subpath="%s" data-id="%s">', SUBPATH, title);
                 s += '<img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove collection"/>'
                 s += '</a>';
                 s += sprintf('<a title="Rename" class="action-rename" data-fullpath="%s" data-title="%s"><img src="++resource++xmldirector.plonecore/images/rename.png" ></a>', fullpath, title);
@@ -149,13 +140,13 @@
                 var remove_url = item['remove_url'];
                 var editable = item['editable'];
                 s += sprintf('\
-                            <a href="%s" class="confirm-action action-delete" data-text="Do you really want to remove this item?" title="Remove">\
+                            <a class="action-delete" title="Remove" data-subpath="%s" data-id="%s">\
                             <img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove item" i18n:attributes="title"/> </a>', 
-                        remove_url);
+                        SUBPATH, title);
+                s += sprintf('<a title="Rename" class="action-rename" data-fullpath="%s" data-title="%s"><img src="++resource++xmldirector.plonecore/images/rename.png" ></a>', fullpath, title);
                 if (editable) {
                     var edit_url = item['edit_url'];
-                    s += sprintf('<a href="%s" title="Edit" class="action-edit" ><img src="++resource++xmldirector.plonecore/images/edit.png" /></a>', edit_url);
-                    s += sprintf('<a title="Rename" class="action-rename" data-fullpath="%s" data-title="%s"><img src="++resource++xmldirector.plonecore/images/rename.png" ></a>', fullpath, title);
+                s += sprintf('<a href="%s" title="Edit" class="action-edit" ><img src="++resource++xmldirector.plonecore/images/edit.png" /></a>', edit_url);
                 }
                 return s;
             }
@@ -198,22 +189,38 @@
 
         $(document).ready(function() {
 
-            $('#action-create-collection').click(function() {
-                $('.actions form').hide();
-                $('#create-collection-form').toggle();
-            });
-            $('#action-remove-collection').click(function() {
-                $('.actions form').hide();
-                $('#remove-collection-form').toggle();
-            });
-            $('#action-rename-collection').click(function() {
-                $('.actions form').hide();
-                $('#rename-collection-form').toggle();
-            });
             $('.action-refresh').on('click', function(e) {
                 e.preventDefault();
                 refresh_table();
             });
+            
+            $('body').on('click', '.action-create-collection', function(e) {
+                e.preventDefault();
+                var new_id = window.prompt('Create new collection');
+                if (new_id != null) {
+                    var url = sprintf('%s/@@filemanager-create-collection', URL);
+                    $.ajax({
+                        type: 'GET',
+                        url: url,
+                        data: {
+                            subpath: SUBPATH,
+                            new_id: new_id
+                        },
+                        success: function(result) {
+                            $('#table-info').removeClass('status-ok status-error').addClass('status-ok');
+                            $('#table-info').text(result).stop(true, true).show().fadeOut(5000);
+                            refresh_table();
+                        },
+                        error: function(result) {
+                            console.log(result);
+                            $('#table-info').removeClass('status-ok status-error').addClass('status-error');
+                            $('#table-info').text(result.responseText).stop(true, true).show().fadeOut(5000);
+                        }
+
+                    });
+                }
+            });
+            
             $('body').on('click', '.action-rename', function(e) {
                 e.preventDefault();
                 var title = $(this).data('title');
@@ -223,19 +230,52 @@
                 var url = sprintf('%s/@@filemanager-rename', URL);
                 if (new_id != null) {
                     $.ajax({
-                        type: 'POST',
+                        type: 'GET',
                         url: url,
                         data: {
                             subpath: SUBPATH,
                             old_id: title,
                             new_id: new_id
                         },
-                        success: function(msg) {
-                            alert('success' + msg);
+                        success: function(result) {
+                            $('#table-info').removeClass('status-ok status-error').addClass('status-ok');
+                            $('#table-info').text(result).stop(true, true).show().fadeOut(5000);
                             refresh_table();
                         },
-                        error: function(msg) {
-                            alert('error' + msg);
+                        error: function(result) {
+                            console.log(result);
+                            $('#table-info').removeClass('status-ok status-error').addClass('status-error');
+                            $('#table-info').text(result.responseText).stop(true, true).show().fadeOut(5000);
+                        }
+
+                    });
+                }
+            });
+            
+            $('body').on('click', '.action-delete', function(e) {
+                e.preventDefault();
+                var title = $(this).data('title');
+                var subpath = $(this).data('subpath');
+                var id = $(this).data('id');
+                var msg = sprintf('Do you really want to delete "%s/%s" to', subpath, id);
+                if (confirm(msg)) {
+                    var url = sprintf('%s/@@filemanager-delete', URL);
+                    $.ajax({
+                        type: 'GET',
+                        url: url,
+                        data: {
+                            subpath: SUBPATH,
+                            id: id
+                        },
+                        success: function(result) {
+                            $('#table-info').removeClass('status-ok status-error').addClass('status-ok');
+                            $('#table-info').text(result).stop(true, true).show().fadeOut(5000);
+                            refresh_table();
+                        },
+                        error: function(result) {
+                            console.log(result);
+                            $('#table-info').removeClass('status-ok status-error').addClass('status-error');
+                            $('#table-info').text(result.responseText).stop(true, true).show().fadeOut(5000);
                         }
 
                     });

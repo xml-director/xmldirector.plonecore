@@ -201,7 +201,23 @@
         layer="xmldirector.plonecore.interfaces.IBrowserLayer"
     />
 
+    <browser:page
+        name="filemanager-delete"
+        for="xmldirector.plonecore.connector.IConnector"
+        class=".connector.Connector"
+        attribute="filemanager_delete"
+        permission="cmf.ModifyPortalContent"
+        layer="xmldirector.plonecore.interfaces.IBrowserLayer"
+    />
 
+    <browser:page
+        name="filemanager-create-collection"
+        for="xmldirector.plonecore.connector.IConnector"
+        class=".connector.Connector"
+        attribute="filemanager_create_collection"
+        permission="cmf.ModifyPortalContent"
+        layer="xmldirector.plonecore.interfaces.IBrowserLayer"
+    />
 
 
     <browser:page

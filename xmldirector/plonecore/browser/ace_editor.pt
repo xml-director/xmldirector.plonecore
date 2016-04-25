@@ -58,7 +58,7 @@
             validation_field.removeClass('status-ok');
             validation_field.removeClass('status-error');
             validation_field.addClass('status-error')
-            validation_field.text('XML has errors, not saved').stop(true, true).show(). fadeOut(2500);
+            validation_field.text('XML has errors, not saved').stop(true, true).show().fadeOut(2500);
             return;
         }
         
