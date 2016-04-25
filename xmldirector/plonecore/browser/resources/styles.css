@@ -128,8 +128,11 @@ a.type-file:before {
     vertical-align: middle;
 }
 
-a.type-directory {
+a.type-directory:before {
     background-image: url(++resource++xmldirector.plonecore/images/svg/directory.svg) !important;
+    width: 24px;
+    height: 24px;
+    margin-left: 4px;
 }
 
 a.type-file:before {
