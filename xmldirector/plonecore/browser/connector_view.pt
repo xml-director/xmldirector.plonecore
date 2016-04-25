@@ -131,7 +131,7 @@
         function init_table() {            
             $('#table').jsGrid({
                 width: "100%",
-                height: "600px",
+                /*                height: "600px",*/
                 autoload: true,
                 sorting: true,
                 paging: PAGING,
