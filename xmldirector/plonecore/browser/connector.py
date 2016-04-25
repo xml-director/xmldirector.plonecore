@@ -628,9 +628,8 @@ class Connector(BrowserView):
             raise zExceptions.NotFound(msg)
 
         if handle.isdir(id):
-
             try:
-                handle.removedir(id, recursive=True)
+                handle.removedir(id, recursive=True, force=True)
             except Exception as e:
                 msg = u'{}/{} could not be deleted ({})'.format(subpath, id, str(e))
                 self.request.response.setStatus(500)

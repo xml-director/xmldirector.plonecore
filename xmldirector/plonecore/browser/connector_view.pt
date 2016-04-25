@@ -15,6 +15,10 @@
 
 <metal:slot fill-slot="javascript_head_slot">
     <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/jsgrid/jsgrid.min.js"></script>
+    <!-- 
+    <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/spinner/spin.min.js"></script>
+    <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/spinner/jquery.spin.js"></script>
+    -->
 </metal:slot>
 
 <metal:main fill-slot="content-core">
@@ -161,6 +165,21 @@
             init_table();
         }
 
+        function ajax_success(result) {
+            $('#table-info').removeClass('status-ok status-error').addClass('status-ok');
+            $('#table-info').text(result).stop(true, true).show().fadeOut(5000);
+            refresh_table();
+        }
+        
+        function ajax_error(result) {
+            $('#table-info').removeClass('status-ok status-error').addClass('status-error');
+            $('#table-info').text(result.responseText).stop(true, true).show().fadeOut(5000);
+            }
+
+        function spinner_start() {
+            $('#table-info').spin('small')
+        }
+
         $(document).ready(function() {
 
             $('.action-refresh').on('click', function(e) {
@@ -179,18 +198,11 @@
                         type: 'GET',
                         url: url,
                         data: {
-                            subpath: SUBPATH,
+                            'subpath:utf8:ustring': SUBPATH,
                             names: $.makeArray(names).join(',')
                         },
-                        success: function(result) {
-                            $('#table-info').removeClass('status-ok status-error').addClass('status-ok');
-                            $('#table-info').text(result).stop(true, true).show().fadeOut(5000);
-                            refresh_table();
-                        },
-                        error: function(result) {
-                            $('#table-info').removeClass('status-ok status-error').addClass('status-error');
-                            $('#table-info').text(result.responseText).stop(true, true).show().fadeOut(5000);
-                        }
+                        success: ajax_success,
+                        error: ajax_error
 
                     });
 
@@ -210,19 +222,11 @@
                         type: 'GET',
                         url: url,
                         data: {
-                            subpath: SUBPATH,
-                            new_id: new_id
+                            'subpath:utf8:ustring': SUBPATH,
+                            'new_id:utf8:ustring': new_id
                         },
-                        success: function(result) {
-                            $('#table-info').removeClass('status-ok status-error').addClass('status-ok');
-                            $('#table-info').text(result).stop(true, true).show().fadeOut(5000);
-                            refresh_table();
-                        },
-                        error: function(result) {
-                            $('#table-info').removeClass('status-ok status-error').addClass('status-error');
-                            $('#table-info').text(result.responseText).stop(true, true).show().fadeOut(5000);
-                        }
-
+                        success: ajax_success,
+                        error: ajax_error
                     });
                 }
             });
@@ -235,24 +239,18 @@
                 var new_id = window.prompt(msg, title);
                 var url = sprintf('%s/@@filemanager-rename', URL);
                 if (new_id != null) {
+                    spinner_start();
+                    return;
                     $.ajax({
                         type: 'GET',
                         url: url,
                         data: {
-                            subpath: SUBPATH,
-                            old_id: title,
-                            new_id: new_id
+                            'subpath:utf8:ustring': SUBPATH,
+                            'old_id:utf8:ustring': title,
+                            'new_id:utf8:ustring': new_id
                         },
-                        success: function(result) {
-                            $('#table-info').removeClass('status-ok status-error').addClass('status-ok');
-                            $('#table-info').text(result).stop(true, true).show().fadeOut(5000);
-                            refresh_table();
-                        },
-                        error: function(result) {
-                            $('#table-info').removeClass('status-ok status-error').addClass('status-error');
-                            $('#table-info').text(result.responseText).stop(true, true).show().fadeOut(5000);
-                        }
-
+                        success: ajax_success,
+                        error: ajax_error
                     });
                 }
             });
@@ -269,19 +267,11 @@
                         type: 'GET',
                         url: url,
                         data: {
-                            subpath: SUBPATH,
-                            id: id
+                            'subpath:utf8:ustring': SUBPATH,
+                            'id:utf8:ustring': id
                         },
-                        success: function(result) {
-                            $('#table-info').removeClass('status-ok status-error').addClass('status-ok');
-                            $('#table-info').text(result).stop(true, true).show().fadeOut(5000);
-                            refresh_table();
-                        },
-                        error: function(result) {
-                            $('#table-info').removeClass('status-ok status-error').addClass('status-error');
-                            $('#table-info').text(result.responseText).stop(true, true).show().fadeOut(5000);
-                        }
-
+                        success: ajax_success,
+                        error: ajax_error
                     });
                 }
             });
