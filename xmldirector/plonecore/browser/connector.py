@@ -28,6 +28,7 @@ from zope.interface import implements
 from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
 from AccessControl.SecurityManagement import getSecurityManager
+from ZPublisher.Iterators import IStreamIterator
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore import permissions
@@ -688,6 +689,40 @@ class Connector(BrowserView):
         return self.zip_export(
                 subpath=subpath, 
                 dirs=names)
+
+    def filemanager_download(self, filename):
+
+        class connector_iterator(file):
+
+            implements(IStreamIterator)
+
+            def __init__(self, handle, filename, mode='rb', streamsize=1 << 16):
+                self.fp = handle.open(filename, mode)
+                self.streamsize = streamsize
+
+            def next(self):
+                print 'next'
+                data = self.fp.read(self.streamsize)
+                if not data:
+                    raise StopIteration
+                return data
+
+            def __len__(self):
+                cur_pos = self.fp.tell()
+                self.fp.seek(0, 2)
+                size = self.fp.tell()
+                self.seek(cur_pos, 0)
+                return size
+
+        handle = self.get_handle()
+        basename = os.path.basename(filename)
+        basename, ext = os.path.splitext(basename) 
+        mt, encoding = mimetypes.guess_type(basename)
+        self.request.response.setHeader('content-type', 'mt')
+        self.request.response.setHeader('content-size', handle.getsize(filename))
+        self.request.response.setHeader('content-disposition', 'attachment; filename={}'.format(os.path.basename(filename)))
+        with handle.open(filename, 'rb') as fp:
+            self.request.response.write(fp.read())
 
 
 class AceEditor(Connector):

@@ -117,6 +117,7 @@
                             <img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove item" i18n:attributes="title"/> </a>', 
                         SUBPATH, title);
                 s += sprintf('<a title="Rename" class="action-rename" data-fullpath="%s" data-title="%s"><img src="++resource++xmldirector.plonecore/images/rename.png" ></a>', fullpath, title);
+                s += sprintf('<a title="Download" class="action-download" data-fullpath="%s" data-title="%s"><img src="++resource++xmldirector.plonecore/images/download.png" ></a>', fullpath, title);
                 if (editable) {
                     var edit_url = item['edit_url'];
                 s += sprintf('<a href="%s" title="Edit" class="action-edit" ><img src="++resource++xmldirector.plonecore/images/edit.png" /></a>', edit_url);
@@ -189,6 +190,13 @@
                 SUBPATH = $(this).data('subpath');
                 window.history.pushState(null, null, sprintf("%s/@@view%s",URL, SUBPATH));
                 refresh_table();
+            });
+
+            $('body').on('click', '.action-download', function(e) {
+                e.preventDefault();
+                var fullpath = $(this).data('fullpath');
+                var url = sprintf("%s/@@filemanager-download?filename=%s", URL, fullpath);
+                window.location.href = url;
             });
 
             $('.action-refresh').on('click', function(e) {

@@ -220,6 +220,15 @@
     />
 
     <browser:page
+        name="filemanager-download"
+        for="xmldirector.plonecore.connector.IConnector"
+        class=".connector.Connector"
+        attribute="filemanager_download"
+        permission="zope2.View"
+        layer="xmldirector.plonecore.interfaces.IBrowserLayer"
+    />
+
+    <browser:page
         name="filemanager-create-collection"
         for="xmldirector.plonecore.connector.IConnector"
         class=".connector.Connector"
