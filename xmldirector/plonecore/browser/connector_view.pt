@@ -15,10 +15,6 @@
 
 <metal:slot fill-slot="javascript_head_slot">
     <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/jsgrid/jsgrid.min.js"></script>
-    <!-- 
-    <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/spinner/spin.min.js"></script>
-    <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/spinner/jquery.spin.js"></script>
-    -->
 </metal:slot>
 
 <metal:main fill-slot="content-core">
@@ -166,25 +162,34 @@
         }
 
         function ajax_success(result) {
+            spinner_stop();
             $('#table-info').removeClass('status-ok status-error').addClass('status-ok');
             $('#table-info').text(result).stop(true, true).show().fadeOut(5000);
             refresh_table();
         }
         
         function ajax_error(result) {
+            spinner_stop();
             $('#table-info').removeClass('status-ok status-error').addClass('status-error');
             $('#table-info').text(result.responseText).stop(true, true).show().fadeOut(5000);
             }
 
         function spinner_start() {
-            $('#table-info').spin('small')
+            $('#table-info').html('<img src="++resource++xmldirector.plonecore/images/spinning.gif"/>')
         }
+
+        function spinner_stop() {
+            $('#table-info').html('');
+        }
+
 
         $(document).ready(function() {
 
             $('.action-refresh').on('click', function(e) {
                 e.preventDefault();
+                spinner_start();
                 refresh_table();
+                spinner_stop();
             });
             
             $('body').on('click', '.action-zip-export ', function(e) {
@@ -193,6 +198,7 @@
                     return $(el).val();
                 });
                 if (names.length > 0) {
+                    spinner_start();
                     var url = sprintf('%s/@@filemanager-zip-export', URL);
                     $.ajax({
                         type: 'GET',
@@ -218,6 +224,7 @@
                 var new_id = window.prompt('Create new collection');
                 if (new_id != null) {
                     var url = sprintf('%s/@@filemanager-create-collection', URL);
+                    spinner_start();
                     $.ajax({
                         type: 'GET',
                         url: url,
@@ -240,7 +247,6 @@
                 var url = sprintf('%s/@@filemanager-rename', URL);
                 if (new_id != null) {
                     spinner_start();
-                    return;
                     $.ajax({
                         type: 'GET',
                         url: url,
@@ -263,6 +269,7 @@
                 var msg = sprintf('Do you really want to delete "%s/%s" to', subpath, id);
                 if (confirm(msg)) {
                     var url = sprintf('%s/@@filemanager-delete', URL);
+                    spinner_start();
                     $.ajax({
                         type: 'GET',
                         url: url,

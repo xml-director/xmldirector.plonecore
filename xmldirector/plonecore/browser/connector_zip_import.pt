@@ -27,7 +27,7 @@
       <fieldset id="zip-upload">
           <legend i18n:translate="">ZIP import</legend>
           <div class="help" i18n:translate="">
-              Use this form for upload a ZIP file. The ZIP file will be unzipped. The ZIP file may contain nested directories.
+              Use this form for uploading a ZIP file. The ZIP file will be unzipped. The ZIP file may contain nested directories.
           </div>
           <form method="POST" tal:attributes="action string:${context/absolute_url}/connector-zip-upload" enctype="multipart/form-data">
               <div>
@@ -45,7 +45,7 @@
       <fieldset id="uploadify">
           <legend i18n:translate="">Multi/single file upload</legend>
           <div class="help" i18n:translate="">
-              Use this form uploading a single or multiple files.
+              Use this form for uploading a single or multiple files.
           </div>
           <form id="upload-form">
               <input type="submit" id="file_upload" name="file_upload" multiple="true" />
