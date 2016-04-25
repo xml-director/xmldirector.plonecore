@@ -57,6 +57,10 @@
 
     <div style="clear: both"></div>
 
+    <div class="actions">
+        <a tal:attributes="href string:${context/absolute_url}/@@view/${request/subpath|nothing}" i18n:translate="">Back to file/directory listing</a>
+    </div>
+
     <script type="text/javascript">
         $(function() {
             $('#file_upload').uploadifive({

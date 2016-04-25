@@ -446,10 +446,10 @@ class Connector(BrowserView):
         if not isinstance(subpath, unicode):
             subpath = unicode(subpath, 'utf8')
 
-        handle = self.get_handle()
+        handle = self.get_handle(subpath)
         zip_filename = tempfile.mktemp(suffix='.zip')
         with ZipFS(zip_filename, 'w', encoding='utf8') as zip_fs:
-            for dirname, filenames in handle.walk(subpath):
+            for dirname, filenames in handle.walk():
                 if dirname.startswith('/'):
                     dirname = dirname.lstrip('/')
                 if dirs:
@@ -674,6 +674,11 @@ class Connector(BrowserView):
         self.logger.log(msg)
         self.request.response.setStatus(200)
         return msg
+
+    def filemanager_export_zip(self, subpath, names):
+
+        alsoProvides(self.request, IDisableCSRFProtection)
+        return self.zip_export(dirs=names)
 
 
 class AceEditor(Connector):
