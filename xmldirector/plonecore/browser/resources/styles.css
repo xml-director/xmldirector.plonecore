@@ -107,16 +107,17 @@ button.xml-editor {
 
 /* mimetype icons */
 
-a.type-dir,
+a.type-directory,
 a.type-file {
     border: none !important;
 }
 
-
+a.type-directory span,
 a.type-file span {
     display: inline-block;
 }
 
+a.type-directory:before,
 a.type-file:before {
     content: '';
     background-size: contain;
@@ -125,6 +126,10 @@ a.type-file:before {
     display: inline-block;
     margin-right: 0.5em;
     vertical-align: middle;
+}
+
+a.type-directory {
+    background-image: url(++resource++xmldirector.plonecore/images/svg/directory.svg) !important;
 }
 
 a.type-file:before {
