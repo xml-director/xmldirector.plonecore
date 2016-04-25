@@ -187,6 +187,7 @@
             $('body').on('click', '.action-chdir', function(e) {
                 e.preventDefault();
                 SUBPATH = $(this).data('subpath');
+                window.history.pushState(null, null, sprintf("%s/@@view%s",URL, SUBPATH));
                 refresh_table();
             });
 
