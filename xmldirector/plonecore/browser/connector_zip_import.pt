@@ -22,7 +22,9 @@
 <metal:main fill-slot="content-core">
   <metal:content-core define-macro="content-core">
 
-      <fieldset>
+    <div id="zip-form">
+
+      <fieldset id="zip-upload">
           <legend i18n:translate="">ZIP import</legend>
           <div class="help" i18n:translate="">
               Use this form for upload a ZIP file. The ZIP file will be unzipped. The ZIP file may contain nested directories.
@@ -40,7 +42,7 @@
       </fieldset>
 
       <!-- uploadify -->    
-      <fieldset>
+      <fieldset id="uploadify">
           <legend i18n:translate="">Multi/single file upload</legend>
           <div class="help" i18n:translate="">
               Use this form uploading a single or multiple files.
@@ -51,8 +53,11 @@
           </form>
           <div id="upload-message"></div>
       </fieldset>
+    </div>
 
-      <script type="text/javascript">
+    <div style="clear: both"></div>
+
+    <script type="text/javascript">
         $(function() {
             $('#file_upload').uploadifive({
                 buttonText: 'Upload',
@@ -72,7 +77,7 @@
                 }
             });
         });
-      </script>
+    </script>
   </metal:content-core>
 </metal:main>
 

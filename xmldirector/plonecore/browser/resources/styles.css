@@ -241,6 +241,16 @@ td.field-type {
     margin-bottom: 1em;
 }
 
+fieldset#zip-upload {
+    float: left;
+    width: 45%;
+}
+
+fieldset#uploadify {
+    float: right;
+    width: 45%;
+}
+
 input.zip-upload {
     border-radius: 20px;
     border: 1px solid #808080;

@@ -131,10 +131,13 @@
                 
             var title = item['title'];
             if (item['type'] == 'directory') {
-                s += sprintf('<a class="action-delete" title="Remove" data-subpath="%s" data-id="%s">', SUBPATH, title);
-                s += '<img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove collection"/>'
-                s += '</a>';
-                s += sprintf('<a title="Rename" class="action-rename" data-fullpath="%s" data-title="%s"><img src="++resource++xmldirector.plonecore/images/rename.png" ></a>', fullpath, title);
+                console.log(title);
+                if (title != '..') {
+                    s += sprintf('<a class="action-delete" title="Remove" data-subpath="%s" data-id="%s">', SUBPATH, title);
+                    s += '<img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove collection"/>'
+                    s += '</a>';
+                    s += sprintf('<a title="Rename" class="action-rename" data-fullpath="%s" data-title="%s"><img src="++resource++xmldirector.plonecore/images/rename.png" ></a>', fullpath, title);
+                        }
                 return s;
             } else {
                 var remove_url = item['remove_url'];
