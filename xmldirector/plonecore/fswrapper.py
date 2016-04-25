@@ -9,6 +9,7 @@ import os
 import time
 import urllib
 from furl import furl
+import unicodedata
 
 import fs.errors
 from fs.osfs import OSFS
@@ -200,6 +201,14 @@ class BaseWrapper(object):
                 self.makedir(dirname, recursive=True)
             except fs.errors.DestinationExistsError:
                 pass
+
+    def convert_string(self, s):
+        """ Convert string according to FS unicode_paths metadata """
+        if issubclass(self.__class__, fs.osfs.OSFS):
+            return unicodedata.normalize('NFKD', s).encode('ascii','ignore')
+        if self.getmeta('unicode_paths') and isinstance(s, unicode):
+            return unicode(s, 'utf-8')
+        return s
 
 
 class DAVFSWrapper(BaseWrapper, DAVFS):

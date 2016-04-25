@@ -63,7 +63,6 @@ def safe_unicode(s):
     return s
 
 
-
 def json_serial(obj):
     """JSON serializer for objects not serializable by default json code"""
 
@@ -597,23 +596,27 @@ class Connector(BrowserView):
         alsoProvides(self.request, IDisableCSRFProtection)
         handle = self.get_handle(subpath)
 
+        subpath = handle.convert_string(subpath)
+        old_id = handle.convert_string(old_id)
+        new_id = handle.convert_string(new_id)
+
         if not handle.exists(old_id):
-            msg = u'{}/{} not found'.format(subpath, old_id)
+            msg = handle.convert_string(u'{}/{} not found').format(subpath, old_id)
             raise zExceptions.NotFound(msg)
 
         if handle.exists(new_id):
-            msg = u'{}/{} already exists'.format(subpath, new_id)
+            msg = handle.convert_string(u'{}/{} already exists').format(subpath, new_id)
             self.request.response.setStatus(500)
             return msg
 
         try:
             handle.rename(old_id, new_id)
         except Exception as e:
-            msg = u'{}/{} could not be renamed to "{}/{}" ({})'.format(subpath, old_id, subpath, new_id, str(e))
+            msg = handle.convert_string(u'{}/{} could not be renamed to "{}/{}" ({})').format(subpath, old_id, subpath, new_id, str(e))
             self.request.response.setStatus(500)
             return msg
 
-        msg = u'Renamed {}/{} to {}/{}'.format(subpath, old_id, subpath, new_id)
+        msg = handle.convert_string(u'Renamed {}/{} to {}/{}').format(subpath, old_id, subpath, new_id)
         self.logger.log(msg)
         self.request.response.setStatus(200)
         return msg
@@ -623,15 +626,18 @@ class Connector(BrowserView):
         alsoProvides(self.request, IDisableCSRFProtection)
         handle = self.get_handle(subpath)
 
+        subpath = handle.convert_string(subpath)
+        id = handle.convert_string(id)
+
         if not handle.exists(id):
-            msg = u'{}/{} not found'.format(subpath, id)
+            msg = handle.convert_string(u'{}/{} not found').format(subpath, id)
             raise zExceptions.NotFound(msg)
 
         if handle.isdir(id):
             try:
                 handle.removedir(id, recursive=True, force=True)
             except Exception as e:
-                msg = u'{}/{} could not be deleted ({})'.format(subpath, id, str(e))
+                msg = handle.convert_string(u'{}/{} could not be deleted ({})').format(subpath, id, str(e))
                 self.request.response.setStatus(500)
                 return msg
 
@@ -640,14 +646,14 @@ class Connector(BrowserView):
             try:
                 handle.remove(id)
             except Exception as e:
-                msg = u'{}/{} could not be deleted ({})'.format(subpath, id, str(e))
+                msg = handle.convert_string(u'{}/{} could not be deleted ({})').format(subpath, id, str(e))
                 self.request.response.setStatus(500)
                 return msg
 
         else:
-            raise RuntimeError(u'Unhandled file type {}/{}'.format(subpath, id))
+            raise RuntimeError(handle.convert_string(u'Unhandled file type {}/{}').format(subpath, id))
 
-        msg = u'Deleted {}/{}'.format(subpath, id)
+        msg = handle.convert_string(u'Deleted {}/{}').format(subpath, id)
         self.logger.log(msg)
         self.request.response.setStatus(200)
         return msg
@@ -657,19 +663,22 @@ class Connector(BrowserView):
         alsoProvides(self.request, IDisableCSRFProtection)
         handle = self.get_handle(subpath)
 
+        subpath = handle.convert_string(subpath)
+        new_id = handle.convert_string(new_id)
+
         if handle.exists(new_id):
-            msg = u'{}/{} already exists found'.format(subpath, new_id)
+            msg = handle.convert_string(u'{}/{} already exists found').format(subpath, new_id)
             self.request.response.setStatus(500)
             return msg
 
         try:
             handle.makedir(new_id)
         except Exception as e:
-            msg = u'{}/{} could not be created ({})'.format(subpath, new_id, str(e))
+            msg = handle.convert_string(u'{}/{} could not be created ({})').format(subpath, new_id, str(e))
             self.request.response.setStatus(500)
             return msg
 
-        msg = u'Created {}/{}'.format(subpath, new_id)
+        msg = handle.convert_string(u'Created {}/{}').format(subpath, new_id)
         self.logger.log(msg)
         self.request.response.setStatus(200)
         return msg
