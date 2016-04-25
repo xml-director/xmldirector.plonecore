@@ -190,6 +190,20 @@
         layer="xmldirector.plonecore.interfaces.IBrowserLayer"
     />
 
+    <!-- File manager -->
+
+    <browser:page
+        name="filemanager-rename"
+        for="xmldirector.plonecore.connector.IConnector"
+        class=".connector.Connector"
+        attribute="filemanager_rename"
+        permission="cmf.ModifyPortalContent"
+        layer="xmldirector.plonecore.interfaces.IBrowserLayer"
+    />
+
+
+
+
     <browser:page
         name="xmldirector-core-settings"
         for="Products.CMFPlone.interfaces.IPloneSiteRoot"

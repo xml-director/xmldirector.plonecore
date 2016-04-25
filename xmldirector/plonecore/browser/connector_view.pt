@@ -70,7 +70,12 @@
           </form>
       </div>
 
-
+      <script type="text/javascript" 
+          tal:define="authenticator context/@@authenticator;
+                      auth_value python: authenticator.authenticator('authenticator')"
+          tal:content="string: AUTHENTICATOR = '${auth_value}'"
+          >
+      </script>
       <script type="text/javascript" tal:content="string: var URL = '${context/absolute_url}'"></script>
       <script type="text/javascript" tal:content="string: var SUBPATH = '${options/subpath}'"></script>
       <script type="text/javascript" 
@@ -214,9 +219,26 @@
                 var title = $(this).data('title');
                 var fullpath = $(this).data('fullpath');
                 var msg = sprintf('Rename "%s" to', title);
-                var new_path = window.prompt(msg, title);
-                if (new_path != null) {
-                    refresh_table();
+                var new_id = window.prompt(msg, title);
+                var url = sprintf('%s/@@filemanager-rename', URL);
+                if (new_id != null) {
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+                        data: {
+                            subpath: SUBPATH,
+                            old_id: title,
+                            new_id: new_id
+                        },
+                        success: function(msg) {
+                            alert('success' + msg);
+                            refresh_table();
+                        },
+                        error: function(msg) {
+                            alert('error' + msg);
+                        }
+
+                    });
                 }
             });
 

@@ -592,6 +592,24 @@ class Connector(BrowserView):
             raise RuntimeError(msg)
         return imported_files
 
+    def filemanager_rename(self, subpath, old_id, new_id):
+
+        handle = self.get_handle(subpath)
+        if not handle.exists(old_id):
+            msg = u'{}/{} not found'.format(subpath, old_id)
+            raise zExceptions.NotFound(msg)
+
+        try:
+            handle.rename(old_id, new_id)
+        except Exception as e:
+            msg = u'{}/{} could not be renamed to "{}" ({})'.format(subpath, old_id, new_id, str(e))
+            raise RuntimeError(msg)
+
+        msg = u'Renamed {}/{} to {}/{}'.format(subpath, old_id, subpath, new_id)
+        self.logger.log(msg)
+        self.request.response.setStatus(200)
+        return msg
+
 
 class AceEditor(Connector):
     view_name = 'view-editor'
