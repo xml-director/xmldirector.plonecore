@@ -51,7 +51,6 @@
 
         function get_data(filter) {
             var url = URL + "/@@connector-folder-contents?subpath=" + SUBPATH;
-
             if (DATA.length == 0) {
 
                 $.ajax({
@@ -97,11 +96,11 @@
             var title = item['title'];
             var fullpath = item['fullpath'];
             var type = item['type'];
-            var s = '<input type="checkbox" name="paths:list" value="' + title + '"> ';
-                s += sprintf('<a class="type-%s" href="%s">%s</a>', type, url, title);
+            var s = sprintf('<input type="checkbox" name="paths:list" value="%s"> ', title);
                 
             var title = item['title'];
             if (item['type'] == 'directory') {
+                s += sprintf('<a class="type-%s action-chdir" data-subpath="%s">%s</a>', type, fullpath, title);
                 if (title != '..') {
                     s += sprintf('<a class="action-delete" title="Remove" data-subpath="%s" data-id="%s">', SUBPATH, title);
                     s += '<img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove collection"/>'
@@ -112,6 +111,7 @@
             } else {
                 var remove_url = item['remove_url'];
                 var editable = item['editable'];
+                s += sprintf('<a class="type-%s" href="%s">%s</a>', type, url, title);
                 s += sprintf('\
                             <a class="action-delete" title="Remove" data-subpath="%s" data-id="%s">\
                             <img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove item" i18n:attributes="title"/> </a>', 
@@ -183,6 +183,12 @@
 
 
         $(document).ready(function() {
+
+            $('body').on('click', '.action-chdir', function(e) {
+                e.preventDefault();
+                SUBPATH = $(this).data('subpath');
+                refresh_table();
+            });
 
             $('.action-refresh').on('click', function(e) {
                 e.preventDefault();

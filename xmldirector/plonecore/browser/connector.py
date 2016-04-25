@@ -258,6 +258,7 @@ class Connector(BrowserView):
             dirs.append(dict(
                 type=u'directory',
                 title='..',
+                fullpath=parent_subpath,
                 url=u'{}/@@view/{}'.format(self.context.absolute_url(), parent_subpath)
                 ))
         for info in handle.listdirinfo(dirs_only=True):
