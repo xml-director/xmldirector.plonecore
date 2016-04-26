@@ -91,7 +91,12 @@ function init_ace_editors(selector='.ace-editable', add_editor_field=false, read
         editor.getSession().setMode("ace/mode/" + ACE_MODE);
         editor.setShowPrintMargin(false);
         editor.setReadOnly(readonly);
-        
+
+        if (ACE_MODE != 'xml' && ACE_MODE != 'html') {
+            $('.editor-validate-xml').remove();
+            $('.editor-validate-xml-server').remove();
+        }
+
         editor.getSession().on('change', function(){
             var xml = editor.getSession().getValue();
             var editor_id = editor.editor_id;
@@ -156,7 +161,7 @@ function init_ace_editors(selector='.ace-editable', add_editor_field=false, read
         e.preventDefault();
         var editor_id = parseInt($(this).attr('editor-id'));
         var editor = EDITORS[editor_id];
-        if (confirm('Do you really to remove the XML content?')) {
+        if (confirm('Do you really to remove the content?')) {
             editor.setValue('');
         }
     });
