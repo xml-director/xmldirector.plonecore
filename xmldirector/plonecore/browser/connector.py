@@ -658,3 +658,16 @@ class AceEditorReadonly(Connector):
     view_name = 'view-editor-readonly'
 
 
+class Raw(Connector):
+
+    def __call__(self, *args, **kw):
+
+        resource = '/'.join(self.subpath)
+        handle = self.context.get_handle()
+        if not handle.exists(resource):
+            raise zExceptions.NotFound(resouce)
+        mt, encoding = mimetypes.guess_type(resource)
+        self.request.response.setHeader('content-type', mt)
+        self.request.response.setHeader('content-length', str(handle.getsize(resource)))
+        with handle.open(resource, 'rb') as fp:
+            self.request.response.write(fp.read())

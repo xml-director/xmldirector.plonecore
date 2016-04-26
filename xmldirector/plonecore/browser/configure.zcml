@@ -75,6 +75,14 @@
         permission="zope2.View"
         layer="xmldirector.plonecore.interfaces.IBrowserLayer"
     />
+    
+    <browser:page
+        for="xmldirector.plonecore.connector.IConnector"
+        name="raw"
+        class=".connector.Raw"
+        permission="zope2.View"
+        layer="xmldirector.plonecore.interfaces.IBrowserLayer"
+    />
 
     <browser:page
         for="xmldirector.plonecore.connector.IConnector"

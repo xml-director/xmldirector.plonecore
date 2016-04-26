@@ -52,14 +52,16 @@
         var xml = editor.getSession().getValue();
         var validation_field = $('.editor-verification');
 
-        try {
-            $.parseXML(xml);
-        } catch(e) {
-            validation_field.removeClass('status-ok');
-            validation_field.removeClass('status-error');
-            validation_field.addClass('status-error')
-            validation_field.text('XML has errors, not saved').stop(true, true).show().fadeOut(2500);
-            return;
+        if (ACE_MODE == 'xml' || ACE_MODE == 'html') {
+            try {
+                $.parseXML(xml);
+            } catch(e) {
+                validation_field.removeClass('status-ok');
+                validation_field.removeClass('status-error');
+                validation_field.addClass('status-error')
+                validation_field.text('XML has errors, not saved').stop(true, true).show().fadeOut(2500);
+                return;
+            }
         }
         
         $.post(ACTION_URL, {
