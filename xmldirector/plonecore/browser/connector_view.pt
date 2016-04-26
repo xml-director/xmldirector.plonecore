@@ -195,14 +195,14 @@
             $('body').on('click', '.action-download', function(e) {
                 e.preventDefault();
                 var fullpath = $(this).data('fullpath');
-                var url = sprintf("%s/@@filemanager-download?filename=%s", URL, fullpath);
+                var url = sprintf("%s/@@filemanager-download?filename:utf8:ustring=%s", URL, fullpath);
                 window.location.href = url;
             });
 
             $('body').on('click', '.action-zip-download', function(e) {
                 e.preventDefault();
                 var fullpath = $(this).data('fullpath');
-                var url = sprintf("%s/@@filemanager-zip-download?directory=%s", URL, fullpath);
+                var url = sprintf("%s/@@filemanager-zip-download?subpath:utf8:ustring=%s", URL, fullpath);
                 window.location.href = url;
             });
 

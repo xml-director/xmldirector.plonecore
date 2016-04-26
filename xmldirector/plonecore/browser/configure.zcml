@@ -70,50 +70,6 @@
 
     <browser:page
         for="xmldirector.plonecore.connector.IConnector"
-        name="create-collection"
-        attribute="create_collection"
-        class=".connector.Connector"
-        permission="cmf.ModifyPortalContent"
-        layer="xmldirector.plonecore.interfaces.IBrowserLayer"
-    />
-
-    <browser:page
-        for="xmldirector.plonecore.connector.IConnector"
-        name="remove-collection"
-        attribute="remove_collection"
-        class=".connector.Connector"
-        permission="cmf.ModifyPortalContent"
-        layer="xmldirector.plonecore.interfaces.IBrowserLayer"
-    />
-
-    <browser:page
-        for="xmldirector.plonecore.connector.IConnector"
-        name="remove-from-collection"
-        attribute="remove_from_collection"
-        class=".connector.Connector"
-        permission="cmf.ModifyPortalContent"
-        layer="xmldirector.plonecore.interfaces.IBrowserLayer"
-    />
-
-    <browser:page
-        for="xmldirector.plonecore.connector.IConnector"
-        name="rename-collection"
-        attribute="rename_collection"
-        class=".connector.Connector"
-        permission="cmf.ModifyPortalContent"
-        layer="xmldirector.plonecore.interfaces.IBrowserLayer"
-    />
-
-    <browser:page
-        for="xmldirector.plonecore.connector.IConnector"
-        name="collection-action"
-        attribute="collection_action"
-        class=".connector.Connector"
-        permission="cmf.ModifyPortalContent"
-        layer="xmldirector.plonecore.interfaces.IBrowserLayer"
-    />
-    <browser:page
-        for="xmldirector.plonecore.connector.IConnector"
         name="view-editor-readonly"
         class=".connector.AceEditorReadonly"
         permission="zope2.View"
@@ -128,15 +84,6 @@
         layer="xmldirector.plonecore.interfaces.IBrowserLayer"
     />
 
-    <browser:page
-        for="xmldirector.plonecore.connector.IConnector"
-        name="connector-clear-contents"
-        class=".connector.Connector"
-        attribute="clear_contents"
-        permission="cmf.ModifyPortalContent"
-        layer="xmldirector.plonecore.interfaces.IBrowserLayer"
-    />
-    
     <browser:page
         for="*"
         name="xmldirector-core-lockmanager"
@@ -159,15 +106,6 @@
         for="xmldirector.plonecore.connector.IConnector"
         name="connector-zip-import"
         template="connector_zip_import.pt"
-        permission="cmf.ModifyPortalContent"
-        layer="xmldirector.plonecore.interfaces.IBrowserLayer"
-    />
-
-    <browser:page
-        for="xmldirector.plonecore.connector.IConnector"
-        name="connector-zip-export"
-        class=".connector.Connector"
-        attribute="zip_export"
         permission="cmf.ModifyPortalContent"
         layer="xmldirector.plonecore.interfaces.IBrowserLayer"
     />

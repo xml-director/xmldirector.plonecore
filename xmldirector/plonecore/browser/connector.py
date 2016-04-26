@@ -20,21 +20,23 @@ import mimetypes
 import unicodedata
 import logging
 import unicodedata
-import zExceptions
+import pkg_resources
 from dateutil import tz
 from fs.zipfs import ZipFS
 from progressbar import Bar, ETA, Percentage, ProgressBar, RotatingMarker
+
+import zExceptions
 from zope.interface import implements
 from zope.interface import implementer
+from zope.interface import alsoProvides
 from zope.publisher.interfaces import IPublishTraverse
-from AccessControl.SecurityManagement import getSecurityManager
-from ZPublisher.Iterators import IStreamIterator
-from Products.Five.browser import BrowserView
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.CMFCore import permissions
 from plone.app.layout.globals.interfaces import IViewView
 from plone.protect.interfaces import IDisableCSRFProtection
-from zope.interface import alsoProvides
+from AccessControl.SecurityManagement import getSecurityManager
+from ZPublisher.Iterators import IStreamIterator
+from Products.CMFCore import permissions
+from Products.Five.browser import BrowserView
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from xmldirector.plonecore.i18n import MessageFactory as _
 from zopyx.plone.persistentlogger.logger import IPersistentLogger
@@ -72,6 +74,29 @@ def json_serial(obj):
         serial = obj.isoformat()
         return serial
     raise TypeError ("Type not serializable")
+
+
+class connector_iterator(file):
+    """ Iterator for pyfilesystem content """
+
+    implements(IStreamIterator)
+
+    def __init__(self, handle, filename, mode='rb', streamsize=1 << 16):
+        self.fp = handle.open(filename, mode)
+        self.streamsize = streamsize
+
+    def next(self):
+        data = self.fp.read(self.streamsize)
+        if not data:
+            raise StopIteration
+        return data
+
+    def __len__(self):
+        cur_pos = self.fp.tell()
+        self.fp.seek(0, 2)
+        size = self.fp.tell()
+        self.seek(cur_pos, 0)
+        return size
 
 
 class Dispatcher(BrowserView):
@@ -130,7 +155,6 @@ class Connector(BrowserView):
         self.traversal_subpath = []
 
     def is_plone5(self):
-        import pkg_resources
         version = pkg_resources.get_distribution('Products.CMFPlone').version
         return version.startswith('5')
 
@@ -190,20 +214,6 @@ class Connector(BrowserView):
                 subpath = subpath.encode('utf8')
             url = '{}/@@view/{}'.format(url, subpath)
         return self.request.response.redirect(url)
-
-    def collection_action(self, paths=None, action=None):
-        handle = self.context.get_handle()
-        if action == 'delete':
-            for path in paths or []:
-                if handle.exists(path):
-                    if handle.isfile(path):
-                        handle.remove(path)
-                    elif handle.isdir(path):
-                        handle.removedir(path, recursive=True, force=True)
-
-            msg = u'Selected files/directories removed'
-            return self.redirect(msg, subpath=self.subpath)
-        raise ValueError(u'No such action "{}"'.format(action))
 
     def folder_contents(self, subpath=''):
         """ AJAX callback """
@@ -311,78 +321,6 @@ class Connector(BrowserView):
         """ Return num_bytes as human readable representation """
         return hurry.filesize.size(num_bytes, hurry.filesize.alternative)
 
-    def create_collection(self, subpath, name):
-        """ Create a new collection """
-
-        if not name:
-            raise ValueError(_(u'No "name" given'))
-
-        handle = self.get_handle(subpath)
-#        can_unicode = handle.getmeta('unicode_paths')
-        if handle.exists(name):
-            msg = u'Collection already exists'
-            self.context.plone_utils.addPortalMessage(msg, 'error')
-        else:
-            handle.makedir(name)
-            msg = u'Collection created'
-            self.logger.log('Created {} (subpath: {})'.format(name, subpath))
-            self.context.plone_utils.addPortalMessage(msg)
-        return self.request.response.redirect(
-            '{}/@@view/{}'.format(self.context.absolute_url(), subpath))
-
-    def remove_collection(self, subpath, name):
-        """ Remove a collection """
-
-        alsoProvides(self.request, IDisableCSRFProtection)
-
-        handle = self.get_handle(subpath)
-        if handle.exists(name):
-            handle.removedir(name, force=True)
-            msg = u'Collection removed'
-            self.logger.log('Removed {} (subpath: {})'.format(name, subpath))
-            self.context.plone_utils.addPortalMessage(msg)
-        else:
-            msg = u'Collection does not exist'
-            self.context.plone_utils.addPortalMessage(msg, 'error')
-        return self.request.response.redirect(
-            '{}/@@view/{}'.format(self.context.absolute_url(), subpath))
-
-    def remove_from_collection(self, subpath, name):
-        """ Remove a collection """
-
-        alsoProvides(self.request, IDisableCSRFProtection)
-
-        handle = self.get_handle(subpath)
-        if handle.exists(name):
-            handle.remove(name)
-            msg = u'Removed {}'.format(name)
-            self.logger.log(msg)
-            self.context.plone_utils.addPortalMessage(msg)
-        else:
-
-            self.request.response.setStatus(404)
-            return 'not found'
-        return self.request.response.redirect(
-            '{}/@@view/{}'.format(self.context.absolute_url(), subpath))
-
-    def rename_collection(self, subpath, name, new_name):
-        """ Rename a collection """
-        if not new_name:
-            raise ValueError(_(u'No new "name" given'))
-
-        handle = self.get_handle(subpath)
-        if handle.exists(name):
-            handle.rename(name, new_name)
-            msg = u'Collection renamed'
-            self.logger.log(
-                'Renamed {}  to {} (subpath: {})'.format(name, new_name, subpath))
-            self.context.plone_utils.addPortalMessage(msg)
-        else:
-            msg = u'Collection does not exist'
-            self.context.plone_utils.addPortalMessage(msg, 'error')
-        return self.request.response.redirect(
-            '{}/@@view/{}'.format(self.context.absolute_url(), subpath))
-
     def reindex(self):
         """ Reindex curnrent connector """
         self.context.reindexObject()
@@ -406,20 +344,8 @@ class Connector(BrowserView):
             else:
                 return humanize.naturaltime(dt)
 
-    def clear_contents(self):
-        """ Remove all sub content """
-
-        handle = self.get_handle()
-        for name in handle.listdir():
-            if handle.isfile(name):
-                handle.remove(name)
-            else:
-                handle.removedir(name, force=True, recursive=False)
-
-        return self.redirect(_(u'eXist-db collection cleared'))
-
     def upload_file(self):
-        """ Store .DOCX file """
+        """ AJAX callback for Uploadify """
 
         alsoProvides(self.request, IDisableCSRFProtection)
 
@@ -442,34 +368,6 @@ class Connector(BrowserView):
         """ Export WebDAV subfolder to a ZIP file.
             directory names to be exported.
         """
-
-        handle = self.get_handle(subpath)
-
-        zip_filename = tempfile.mktemp(suffix='.zip')
-        with ZipFS(zip_filename, 'w', encoding='utf8') as zip_fs:
-            for dirname, filenames in handle.walk():
-                if dirname.startswith('/'):
-                    dirname = dirname.lstrip('/')
-                for filename in filenames:
-                    local_filename = fs.path.join(dirname, filename)
-                    z_filename = fs.path.join(dirname, filename)
-                    z_filename = unicodedata.normalize('NFKD', z_filename).encode('ascii','ignore')
-                    with handle.open(local_filename, 'rb') as fp:
-                        with zip_fs.open(z_filename, 'wb') as zip_out:
-                            zip_out.write(fp.read())
-
-        if download:
-            self.request.response.setHeader('content-type', 'application/zip')
-            self.request.response.setHeader(
-                'content-size', os.path.getsize(zip_filename))
-            self.request.response.setHeader(
-                'content-disposition', 'attachment; filename={}.zip'.format(self.context.id))
-            with open(zip_filename, 'rb') as fp:
-                self.request.response.write(fp.read())
-            os.unlink(zip_filename)
-            return
-        else:
-            return zip_filename
 
     def zip_import_ui(self, zip_file=None, subpath=None, clean_directories=None):
         """ Import WebDAV subfolder from an uploaded ZIP file """
@@ -589,6 +487,7 @@ class Connector(BrowserView):
         return imported_files
 
     def filemanager_rename(self, subpath, old_id, new_id):
+        """ Rename folder or file ``old_id`` inside directory ``subpath`` to ``new_id`` """
 
         alsoProvides(self.request, IDisableCSRFProtection)
         handle = self.get_handle(subpath)
@@ -619,6 +518,7 @@ class Connector(BrowserView):
         return msg
 
     def filemanager_delete(self, subpath, id):
+        """ Delete a folder or file ``id`` inside the folder ``subpath`` """
 
         alsoProvides(self.request, IDisableCSRFProtection)
         handle = self.get_handle(subpath)
@@ -656,6 +556,7 @@ class Connector(BrowserView):
         return msg
 
     def filemanager_create_collection(self, subpath, new_id):
+        """ Create a new collection ``new_id`` inside the folder ``subpath `` """
 
         alsoProvides(self.request, IDisableCSRFProtection)
         handle = self.get_handle(subpath)
@@ -680,43 +581,61 @@ class Connector(BrowserView):
         self.request.response.setStatus(200)
         return msg
 
-    def filemanager_zip_download(self, directory):
+    def filemanager_zip_download(self, subpath, download=True, zip_max_size=100*1024*1024):
+        """ Download all files of ``subpath`` as ZIP file """
+
         alsoProvides(self.request, IDisableCSRFProtection)
-        return self.zip_export(subpath=directory) 
-
-    def filemanager_download(self, filename):
-
-        class connector_iterator(file):
-
-            implements(IStreamIterator)
-
-            def __init__(self, handle, filename, mode='rb', streamsize=1 << 16):
-                self.fp = handle.open(filename, mode)
-                self.streamsize = streamsize
-
-            def next(self):
-                print 'next'
-                data = self.fp.read(self.streamsize)
-                if not data:
-                    raise StopIteration
-                return data
-
-            def __len__(self):
-                cur_pos = self.fp.tell()
-                self.fp.seek(0, 2)
-                size = self.fp.tell()
-                self.seek(cur_pos, 0)
-                return size
 
         handle = self.get_handle()
+        subpath = handle.convert_string(subpath)
+        if not handle.exists(subpath) or not handle.isdir(subpath):
+            raise ValueError(handle.convert_string(u'{} does not exist or is not a directory').format(subpath))
+
+        zip_filename = tempfile.mktemp(suffix='.zip')
+        zip_size = 0
+        with ZipFS(zip_filename, 'w', encoding='utf8') as zip_fs:
+            for dirname, filenames in handle.walk(subpath):
+                if dirname.startswith('/'):
+                    dirname = dirname.lstrip('/')
+                for filename in filenames:
+                    local_filename = fs.path.join(dirname, filename)
+                    z_filename = fs.path.join(dirname, filename)
+                    z_filename = unicodedata.normalize('NFKD', z_filename).encode('ascii','ignore')
+                    with handle.open(local_filename, 'rb') as fp:
+                        zip_size += handle.getsize(local_filename)
+                        if zip_size > zip_max_size:
+                            raise RuntimeError(u'Too many files - ZIP file size exceeded ({})'.format(self.human_readable_filesize(zip_max_size)))
+                        with zip_fs.open(z_filename, 'wb') as zip_out:
+                            zip_out.write(fp.read())
+
+        if download:
+            download_filename = '{}-{}.zip'.format(self.context.getId(), os.path.basename(subpath))
+            self.request.response.setHeader('content-type', 'application/zip')
+            self.request.response.setHeader(
+                'content-length', os.path.getsize(zip_filename))
+            self.request.response.setHeader(
+                'content-disposition', 'attachment; filename={}'.format(download_filename))
+            with open(zip_filename, 'rb') as fp:
+                self.request.response.write(fp.read())
+            os.unlink(zip_filename)
+            return
+        else:
+            return zip_filename
+
+    def filemanager_download(self, filename):
+        """ Download/stream the given file """
+
+        handle = self.get_handle()
+        filename = handle.convert_string(filename)
+        if not handle.exists(filename):
+            raise zExceptions.NotFound(handle.convert_string(u'{} does not exist').format(filename))
         basename = os.path.basename(filename)
         basename, ext = os.path.splitext(basename) 
         mt, encoding = mimetypes.guess_type(basename)
         self.request.response.setHeader('content-type', 'mt')
-        self.request.response.setHeader('content-size', handle.getsize(filename))
+        self.request.response.setHeader('content-length', handle.getsize(filename))
         self.request.response.setHeader('content-disposition', 'attachment; filename={}'.format(os.path.basename(filename)))
-        with handle.open(filename, 'rb') as fp:
-            self.request.response.write(fp.read())
+        return connector_iterator(handle, filename)
 
 
 class AceEditor(Connector):
