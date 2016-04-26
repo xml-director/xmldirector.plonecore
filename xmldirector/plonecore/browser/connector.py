@@ -665,7 +665,7 @@ class Raw(Connector):
         resource = '/'.join(self.subpath)
         handle = self.context.get_handle()
         if not handle.exists(resource):
-            raise zExceptions.NotFound(resouce)
+            raise zExceptions.NotFound(resource)
         mt, encoding = mimetypes.guess_type(resource)
         self.request.response.setHeader('content-type', mt)
         self.request.response.setHeader('content-length', str(handle.getsize(resource)))
