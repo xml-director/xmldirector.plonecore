@@ -77,8 +77,8 @@ class ValidatorRegistry(object):
                         schema_doc = lxml.etree.XML(fp.read())
                         validator = lxml.etree.XMLSchema(schema_doc)
                     except Exception as e:
-                        LOG.error(u'Unable to parse XML Schema ({})'.format(
-                            e), exc_info=True)
+                        LOG.error(u'Unable to parse XML Schema ({}, {})'.format(
+                            name, e), exc_info=True)
                         continue
                     validator_type = 'XSD'
             elif ext == '.rng':
@@ -111,7 +111,7 @@ class ValidatorRegistry(object):
             if duration > 3:
                 LOG.warn(
                     'Slow loading/parsing of ({}, {}), duration: {:0.3f} seconds'.format(key, fullname, duration))
-            LOG.info('Registered ({}, {}), duration: {:0.3f} seconds'.format(
+            LOG.debug('Registered ({}, {}), duration: {:0.3f} seconds'.format(
                 key, fullname, duration))
 
     def get_schema(self, family, name):

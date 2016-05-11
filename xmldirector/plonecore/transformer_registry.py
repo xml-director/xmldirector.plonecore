@@ -189,7 +189,7 @@ class TransformerRegistry(object):
             info=info,
             registered=datetime.datetime.utcnow())
 
-        LOG.info(
+        LOG.debug(
             'Transformer registered ({}, {})'.format(key, transformer_path))
 
     def entries(self):

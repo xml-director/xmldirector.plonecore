@@ -48,7 +48,7 @@ from . import config
 LOG = logging.getLogger('xmldirector.plonecore')
 
 TZ = os.environ.get('TZ', 'UTC')
-LOG.info('Local timezone: {}'.format(TZ))
+LOG.debug('Local timezone: {}'.format(TZ))
 
 
 def stmode2unix(st_mode):
