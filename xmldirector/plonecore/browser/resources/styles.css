@@ -295,3 +295,7 @@ input.zip-upload {
     float: right;
     margin-left: 0.5em;
 }
+
+#edit-zone .contenttype-xmldirector-plonecore-connector:after {
+    content: "\e808";
+}
