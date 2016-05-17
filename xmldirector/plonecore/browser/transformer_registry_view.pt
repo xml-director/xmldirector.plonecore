@@ -7,6 +7,12 @@
       i18n:domain="xmldirector.plonecore">
 <body>
 
+<slot metal:fill-slot="javascript_head_slot">
+    <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/ace-builds/src-noconflict/ace.js"></script>
+    <script type="text/javascript" tal:content="string: ACE_MODE = 'xml'"></script>
+    <script type="text/javascript" tal:content="string: ACE_READONLY = true"></script>
+</slot>
+
 <metal:main fill-slot="content-core">
     <metal:content-core define-macro="content-core" 
         tal:define="result view/transformer_content">
@@ -20,32 +26,15 @@
             <label i18n:translate="">Type</label>: <span tal:content="result/transformer_type"/>
             <br/>
             <a i18n:translate="" href="@@Transformer-registry">Back to transformer registry</a>
-            <div id="editor" 
+            <div class="ace-editable"
                 style="width: 80%; min-height: 100px; height: 450px; max-height: 800px"
                 tal:content="result/text"/>
         </div>
 
-        <script type="text/javascript" tal:content="string:var ace_type='${result/ace_type}'"></script>
-
         <script type="text/javascript">
-        if(require === undefined){
-          require = function(reqs, torun){
-            'use strict';
-            return torun(window.ace);
-          };
-        }
-
-        require([
-          'ace/ace'
-          ], function(ace){
-            $(document).ready(function() {        
-                var editor = ace.edit('editor');
-                editor.setTheme("ace/theme/chrome");
-                editor.getSession().setMode("ace/mode/" + ace_type);
-                editor.setShowPrintMargin(false);
-                editor.setReadOnly(true);
+            $(document).ready(function() {
+                init_ace_editors('.ace-editable', true, true);
             });
-        });
         </script>
 
   </metal:content-core>

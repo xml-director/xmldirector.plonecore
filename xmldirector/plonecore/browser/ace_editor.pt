@@ -8,9 +8,9 @@
 <body>
 
 <slot metal:fill-slot="javascript_head_slot">
-<script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/ace-builds/src-noconflict/ace.js"></script>
-<script type="text/javascript" tal:content="string: ACE_MODE='${options/ace_mode}'"></script>
-<script type="text/javascript" tal:content="string: ACE_READONLY=${options/ace_readonly}"></script>
+    <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/ace-builds/src-noconflict/ace.js"></script>
+    <script type="text/javascript" tal:content="string: ACE_MODE='${options/ace_mode}'"></script>
+    <script type="text/javascript" tal:content="string: ACE_READONLY=${options/ace_readonly}"></script>
 </slot>
 
 <metal:main fill-slot="content-core">
