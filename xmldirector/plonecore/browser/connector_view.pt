@@ -23,9 +23,12 @@
       <div id="table-info"></div>
       <table id="table">
       </table>
+
+      <div id="no-data" class="error" i18n:translate="">The root collection does not contain any data</div>
+
       <div id="table-actions">
           <button class="action-create-collection button" name="action-create-collection" i18n:translate="">Create Collection</button>
-          <a id="connector-zip-import" class="action" tal:attributes="href string:${context/absolute_url}/connector-zip-import?subpath=${options/subpath}">
+          <a id="connector-zip-import" class="action" tal:attributes="href string:${context/absolute_url}/connector-zip-import?subpath=${options/subpath}" style="border-bottom: none">
               <button class="button" i18n:translate="">Import</button>
           </a>
           <button class="action-refresh button" name="action-refresh" i18n:translate="">Refresh</button>
@@ -75,8 +78,10 @@
                         
                         if (DATA.length == 0) {
                             $('#table').fadeOut();
+                            $('#no-data').fadeIn();
                         } else {
                             $('#table').fadeIn();
+                            $('#no-data').fadeOut();
                         }
                     } 
                 });
