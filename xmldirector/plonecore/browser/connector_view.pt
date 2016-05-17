@@ -51,7 +51,6 @@
         function get_data(filter) {
             var url = URL + "/@@connector-folder-contents?subpath=" + SUBPATH;
             if (DATA.length == 0) {
-
                 $.ajax({
                     url: url,
                     dataType: 'json',
@@ -72,6 +71,12 @@
                                 $('#action-rename-collection').remove();
                         } else {
                             $('#action-rename-collection').remove();
+                        }
+                        
+                        if (DATA.length == 0) {
+                            $('#table').fadeOut();
+                        } else {
+                            $('#table').fadeIn();
                         }
                     } 
                 });
