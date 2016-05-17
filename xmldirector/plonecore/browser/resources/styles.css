@@ -296,6 +296,8 @@ input.zip-upload {
     margin-left: 0.5em;
 }
 
+/* plone.app.toolbar icon (Cloud u+2601) */
 #edit-zone .contenttype-xmldirector-plonecore-connector:after {
-    content: "\e808";
+    content: "\2601";
 }
+
