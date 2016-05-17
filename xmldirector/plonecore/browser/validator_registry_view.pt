@@ -19,10 +19,12 @@
 
         <h2 i18n:translate="">Validator Registry</h2>
         <div>
-            <label i18n:translate="">Family</label>: <span tal:content="request/family"/>
-            <br/>
-            <label i18n:translate="">Name</label>: <span tal:content="request/name"/>
-            <br/>
+            <div>
+                <label i18n:translate="">Family</label>: <span tal:content="request/family"/>
+            </div>
+            <div>
+                <label i18n:translate="">Name</label>: <span tal:content="request/name"/>
+            </div>
             <a i18n:translate="" href="@@validator-registry">Back to validator registry</a>
             <div class="ace-editable"
                 style="width: 80%; min-height: 100px; height: 450px; max-height: 800px"

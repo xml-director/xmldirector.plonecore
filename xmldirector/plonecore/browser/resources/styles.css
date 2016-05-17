@@ -74,6 +74,11 @@
 
 /* ACE editor  */
 
+.ace_editor {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
 #content #ace-editor-info {
     padding-left: 0;
     margin: 0;

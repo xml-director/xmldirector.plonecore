@@ -19,12 +19,16 @@
 
         <h2 i18n:translate="">Transformer Registry</h2>
         <div>
-            <label i18n:translate="">Family</label>: <span tal:content="request/family"/>
-            <br/>
-            <label i18n:translate="">Name</label>: <span tal:content="request/name"/>
-            <br/>
-            <label i18n:translate="">Type</label>: <span tal:content="result/transformer_type"/>
-            <br/>
+            <div>
+                <label i18n:translate="">Family</label>: <span tal:content="request/family"/>
+            </div>
+            <div>
+                <label i18n:translate="">Name</label>: <span tal:content="request/name"/>
+            </div>
+            <div>
+                <label i18n:translate="">Type</label>: <span tal:content="result/transformer_type"/>
+            </div>
+            
             <a i18n:translate="" href="@@transformer-registry">Back to transformer registry</a>
             <div class="ace-editable"
                 style="width: 80%; min-height: 100px; height: 450px; max-height: 800px"
