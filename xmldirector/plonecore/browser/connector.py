@@ -19,7 +19,6 @@ import tempfile
 import mimetypes
 import unicodedata
 import logging
-import unicodedata
 import pkg_resources
 from dateutil import tz
 from fs.zipfs import ZipFS
@@ -73,7 +72,7 @@ def json_serial(obj):
     if isinstance(obj, datetime.datetime):
         serial = obj.isoformat()
         return serial
-    raise TypeError ("Type not serializable")
+    raise TypeError("Type not serializable")
 
 
 class connector_iterator(file):
@@ -246,7 +245,8 @@ class Connector(BrowserView):
                 modified = None
                 modified_original = info[1].get('modified_time')
                 if modified_original:
-                    modified = self.human_readable_datetime(info[1]['modified_time'], to_utc=False)
+                    modified = self.human_readable_datetime(
+                        info[1]['modified_time'], to_utc=False)
 
                 files.append(dict(url=u'{}/{}/{}'.format(context_url, view_prefix, path_name),
                                   type='file',
@@ -258,7 +258,8 @@ class Connector(BrowserView):
                                   title=info[0],
                                   editable=self.is_ace_editable(path_name),
                                   st_mode=info[1].get('st_mode'),
-                                  st_mode_text=stmode2unix(info[1].get('st_mode')),
+                                  st_mode_text=stmode2unix(
+                                      info[1].get('st_mode')),
                                   size_original=info[1].get('size'),
                                   size=size,
                                   modified_original=modified_original,
@@ -270,8 +271,9 @@ class Connector(BrowserView):
                 type=u'directory',
                 title='..',
                 fullpath=parent_subpath,
-                url=u'{}/@@view/{}'.format(self.context.absolute_url(), parent_subpath)
-                ))
+                url=u'{}/@@view/{}'.format(self.context.absolute_url(),
+                                           parent_subpath)
+            ))
         for info in handle.listdirinfo(dirs_only=True):
             path_name = safe_unicode(info[0])
             fullpath = u'{}/{}'.format(joined_subpath, path_name)
@@ -497,22 +499,26 @@ class Connector(BrowserView):
         new_id = handle.convert_string(new_id)
 
         if not handle.exists(old_id):
-            msg = handle.convert_string(u'{}/{} not found').format(subpath, old_id)
+            msg = handle.convert_string(
+                u'{}/{} not found').format(subpath, old_id)
             raise zExceptions.NotFound(msg)
 
         if handle.exists(new_id):
-            msg = handle.convert_string(u'{}/{} already exists').format(subpath, new_id)
+            msg = handle.convert_string(
+                u'{}/{} already exists').format(subpath, new_id)
             self.request.response.setStatus(500)
             return msg
 
         try:
             handle.rename(old_id, new_id)
         except Exception as e:
-            msg = handle.convert_string(u'{}/{} could not be renamed to "{}/{}" ({})').format(subpath, old_id, subpath, new_id, str(e))
+            msg = handle.convert_string(
+                u'{}/{} could not be renamed to "{}/{}" ({})').format(subpath, old_id, subpath, new_id, str(e))
             self.request.response.setStatus(500)
             return msg
 
-        msg = handle.convert_string(u'Renamed {}/{} to {}/{}').format(subpath, old_id, subpath, new_id)
+        msg = handle.convert_string(
+            u'Renamed {}/{} to {}/{}').format(subpath, old_id, subpath, new_id)
         self.logger.log(msg)
         self.request.response.setStatus(200)
         return msg
@@ -534,7 +540,8 @@ class Connector(BrowserView):
             try:
                 handle.removedir(id, recursive=True, force=True)
             except Exception as e:
-                msg = handle.convert_string(u'{}/{} could not be deleted ({})').format(subpath, id, str(e))
+                msg = handle.convert_string(
+                    u'{}/{} could not be deleted ({})').format(subpath, id, str(e))
                 self.request.response.setStatus(500)
                 return msg
 
@@ -543,12 +550,14 @@ class Connector(BrowserView):
             try:
                 handle.remove(id)
             except Exception as e:
-                msg = handle.convert_string(u'{}/{} could not be deleted ({})').format(subpath, id, str(e))
+                msg = handle.convert_string(
+                    u'{}/{} could not be deleted ({})').format(subpath, id, str(e))
                 self.request.response.setStatus(500)
                 return msg
 
         else:
-            raise RuntimeError(handle.convert_string(u'Unhandled file type {}/{}').format(subpath, id))
+            raise RuntimeError(handle.convert_string(
+                u'Unhandled file type {}/{}').format(subpath, id))
 
         msg = handle.convert_string(u'Deleted {}/{}').format(subpath, id)
         self.logger.log(msg)
@@ -561,22 +570,23 @@ class Connector(BrowserView):
         alsoProvides(self.request, IDisableCSRFProtection)
         handle = self.get_handle(subpath)
 
-        print '-'*80
+        print '-' * 80
         print subpath, new_id
         subpath = handle.convert_string(subpath)
         new_id = handle.convert_string(new_id)
         print subpath, new_id
 
-
         if handle.exists(new_id):
-            msg = handle.convert_string(u'{}/{} already exists found').format(subpath, new_id)
+            msg = handle.convert_string(
+                u'{}/{} already exists found').format(subpath, new_id)
             self.request.response.setStatus(500)
             return msg
 
         try:
             handle.makedir(new_id)
         except Exception as e:
-            msg = handle.convert_string(u'{}/{} could not be created ({})').format(subpath, new_id, str(e))
+            msg = handle.convert_string(
+                u'{}/{} could not be created ({})').format(subpath, new_id, str(e))
             self.request.response.setStatus(500)
             return msg
 
@@ -585,7 +595,7 @@ class Connector(BrowserView):
         self.request.response.setStatus(200)
         return msg
 
-    def filemanager_zip_download(self, subpath, download=True, zip_max_size=100*1024*1024):
+    def filemanager_zip_download(self, subpath, download=True, zip_max_size=100 * 1024 * 1024):
         """ Download all files of ``subpath`` as ZIP file """
 
         alsoProvides(self.request, IDisableCSRFProtection)
@@ -593,7 +603,8 @@ class Connector(BrowserView):
         handle = self.get_handle()
         subpath = handle.convert_string(subpath)
         if not handle.exists(subpath) or not handle.isdir(subpath):
-            raise ValueError(handle.convert_string(u'{} does not exist or is not a directory').format(subpath))
+            raise ValueError(handle.convert_string(
+                u'{} does not exist or is not a directory').format(subpath))
 
         zip_filename = tempfile.mktemp(suffix='.zip')
         zip_size = 0
@@ -604,16 +615,19 @@ class Connector(BrowserView):
                 for filename in filenames:
                     local_filename = fs.path.join(dirname, filename)
                     z_filename = fs.path.join(dirname, filename)
-                    z_filename = unicodedata.normalize('NFKD', z_filename).encode('ascii','ignore')
+                    z_filename = unicodedata.normalize(
+                        'NFKD', z_filename).encode('ascii', 'ignore')
                     with handle.open(local_filename, 'rb') as fp:
                         zip_size += handle.getsize(local_filename)
                         if zip_size > zip_max_size:
-                            raise RuntimeError(u'Too many files - ZIP file size exceeded ({})'.format(self.human_readable_filesize(zip_max_size)))
+                            raise RuntimeError(u'Too many files - ZIP file size exceeded ({})'.format(
+                                self.human_readable_filesize(zip_max_size)))
                         with zip_fs.open(z_filename, 'wb') as zip_out:
                             zip_out.write(fp.read())
 
         if download:
-            download_filename = '{}-{}.zip'.format(self.context.getId(), os.path.basename(subpath))
+            download_filename = '{}-{}.zip'.format(
+                self.context.getId(), os.path.basename(subpath))
             self.request.response.setHeader('content-type', 'application/zip')
             self.request.response.setHeader(
                 'content-length', os.path.getsize(zip_filename))
@@ -632,13 +646,16 @@ class Connector(BrowserView):
         handle = self.get_handle()
         filename = handle.convert_string(filename)
         if not handle.exists(filename):
-            raise zExceptions.NotFound(handle.convert_string(u'{} does not exist').format(filename))
+            raise zExceptions.NotFound(handle.convert_string(
+                u'{} does not exist').format(filename))
         basename = os.path.basename(filename)
-        basename, ext = os.path.splitext(basename) 
+        basename, ext = os.path.splitext(basename)
         mt, encoding = mimetypes.guess_type(basename)
         self.request.response.setHeader('content-type', 'mt')
-        self.request.response.setHeader('content-length', handle.getsize(filename))
-        self.request.response.setHeader('content-disposition', 'attachment; filename={}'.format(os.path.basename(filename)))
+        self.request.response.setHeader(
+            'content-length', handle.getsize(filename))
+        self.request.response.setHeader(
+            'content-disposition', 'attachment; filename={}'.format(os.path.basename(filename)))
         return connector_iterator(handle, filename)
 
 
@@ -672,6 +689,7 @@ class Raw(Connector):
             raise zExceptions.NotFound(resource)
         mt, encoding = mimetypes.guess_type(resource)
         self.request.response.setHeader('content-type', mt)
-        self.request.response.setHeader('content-length', str(handle.getsize(resource)))
+        self.request.response.setHeader(
+            'content-length', str(handle.getsize(resource)))
         with handle.open(resource, 'rb') as fp:
             self.request.response.write(fp.read())

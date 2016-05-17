@@ -34,6 +34,7 @@ from xmldirector.plonecore.i18n import MessageFactory as _
 from xmldirector.plonecore.dx.xmltext_field import XMLText
 from xmldirector.plonecore.dx.xmlimage_field import XMLImage
 from xmldirector.plonecore.dx.xmlbinary_field import XMLBinary
+from xmldirector.plonecore.dx.xmltext_field import XMLFieldDataManager
 
 
 regex = re.compile('field=([\w]*),xpath=(.*)', re.UNICODE)
@@ -106,7 +107,6 @@ XMLXPathFactory = FieldFactory(XMLXPath, _(
     u'label_xml_xpath_field', default=u'XML (extended XPath expression)'))
 XMLXPathHandler = plone.supermodel.exportimport.BaseHandler(XMLXPath)
 
-from xmldirector.plonecore.dx.xmltext_field import XMLFieldDataManager
 
 
 class IXPathWidget(IWidget):
@@ -153,7 +153,8 @@ class XMLXPathDataManager(AttributeDataManager):
         # get the dedicated datamanager for the XMLText field
         # that knows how to pull data from the database
 
-        adapter = XMLFieldDataManager(context=self.context, field=xmltext_field)
+        adapter = XMLFieldDataManager(
+            context=self.context, field=xmltext_field)
         xml = adapter.get()
         if not xml:
             error = u'XML field is empty'

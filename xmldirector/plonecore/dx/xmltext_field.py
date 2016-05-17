@@ -63,8 +63,8 @@ class XMLText(Text):
     zope.interface.implements(IXMLText)
 
     def render(self):
-        import pdb; pdb.set_trace() 
-
+        import pdb
+        pdb.set_trace()
 
     def validate(self, value):
         """ Perform XML validation """
@@ -154,6 +154,7 @@ class XMLTextWidget(text.TextWidget):
 
     def portal_url(self):
         return plone.api.portal.get().absolute_url()
+
 
 @implementer(IFieldWidget)
 @adapter(IXMLText, IFormLayer)
