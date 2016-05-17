@@ -9,7 +9,7 @@ import os
 import time
 import urllib
 from furl import furl
-import unicodedata
+import unidecode
 
 import fs.errors
 from fs.osfs import OSFS
@@ -205,7 +205,7 @@ class BaseWrapper(object):
     def convert_string(self, s):
         """ Convert string according to FS unicode_paths metadata """
         if issubclass(self.__class__, fs.osfs.OSFS):
-            return unicodedata.normalize('NFKD', s).encode('ascii','ignore')
+            return unidecode.unidecode(s).encode('utf8')
         if not self.getmeta('unicode_paths') and isinstance(s, unicode):
             return s.encode('utf-8')
         return s

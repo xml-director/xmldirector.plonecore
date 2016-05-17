@@ -561,8 +561,12 @@ class Connector(BrowserView):
         alsoProvides(self.request, IDisableCSRFProtection)
         handle = self.get_handle(subpath)
 
+        print '-'*80
+        print subpath, new_id
         subpath = handle.convert_string(subpath)
         new_id = handle.convert_string(new_id)
+        print subpath, new_id
+
 
         if handle.exists(new_id):
             msg = handle.convert_string(u'{}/{} already exists found').format(subpath, new_id)
