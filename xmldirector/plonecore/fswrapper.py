@@ -252,8 +252,7 @@ def get_fs_wrapper(url, credentials=None, context=None):
     f = furl(url)
     original_url = url
     if f.scheme == 'file':
-        # hack for OSFP, fix this
-        path = urllib.unquote(url[7:])
+        path = unicode(urllib.unquote(str(f.path)), 'utf8')
         wrapper = OSFSWrapper(path, encoding='utf-8')
     elif f.scheme.startswith(('http', 'https')):
         try:
