@@ -13,34 +13,44 @@ matrix:
   include:
 
   - python: "2.7"
-    env: TYPE=LOCAL_FS PLONE_VERSION=4.3 CONNECTOR_URL=file:///tmp/testing
+    env: 
+     - TYPE=LOCAL_FS PLONE_VERSION=4.3 CONNECTOR_URL=file:///tmp/testing
 
   - python: "2.7"
-    env: TYPE=LOCAL_FS PLONE_VERSION=5.1 CONNECTOR_URL=file:///tmp/testing
+    env: 
+     - TYPE=LOCAL_FS PLONE_VERSION=5.1 CONNECTOR_URL=file:///tmp/testing
 
   - python: "2.7"
-    env: TYPE=EXIST22 PLONE_VERSION=4.3 CONNECTOR_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-22
+    env: 
+     - TYPE=EXIST22 PLONE_VERSION=4.3 CONNECTOR_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-22 DOCKER_OPTIONS="-p 127.0.0.1:8080:8080"
 
   - python: "2.7"
-    env: TYPE=EXIST22 PLONE_VERSION=5.1 CONNECTOR_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-22
+    env: 
+     - TYPE=EXIST22 PLONE_VERSION=5.1 CONNECTOR_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-22 DOCKER_OPTIONS="-p 127.0.0.1:8080:8080"
 
   - python: "2.7"
-    env: TYPE=EXIST30 PLONE_VERSION=4.3 CONNECTOR_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-30
+    env: 
+     - TYPE=EXIST30 PLONE_VERSION=4.3 CONNECTOR_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-30 DOCKER_OPTIONS="-p 127.0.0.1:8080:8080"
 
   - python: "2.7"
-    env: TYPE=EXIST30 PLONE_VERSION=5.1 CONNECTOR_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-30
+    env: 
+     - TYPE=EXIST30 PLONE_VERSION=5.1 CONNECTOR_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-30 DOCKER_OPTIONS="-p 127.0.0.1:8080:8080"
 
   - python: "2.7"
-    env: TYPE=BASEX83 PLONE_VERSION=4.3 CONNECTOR_URL=http://localhost:8080/webdav DOCKER=zopyx/basex-83
+    env: 
+     - TYPE=BASEX83 PLONE_VERSION=4.3 CONNECTOR_URL=http://localhost:8080/webdav DOCKER=zopyx/basex-83 DOCKER_OPTIONS="-p 127.0.0.1:8080:8080"
 
   - python: "2.7"
-    env: TYPE=BASEX83 PLONE_VERSION=5.1 CONNECTOR_URL=http://localhost:8080/webdav DOCKER=zopyx/basex-83
+    env: 
+      - TYPE=BASEX83 PLONE_VERSION=5.1 CONNECTOR_URL=http://localhost:8080/webdav DOCKER=zopyx/basex-83 DOCKER_OPTIONS="-p 127.0.0.1:8080:8080"
 
   - python: "2.7"
-    env: TYPE=ALFRESCO PLONE_VERSION=4.3 CONNECTOR_URL=http://localhost:8080/alfresco/webdav DOCKER=gui81/alfresco
+    env: 
+      - TYPE=ALFRESCO PLONE_VERSION=4.3 CONNECTOR_URL=http://localhost:8080/alfresco/webdav DOCKER=gui81/alfresco DOCKER_OPTIONS="-p 127.0.0.1:8080:8080"
 
   - python: "2.7"
-    env: TYPE=ALFRESCO PLONE_VERSION=5.1 CONNECTOR_URL=http://localhost:8080/alfresco/webdav DOCKER=gui81/alfresco
+    env: 
+      - TYPE=ALFRESCO PLONE_VERSION=5.1 CONNECTOR_URL=http://localhost:8080/alfresco/webdav DOCKER=gui81/alfresco DOCKER_OPTIONS="-p 127.0.0.1:8080:8080"
 
   - python: "2.7"
     env: 
@@ -58,14 +68,14 @@ matrix:
 
   - python: "2.7"
     env: 
-      - TYPE=OWNCLOUD PLONE_VERSION=4.3  DOCKER=pschmitt/owncloud
+      - TYPE=OWNCLOUD PLONE_VERSION=4.3  DOCKER=pschmitt/owncloud DOCKER_OPTIONS="-p 127.0.0.1:80:80"
       - secure: "TlQSWbXlYKyxvtLtFuiVxRkNU5b3DVuXHfARRgdKU/TWKMCDRfkh8rPSgsbExfp+D68cTR65/e79rwD/AHzYQ5uKBXzFmEpyi+NO+MD9NBFlkRoVRaMTuzNWH03tD4Bya8w1dV9SDJCMtKIlyLhD1FM9o/yF2V2Aj5A1C6bwE6s="
       - secure: "fhu6tnfIpItqSeKRhgb+/X+x7FGTUnMNdK0HB8mtongjaMT4XM18go9+NOmHmd00teh7Ym4gKM1ucK5evFT0Ljfld4fMb/u20TRFkBslcwaL51XEHLJVomwlIiMlkyP4n4vdAJnEbs/9B/U2tFEDySd8Wzjdw25S7HEvNGiuk2U="
       - secure: "lX/BBkd7OGRWxCfmNTtrtkcgTCnvfpUL5Eaq4BVnyEVSlmqQQ7d6jImdImCHeOv9Bj6HVxsm8oiXrk3WSnUbc7h6m+fccVyMwXT5KFGDQ54rEETmM674Tq8pszYb07YC2zxltW5MlmqErcJkPWqZRaEMwgnn7pSoCNURLCOaSwk="
 
   - python: "2.7"
     env: 
-      - TYPE=OWNCLOUD PLONE_VERSION=5.1  DOCKER=pschmitt/owncloud
+      - TYPE=OWNCLOUD PLONE_VERSION=5.1  DOCKER=pschmitt/owncloud DOCKER_OPTIONS="-p 127.0.0.1:80:80"
       - secure: "TlQSWbXlYKyxvtLtFuiVxRkNU5b3DVuXHfARRgdKU/TWKMCDRfkh8rPSgsbExfp+D68cTR65/e79rwD/AHzYQ5uKBXzFmEpyi+NO+MD9NBFlkRoVRaMTuzNWH03tD4Bya8w1dV9SDJCMtKIlyLhD1FM9o/yF2V2Aj5A1C6bwE6s="
       - secure: "fhu6tnfIpItqSeKRhgb+/X+x7FGTUnMNdK0HB8mtongjaMT4XM18go9+NOmHmd00teh7Ym4gKM1ucK5evFT0Ljfld4fMb/u20TRFkBslcwaL51XEHLJVomwlIiMlkyP4n4vdAJnEbs/9B/U2tFEDySd8Wzjdw25S7HEvNGiuk2U="
       - secure: "lX/BBkd7OGRWxCfmNTtrtkcgTCnvfpUL5Eaq4BVnyEVSlmqQQ7d6jImdImCHeOv9Bj6HVxsm8oiXrk3WSnUbc7h6m+fccVyMwXT5KFGDQ54rEETmM674Tq8pszYb07YC2zxltW5MlmqErcJkPWqZRaEMwgnn7pSoCNURLCOaSwk="

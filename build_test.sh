@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 export PATH=\
 /opt/buildout.python/bin:\
 $PATH:
@@ -11,7 +13,8 @@ echo $DOCKER
 config=buildout-plone-$PLONE_VERSION.cfg
 
 docker pull $DOCKER
-docker run -d -p 127.0.0.1:8080:8080 $DOCKER
+docker run -d $DOCKER_OPTIONS $DOCKER
+docker run -d $DOCKER_OPTIONS $DOCKER
 
 #virtualenv-2.7 .
 pip install -U setuptools==7.0  
