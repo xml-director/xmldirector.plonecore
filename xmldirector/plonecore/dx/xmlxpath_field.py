@@ -108,7 +108,6 @@ XMLXPathFactory = FieldFactory(XMLXPath, _(
 XMLXPathHandler = plone.supermodel.exportimport.BaseHandler(XMLXPath)
 
 
-
 class IXPathWidget(IWidget):
     pass
 
