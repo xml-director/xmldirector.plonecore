@@ -20,7 +20,7 @@ However the underlaying implementation can also be used to mount arbitrary
 backend through WebDAV into Plone.
 
 
-``xmldirector.plonecore`` integrates  Plone 4.3 (later Plone 5.0) with 
+``xmldirector.plonecore`` integrates  Plone 4.3 or 5.1 with 
 eXist-db or Base-X or providing the following features:
 
 - mounts an arbitary eXist-db or Base-X collection into Plone
@@ -68,7 +68,7 @@ Requirements
 
 - Plone 4.3 (tested)
   
-- Plone 5.0 (experimental, in progress)
+- Plone 5.1 (tested, no support for Plone 5.0)
 
 - Supported backends:
 
@@ -82,7 +82,7 @@ Requirements
 
     - Marklogic Server
 
-    - Dropbox (via dropdav.com (Dropbox to WebDAV bridge, paid SaaS))
+    - Dropbox (via dropdav.com (Dropbox to WebDAV bridge, paid SaaS) or via xmldirector.dropbox)
 
     - AWS S3
 

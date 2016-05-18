@@ -1,6 +1,14 @@
 Changelog
 =========
 
+2.0.0 (2016-XX-XX)
+------------------
+- full compatibility with Plone 5.1
+- replace DataTables.net with jsGrid
+- major UI changes
+- updated to latest ACE version
+
+
 1.6.1 (2016-04-08)
 ------------------
 - improved unicode filename handling across drivers
