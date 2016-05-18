@@ -78,10 +78,7 @@ cache:
 
 before_install:
 - sudo apt-get -y update 
-#- sudo apt-get -y upgrade lxc-docker
 - docker version
-#- docker pull gui81/alfresco
-#- docker pull owncloud:8.1
 
 after_success:
  - test -v QA && pip install python-coveralls==2.4.0 || true
