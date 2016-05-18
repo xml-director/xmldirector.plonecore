@@ -55,6 +55,23 @@ matrix:
 
       - secure: "FM+R1Z3aqG6OKCePprnJhpa3rP/+2rc0yd602ehTo4YiUlxhpUhCgsVsGZRFCwJhS791rmK3DiaDju5+c18983Kv+1MHEflIzzDI//024H6Sv+ZUkXyDTbWCMrewEZBqVwaa0GBGLjKqXnoKVy+ij6s4hbns6jm5lYgvjVn20d0="
 
+  - python: "2.7"
+    env: 
+      - TYPE=OWNCLOUD PLONE_VERSION=4.3 
+      - secure: "mf6+DuUR37+mWEpIec+y++8Gaj8bcUO5VDKIDT/0u1fu9naGKPSgvWeY/yzO1ZTchv559Xnn4WUVi1OhIrJqCUhzhSRGqzRx6mIqtzpT+keb+HYT7geReZo3EsPOOqTx0edVAB+ej/2t4qtvnsTkkHu8K1YaPXbap0ConBKlBxs="
+
+      - secure: "KEHwBEW3FEvlkLIzZEcGeTn7imDKc3Xgh/wyokUh+H0HDTYpStQX57/HhVN3MlFto3iO4j6ajuWX17nH4K77mBcgHNfZpStQh0UMzMATqVy/6/OnAwpJUotr40g/LK8MXkwWeJv3f3Slfbq6NZWfUizm1eONVd5Q6amNXLK4dzE="
+      - secure: "M2xqyRSELsLLZJWbHGVXd+104bWq0BEVkjpUrbZOg+P6fwETpSiQYaUPvktTIeeXVa8mBfmcg/ZcLLavDculvAZLJFxDXzcqayhnFznZou62e9cQo+q1HnVWKYQ+OlDFRxHatXfiPT+491qZ1VKxed2VdtnWiPRxHniYFtX5N3M="
+
+  - python: "2.7"
+    env: 
+      - TYPE=OWNCLOUD PLONE_VERSION=5.1 
+      - secure: "mf6+DuUR37+mWEpIec+y++8Gaj8bcUO5VDKIDT/0u1fu9naGKPSgvWeY/yzO1ZTchv559Xnn4WUVi1OhIrJqCUhzhSRGqzRx6mIqtzpT+keb+HYT7geReZo3EsPOOqTx0edVAB+ej/2t4qtvnsTkkHu8K1YaPXbap0ConBKlBxs="
+
+      - secure: "KEHwBEW3FEvlkLIzZEcGeTn7imDKc3Xgh/wyokUh+H0HDTYpStQX57/HhVN3MlFto3iO4j6ajuWX17nH4K77mBcgHNfZpStQh0UMzMATqVy/6/OnAwpJUotr40g/LK8MXkwWeJv3f3Slfbq6NZWfUizm1eONVd5Q6amNXLK4dzE="
+      - secure: "M2xqyRSELsLLZJWbHGVXd+104bWq0BEVkjpUrbZOg+P6fwETpSiQYaUPvktTIeeXVa8mBfmcg/ZcLLavDculvAZLJFxDXzcqayhnFznZou62e9cQo+q1HnVWKYQ+OlDFRxHatXfiPT+491qZ1VKxed2VdtnWiPRxHniYFtX5N3M="
+
+
 cache:
   directories:
     - eggs
