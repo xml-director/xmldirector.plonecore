@@ -86,7 +86,6 @@ cache:
     - eggs
 
 before_install:
-    #- sudo apt-get -y update 
 - docker version
 
 after_success:
