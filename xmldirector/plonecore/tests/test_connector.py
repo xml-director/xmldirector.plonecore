@@ -58,8 +58,12 @@ class BasicTests(TestBase):
 
         class FakeResponse(object):
 
+            def setStatus(self, status):
+                self.status = status
+
             def redirect(self, url):
                 pass
+
         request.response = FakeResponse()
         return ConnectorView(request=request, context=self.portal.connector)
 
@@ -80,7 +84,7 @@ class BasicTests(TestBase):
     def testRenameCollection(self):
         self.login('god')
         view = self._get_view()
-        view.rename_collection('', 'foo', 'bar')
+        view.filemanager_rename('', 'foo', 'bar')
         handle = self.portal.connector.get_handle()
         self.assertEqual(handle.exists('bar/index.html'), True)
         self.assertEqual(handle.exists('bar/index.xml'), True)
@@ -88,21 +92,21 @@ class BasicTests(TestBase):
     def testCreateCollection(self):
         self.login('god')
         view = self._get_view()
-        view.create_collection('', 'new')
+        view.filemanager_create_collection('', 'new')
         handle = self.portal.connector.get_handle()
         self.assertEqual(handle.exists('new'), True)
 
     def testRemoveCollection(self):
         self.login('god')
         view = self._get_view()
-        view.remove_collection('', 'foo')
+        view.filemanager_delete('', 'foo')
         handle = self.portal.connector.get_handle()
         self.assertEqual(handle.exists('foo'), False)
 
     def testZipExport(self):
         self.login('god')
         view = self._get_view()
-        fn = view.zip_export(download=False)
+        fn = view.filemanager_zip_download(subpath='', download=False)
         zf = ZipFile(fn, 'r')
         self.assertEqual('foo/index.html' in zf.namelist(), True)
         self.assertEqual('foo/index.xml' in zf.namelist(), True)
@@ -114,7 +118,7 @@ class BasicTests(TestBase):
     def testZipExportFoo2Only(self):
         self.login('god')
         view = self._get_view()
-        fn = view.zip_export(download=False, dirs='foo2')
+        fn = view.filemanager_zip_download(subpath='foo2', download=False)
         zf = ZipFile(fn, 'r')
         self.assertEqual('foo/index.html' not in zf.namelist(), True)
         self.assertEqual('foo/index.xml' not in zf.namelist(), True)
@@ -128,7 +132,7 @@ class BasicTests(TestBase):
         self.login('god')
 
         view = self._get_view()
-        fn = view.zip_export(download=False)
+        fn = view.filemanager_zip_download(subpath='', download=False)
 
         for name in handle.listdir():
             handle.removedir(name, False, True)

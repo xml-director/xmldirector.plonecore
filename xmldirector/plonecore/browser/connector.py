@@ -366,11 +366,6 @@ class Connector(BrowserView):
         self.request.response.setStatus(200)
         self.request.response.write('OK')
 
-    def zip_export(self, subpath=None, download=True):
-        """ Export WebDAV subfolder to a ZIP file.
-            directory names to be exported.
-        """
-
     def zip_import_ui(self, zip_file=None, subpath=None, clean_directories=None):
         """ Import WebDAV subfolder from an uploaded ZIP file """
 
@@ -570,11 +565,8 @@ class Connector(BrowserView):
         alsoProvides(self.request, IDisableCSRFProtection)
         handle = self.get_handle(subpath)
 
-        print '-' * 80
-        print subpath, new_id
         subpath = handle.convert_string(subpath)
         new_id = handle.convert_string(new_id)
-        print subpath, new_id
 
         if handle.exists(new_id):
             msg = handle.convert_string(
@@ -618,12 +610,13 @@ class Connector(BrowserView):
                     z_filename = unicodedata.normalize(
                         'NFKD', z_filename).encode('ascii', 'ignore')
                     with handle.open(local_filename, 'rb') as fp:
-                        zip_size += handle.getsize(local_filename)
+                        with zip_fs.open(z_filename, 'wb') as zip_out:
+                            data = fp.read()
+                            zip_out.write(data)
+                            zip_size += len(data)
                         if zip_size > zip_max_size:
                             raise RuntimeError(u'Too many files - ZIP file size exceeded ({})'.format(
                                 self.human_readable_filesize(zip_max_size)))
-                        with zip_fs.open(z_filename, 'wb') as zip_out:
-                            zip_out.write(fp.read())
 
         if download:
             download_filename = '{}-{}.zip'.format(
