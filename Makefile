@@ -11,7 +11,7 @@ build-demo:
 build5:
 	virtualenv-2.7 .
 	bin/python bootstrap.py -c base.cfg
-	bin/buildout -c buildout-plone-5.0.cfg
+	bin/buildout -c buildout-plone-5.1.cfg
 
 build-demo5:
 	virtualenv-2.7 .
