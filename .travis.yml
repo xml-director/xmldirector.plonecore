@@ -12,61 +12,48 @@ matrix:
   include:
 
   - python: "2.7"
-    env: TYPE=LOCAL_FS PLONE_VERSION=4.3 WEBDAV_URL=file:///tmp/testing
+    env: TYPE=LOCAL_FS PLONE_VERSION=4.3 CONNECTOR_URL=file:///tmp/testing
 
   - python: "2.7"
-    env: TYPE=LOCAL_FS PLONE_VERSION=5.0 WEBDAV_URL=file:///tmp/testing
+    env: TYPE=LOCAL_FS PLONE_VERSION=5.1 CONNECTOR_URL=file:///tmp/testing
 
   - python: "2.7"
-    env: TYPE=EXIST22 PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-22
+    env: TYPE=EXIST22 PLONE_VERSION=4.3 CONNECTOR_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-22
 
   - python: "2.7"
-    env: TYPE=EXIST22 PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-22
+    env: TYPE=EXIST22 PLONE_VERSION=5.1 CONNECTOR_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-22
 
   - python: "2.7"
-    env: TYPE=EXIST30 PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-30
+    env: TYPE=EXIST30 PLONE_VERSION=4.3 CONNECTOR_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-30
 
   - python: "2.7"
-    env: TYPE=EXIST30 PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-30
+    env: TYPE=EXIST30 PLONE_VERSION=5.1 CONNECTOR_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-30
 
   - python: "2.7"
-    env: TYPE=BASEX83 PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:8080/webdav DOCKER=zopyx/basex-83
+    env: TYPE=BASEX83 PLONE_VERSION=4.3 CONNECTOR_URL=http://localhost:8080/webdav DOCKER=zopyx/basex-83
 
   - python: "2.7"
-    env: TYPE=BASEX83 PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/webdav DOCKER=zopyx/basex-83
+    env: TYPE=BASEX83 PLONE_VERSION=5.1 CONNECTOR_URL=http://localhost:8080/webdav DOCKER=zopyx/basex-83
 
   - python: "2.7"
-    env: TYPE=ALFRESCO PLONE_VERSION=4.3 WEBDAV_URL=http://localhost:8080/alfresco/webdav DOCKER=gui81/alfresco
+    env: TYPE=ALFRESCO PLONE_VERSION=4.3 CONNECTOR_URL=http://localhost:8080/alfresco/webdav DOCKER=gui81/alfresco
 
   - python: "2.7"
-    env: TYPE=ALFRESCO PLONE_VERSION=5.0 WEBDAV_URL=http://localhost:8080/alfresco/webdav DOCKER=gui81/alfresco
-
-  - python: "2.7"
-    env: 
-      - PLONE_VERSION=4.3 
-      - secure: "MAeU/I4sdpjNFIwzwHFYOJOBAu+qYH0ugertqHSZtY6KprjPbHN1Yu48VG7oLYeBCPxPUiym0fDWyR8KO7DGhOMZMybEho+nL7DHOaKCJEmddu6V5Ld+Ox4dIQgyVL6iQ/dGZc70/fPBd7Je3sNEJquV9OQjuUoQ5OatyXsLQm0="
-      - secure: "Qe5vVt2+FuspeEcSXHVbQCq3hCzPthlILHKAwCPseAPZQl3Hmz96R3aF3SkJCJ5WljPx3lC7mFdMcs2zJ9VJCsX4d3g6KDiwgqf8yeKvf04QkjTwReDO9vmHg/sWNgo0imiicjQ1xOEF/POOtXys5QbCKm1T2AFVsjDaTKfTslY="
-      - secure: "HOXlp4LbR6AKlKCwlBLoHSw4dEhckofImkuSybSWaAAhEtQ8s9kV1+Gem/tD1/7s+3sWgmfFunck+BN/kAUlgJ1BvXFsCbAbDqO+2uG1gC4+g3L/EXo9x9OQqigS9jEio9xMh/i726HJ29MtMPNqC5FdbNiodCPJxcRDdGO8WAg="
+    env: TYPE=ALFRESCO PLONE_VERSION=5.1 CONNECTOR_URL=http://localhost:8080/alfresco/webdav DOCKER=gui81/alfresco
 
   - python: "2.7"
     env: 
-      - PLONE_VERSION=5.0
-      - secure: "MAeU/I4sdpjNFIwzwHFYOJOBAu+qYH0ugertqHSZtY6KprjPbHN1Yu48VG7oLYeBCPxPUiym0fDWyR8KO7DGhOMZMybEho+nL7DHOaKCJEmddu6V5Ld+Ox4dIQgyVL6iQ/dGZc70/fPBd7Je3sNEJquV9OQjuUoQ5OatyXsLQm0="
-      - secure: "Qe5vVt2+FuspeEcSXHVbQCq3hCzPthlILHKAwCPseAPZQl3Hmz96R3aF3SkJCJ5WljPx3lC7mFdMcs2zJ9VJCsX4d3g6KDiwgqf8yeKvf04QkjTwReDO9vmHg/sWNgo0imiicjQ1xOEF/POOtXys5QbCKm1T2AFVsjDaTKfTslY="
-      - secure: "HOXlp4LbR6AKlKCwlBLoHSw4dEhckofImkuSybSWaAAhEtQ8s9kV1+Gem/tD1/7s+3sWgmfFunck+BN/kAUlgJ1BvXFsCbAbDqO+2uG1gC4+g3L/EXo9x9OQqigS9jEio9xMh/i726HJ29MtMPNqC5FdbNiodCPJxcRDdGO8WAg="
+      - TYPE=S3 PLONE_VERSION=4.3 CONNECTOR_URL=s3://ajung-xxxxxxxx
+      - secure: "PHMtmJWrAiR+pPMXequDU3ysFc5AME8KlFN/qp7xkfVMhW+z5DAtzEZtziL4J3Ux8teO7Mlv/cVt6DYd9bBMh3590secDrtYpYZbGgpjC1U43P0OXIOgH8QmBDnij2vD42uo3Ycniq8JTq81PTKiZ1eTT7fBTQeUKltMpymmNOI="
+
+      - secure: "FM+R1Z3aqG6OKCePprnJhpa3rP/+2rc0yd602ehTo4YiUlxhpUhCgsVsGZRFCwJhS791rmK3DiaDju5+c18983Kv+1MHEflIzzDI//024H6Sv+ZUkXyDTbWCMrewEZBqVwaa0GBGLjKqXnoKVy+ij6s4hbns6jm5lYgvjVn20d0="
 
   - python: "2.7"
     env: 
-      - TYPE=S3 PLONE_VERSION=4.3 WEBDAV_URL=s3://ajung-xxxxxxxx
-      - secure: "L7Mf2yHXnAQ19EuxiNzykToJr6eKnOveYRQQp7C8pw0s1hAn0uIgdKESrF0e7FrgKC+cmsAB11NFKj4uffYdJut593JENJSWo8PLoGfytF3Mw18bRIwT+zvj1sd3rvkMCOuFgBgxR3lnuaDE23+4MRNMCw1I3XOmEvUlc0gFJHQ="
-      - secure: "nHgJn+Ui9INQKVaKQ3Zj8w4F8p9kAPj4yy94qeuQJJS44RMVGpkX1re93LAKL0M2VmcqUGreqDFaaTX8/6LJpNnB832QWM4nhojD/jjHJZW6r0CPnkxS7SNaxCUfYD7avFbb99jroKRvUgmPBLR56yYPj10rl9bmwbff7P48UOs="
+      - TYPE=S3 PLONE_VERSION=5.1 CONNECTOR_URL=s3://ajung-xxxxxxxx
+      - secure: "PHMtmJWrAiR+pPMXequDU3ysFc5AME8KlFN/qp7xkfVMhW+z5DAtzEZtziL4J3Ux8teO7Mlv/cVt6DYd9bBMh3590secDrtYpYZbGgpjC1U43P0OXIOgH8QmBDnij2vD42uo3Ycniq8JTq81PTKiZ1eTT7fBTQeUKltMpymmNOI="
 
-
-  - python: "2.7"
-    env: 
-      - TYPE=S3 PLONE_VERSION=5.0 WEBDAV_URL=s3://ajung-xxxxxxxx
-      - secure: "L7Mf2yHXnAQ19EuxiNzykToJr6eKnOveYRQQp7C8pw0s1hAn0uIgdKESrF0e7FrgKC+cmsAB11NFKj4uffYdJut593JENJSWo8PLoGfytF3Mw18bRIwT+zvj1sd3rvkMCOuFgBgxR3lnuaDE23+4MRNMCw1I3XOmEvUlc0gFJHQ="
-      - secure: "nHgJn+Ui9INQKVaKQ3Zj8w4F8p9kAPj4yy94qeuQJJS44RMVGpkX1re93LAKL0M2VmcqUGreqDFaaTX8/6LJpNnB832QWM4nhojD/jjHJZW6r0CPnkxS7SNaxCUfYD7avFbb99jroKRvUgmPBLR56yYPj10rl9bmwbff7P48UOs="
+      - secure: "FM+R1Z3aqG6OKCePprnJhpa3rP/+2rc0yd602ehTo4YiUlxhpUhCgsVsGZRFCwJhS791rmK3DiaDju5+c18983Kv+1MHEflIzzDI//024H6Sv+ZUkXyDTbWCMrewEZBqVwaa0GBGLjKqXnoKVy+ij6s4hbns6jm5lYgvjVn20d0="
 
 cache:
   directories:
