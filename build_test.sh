@@ -25,8 +25,9 @@ pip install boto
 python bootstrap.py -c $config --setuptools-version 20.2.2 --version 2.5
 bin/buildout -c $config
 
-if [ -z "$DOCKER" ]; then
-    docker ps
+if [[ $TYPE  == 'OWNCLOUD' ]]
+then
+    wget http://localhost:8080
 fi
 
 bin/test -s xmldirector.plonecore
