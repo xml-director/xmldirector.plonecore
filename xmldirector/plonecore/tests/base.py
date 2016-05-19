@@ -2,7 +2,7 @@
 
 ################################################################
 # xmldirector.plonecore
-# (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
+# (C) 2016,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
 import os
@@ -27,6 +27,7 @@ from xmldirector.plonecore.fswrapper import get_fs_wrapper
 from xmldirector.plonecore.logger import LOG
 
 import xmldirector.plonecore
+import zopyx.plone.persistentlogger
 import plone.app.dexterity
 
 
@@ -47,6 +48,7 @@ class PolicyFixture(PloneSandboxLayer):
 
         for mod in [plone.app.dexterity,
                     xmldirector.plonecore,
+                    zopyx.plone.persistentlogger,
                     ]:
             xmlconfig.file('configure.zcml', mod, context=configurationContext)
 
@@ -55,6 +57,7 @@ class PolicyFixture(PloneSandboxLayer):
 
     def setUpPloneSite(self, portal):
         # Install into Plone site using portal_setup
+        applyProfile(portal, 'zopyx.plone.persistentlogger:default')
         applyProfile(portal, 'xmldirector.plonecore:testing')
         portal.acl_users.userFolderAddUser('god', 'dummy', ['Manager'], [])
         portal.acl_users.userFolderAddUser('god2', 'dummy', ['Manager'], [])

@@ -2,12 +2,13 @@
 
 ################################################################
 # xmldirector.plonecore
-# (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
+# (C) 2016,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
 import os
 import fs
 import stat
+import json
 import datetime
 import fs.errors
 import fs.path
@@ -16,32 +17,37 @@ import operator
 import hurry.filesize
 import tempfile
 import mimetypes
-import logging
 import unicodedata
-import zExceptions
+import logging
+import pkg_resources
 from dateutil import tz
 from fs.zipfs import ZipFS
 from progressbar import Bar, ETA, Percentage, ProgressBar, RotatingMarker
+
+import zExceptions
 from zope.interface import implements
 from zope.interface import implementer
+from zope.interface import alsoProvides
 from zope.publisher.interfaces import IPublishTraverse
+from plone.app.layout.globals.interfaces import IViewView
+from plone.protect.interfaces import IDisableCSRFProtection
 from AccessControl.SecurityManagement import getSecurityManager
+from ZPublisher.Iterators import IStreamIterator
+from Products.CMFCore import permissions
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.CMFCore import permissions
-from plone.app.layout.globals.interfaces import IViewView
+
 from xmldirector.plonecore.i18n import MessageFactory as _
-from xmldirector.plonecore.logger import IPersistentLogger
+from zopyx.plone.persistentlogger.logger import IPersistentLogger
 
 from .view_registry import precondition_registry
-
 from . import connector_views  # NOQA - needed to initalize the registry
 from . import config
 
 LOG = logging.getLogger('xmldirector.plonecore')
 
 TZ = os.environ.get('TZ', 'UTC')
-LOG.info('Local timezone: {}'.format(TZ))
+LOG.debug('Local timezone: {}'.format(TZ))
 
 
 def stmode2unix(st_mode):
@@ -58,6 +64,38 @@ def safe_unicode(s):
     if not isinstance(s, unicode):
         return unicode(s, 'utf8')
     return s
+
+
+def json_serial(obj):
+    """JSON serializer for objects not serializable by default json code"""
+
+    if isinstance(obj, datetime.datetime):
+        serial = obj.isoformat()
+        return serial
+    raise TypeError("Type not serializable")
+
+
+class connector_iterator(file):
+    """ Iterator for pyfilesystem content """
+
+    implements(IStreamIterator)
+
+    def __init__(self, handle, filename, mode='rb', streamsize=1 << 16):
+        self.fp = handle.open(filename, mode)
+        self.streamsize = streamsize
+
+    def next(self):
+        data = self.fp.read(self.streamsize)
+        if not data:
+            raise StopIteration
+        return data
+
+    def __len__(self):
+        cur_pos = self.fp.tell()
+        self.fp.seek(0, 2)
+        size = self.fp.tell()
+        self.seek(cur_pos, 0)
+        return size
 
 
 class Dispatcher(BrowserView):
@@ -114,6 +152,10 @@ class Connector(BrowserView):
         super(Connector, self).__init__(context, request)
         self.subpath = []
         self.traversal_subpath = []
+
+    def is_plone5(self):
+        version = pkg_resources.get_distribution('Products.CMFPlone').version
+        return version.startswith('5')
 
     def __bobo_traverse__(self, request, entryname):
         """ Traversal hook for (un)restrictedTraverse() """
@@ -172,90 +214,91 @@ class Connector(BrowserView):
             url = '{}/@@view/{}'.format(url, subpath)
         return self.request.response.redirect(url)
 
-    def collection_action(self, paths=None, action=None):
-        handle = self.context.get_handle()
-        if action == 'delete':
-            for path in paths or []:
-                if handle.exists(path):
-                    if handle.isfile(path):
-                        handle.remove(path)
-                    elif handle.isdir(path):
-                        handle.removedir(path, recursive=True, force=True)
+    def folder_contents(self, subpath=''):
+        """ AJAX callback """
 
-            msg = u'Selected files/directories removed'
-            return self.redirect(msg, subpath=self.subpath)
-        raise ValueError(u'No such action "{}"'.format(action))
+        handle = self.get_handle(subpath)
+        context_url = self.context.absolute_url()
+        view_prefix = u'@@view'
+        edit_prefix = u'@@view-editor'
+        remove_prefix = u'@@remove-from-collection?subpath='
+        joined_subpath = u'{}'.format(safe_unicode(subpath))
+        parent_subpath = ''
+        if subpath:
+            parent_subpath = u'/'.join(joined_subpath.split('/')[:-1])
+
+        if subpath:
+            view_prefix += u'/{}'.format(joined_subpath)
+            edit_prefix += u'/{}'.format(joined_subpath)
+            remove_prefix += u'/{}'.format(joined_subpath)
+
+        files = list()
+        for info in handle.listdirinfo(files_only=True):
+            path_name = safe_unicode(info[0])
+            fullpath = u'{}/{}'.format(joined_subpath, path_name)
+            if not path_name.startswith('.'):
+                try:
+                    size = self.human_readable_filesize(info[1]['size'])
+                except KeyError:
+                    size = u'n/a'
+
+                modified = None
+                modified_original = info[1].get('modified_time')
+                if modified_original:
+                    modified = self.human_readable_datetime(
+                        info[1]['modified_time'], to_utc=False)
+
+                files.append(dict(url=u'{}/{}/{}'.format(context_url, view_prefix, path_name),
+                                  type='file',
+                                  fullpath=fullpath,
+                                  remove_url=u'{}/{}&name={}'.format(
+                                      context_url, remove_prefix, path_name),
+                                  edit_url=u'{}/{}/{}'.format(
+                                      context_url, edit_prefix, path_name),
+                                  title=info[0],
+                                  editable=self.is_ace_editable(path_name),
+                                  st_mode=info[1].get('st_mode'),
+                                  st_mode_text=stmode2unix(
+                                      info[1].get('st_mode')),
+                                  size_original=info[1].get('size'),
+                                  size=size,
+                                  modified_original=modified_original,
+                                  modified=modified))
+
+        dirs = []
+        if subpath:
+            dirs.append(dict(
+                type=u'directory',
+                title='..',
+                fullpath=parent_subpath,
+                url=u'{}/@@view/{}'.format(self.context.absolute_url(),
+                                           parent_subpath)
+            ))
+        for info in handle.listdirinfo(dirs_only=True):
+            path_name = safe_unicode(info[0])
+            fullpath = u'{}/{}'.format(joined_subpath, path_name)
+            url = u'{}/{}/{}'.format(context_url, view_prefix, path_name)
+            modified = info[1].get('modified_time')
+            dirs.append(dict(url=url,
+                             fullpath=fullpath,
+                             type='directory',
+                             title=path_name,
+                             st_mode=info[1].get('st_mode'),
+                             st_mode_text=stmode2unix(info[1].get('st_mode')),
+                             modified_original=modified,
+                             modified=self.human_readable_datetime(modified), to_utc=False))
+
+        dirs = sorted(dirs, key=operator.itemgetter('title'))
+        files = sorted(files, key=operator.itemgetter('title'))
+        result = dict(dirs=dirs, files=files)
+        return json.dumps(result, default=json_serial)
 
     def __call__(self, *args, **kw):
 
         handle = self.get_handle()
-#        can_unicode = handle.getmeta('unicode_paths')
-#        subpath = self.subpath
         if handle.isDirectory():
-            context_url = self.context.absolute_url()
-            view_prefix = u'@@view'
-            edit_prefix = u'@@view-editor'
-            remove_prefix = u'@@remove-from-collection?subpath='
-            joined_subpath = u'/'.join([safe_unicode(s) for s in self.subpath])
-
-            if self.subpath:
-                view_prefix += u'/{}'.format(joined_subpath)
-                edit_prefix += u'/{}'.format(joined_subpath)
-                remove_prefix += u'/{}'.format(joined_subpath)
-
-            files = list()
-            for info in handle.listdirinfo(files_only=True):
-                path_name = safe_unicode(info[0])
-                fullpath = u'{}/{}'.format(joined_subpath, path_name)
-                if not path_name.startswith('.'):
-                    try:
-                        size = self.human_readable_filesize(info[1]['size'])
-                    except KeyError:
-                        size = u'n/a'
-
-                    modified = None
-                    modified_original = info[1].get('modified_time')
-                    if modified_original:
-                        modified = self.human_readable_datetime(info[1]['modified_time'], to_utc=False)
-
-                    files.append(dict(url=u'{}/{}/{}'.format(context_url, view_prefix, path_name),
-                                      fullpath=fullpath,
-                                      remove_url=u'{}/{}&name={}'.format(
-                                          context_url, remove_prefix, path_name),
-                                      edit_url=u'{}/{}/{}'.format(
-                                          context_url, edit_prefix, path_name),
-                                      title=info[0],
-                                      editable=self.is_ace_editable(path_name),
-                                      st_mode=info[1].get('st_mode'),
-                                      st_mode_text=stmode2unix(info[1].get('st_mode')),
-                                      size_original=info[1].get('size'),
-                                      size=size,
-                                      modified_original=modified_original,
-                                      modified=modified))
-
-            dirs = list()
-            for info in handle.listdirinfo(dirs_only=True):
-                path_name = safe_unicode(info[0])
-                fullpath = u'{}/{}'.format(joined_subpath, path_name)
-                url = u'{}/{}/{}'.format(context_url, view_prefix, path_name)
-                modified = info[1].get('modified_time')
-                dirs.append(dict(url=url,
-                                 fullpath=fullpath,
-                                 title=path_name,
-                                 st_mode=info[1].get('st_mode'),
-                                 st_mode_text=stmode2unix(info[1].get('st_mode')),
-                                 modified_original=modified,
-                                 modified=self.human_readable_datetime(modified), to_utc=False))
-
-            dirs = sorted(dirs, key=operator.itemgetter('title'))
-            files = sorted(files, key=operator.itemgetter('title'))
-
             return self.template(
-                view_prefix=view_prefix,
-                subpath='/'.join(self.subpath),
-                files=files,
-                dirs=dirs)
-
+                subpath='/'.join(self.subpath))
         elif handle.isFile():
             filename = self.subpath[-1]
             self.request.subpath = self.subpath
@@ -280,75 +323,6 @@ class Connector(BrowserView):
         """ Return num_bytes as human readable representation """
         return hurry.filesize.size(num_bytes, hurry.filesize.alternative)
 
-    def create_collection(self, subpath, name):
-        """ Create a new collection """
-
-        if not name:
-            raise ValueError(_(u'No "name" given'))
-
-        handle = self.get_handle(subpath)
-#        can_unicode = handle.getmeta('unicode_paths')
-        if handle.exists(name):
-            msg = u'Collection already exists'
-            self.context.plone_utils.addPortalMessage(msg, 'error')
-        else:
-            handle.makedir(name)
-            msg = u'Collection created'
-            self.logger.log('Created {} (subpath: {})'.format(name, subpath))
-            self.context.plone_utils.addPortalMessage(msg)
-        return self.request.response.redirect(
-            '{}/@@view/{}'.format(self.context.absolute_url(), subpath))
-
-    def remove_collection(self, subpath, name):
-        """ Remove a collection """
-
-        handle = self.get_handle(subpath)
-        if handle.exists(name):
-            handle.removedir(name, force=True)
-            msg = u'Collection removed'
-            self.logger.log('Removed {} (subpath: {})'.format(name, subpath))
-            self.context.plone_utils.addPortalMessage(msg)
-        else:
-            msg = u'Collection does not exist'
-            self.context.plone_utils.addPortalMessage(msg, 'error')
-        return self.request.response.redirect(
-            '{}/@@view/{}'.format(self.context.absolute_url(), subpath))
-
-    def remove_from_collection(self, subpath, name):
-        """ Remove a collection """
-
-        handle = self.get_handle(subpath)
-        if handle.exists(name):
-            handle.remove(name)
-            msg = u'Removed {}'.format(name)
-            self.logger.log(msg)
-            self.context.plone_utils.addPortalMessage(msg)
-        else:
-
-            self.request.response.setStatus(404)
-            return 'not found'
-        return self.request.response.redirect(
-            '{}/@@view/{}'.format(self.context.absolute_url(), subpath))
-
-    def rename_collection(self, subpath, name, new_name):
-        """ Rename a collection """
-
-        if not new_name:
-            raise ValueError(_(u'No new "name" given'))
-
-        handle = self.get_handle(subpath)
-        if handle.exists(name):
-            handle.rename(name, new_name)
-            msg = u'Collection renamed'
-            self.logger.log(
-                'Renamed {}  to {} (subpath: {})'.format(name, new_name, subpath))
-            self.context.plone_utils.addPortalMessage(msg)
-        else:
-            msg = u'Collection does not exist'
-            self.context.plone_utils.addPortalMessage(msg, 'error')
-        return self.request.response.redirect(
-            '{}/@@view/{}'.format(self.context.absolute_url(), subpath))
-
     def reindex(self):
         """ Reindex curnrent connector """
         self.context.reindexObject()
@@ -372,20 +346,10 @@ class Connector(BrowserView):
             else:
                 return humanize.naturaltime(dt)
 
-    def clear_contents(self):
-        """ Remove all sub content """
-
-        handle = self.get_handle()
-        for name in handle.listdir():
-            if handle.isfile(name):
-                handle.remove(name)
-            else:
-                handle.removedir(name, force=True, recursive=False)
-
-        return self.redirect(_(u'eXist-db collection cleared'))
-
     def upload_file(self):
-        """ Store .DOCX file """
+        """ AJAX callback for Uploadify """
+
+        alsoProvides(self.request, IDisableCSRFProtection)
 
         subpath = self.request.get('subpath')
         get_handle = self.context.get_handle(subpath=subpath)
@@ -401,47 +365,6 @@ class Connector(BrowserView):
             u'{} uploaded ({} Byte)'.format(repr(filename), len(data)))
         self.request.response.setStatus(200)
         self.request.response.write('OK')
-
-    def zip_export(self, download=True, dirs=None, subpath=u''):
-        """ Export WebDAV subfolder to a ZIP file.
-            ``dirs`` optional comma separated list of top-level
-            directory names to be exported.
-        """
-
-        if dirs:
-            dirs = dirs.split(',')
-
-        if not isinstance(subpath, unicode):
-            subpath = unicode(subpath, 'utf8')
-
-        handle = self.get_handle()
-        zip_filename = tempfile.mktemp(suffix='.zip')
-        with ZipFS(zip_filename, 'w', encoding='utf8') as zip_fs:
-            for dirname, filenames in handle.walk(subpath):
-                if dirname.startswith('/'):
-                    dirname = dirname.lstrip('/')
-                if dirs:
-                    dir_paths = dirname.split('/')
-                    if dir_paths[0] not in dirs:
-                        continue
-                for filename in filenames:
-                    z_filename = fs.path.join(dirname, filename)
-                    with handle.open(z_filename, 'rb') as fp:
-                        with zip_fs.open(z_filename, 'wb') as zip_out:
-                            zip_out.write(fp.read())
-
-        if download:
-            self.request.response.setHeader('content-type', 'application/zip')
-            self.request.response.setHeader(
-                'content-size', os.path.getsize(zip_filename))
-            self.request.response.setHeader(
-                'content-disposition', 'attachment; filename={}.zip'.format(self.context.id))
-            with open(zip_filename, 'rb') as fp:
-                self.request.response.write(fp.read())
-            os.unlink(zip_filename)
-            return
-        else:
-            return zip_filename
 
     def zip_import_ui(self, zip_file=None, subpath=None, clean_directories=None):
         """ Import WebDAV subfolder from an uploaded ZIP file """
@@ -560,6 +483,174 @@ class Connector(BrowserView):
             raise RuntimeError(msg)
         return imported_files
 
+    def filemanager_rename(self, subpath, old_id, new_id):
+        """ Rename folder or file ``old_id`` inside directory ``subpath`` to ``new_id`` """
+
+        alsoProvides(self.request, IDisableCSRFProtection)
+        handle = self.get_handle(subpath)
+
+        subpath = handle.convert_string(subpath)
+        old_id = handle.convert_string(old_id)
+        new_id = handle.convert_string(new_id)
+
+        if not handle.exists(old_id):
+            msg = handle.convert_string(
+                u'{}/{} not found').format(subpath, old_id)
+            raise zExceptions.NotFound(msg)
+
+        if handle.exists(new_id):
+            msg = handle.convert_string(
+                u'{}/{} already exists').format(subpath, new_id)
+            self.request.response.setStatus(500)
+            return msg
+
+        try:
+            handle.rename(old_id, new_id)
+        except Exception as e:
+            msg = handle.convert_string(
+                u'{}/{} could not be renamed to "{}/{}" ({})').format(subpath, old_id, subpath, new_id, str(e))
+            self.request.response.setStatus(500)
+            return msg
+
+        msg = handle.convert_string(
+            u'Renamed {}/{} to {}/{}').format(subpath, old_id, subpath, new_id)
+        self.logger.log(msg)
+        self.request.response.setStatus(200)
+        return msg
+
+    def filemanager_delete(self, subpath, id):
+        """ Delete a folder or file ``id`` inside the folder ``subpath`` """
+
+        alsoProvides(self.request, IDisableCSRFProtection)
+        handle = self.get_handle(subpath)
+
+        subpath = handle.convert_string(subpath)
+        id = handle.convert_string(id)
+
+        if not handle.exists(id):
+            msg = handle.convert_string(u'{}/{} not found').format(subpath, id)
+            raise zExceptions.NotFound(msg)
+
+        if handle.isdir(id):
+            try:
+                handle.removedir(id, recursive=True, force=True)
+            except Exception as e:
+                msg = handle.convert_string(
+                    u'{}/{} could not be deleted ({})').format(subpath, id, str(e))
+                self.request.response.setStatus(500)
+                return msg
+
+        elif handle.isfile(id):
+
+            try:
+                handle.remove(id)
+            except Exception as e:
+                msg = handle.convert_string(
+                    u'{}/{} could not be deleted ({})').format(subpath, id, str(e))
+                self.request.response.setStatus(500)
+                return msg
+
+        else:
+            raise RuntimeError(handle.convert_string(
+                u'Unhandled file type {}/{}').format(subpath, id))
+
+        msg = handle.convert_string(u'Deleted {}/{}').format(subpath, id)
+        self.logger.log(msg)
+        self.request.response.setStatus(200)
+        return msg
+
+    def filemanager_create_collection(self, subpath, new_id):
+        """ Create a new collection ``new_id`` inside the folder ``subpath `` """
+
+        alsoProvides(self.request, IDisableCSRFProtection)
+        handle = self.get_handle(subpath)
+
+        subpath = handle.convert_string(subpath)
+        new_id = handle.convert_string(new_id)
+
+        if handle.exists(new_id):
+            msg = handle.convert_string(
+                u'{}/{} already exists found').format(subpath, new_id)
+            self.request.response.setStatus(500)
+            return msg
+
+        try:
+            handle.makedir(new_id)
+        except Exception as e:
+            msg = handle.convert_string(
+                u'{}/{} could not be created ({})').format(subpath, new_id, str(e))
+            self.request.response.setStatus(500)
+            return msg
+
+        msg = handle.convert_string(u'Created {}/{}').format(subpath, new_id)
+        self.logger.log(msg)
+        self.request.response.setStatus(200)
+        return msg
+
+    def filemanager_zip_download(self, subpath, download=True, zip_max_size=100 * 1024 * 1024):
+        """ Download all files of ``subpath`` as ZIP file """
+
+        alsoProvides(self.request, IDisableCSRFProtection)
+
+        handle = self.get_handle()
+        subpath = handle.convert_string(subpath)
+        if not handle.exists(subpath) or not handle.isdir(subpath):
+            raise ValueError(handle.convert_string(
+                u'{} does not exist or is not a directory').format(subpath))
+
+        zip_filename = tempfile.mktemp(suffix='.zip')
+        zip_size = 0
+        with ZipFS(zip_filename, 'w', encoding='utf8') as zip_fs:
+            for dirname, filenames in handle.walk(subpath):
+                if dirname.startswith('/'):
+                    dirname = dirname.lstrip('/')
+                for filename in filenames:
+                    local_filename = fs.path.join(dirname, filename)
+                    z_filename = fs.path.join(dirname, filename)
+                    z_filename = unicodedata.normalize(
+                        'NFKD', z_filename).encode('ascii', 'ignore')
+                    with handle.open(local_filename, 'rb') as fp:
+                        with zip_fs.open(z_filename, 'wb') as zip_out:
+                            data = fp.read()
+                            zip_out.write(data)
+                            zip_size += len(data)
+                        if zip_size > zip_max_size:
+                            raise RuntimeError(u'Too many files - ZIP file size exceeded ({})'.format(
+                                self.human_readable_filesize(zip_max_size)))
+
+        if download:
+            download_filename = '{}-{}.zip'.format(
+                self.context.getId(), os.path.basename(subpath))
+            self.request.response.setHeader('content-type', 'application/zip')
+            self.request.response.setHeader(
+                'content-length', os.path.getsize(zip_filename))
+            self.request.response.setHeader(
+                'content-disposition', 'attachment; filename={}'.format(download_filename))
+            with open(zip_filename, 'rb') as fp:
+                self.request.response.write(fp.read())
+            os.unlink(zip_filename)
+            return
+        else:
+            return zip_filename
+
+    def filemanager_download(self, filename):
+        """ Download/stream the given file """
+
+        handle = self.get_handle()
+        filename = handle.convert_string(filename)
+        if not handle.exists(filename):
+            raise zExceptions.NotFound(handle.convert_string(
+                u'{} does not exist').format(filename))
+        basename = os.path.basename(filename)
+        basename, ext = os.path.splitext(basename)
+        mt, encoding = mimetypes.guess_type(basename)
+        self.request.response.setHeader('content-type', 'mt')
+        self.request.response.setHeader(
+            'content-length', handle.getsize(filename))
+        self.request.response.setHeader(
+            'content-disposition', 'attachment; filename={}'.format(os.path.basename(filename)))
+        return connector_iterator(handle, filename)
+
 
 class AceEditor(Connector):
     view_name = 'view-editor'
@@ -581,20 +672,17 @@ class AceEditorReadonly(Connector):
     view_name = 'view-editor-readonly'
 
 
-class Logging(BrowserView):
+class Raw(Connector):
 
-    template = ViewPageTemplateFile('connector_log.pt')
+    def __call__(self, *args, **kw):
 
-    def entries(self):
-        return IPersistentLogger(self.context).entries
-
-    def log_clear(self):
-        """ Clear connector persistent log """
-        IPersistentLogger(self.context).clear()
-        msg = u'Log entries cleared'
-        self.context.plone_utils.addPortalMessage(msg)
-        return self.request.response.redirect(
-            '{}/connector-log'.format(self.context.absolute_url()))
-
-    def __call__(self):
-        return self.template()
+        resource = '/'.join(self.subpath)
+        handle = self.context.get_handle()
+        if not handle.exists(resource):
+            raise zExceptions.NotFound(resource)
+        mt, encoding = mimetypes.guess_type(resource)
+        self.request.response.setHeader('content-type', mt)
+        self.request.response.setHeader(
+            'content-length', str(handle.getsize(resource)))
+        with handle.open(resource, 'rb') as fp:
+            self.request.response.write(fp.read())

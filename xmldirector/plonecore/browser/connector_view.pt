@@ -7,196 +7,288 @@
       i18n:domain="xmldirector.plonecore">
 <body>
 
-    <metal:slot fill-slot="style_slot">
-        <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/DataTables/media/css/jquery.dataTables.css" />
-        <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/DataTables/extensions/FixedHeader/css/fixedHeader.dataTables.min.css" />
-    </metal:slot>
+<metal:slot fill-slot="style_slot">
+    <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/jsgrid/jsgrid.min.css" />
+    <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/jsgrid/jsgrid-theme.min.css" />
+    <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/styles.css" />
+</metal:slot>
 
-    <metal:slot fill-slot="javascript_head_slot">
-        <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/DataTables/media/js/jquery.dataTables.js"></script>
-        <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/DataTables/extensions/FixedHeader/js/dataTables.fixedHeader.min.js"></script>
-    </metal:slot>
+<metal:slot fill-slot="javascript_head_slot">
+    <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/jsgrid/jsgrid.min.js"></script>
+</metal:slot>
 
 <metal:main fill-slot="content-core">
   <metal:content-core define-macro="content-core">
 
-      <div id="connection-url">
-          <label i18n:translate="">Connected to:</label>
-          <span tal:content="context/connector_url" />
+      <div id="table-info"></div>
+      <table id="table">
+      </table>
+
+      <div id="no-data" class="error" i18n:translate="">The root collection does not contain any data</div>
+
+      <div id="table-actions">
+          <button class="action-create-collection button" name="action-create-collection" i18n:translate="">Create Collection</button>
+          <a id="connector-zip-import" class="action" tal:attributes="href string:${context/absolute_url}/connector-zip-import?subpath=${options/subpath}" style="border-bottom: none">
+              <button class="button" i18n:translate="">Import</button>
+          </a>
+          <button class="action-refresh button" name="action-refresh" i18n:translate="">Refresh</button>
       </div>
 
-      <form tal:attributes="action string:${context/absolute_url}/collection-action" method="POST">
-          <table class="datatable">
-              <thead>
-                  <tr>
-                      <th i18n:translate="">Name</th>
-                      <th i18n:translate="">Type</th>
-                      <th i18n:translate="">Size</th>
-                      <th i18n:translate="">Last modified</th>
-                      <th i18n:translate="">Permissions</th>
-                      <th i18n:translate="">Action</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <tr>
-                      <td>                                     
-                          <a class="dir" 
-                             title="One level up"
-                             i18n:attributes="title"
-                             tal:attributes="href python: '{}/@@view/{}'.format(context.absolute_url(), '/'.join(view.subpath[:-1]))">..</a>
-                      </td>
-                      <td>
-                          <span i18n:translate="">COLLECTION</span>
-                      </td>
-                      <td data-order="0"/>
-                      <td data-order="0"/>
-                      <td />
-                      <td />
-                  </tr>
-                  <tr tal:repeat="item options/dirs">
-                      <td>
-                          <input type="checkbox" name="paths:list" tal:attributes="value item/fullpath" />
-                          <a class="dir" tal:attributes="href item/url"><span tal:replace="item/title" /></a>
-                      </td>
-                      <td>
-                          <span i18n:translate="">COLLECTION</span>
-                      </td>
-                      <td data-order="0"></td>
-                      <td tal:attributes="data-order python: item['modified_original'].isoformat()" tal:on-error="nothing">
-                          <span tal:replace="item/modified" />
-                      </td>
-                      <td>
-                          <span tal:replace="item/st_mode_text" />
-                      </td>
-                      <td>
-                          <a class="confirm-action" 
-                             data-text="Do you really want to remove this collection?"
-                             i18n:attributes="data-text"
-                              tal:attributes="href string:${context/absolute_url}/@@remove-collection?subpath=${options/subpath}&name=${item/title}"
-                             i18n:translate="">
-                             <img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove collection" i18n:attributes="title"/>
-                         </a>
-                      </td>
-                  </tr>
-                  <tr tal:repeat="item options/files">
-                      <td>
-                          <input type="checkbox" name="paths:list" tal:attributes="value item/fullpath" />
-                          <a class="file" tal:attributes="href item/url"><span tal:replace="item/title" /></a>
-                      </td>
-                      <td>
-                          <span i18n:translate="">FILE</span>
-                      </td>
-                      <td tal:attributes="data-sort item/size_original">
-                          <span tal:replace="item/size" />
-                      </td>
-                      <td tal:attributes="data-order python: item['modified_original'].isoformat()" tal:on-error="nothing">
-                          <span tal:replace="item/modified" />
-                      </td>
-                      <td>
-                          <span tal:replace="item/st_mode_text" />
-                      </td>
-                      <td>
-                          <a tal:attributes="href item/remove_url"
-                             class="confirm-action" 
-                             data-text="Do you really want to remove this item?"
-                             i18n:attributes="data-text"
-                             i18n:translate=""
-                             title="Remove"
-                             ><img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove item" i18n:attributes="title"/> </a>
-                          <a tal:condition="item/editable"
-                             tal:attributes="href item/edit_url"
-                             i18n:attributes="title"
-                             title="Edit"
-                              ><img src="++resource++xmldirector.plonecore/images/edit.png" /></a>
-                      </td>
-                  </tr>
-              </tbody>
-              <tfoot>
-                  <tr>
-                      <th class="searchable"></th>
-                      <th class="searchable"></th>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                  </tr>
-              </tfoot>
-          </table>
-
-          <button class="button" type="submit" name="action" action="delete" value="delete">Delete</button>
-      </form>
-
-      <div class="actions">
-          <ul>
-              <li>
-                  <a class="action" 
-                     href="javascript: void()"
-                     id="action-create-collection">
-                      New collection
-                  </a>
-              </li>
-              <li>
-                  <a class="action" 
-                     href="javascript: void()"
-                     i18n:translate=""
-                     tal:condition="options/dirs"
-                     id="action-rename-collection">
-                      Rename collection
-                  </a>
-              </li>
-              <li>
-                  <a id="connector-zip-import" class="action" tal:attributes="href string:${context/absolute_url}/connector-zip-import?subpath=${options/subpath}" i18n:translate="">ZIP import</a>
-              </li>
-              <li>
-                  <a id="connector-zip-export" class="action" tal:attributes="href string:${context/absolute_url}/connector-zip-export?subpath=${options/subpath}" i18n:translate="">ZIP export</a>
-              </li>
-              <li>
-                  <a id="connector-reindex" class="action" tal:attributes="href string:${context/absolute_url}/connector-reindex" i18n:translate="">Reindex</a>
-              </li>
-              <li>
-                  <a id="connector-log" class="action" tal:attributes="href string:${context/absolute_url}/connector-log" i18n:translate="">Log</a>
-              </li>
-              <li>
-                  <a id="connector-log-clear" class="action" tal:attributes="href string:${context/absolute_url}/connector-log-clear" i18n:translate="">Clear log</a>
-              </li>
-          </ul>
-          <form tal:attributes="action string:${context/absolute_url}/create-collection" method="post" id="create-collection-form" style="display: none">
-              <label for="name" i18n:translate="">Create collection</label>
-              <input type="text" name="name" size="20" />
-              <input name="subpath" type="hidden" tal:attributes="value options/subpath" />
-              <input type="submit" i18n:attributes="value" value="Create" />
-          </form>
-          <form tal:attributes="action string:${context/absolute_url}/rename-collection" method="post" id="rename-collection-form" style="display: none">
-              <label for="name" i18n:translate="">Rename collection</label>
-              <select name="name">
-                  <option tal:repeat="item options/dirs" 
-                      tal:attributes="value item/title"
-                      tal:content="item/title" />
-              </select>
-              <input name="subpath" type="hidden" tal:attributes="value options/subpath" />
-              <label for="new_name" i18n:translate="">to</label>
-              <input type="text" name="new_name" size="20" />
-              <input type="submit" i18n:attributes="value" value="Rename" />
-          </form>
-      </div>
-
+      <script type="text/javascript" 
+          tal:define="authenticator context/@@authenticator;
+                      auth_value python: authenticator.authenticator('authenticator')"
+          tal:content="string: AUTHENTICATOR = '${auth_value}'"
+          >
+      </script>
+      <script type="text/javascript" tal:content="string: var URL = '${context/absolute_url}'"></script>
+      <script type="text/javascript" tal:content="string: var SUBPATH = '${options/subpath}'"></script>
+      <script type="text/javascript" 
+          tal:define="is_plone5 python: str(view.is_plone5()).lower()"
+          tal:content="string: var IS_PLONE5 = $is_plone5"></script>
       <script type="text/javascript">
-          DATATABLES_ORDER = [1, "asc"];
 
-          $(document).ready(function() {
-            $('#action-create-collection').click(function() {
-                $('.actions form').hide();
-                $('#create-collection-form').toggle();
+        PAGING = IS_PLONE5; 
+
+        DATA = new Array;
+
+        function get_data(filter) {
+            var url = URL + "/@@connector-folder-contents?subpath=" + SUBPATH;
+            if (DATA.length == 0) {
+                $.ajax({
+                    url: url,
+                    dataType: 'json',
+                    async: false,
+                    method: 'GET',
+                    success: function(result) {
+                        DATA.push.apply(DATA, result['dirs']);
+                        DATA.push.apply(DATA, result['files']);
+
+                        /* Update #collection-list */
+                        if (result['dirs'].length > 0) {
+                            var select = $('#collection-list');
+                            $(result['dirs']).each(function(index, d) {
+                                if (d['title'] != '..') 
+                                    select.append(sprintf('<option value="%s">%s</option>', d['title'], d['title']));
+                            });
+                            if (select.find('option').length == 0)
+                                $('#action-rename-collection').remove();
+                        } else {
+                            $('#action-rename-collection').remove();
+                        }
+                        
+                        if (DATA.length == 0) {
+                            $('#table').fadeOut();
+                            $('#no-data').fadeIn();
+                        } else {
+                            $('#table').fadeIn();
+                            $('#no-data').fadeOut();
+                        }
+                    } 
+                });
+            }
+
+            var result = $.grep(DATA, function(item, idx) {
+                for (var key in filter) {
+                    var value = filter[key];
+                    if (value.length > 0) {
+                        if (item[key].indexOf(value) == -1)
+                            return false;
+                    }
+                }
+                return true;
             });
-            $('#action-remove-collection').click(function() {
-                $('.actions form').hide();
-                $('#remove-collection-form').toggle();
+            return result;
+        }
+
+        function title_renderer(value, item) {
+            var url = item['url'];
+            var title = item['title'];
+            var fullpath = item['fullpath'];
+            var type = item['type'];
+            var s = '';
+                
+            var title = item['title'];
+            if (item['type'] == 'directory') {
+                s += sprintf('<a class="type-%s action-chdir" data-subpath="%s">%s</a>', type, fullpath, title);
+                if (title != '..') {
+                    s += sprintf('<a class="action-delete" title="Remove" data-subpath="%s" data-id="%s">', SUBPATH, title);
+                    s += '<img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove collection"/>'
+                    s += '</a>';
+                    s += sprintf('<a title="Rename" class="action-rename" data-fullpath="%s" data-title="%s"><img src="++resource++xmldirector.plonecore/images/rename.png" ></a>', fullpath, title);
+                    s += sprintf('<a title="ZIP Download" class="action-zip-download" data-fullpath="%s" data-title="%s"><img src="++resource++xmldirector.plonecore/images/zip.png" ></a>', fullpath, title);
+                        }
+                return s;
+            } else {
+                var remove_url = item['remove_url'];
+                var editable = item['editable'];
+                s += sprintf('<a class="type-%s" href="%s">%s</a>', type, url, title);
+                s += sprintf('\
+                            <a class="action-delete" title="Remove" data-subpath="%s" data-id="%s">\
+                            <img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove item" i18n:attributes="title"/> </a>', 
+                        SUBPATH, title);
+                s += sprintf('<a title="Rename" class="action-rename" data-fullpath="%s" data-title="%s"><img src="++resource++xmldirector.plonecore/images/rename.png" ></a>', fullpath, title);
+                s += sprintf('<a title="Download" class="action-download" data-fullpath="%s" data-title="%s"><img src="++resource++xmldirector.plonecore/images/download.png" ></a>', fullpath, title);
+                if (editable) {
+                    var edit_url = item['edit_url'];
+                s += sprintf('<a href="%s" title="Edit" class="action-edit" ><img src="++resource++xmldirector.plonecore/images/edit.png" /></a>', edit_url);
+                }
+                return s;
+            }
+                ;
+            return s;
+        }
+
+        function init_table() {            
+            $('#table').jsGrid({
+                width: "100%",
+                /*                height: "600px",*/
+                autoload: true,
+                sorting: true,
+                paging: PAGING,
+                filtering: true,
+                controller: {
+                    loadData: get_data
+                },
+
+                fields: [
+                    { name: "title", title: "Name", type: "text", width: 200,  itemTemplate: title_renderer},
+                    /*
+                    { name: "type", title: "Type", type: "text", width: 40, css: 'field-type'},
+                    */
+                    { name: "size", title: "Size", type: "text", width: 40, css: 'field-size', filtering: false},
+                    { name: "modified", title: "Last modified", type: "text", width: 50, css: 'field-modified', filtering: false },
+                    /*
+                    { name: "st_mode_text", title: "Permissions", type: "text", sorting: false, size: 50 , filtering: false},
+                    { name: "actions", type: "text", title: "Actions", sorting: false, itemTemplate: action_renderer, filtering: false}
+                    */
+                ]
             });
-            $('#action-rename-collection').click(function() {
-                $('.actions form').hide();
-                $('#rename-collection-form').toggle();
+        }
+
+        function refresh_table() {
+            DATA =  new Array;
+            $("#table").jsGrid("refresh");
+            init_table();
+        }
+
+        function ajax_success(result) {
+            spinner_stop();
+            $('#table-info').removeClass('status-ok status-error').addClass('status-ok');
+            $('#table-info').text(result).stop(true, true).show().fadeOut(5000);
+            refresh_table();
+        }
+        
+        function ajax_error(result) {
+            spinner_stop();
+            $('#table-info').removeClass('status-ok status-error').addClass('status-error');
+            $('#table-info').text(result.responseText).stop(true, true).show().fadeOut(5000);
+            }
+
+        function spinner_start() {
+            $('#table-info').html('<img src="++resource++xmldirector.plonecore/images/spinning.gif"/>')
+        }
+
+        function spinner_stop() {
+            $('#table-info').html('');
+        }
+
+
+        $(document).ready(function() {
+
+            $('body').on('click', '.action-chdir', function(e) {
+                e.preventDefault();
+                SUBPATH = $(this).data('subpath');
+                window.history.pushState(null, null, sprintf("%s/@@view%s",URL, SUBPATH));
+                refresh_table();
             });
-          });
+
+            $('body').on('click', '.action-download', function(e) {
+                e.preventDefault();
+                var fullpath = $(this).data('fullpath');
+                var url = sprintf("%s/@@filemanager-download?filename:utf8:ustring=%s", URL, fullpath);
+                window.location.href = url;
+            });
+
+            $('body').on('click', '.action-zip-download', function(e) {
+                e.preventDefault();
+                var fullpath = $(this).data('fullpath');
+                var url = sprintf("%s/@@filemanager-zip-download?subpath:utf8:ustring=%s", URL, fullpath);
+                window.location.href = url;
+            });
+
+            $('.action-refresh').on('click', function(e) {
+                e.preventDefault();
+                spinner_start();
+                refresh_table();
+                spinner_stop();
+            });
+            
+            $('body').on('click', '.action-create-collection', function(e) {
+                e.preventDefault();
+                var new_id = window.prompt('Create new collection');
+                if (new_id != null) {
+                    var url = sprintf('%s/@@filemanager-create-collection', URL);
+                    spinner_start();
+                    $.ajax({
+                        type: 'GET',
+                        url: url,
+                        data: {
+                            'subpath:utf8:ustring': SUBPATH,
+                            'new_id:utf8:ustring': new_id
+                        },
+                        success: ajax_success,
+                        error: ajax_error
+                    });
+                }
+            });
+            
+            $('body').on('click', '.action-rename', function(e) {
+                e.preventDefault();
+                var title = $(this).data('title');
+                var fullpath = $(this).data('fullpath');
+                var msg = sprintf('Rename "%s" to', title);
+                var new_id = window.prompt(msg, title);
+                var url = sprintf('%s/@@filemanager-rename', URL);
+                if (new_id != null) {
+                    spinner_start();
+                    $.ajax({
+                        type: 'GET',
+                        url: url,
+                        data: {
+                            'subpath:utf8:ustring': SUBPATH,
+                            'old_id:utf8:ustring': title,
+                            'new_id:utf8:ustring': new_id
+                        },
+                        success: ajax_success,
+                        error: ajax_error
+                    });
+                }
+            });
+            
+            $('body').on('click', '.action-delete', function(e) {
+                e.preventDefault();
+                var title = $(this).data('title');
+                var subpath = $(this).data('subpath');
+                var id = $(this).data('id');
+                var msg = sprintf('Do you really want to delete "%s/%s" to', subpath, id);
+                if (confirm(msg)) {
+                    var url = sprintf('%s/@@filemanager-delete', URL);
+                    spinner_start();
+                    $.ajax({
+                        type: 'GET',
+                        url: url,
+                        data: {
+                            'subpath:utf8:ustring': SUBPATH,
+                            'id:utf8:ustring': id
+                        },
+                        success: ajax_success,
+                        error: ajax_error
+                    });
+                }
+            });
+
+            init_table();
+        });
       </script>
 
   </metal:content-core>

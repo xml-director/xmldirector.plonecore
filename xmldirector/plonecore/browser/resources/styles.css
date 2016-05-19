@@ -74,6 +74,11 @@
 
 /* ACE editor  */
 
+.ace_editor {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
 #content #ace-editor-info {
     padding-left: 0;
     margin: 0;
@@ -107,17 +112,19 @@ button.xml-editor {
 
 /* mimetype icons */
 
-a.dir,
-a.file {
+a.type-directory,
+a.type-file {
     border: none !important;
+    word-break: break-all;
 }
 
-
-a.file span {
+a.type-directory span,
+a.type-file span {
     display: inline-block;
 }
 
-a.file:before {
+a.type-directory:before,
+a.type-file:before {
     content: '';
     background-size: contain;
     width: 32px;
@@ -127,43 +134,50 @@ a.file:before {
     vertical-align: middle;
 }
 
-a.file:before {
+a.type-directory:before {
+    background-image: url(++resource++xmldirector.plonecore/images/svg/directory.svg) !important;
+    width: 24px;
+    height: 24px;
+    margin-left: 4px;
+}
+
+a.type-file:before {
     background-image: url(++resource++xmldirector.plonecore/images/svg/raw2.svg) !important;
 }
 
-a.file[href*='.xml']:before {
+a.type-file[href*='.xml']:before {
     background-image: url(++resource++xmldirector.plonecore/images/svg/xml5.svg) !important;
 }
 
-a.file[href*='.html']:before {
+a.type-file[href*='.html']:before {
     background-image: url(++resource++xmldirector.plonecore/images/svg/html9.svg) !important;
 }
 
-a.file[href*='.pdf']:before {
+a.type-file[href*='.pdf']:before {
     background-image: url(++resource++xmldirector.plonecore/images/svg/pdf19.svg) !important;
 }
 
-a.file[href*='.css']:before {
+a.type-file[href*='.css']:before {
     background-image: url(++resource++xmldirector.plonecore/images/svg/css5.svg) !important;
 }
 
-a.file[href*='.png']:before {
+a.type-file[href*='.png']:before {
     background-image: url(++resource++xmldirector.plonecore/images/svg/png3.svg) !important;
 }
 
-a.file[href*='.gif']:before {
+a.type-file[href*='.gif']:before {
     background-image: url(++resource++xmldirector.plonecore/images/svg/gif3.svg) !important;
 }
 
-a.file[href*='.jpg']:before {
+a.type-file[href*='.jpg']:before {
     background-image: url(++resource++xmldirector.plonecore/images/svg/jpg3.svg) !important;
 }
 
-a.file[href*='.svg']:before {
+a.type-file[href*='.svg']:before {
     background-image: url(++resource++xmldirector.plonecore/images/svg/svg1.svg) !important;
 }
 
-a.file[href*='.docx']:before {
+a.type-file[href*='.docx']:before {
     background-image: url(++resource++xmldirector.plonecore/images/svg/docx.svg) !important;
 }
 
@@ -206,20 +220,21 @@ input.xmlxpath-field {
     content: '\e846';
 }
 
-/* Datatables */
-
-/* Hide datatables by default and show then upon completion (JS) */
-.datatable {
-    display: none;
+/* Grid */
+td.field-size {
+    white-space: nowrap;
+    text-align: right;
 }
 
-.datatable tbody tr:nth-child(even) {
-    background: #ddd;
+td.field-modified {
+    white-space: nowrap;
+    text-align: center;
 }
 
-.datatable tbody tr:nth-child(odd) {
-    background: #eee;
+td.field-type {
+    text-align: center;
 }
+
 
 
 /* ZIP upload */
@@ -230,6 +245,16 @@ input.xmlxpath-field {
 .template-connector-zip-import .help {
     font-style: italic !important;
     margin-bottom: 1em;
+}
+
+fieldset#zip-upload {
+    float: left;
+    width: 45%;
+}
+
+fieldset#uploadify {
+    float: right;
+    width: 45%;
 }
 
 input.zip-upload {
@@ -250,4 +275,35 @@ input.zip-upload {
 #connection-url {
     margin-top: 0.5em;
     margin-bottom: 0.5em;
+}
+
+.editor { 
+    position: relative;
+    height: 500px;
+    margin-bottom: 1em;
+}
+
+.status-ok {
+    font-weight: bold;
+    color: green;
+}
+
+.status-error {
+    font-weight: bold;
+    color: red;
+}
+
+.action-zip-download,
+.action-download,
+.action-edit,
+.action-delete,
+.action-rename {
+    float: right;
+    margin-left: 0.5em;
+}
+
+/* plone.app.toolbar icon, folder contents icon (Cloud u+2601) */
+#edit-zone .contenttype-xmldirector-plonecore-connector:after, 
+body#visual-portal-wrapper.pat-plone .outer-wrapper .contenttype-xmldirector-plonecore-connector:before {
+    content: "\2601";
 }

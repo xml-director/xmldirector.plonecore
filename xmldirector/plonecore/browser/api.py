@@ -2,7 +2,7 @@
 
 ################################################################
 # xmldirector.plonecore
-# (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
+# (C) 2016,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
 import json
@@ -87,10 +87,13 @@ class Validation(BrowserView):
     def validate(self, xml):
         """ Perform server-side XML validation """
 
+        if not xml.startswith('<?xml'):
+            xml = unicode(xml, 'utf8')
+
         errors = []
         if xml:
             try:
                 defusedxml.lxml.fromstring(xml)
             except lxml.etree.ParseError as e:
-                errors.append(u'Parse error {}'.format(e))
+                errors.append(u'Parse error {}'.format(repr(e)))
         return json.dumps(errors)

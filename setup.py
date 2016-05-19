@@ -1,7 +1,7 @@
 import os
 from setuptools import setup, find_packages
 
-version = '1.6.1'
+version = '2.0.0'
 
 setup(name='xmldirector.plonecore',
       version=version,
@@ -15,6 +15,7 @@ setup(name='xmldirector.plonecore',
           "Framework :: Plone",
           "Framework :: Plone :: 4.3",
           "Framework :: Plone :: 5.0",
+          "Framework :: Plone :: 5.1",
           "Framework :: Zope2",
           "Topic :: Software Development :: Libraries :: Python Modules",
       ],

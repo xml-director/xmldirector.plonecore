@@ -2,7 +2,7 @@
 
 ################################################################
 # xmldirector.plonecore
-# (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
+# (C) 2016,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
 import mimetypes
@@ -52,6 +52,7 @@ def default_html_handler(get_handle, filename, view_name, request):
 
     # get HTML
     html = get_handle.open(get_handle.leaf_filename, 'rb').read()
+    html = unicode(html, 'utf8')
     root = lxml.html.fromstring(html)
 
     # rewrite relative image urls
@@ -66,7 +67,8 @@ def default_html_handler(get_handle, filename, view_name, request):
         if not src.startswith('http'):
             link.attrib['href'] = '{}/{}'.format(base_url, src)
 
-    html = lxml.html.tostring(root)
+    html = lxml.html.tostring(root, encoding=unicode)
+
     return html_template.pt_render(dict(
         template='html_view',
         request=request,
@@ -86,12 +88,15 @@ def ace_editor(get_handle, filename, view_name, request,
     template = ViewPageTemplateFile(template_name)
     action_url = '{}/view-editor/{}'.format(request.context.absolute_url(),
                                             '/'.join(request.subpath))
+    view_url = '{}/view-editor-readonly/{}'.format(request.context.absolute_url(),
+                                            '/'.join(request.subpath))
     return template.pt_render(dict(
         template='ace_editor.pt',
         request=request,
         context=request.context,
         options=dict(content=content,
                      action_url=action_url,
+                     view_url=view_url,
                      readonly=readonly,
                      ace_readonly=str(readonly).lower(),  # JS
                      ace_mode=ace_mode)))

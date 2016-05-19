@@ -2,7 +2,7 @@
 
 ################################################################
 # xmldirector.plonecore
-# (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
+# (C) 2016,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
 
@@ -189,7 +189,7 @@ class TransformerRegistry(object):
             info=info,
             registered=datetime.datetime.utcnow())
 
-        LOG.info(
+        LOG.debug(
             'Transformer registered ({}, {})'.format(key, transformer_path))
 
     def entries(self):

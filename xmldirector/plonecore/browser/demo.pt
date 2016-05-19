@@ -1,0 +1,36 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="xmldirector.plonecore">
+<body>
+
+
+<metal:main fill-slot="content-core">
+  <metal:content-core define-macro="content-core">
+
+
+      <link rel="stylesheet" type="text/css" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css" />
+      <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+      <script type="text/javascript" src="++resource++xmldirector.plonecore/elFinder/js/elfinder.full.js"></script>
+        <link rel="stylesheet" type="text/css" media="screen" href="++resource++xmldirector.plonecore/elFinder/css/elfinder.min.css">
+
+<script type="text/javascript" charset="utf-8">
+    $().ready(function() {
+        var elf = $('#elfinder').elfinder({
+            // lang: 'ru',             // language (OPTIONAL)
+            url : 'php/connector.php'  // connector URL (REQUIRED)
+        }).elfinder('instance');            
+    });
+</script>
+
+<!-- Element where elFinder will be created (REQUIRED) -->
+<div id="elfinder"></div>
+  </metal:content-core>
+</metal:main>
+
+</body>
+</html>
+

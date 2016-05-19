@@ -1,0 +1,36 @@
+
+<style type="text/css" media="screen">
+    .editor { 
+        position: relative;
+        height: 500px;
+        margin-bottom: 1em;
+    }
+    
+    .status-ok {
+        font-weight: bold;
+        color: green;
+    }
+
+    .status-error {
+        font-weight: bold;
+        color: red;
+    }
+</style>
+
+<tal:def define="portal_url view/portal_url;
+                 field_name view/field/getName">
+    <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/ace-builds/src-noconflict/ace.js"></script>
+
+    <div class="xmltext widget" i18n:domain="xmldirector.plonecore">
+        <div class="editor" tal:attributes="id string:editor-${field_name}"><span tal:replace="view/xml_content" /></div>
+    </div>
+
+    <script type="text/javascript" tal:content="string: EDITOR_ID = 'editor-${field_name}'">
+    <script type="text/javascript">
+        $(document).ready(function() {
+            init_ace_editors('#' + EDITOR_ID, true, true)
+        });
+    </script>
+
+</tal:def>
+

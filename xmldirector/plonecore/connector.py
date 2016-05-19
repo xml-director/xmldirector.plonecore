@@ -2,7 +2,7 @@
 
 ################################################################
 # xmldirector.plonecore
-# (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
+# (C) 2016,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
 
@@ -93,6 +93,9 @@ class Connector(Item):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(IConnectorSettings)
 
+        if isinstance(subpath, unicode):
+            subpath = subpath.encode('utf8')
+
         adapted = IConnector(self)
 
         url = adapted.connector_url or settings.connector_url
@@ -144,7 +147,6 @@ class Connector(Item):
             exc.url = url
             raise exc
         except Exception as e:
-            print repr(e)
             LOG.warn(u'Error accessing {}::{}::{}'.format(
                 self.absolute_url(), url, self.REQUEST.get('HTTP_USER_AGENT')), exc_info=True)
             e.url = url

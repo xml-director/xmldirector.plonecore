@@ -2,13 +2,13 @@
 
 ################################################################
 # xmldirector.plonecore
-# (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
+# (C) 2016,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
 from xmldirector.plonecore.dx import util
-from xmldirector.plonecore.dx.xpath_field import get_all_xml_fields
+from xmldirector.plonecore.dx.xmlxpath_field import get_all_xml_fields
 from xmldirector.plonecore.dx.dexterity_base import xml_get
 from xmldirector.plonecore.dx.dexterity_base import xml_set
 from xmldirector.plonecore.interfaces import IConnectorSettings

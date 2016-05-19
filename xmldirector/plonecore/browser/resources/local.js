@@ -1,202 +1,201 @@
 
-function init_dt() {
+/* encodeHTML() */
 
-    try {
-        var order = DATATABLES_ORDER;
-    } catch(e) {
-        var order = [0, "asc"];
-    }
 
-    var tables = $('.datatable');
-    if (tables.length > 0) {
-        $('.datatable tfoot th.searchable').each(function () {
-            if ($(this).children().length == 0) {
-                var title = $('.datatable thead th').eq( $(this).index() ).text();
-                $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
-            }
-        });
-
-        var table = $('.datatable').DataTable({
-
-            columnDefs: [ {
-              "targets": 'no-sort',
-                         "orderable": false,
-            } ],
-            pageLength: 50,
-            autoWidth: false,
-            initComplete: function(settings, json) {
-                $('.datatable').show();
-            },
-            order: order,
-            aLengthMenu: [25, 50, 100, 250, 500, 750, 1000, 2000, 3000],
-            // dom: 'TC<"clear">lfrtip',
-            dom: 'C<"clear">lfrtip',
-               tableTools: {
-            "sSwfPath": "++resource++zchl.policy/DataTables/extensions/TableTools/swf/copy_csv_xls_pdf.swf"
-            },
-            language: {
-                "sEmptyTable":      "Keine Daten in der Tabelle vorhanden",
-                "sInfo":            "_START_ bis _END_ von _TOTAL_ Einträgen",
-                "sInfoEmpty":       "0 bis 0 von 0 Einträgen",
-                "sInfoFiltered":    "(gefiltert von _MAX_ Einträgen)",
-                "sInfoPostFix":     "",
-                "sInfoThousands":   ".",
-                "sLengthMenu":      "_MENU_ Einträge anzeigen",
-                "sLoadingRecords":  "Wird geladen...",
-                "sProcessing":      "Bitte warten...",
-                "sSearch":          "Suchen",
-                "sZeroRecords":     "Keine Einträge vorhanden.",
-                "oPaginate": {
-                    "sFirst":       "Erste",
-                    "sPrevious":    "Zurück",
-                    "sNext":        "Nächste",
-                    "sLast":        "Letzte"
-                },
-                "oAria": {
-                    "sSortAscending":  ": aktivieren, um Spalte aufsteigend zu sortieren",
-                    "sSortDescending": ": aktivieren, um Spalte absteigend zu sortieren"
-                }
-            }
-        });
-
-        table.columns().every( function () {
-            var that = this;
-            $( 'input', this.footer() ).on( 'keyup change', function () {
-                that
-                    .search( this.value )
-                    .draw();
-            } );
-        } );
-    }
+if (!String.prototype.encodeHTML) {
+  String.prototype.encodeHTML = function () {
+    return this.replace(/&/g, '&amp;')
+               .replace(/</g, '&lt;')
+               .replace(/>/g, '&gt;')
+               .replace(/"/g, '&quot;')
+               .replace(/'/g, '&apos;');
+  };
 }
 
-$(document).ready(function() {
 
-    init_dt();
+/* A custom sprintf() impelementation */
 
-    var plone5 = $('[data-bundle="plone-legacy"]').length > 0;
-    if (plone5) {
-//        ace.config.set("basePath", $('body').attr('data-portal-url') + '/++resource++xmldirector.plonecore/ace-builds/src-min');
-    }
 
-    var editors = [];
-    var num_editors = 0;
-
-    /* View mode */
-    $('.template-view .xmltext-field').each(function() {
-
-        $(this).hide();
-        var id = $(this).attr('id');
-        
-        $(this).after('<div class="xml-editor" id="' + id + '-editor" style="width: 80%; min-height: 100px; height: 250px; max-height: 400px"></div>')
-        var editor = ace.edit(id + '-editor');
-        editor.setTheme("ace/theme/chrome");
-        editor.getSession().setMode("ace/mode/xml");
-        editor.setShowPrintMargin(false);
-        editor.setReadOnly(true);
-        editor.getSession().setValue($(this).text());
+function sprintf(){
+    var args = Array.prototype.slice.call(arguments);
+    return args.shift().replace(/%s/g, function(){
+        return args.shift();
     });
+}
 
-    /* Edit mode */
-    $('textarea.xmltext-field').each(function() {
-        $(this).hide();
 
-        var id = $(this).attr('id');
-        $(this).after('<div class="xml-editor-chars" id="' + id + '-chars"></div>');
-        $(this).after('<span  class="xml-editor-validation-msg" id="' + id + '-validate" data-index="' + num_editors + '"></span>');
-        $(this).after('<a class="xml-editor-validate-server" id="' + id + '-validate-server" data-index="' + num_editors + '"><button class="xml-editor">Validate XML (Server)</button></a>');
-        $(this).after('<a class="xml-editor-validate" id="' + id + '-validate" data-index="' + num_editors + '"><button class="xml-editor">Validate XML (Client)</button></a>');
-        $(this).after('<a class="xml-editor-clear" id="' + id + '-clear" data-index="' + num_editors + '"><button class="xml-editor">Clear content </button></a>');
-        $(this).after('<div class="xml-editor" id="' + id + '-editor" style="width: 80%; min-height: 200px; height: 400px; max-height: 400px"></div>')
-        var editor = ace.edit(id + '-editor');
-        editors.push(editor);
-        editor.setTheme("ace/theme/chrome");
-        editor.getSession().setMode("ace/mode/xml");
-        editor.setShowPrintMargin(false);
-        editor.setReadOnly(false);
-        editor.getSession().setValue($(this).val());
-        $('#' + id + '-chars').text($(this).val().length + ' chars');
-        editor.getSession().on('change', function(){
-              var xml = editor.getSession().getValue();
-              $('#' + id + '-chars').text(xml.length + ' chars');
-        });
-        num_editors++;
-    });
+/* ACE editor integration */
 
-    /* Push XML content from editors back to textarea fields before submit */    
-    if (num_editors) {
-        $('#form').on('submit', function(e) {
-            var editors_ok = true;
-            $(editors).each(function(i) {
-                var editor = editors[i];
-                var editor_id = editor['container'].getAttribute('id');
-                var textarea_id = editor_id.replace('-editor', '');
-                var xml = editor.getSession().getValue();
-                try {
-                    $.parseXML(xml);
-                    var msg = 'XML is OK';
-                    $('#' + textarea_id).siblings('.xml-editor-validation-msg').text(msg).addClass('status-ok');
-                } catch(e) {
-                    editors_ok = false;
-                    var msg = 'Error in XML';
-                    $('#' + textarea_id).siblings('.xml-editor-validation-msg').text(msg).addClass('status-error');
-                }
-                $('#' + textarea_id).val(xml); 
-            });
-            if (! editors_ok) {
-                e.preventDefault();
-            }
-        });
-    }
+/* template for wrapping the ACE editor into*/
 
-    $('.xml-editor-validate').on('click', function(e) {
-        e.preventDefault();
-        var index = $(this).data('index');
-        var editor = editors[index];
-        var xml = editor.getSession().getValue();
-        try {
-            $.parseXML(xml);
-            var msg = 'XML is OK';
-            $(this).siblings('.xml-editor-validation-msg').text(msg).removeClass('status-error').addClass('status-ok');
-        } catch(e) {
-            var msg = 'Error in XML';
-            $(this).siblings('.xml-editor-validation-msg').text(msg).removeClass('status-ok').addClass('status-error');
+
+var container_template = '\
+    <div class="editor-container">\
+        %s\
+        <div class="editor-messages">\
+            <span class="editor-number-chars">%s</span> <span>chars</span>\
+            <span class="editor-verification"></span>\
+        </div>\
+        <div class="editor-actions">\
+            <button class="editor-clear" type="context">Clear</button>\
+            <button class="editor-validate-xml" type="context">Validate XML</button>\
+            <button class="editor-validate-xml-server" type="context">Validate XML on server</button>\
+        </div>\
+    </div>';
+
+
+/* Global variable for all ACE editor instances within page */
+
+
+var EDITORS = Array();
+
+
+/* Initialize all ACE editors for a given ``selector``.
+ * ``add_editor_field`` is usually always true
+ * ``readonly`` = true|false for setting the ACE editor into readonly mode
+ */
+
+function init_ace_editors(selector='.ace-editable', add_editor_field=false, readonly=false) {
+
+    $(selector).each(function() {
+
+        if(add_editor_field) 
+            $(this).hide();
+        var html = $(this).clone().wrap('<div>').parent().html();
+        var xml_length = $(this).data('length');
+        if (add_editor_field) {
+            var inner_xml = $(this).text();
+            html = sprintf(container_template, '<div class="editor">' + inner_xml.encodeHTML() + '</div>' + html, 0);
+        } else {
+            html = sprintf(container_template, html, xml_length);
         }
+        $(this).replaceWith(html);
     });
 
-    $('.xml-editor-validate-server').on('click', function(e) {
+    $('.editor-container').each(function(i) {
+
+        var id_ =  i + 1;
+        $(this).find('.editor').attr('id', 'editor-' + id_);
+        $(this).find('.editor').attr('editor-id', id_);
+        $(this).find('.editor-number-chars').attr('editor-id',  id_);
+        $(this).find('.editor-verification').attr('editor-id', id_);
+/*        $(this).find('.editor-save').attr('editor-id', id_);*/
+        $(this).find('.editor-clear').attr('editor-id', id_);
+        $(this).find('.editor-validate-xml').attr('editor-id', id_);
+        $(this).find('.editor-validate-xml-server').attr('editor-id', id_);
+        
+        var editor = ace.edit('editor-' + id_);
+        EDITORS[id_] = editor;
+        editor.editor_id = id_;
+        editor.setTheme("ace/theme/chrome");
+        editor.getSession().setMode("ace/mode/" + ACE_MODE);
+        editor.setShowPrintMargin(false);
+        editor.setReadOnly(readonly);
+
+        if (ACE_MODE != 'xml' && ACE_MODE != 'html') {
+            $('.editor-validate-xml').remove();
+            $('.editor-validate-xml-server').remove();
+        }
+
+        editor.getSession().on('change', function(){
+            var xml = editor.getSession().getValue();
+            var editor_id = editor.editor_id;
+            $('.editor-number-chars[editor-id="' + editor_id + '"]').text(xml.length);
+        });
+
+        if (readonly) {
+            $('.editor-actions').remove();
+            $('.editor-messages').remove();
+        }
+
+    });
+
+    $('.editor-validate-xml-server').on('click', function(e) {
         e.preventDefault();
-        var this_clicked = $(this);
-        var index = $(this).data('index');
-        var editor = editors[index];
+        var editor_id = parseInt($(this).attr('editor-id'));
+        var editor = EDITORS[editor_id];
         var xml = editor.getSession().getValue();
+        var selector = '.editor-verification[editor-id="' + editor_id + '"]';
+        var validation_field = $(selector);
+
         $.post('@@api-validate-xml', {xml: xml}, function(data, textStatus, jqXHR) {
             var result = $.parseJSON(data);
             if (result.length == 0) {
                 var msg = 'XML is OK';
-                this_clicked.siblings('.xml-editor-validation-msg').text(msg).removeClass('status-error').addClass('status-ok');
+                validation_field.removeClass('status-ok');
+                validation_field.removeClass('status-error');
+                validation_field.addClass('status-ok')
+                validation_field.text(msg).stop(true, true).show().fadeOut(5000);
             } else {
                 var msg = 'Error in XML (' + data + ')';
-                this_clicked.siblings('.xml-editor-validation-msg').text(msg).removeClass('status-ok').addClass('status-error');
+                validation_field.removeClass('status-ok');
+                validation_field.removeClass('status-error');
+                validation_field.addClass('status-ok')
+                validation_field.text(msg).stop(true, true).show().fadeOut(5000);
             }
         }); 
     });
 
-    $('.xml-editor-clear').on('click', function(e) {
+    $('.editor-validate-xml').on('click', function(e) {
         e.preventDefault();
-        var index = $(this).data('index');
-        var editor = editors[index];
+        var editor_id = parseInt($(this).attr('editor-id'));
+        var editor = EDITORS[editor_id];
         var xml = editor.getSession().getValue();
-        if (confirm('Do you really to remove the XML content')) {
+        var selector = '.editor-verification[editor-id="' + editor_id + '"]';
+        var validation_field = $(selector);
+        try {
+            $.parseXML(xml);
+            var msg = 'XML is OK';
+            var css_class = 'status-ok';
+        } catch(e) {
+            var msg = 'XML has errors';
+            var css_class = 'status-error';
+        }
+        validation_field.removeClass('status-ok');
+        validation_field.removeClass('status-error');
+        validation_field.addClass(css_class)
+        validation_field.text(msg).stop(true, true).show().fadeOut(5000);
+    });
+
+    $('.editor-clear').on('click', function(e) {
+        e.preventDefault();
+        var editor_id = parseInt($(this).attr('editor-id'));
+        var editor = EDITORS[editor_id];
+        if (confirm('Do you really to remove the content?')) {
             editor.setValue('');
         }
     });
+}
 
-    $('.confirm-action').on('click', function(e) {
+
+/* onload handlers */
+
+$(document).ready(function() {
+
+    var plone5 = $('[data-bundle="plone-legacy"]').length > 0;
+    if (plone5) {
+        var portal_url = $('body').data('portal-url');
+    }
+
+
+    /* Deletion confirmation */
+    $('body').on('click', '.confirm-action', function(e) {
         var text = $(this).data('text');
         if (! confirm(text)) {
             return false;
         }
+    });
+
+    
+    /* Dexterity edit form subbmission handler */
+    $('#form').on('submit', function(e) {
+        $('.ace_text-input').each(function() {
+            var editor_id = $(this).closest('.editor').attr('editor-id');
+            var hidden_xml = $(this).closest('.xmltext-widget').find('.hidden-xml');
+            var editor = EDITORS[editor_id]
+            var xml = editor.getSession().getValue();
+            hidden_xml.val(xml);
+        });
     });
 
     // Test connection button for XML Director controlpanel
@@ -235,7 +234,6 @@ $(document).ready(function() {
             }
         })
     }            
-
 
 });
 

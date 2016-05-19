@@ -2,13 +2,7 @@
 <object name="portal_javascripts">
  <javascript cacheable="True" compression="none" cookable="True"
     enabled="True" 
-    id="++resource++xmldirector.plonecore/ace-builds/src-min/ace.js"
-    expression=""
-    />
- <javascript cacheable="True" compression="none" cookable="True"
-    enabled="True" 
     id="++resource++xmldirector.plonecore/local.js"
     expression=""
     />
 </object>
-

@@ -2,13 +2,14 @@
 
 ################################################################
 # xmldirector.plonecore
-# (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
+# (C) 2016,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
 import os
 import time
 import urllib
 from furl import furl
+import unidecode
 
 import fs.errors
 from fs.osfs import OSFS
@@ -201,6 +202,14 @@ class BaseWrapper(object):
             except fs.errors.DestinationExistsError:
                 pass
 
+    def convert_string(self, s):
+        """ Convert string according to FS unicode_paths metadata """
+        if issubclass(self.__class__, fs.osfs.OSFS):
+            return unidecode.unidecode(s).encode('utf8')
+        if not self.getmeta('unicode_paths') and isinstance(s, unicode):
+            return s.encode('utf-8')
+        return s
+
 
 class DAVFSWrapper(BaseWrapper, DAVFS):
     pass
@@ -243,8 +252,7 @@ def get_fs_wrapper(url, credentials=None, context=None):
     f = furl(url)
     original_url = url
     if f.scheme == 'file':
-        # hack for OSFP, fix this
-        path = urllib.unquote(url[7:])
+        path = unicode(urllib.unquote(str(f.path)), 'utf8')
         wrapper = OSFSWrapper(path, encoding='utf-8')
     elif f.scheme.startswith(('http', 'https')):
         try:

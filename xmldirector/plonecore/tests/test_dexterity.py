@@ -2,7 +2,7 @@
 
 ################################################################
 # xmldirector.plonecore
-# (C) 2014,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
+# (C) 2016,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
 import os
@@ -10,8 +10,8 @@ import plone.api
 from .base import TestBase
 
 from xmldirector.plonecore.dx import util
-from xmldirector.plonecore.dx.xpath_field import get_all_fields
-from xmldirector.plonecore.dx.xpath_field import get_all_xml_fields
+from xmldirector.plonecore.dx.xmlxpath_field import get_all_fields
+from xmldirector.plonecore.dx.xmlxpath_field import get_all_xml_fields
 
 
 class BasicTests(TestBase):
