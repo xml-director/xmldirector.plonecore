@@ -14,7 +14,9 @@ echo $DOCKER_OPTIONS
 config=buildout-plone-$PLONE_VERSION.cfg
 
 if [ -z "$DOCKER" ]; then
-    docker pull $DOCKER      
+    echo docker pull $DOCKER      
+    docker run -d $DOCKER_OPTIONS $DOCKER
+    echo docker pull $DOCKER      
     docker run -d $DOCKER_OPTIONS $DOCKER
 fi 
 
