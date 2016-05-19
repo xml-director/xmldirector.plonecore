@@ -18,6 +18,8 @@ docker run -d $DOCKER_OPTIONS $DOCKER
 echo docker pull $DOCKER      
 docker run -d $DOCKER_OPTIONS $DOCKER
 
+echo "HELLO WORLD"
+
 
 #virtualenv-2.7 .
 pip install -U setuptools==7.0  
