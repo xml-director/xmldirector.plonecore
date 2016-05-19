@@ -27,8 +27,9 @@ before_install:
 - docker version
 
 after_success:
- - test -v QA && pip install python-coveralls==2.4.0 || true
- - test -v QA && coveralls || true
+    - docker ps
+    # - test -v QA && pip install python-coveralls==2.4.0 || true
+    # - test -v QA && coveralls || true
 
 script:
 - pwd
