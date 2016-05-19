@@ -13,12 +13,10 @@ echo $DOCKER_OPTIONS
 
 config=buildout-plone-$PLONE_VERSION.cfg
 
-if [ -z "$DOCKER" ]; then
-    echo docker pull $DOCKER      
-    docker run -d $DOCKER_OPTIONS $DOCKER
-    echo docker pull $DOCKER      
-    docker run -d $DOCKER_OPTIONS $DOCKER
-fi 
+echo docker pull $DOCKER      
+docker run -d $DOCKER_OPTIONS $DOCKER
+echo docker pull $DOCKER      
+docker run -d $DOCKER_OPTIONS $DOCKER
 
 
 #virtualenv-2.7 .
