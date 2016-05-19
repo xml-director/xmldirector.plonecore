@@ -17,7 +17,7 @@ Build status
 
 See https://travis-ci.org/xml-director/xmldirector.plonecore
 
-.. image:: https://travis-ci.org/xml-director/xmldirector.plonecore.svg?branch=master
+.. image:: https://travis-ci.org/xml-director/xmldirector.plonecore.svg?branch=version-1.6
     :target: https://travis-ci.org/xml-director/xmldirector.plonecore
 
 .. note:: This module  
