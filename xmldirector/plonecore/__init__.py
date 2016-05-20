@@ -27,5 +27,5 @@ for mod, min_version in [('lxml', [3, 4])]:
 
 if not 'IGNORE_FS_ENCODING' in os.environ:
     fs_enc = sys.getfilesystemencoding()
-    if fs_enc.lower() not in ('utf8', 'utf-8') an:
+    if fs_enc.lower() not in ('utf8', 'utf-8'):
         raise RuntimeError('Filesystem encoding should be UTF-8, not {}'.format(fs_enc))
