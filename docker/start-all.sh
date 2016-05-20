@@ -1,5 +1,6 @@
 #!/bin/bash 
-export LC_ALL=en_US.UTF-8
+export IGNORE_FS_ENCODING=1
+
 git pull
 bin/develop update --force
 bin/buildout -c demo.cfg 
