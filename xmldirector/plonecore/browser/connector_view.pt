@@ -198,7 +198,8 @@
             $('body').on('click', '.action-chdir', function(e) {
                 e.preventDefault();
                 SUBPATH = $(this).data('subpath');
-                window.history.pushState(null, null, sprintf("%s/@@view%s",URL, SUBPATH));
+                url = sprintf("%s/@@view/%s",URL, SUBPATH);
+                window.history.pushState(null, null, url);
                 refresh_table();
             });
 

@@ -291,6 +291,8 @@ class Connector(BrowserView):
         dirs = sorted(dirs, key=operator.itemgetter('title'))
         files = sorted(files, key=operator.itemgetter('title'))
         result = dict(dirs=dirs, files=files)
+        self.request.response.setHeader('Pragma', 'no-cache')
+        self.request.response.setHeader('Cache-control', 'no-store')
         return json.dumps(result, default=json_serial)
 
     def __call__(self, *args, **kw):
