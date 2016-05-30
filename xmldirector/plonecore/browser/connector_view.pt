@@ -42,6 +42,7 @@
       </script>
       <script type="text/javascript" tal:content="string: var URL = '${context/absolute_url}'"></script>
       <script type="text/javascript" tal:content="string: var SUBPATH = '${options/subpath}'"></script>
+      <script type="text/javascript" tal:content="string: var FILTER = '${options/filter}'"></script>
       <script type="text/javascript" 
           tal:define="is_plone5 python: str(view.is_plone5()).lower()"
           tal:content="string: var IS_PLONE5 = $is_plone5"></script>
@@ -52,7 +53,7 @@
         DATA = new Array;
 
         function get_data(filter) {
-            var url = URL + "/@@connector-folder-contents?subpath=" + SUBPATH;
+            var url = URL + "/@@connector-folder-contents?subpath=" + SUBPATH + '&amp;filter=' + FILTER;
             if (DATA.length == 0) {
                 $.ajax({
                     url: url,

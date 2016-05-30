@@ -151,6 +151,7 @@ class Connector(BrowserView):
     def __init__(self, context, request):
         super(Connector, self).__init__(context, request)
         self.subpath = []
+        self.filter = request.form.get('filter', '')
         self.traversal_subpath = []
 
     def is_plone5(self):
@@ -214,7 +215,7 @@ class Connector(BrowserView):
             url = '{}/@@view/{}'.format(url, subpath)
         return self.request.response.redirect(url)
 
-    def folder_contents(self, subpath=''):
+    def folder_contents(self, subpath='', filter=None):
         """ AJAX callback """
 
         handle = self.get_handle(subpath)
@@ -300,6 +301,7 @@ class Connector(BrowserView):
         handle = self.get_handle()
         if handle.isDirectory():
             return self.template(
+                filter=self.filter,
                 subpath='/'.join(self.subpath))
         elif handle.isFile():
             filename = self.subpath[-1]
