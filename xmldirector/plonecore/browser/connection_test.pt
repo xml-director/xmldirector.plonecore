@@ -13,13 +13,15 @@
         <h2 i18n:translate="">Connection test</h2>
         <div tal:define="errors view/connection_test" id="connection-test">
 
-            <div class="info" tal:condition="not: errors" i18n:translate="">Connection OK</div>
+            <div style="font-size: 2em;margin-top: 1em; margin-bottom: 1em;">
+                <div class="info" tal:condition="not: errors" i18n:translate="">Connection OK</div>
 
-            <div tal:condition="errors">
-                <div class="error" i18n:translate="">Connection Problem!</div>
-                <ul class="error">
-                    <li tal:repeat="error errors" tal:content="error" />
-                </ul>
+                <div tal:condition="errors">
+                    <div class="error" i18n:translate="">Connection Problem!</div>
+                    <ul class="error">
+                        <li tal:repeat="error errors" tal:content="error" />
+                    </ul>
+                </div>
             </div>
         </div>
         <a href="@@xmldirector-core-settings" i18n:translate="">Back to XML Director core settings</a>

@@ -46,7 +46,7 @@ class IConnectorSettings(Interface):
     """ Connector settings """
 
     connector_url = schema.TextLine(
-        title=_(u'Connection URL of storage service'),
+        title=_(u'Connection URL of storage'),
         description=_(u'WebDAV: http://host:port/path/to/webdav,'
                       'Local filesystem: file://path/to/directory, '
                       'AWS S3: s3://bucketname, SFTP sftp://host/path, '
@@ -55,9 +55,16 @@ class IConnectorSettings(Interface):
         required=True
     )
 
-    connector_dexterity_subpath = schema.TextLine(
-        title=_(u'Dexterity subpath'),
-        description=_(u'Subpath inside storage for Dexterity content'),
+    connector_username = schema.TextLine(
+        title=_(u'Username for external storage'),
+        description=_(u'Username'),
+        default=u'admin',
+        required=True
+    )
+
+    connector_password = schema.Password(
+        title=_(u'Password external storage'),
+        description=_(u'Password'),
         default=u'',
         required=False
     )
@@ -70,16 +77,10 @@ class IConnectorSettings(Interface):
         vocabulary=CONNECTOR_MODE_VOCAB
     )
 
-    connector_username = schema.TextLine(
-        title=_(u'Username for external storage'),
-        description=_(u'Username'),
-        default=u'admin',
-        required=True
-    )
-
-    connector_password = schema.Password(
-        title=_(u'Password for external storage'),
-        description=_(u'Password'),
+    connector_dexterity_subpath = schema.TextLine(
+        title=_(u'Dexterity subpath'),
+        description=_(u'Subpath inside storage for Dexterity content'),
         default=u'',
         required=False
     )
+

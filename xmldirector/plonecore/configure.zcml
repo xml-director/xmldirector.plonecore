@@ -33,6 +33,6 @@
     <!-- Plone 4.3 -->
     <include zcml:condition="not-have plone-5" file="profiles-43.zcml" />
     <!-- Plone 5.0 -->
-    <include zcml:condition="have plone-5" file="profiles-50.zcml" />
+    <include zcml:condition="have plone-5" file="profiles-51.zcml" />
 
 </configure>
