@@ -151,7 +151,7 @@ class Connector(BrowserView):
     def __init__(self, context, request):
         super(Connector, self).__init__(context, request)
         self.subpath = []
-        self.filter_by = request.form.get('filter_by', '')
+        self.filter_by = request.get('filter_by', '')
         self.traversal_subpath = []
 
     def is_plone5(self):
