@@ -16,7 +16,7 @@ print target.listdir()
 def copy(source, source_dir, target, target_dir):
 
     original_target_dir = target_dir
-    target_dir = 'copy-{}'.format(str(uuid.uuid4()), datetime.datetime.utcnow().isoformat())
+    target_dir = 'copy-{}-{}'.format(str(uuid.uuid4()), datetime.datetime.utcnow().isoformat())
 
     if not source.exists(source_dir):
         raise ValueError('{} does not exist'.format(source_dir))
