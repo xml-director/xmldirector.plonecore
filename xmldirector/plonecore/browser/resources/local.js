@@ -74,6 +74,13 @@ function init_ace_editors(selector='.ace-editable', add_editor_field=false, read
 
     $('.editor-container').each(function(i) {
 
+        /* ensure that ACE_MODE is defined */
+        try {
+            ACE_MODE;
+        } catch(e) {
+            ACE_MODE = 'xml';
+        };
+
         var id_ =  i + 1;
         $(this).find('.editor').attr('id', 'editor-' + id_);
         $(this).find('.editor').attr('editor-id', id_);
