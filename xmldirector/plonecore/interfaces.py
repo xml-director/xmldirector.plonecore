@@ -51,7 +51,7 @@ class IConnectorSettings(Interface):
                       'Local filesystem: file://path/to/directory, '
                       'AWS S3: s3://bucketname, SFTP sftp://host/path, '
                       'FTP: ftp://host/path'),
-        default=u'http://localhost:6080/exist/webdav/db',
+        default=u'',
         required=True
     )
 

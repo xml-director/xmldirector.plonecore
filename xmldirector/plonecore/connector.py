@@ -123,6 +123,12 @@ class Connector(Item):
             url = '{}/{}'.format(handle.url.strip('/'),
                                  adapted.connector_subpath)
 
+        if not url:
+            raise ValueError('No connector URL configured - either set a connector URL '
+                             'in Plone Site-Setup -> XML Director settings or '
+                             'configure the connector URL locally on the ' 
+                             'current connector content object')
+
         try:
             return get_fs_wrapper(url, credentials=dict(username=username, password=password), context=self)
         except fs.errors.ResourceNotFoundError:
