@@ -59,7 +59,7 @@ class IConnectorSettings(Interface):
         title=_(u'Username for external storage'),
         description=_(u'Username'),
         default=u'admin',
-        required=True
+        required=False
     )
 
     connector_password = schema.Password(
@@ -71,8 +71,8 @@ class IConnectorSettings(Interface):
 
     connector_mode = schema.Choice(
         title=_(u'Connector mode'),
-        description=_(u'Connector mode (defaults to Exist-DB)'),
-        default=u'existdb',
+        description=_(u'Connector mode (defaults to \'Other\')'),
+        default=u'other',
         required=True,
         vocabulary=CONNECTOR_MODE_VOCAB
     )
