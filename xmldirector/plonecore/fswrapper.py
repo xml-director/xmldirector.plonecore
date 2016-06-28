@@ -247,6 +247,12 @@ if have_dropbox:
 
 def get_fs_wrapper(url, credentials=None, context=None):
 
+    if not url:
+        raise ValueError('No connector URL configured - either set a connector URL '
+                         'in Plone Site-Setup -> XML Director settings or '
+                         'configure the connector URL locally on the ' 
+                         'current connector content object')
+
     if not url.endswith('/'):
         url += '/'
     f = furl(url)
