@@ -28,9 +28,7 @@
 
       <div id="table-actions">
           <button class="action-create-collection button" name="action-create-collection" i18n:translate="">Create Collection</button>
-          <a id="connector-zip-import" class="action" tal:attributes="href string:${context/absolute_url}/connector-zip-import?subpath=${options/subpath}" style="border-bottom: none">
-              <button class="button" i18n:translate="">Import</button>
-          </a>
+          <button class="action-import button" name="action-import" i18n:translate="">Import</button>
           <button class="action-refresh button" name="action-refresh" i18n:translate="">Refresh</button>
       </div>
 
@@ -226,6 +224,11 @@
                 spinner_start();
                 refresh_table();
                 spinner_stop();
+                });
+
+            $('body').on('click', '.action-import', function(e) {
+                var url = sprintf("%s/@@connector-zip-import?subpath=%s", URL, SUBPATH)
+                window.location.href = url;
             });
             
             $('body').on('click', '.action-create-collection', function(e) {
