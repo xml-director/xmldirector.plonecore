@@ -357,12 +357,12 @@ class Connector(BrowserView):
 
         subpath = self.request.get('subpath')
         get_handle = self.context.get_handle(subpath=subpath)
-        filename = os.path.basename(self.request.Filedata.filename)
+        filename = os.path.basename(self.request.file.filename)
         basename, ext = os.path.splitext(filename)
 
         with get_handle.open(filename, 'wb') as fp:
-            self.request.Filedata.seek(0)
-            data = self.request.Filedata.read()
+            self.request.file.seek(0)
+            data = self.request.file.read()
             fp.write(data)
 
         self.logger.log(

@@ -9,79 +9,64 @@
     
     
 <slot metal:fill-slot="javascript_head_slot">
-    <script type="text/javascript" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/uploadify/jquery.uploadifive.min.js"></script>
-    <script type="text/javascript" tal:content="string: UPLOAD_URL = '${context/absolute_url}/@@upload-file?subpath=${request/subpath|nothing}'" />
+    <script type="text/javascript" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/dropzone/dist/dropzone.js"></script>
+    <script type="text/javascript" tal:content="string: UPLOAD_URL = '${context/absolute_url}/upload-file'" />
 </slot>
 
 
 <slot metal:fill-slot="style_slot">
-    <link rel="stylesheet" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/uploadify/uploadifive.css" />
+    <link rel="stylesheet" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/dropzone/dist/dropzone.css" />
 </slot>
 
 
 <metal:main fill-slot="content-core">
-  <metal:content-core define-macro="content-core">
+    <metal:content-core define-macro="content-core">
 
-    <div id="zip-form">
+        <div id="zip-form"
+            tal:define="UPLOAD_URL string:${context/absolute_url}/upload-file">
 
-      <fieldset id="zip-upload">
-          <legend i18n:translate="">ZIP import</legend>
-          <div class="help" i18n:translate="">
-              Use this form for uploading a ZIP file. The ZIP file will be unzipped. The ZIP file may contain nested directories.
-          </div>
-          <form method="POST" tal:attributes="action string:${context/absolute_url}/connector-zip-upload" enctype="multipart/form-data">
-              <div>
-                  <label for="zip-file" i18n:translate="">ZIP file</label>
-                  <input type="file" name="zipfile" size="60" id="zipfile" />
-                  <input type="hidden" name="subpath" tal:attributes="value request/subpath | nothing" />
+          <fieldset id="zip-upload">
+              <legend i18n:translate="">ZIP import</legend>
+              <div class="help" i18n:translate="">
+                  Use this form for uploading a ZIP file. The ZIP file will be unzipped. The ZIP file may contain nested directories.
               </div>
-              <div style="margin-top: 1em;margin-bottom: 2em">
-                  <input class="zip-upload" type="submit" class="context" i18n:attributes="value" value="UPLOAD" />
+              <form method="POST" tal:attributes="action string:${context/absolute_url}/connector-zip-upload" enctype="multipart/form-data">
+                  <div>
+                      <label for="zip-file" i18n:translate="">ZIP file</label>
+                      <input type="file" name="zipfile" size="60" id="zipfile" />
+                      <input type="hidden" name="subpath" tal:attributes="value request/subpath | nothing" />
+                  </div>
+                  <div style="margin-top: 1em;margin-bottom: 2em">
+                      <input class="zip-upload" type="submit" class="context" i18n:attributes="value" value="UPLOAD" />
+                  </div>
+              </form>
+          </fieldset>
+
+          <!-- uploadify -->    
+          <fieldset id="uploadify">
+              <legend i18n:translate="">Multi/single file upload</legend>
+              <div class="help" i18n:translate="">
+                  Use this form for uploading a single or multiple files.
               </div>
-          </form>
-      </fieldset>
 
-      <!-- uploadify -->    
-      <fieldset id="uploadify">
-          <legend i18n:translate="">Multi/single file upload</legend>
-          <div class="help" i18n:translate="">
-              Use this form for uploading a single or multiple files.
-          </div>
-          <form id="upload-form">
-              <input type="submit" id="file_upload" name="file_upload" multiple="true" />
-              <input type="hidden" name="subpath" tal:attributes="value request/subpath | nothing" />
-          </form>
-          <div id="upload-message"></div>
-      </fieldset>
-    </div>
+              <form tal:attributes="action UPLOAD_URL" class="dropzone" id="dropzone">
+                <input type="hidden" name="subpath" tal:attributes="value request/subpath | nothing" />
+              </form>
+              <div id="upload-message"></div>
+          </fieldset>
+        </div>
 
-    <div style="clear: both"></div>
+        <div style="clear: both"></div>
 
-    <div class="actions">
-        <a tal:attributes="href string:${context/absolute_url}/@@view/${request/subpath|nothing}" i18n:translate="">Back to file/directory listing</a>
-    </div>
+        <div class="actions">
+            <a tal:attributes="href string:${context/absolute_url}/@@view/${request/subpath|nothing}" i18n:translate="">Back to file/directory listing</a>
+        </div>
 
-    <script type="text/javascript">
-        $(function() {
-            $('#file_upload').uploadifive({
-                buttonText: 'Upload',
-                width: 100,
-                multi: true,
-                queueSizeLimit: 100,
-                simUploadLimit: 4,
-                buttonClass: 'onkopedia-button',
-                uploadScript: UPLOAD_URL,
-                onError: function(errorType) {
-                    $('#upload-message').show().addClass('upload-error').text('Upload unsuccessfull (' + errorType + ')');    
-                    setTimeout(function() {window.location.reload(true)}, 1000);
-                },
-                onUploadComplete: function(file, data) {
-                    $('#upload-message').show().addClass('upload-ok').text('Upload successfull');    
-                    setTimeout(function() {window.location.reload(true)}, 1000);
-                }
+        <script type="text/javascript">
+            $(function() {
+            /*                $("#dropzone").dropzone({ url: UPLOAD_URL });*/
             });
-        });
-    </script>
+        </script>
   </metal:content-core>
 </metal:main>
 
