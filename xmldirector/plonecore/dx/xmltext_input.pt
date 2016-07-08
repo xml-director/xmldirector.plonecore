@@ -30,7 +30,7 @@
         />
     </div>
 
-    <script type="text/javascript" tal:content="string: EDITOR_ID = 'editor-${field_name}'">
+    <script type="text/javascript" tal:content="string: EDITOR_ID = 'editor-${field_name}'"/>
     <script type="text/javascript">
         $(document).ready(function() {
             init_ace_editors('#' + EDITOR_ID, true, false)
