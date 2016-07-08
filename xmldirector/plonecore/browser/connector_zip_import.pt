@@ -49,7 +49,11 @@
                   Use this form for uploading a single or multiple files.
               </div>
 
-              <form tal:attributes="action UPLOAD_URL" class="dropzone" id="dropzone">
+              <form tal:attributes="action UPLOAD_URL" class="dropzone" id="dropzone" init="foo">
+                <div class="dz-message" i18n:translate="">Drop file here or click to upload</div>
+                <div class="fallback">
+                    <input name="file" type="file" multiple />
+                </div>
                 <input type="hidden" name="subpath" tal:attributes="value request/subpath | nothing" />
               </form>
               <div id="upload-message"></div>
@@ -63,8 +67,14 @@
         </div>
 
         <script type="text/javascript">
-            $(function() {
-            /*                $("#dropzone").dropzone({ url: UPLOAD_URL });*/
+            Dropzone.autoDiscover = false;
+            $(document).ready(function() {
+
+                $("#dropzone").dropzone({ 
+                    url: UPLOAD_URL,
+                    maxFilesize: 50,
+                    addRemoveLinks: false,
+                });
             });
         </script>
   </metal:content-core>

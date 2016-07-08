@@ -6,6 +6,7 @@
 ################################################################
 
 from zope.component import getUtility
+from zope.component import ComponentLookupError
 from plone.registry.interfaces import IRegistry
 from xmldirector.plonecore.dx import util
 from xmldirector.plonecore.dx.xmlxpath_field import get_all_xml_fields
@@ -23,7 +24,11 @@ def removal_handler(obj, event):
     if not util.is_xml_content(event.object):
         return
 
-    handle = getUtility(IConnectorHandle).get_handle()
+    try:
+        handle = getUtility(IConnectorHandle).get_handle()
+    except ComponentLookupError:
+        return
+
     storage_dir = util.get_storage_path(event.object)
     storage_parent_dir = util.get_storage_path_parent(event.object)
     if handle.exists(storage_dir):

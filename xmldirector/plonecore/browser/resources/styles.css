@@ -307,3 +307,14 @@ input.zip-upload {
 body#visual-portal-wrapper.pat-plone .outer-wrapper .contenttype-xmldirector-plonecore-connector:before {
     content: "\2601";
 }
+
+/* Dropzone-JS */
+.dropzone {
+    border: 3px dashed #99ccff !important;
+}
+
+.dz-message {
+    font-size: 2em;
+    background: #99ccff;
+    padding: 2em;
+}

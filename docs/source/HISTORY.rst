@@ -7,6 +7,7 @@ Changelog
 - replace DataTables.net with jsGrid
 - major UI changes
 - updated to latest ACE version
+- switch to Dropzone.js for multi-file uploads
 
 
 1.6.1 (2016-04-08)
