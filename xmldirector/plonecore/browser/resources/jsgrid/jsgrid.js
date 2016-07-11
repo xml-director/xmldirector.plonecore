@@ -738,7 +738,7 @@
 
             if(sortField) {
                 this.data.sort(function(item1, item2) {
-                    return sortFactor * sortField.sortingFunc(item1[sortField.name], item2[sortField.name]);
+                    return sortField.sortingFunc(item1[sortField.name], item2[sortField.name]);
                 });
             }
         },

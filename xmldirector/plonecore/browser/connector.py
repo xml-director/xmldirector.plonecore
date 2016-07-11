@@ -14,6 +14,7 @@ import fs.errors
 import fs.path
 import humanize
 import operator
+import itertools
 import hurry.filesize
 import tempfile
 import mimetypes
@@ -233,6 +234,31 @@ class Connector(BrowserView):
             edit_prefix += u'/{}'.format(joined_subpath)
             remove_prefix += u'/{}'.format(joined_subpath)
 
+        dirs = []
+        if subpath:
+            dirs.append(dict(
+                type=u'directory',
+                title='..',
+                fullpath=parent_subpath,
+                url=u'{}/@@view/{}'.format(self.context.absolute_url(),
+                                           parent_subpath)
+            ))
+
+        for info in handle.listdirinfo(dirs_only=True):
+            path_name = safe_unicode(info[0])
+            fullpath = u'{}/{}'.format(joined_subpath, path_name)
+            url = u'{}/{}/{}'.format(context_url, view_prefix, path_name)
+            modified = info[1].get('modified_time')
+            dirs.append(dict(url=url,
+                             fullpath=fullpath,
+                             type='directory',
+                             title=path_name,
+                             size_original=0,
+                             st_mode=info[1].get('st_mode'),
+                             st_mode_text=stmode2unix(info[1].get('st_mode')),
+                             modified_original=modified,
+                             modified=self.human_readable_datetime(modified), to_utc=False))
+
         files = list()
         for info in handle.listdirinfo(files_only=True):
             path_name = safe_unicode(info[0])
@@ -266,31 +292,13 @@ class Connector(BrowserView):
                                   modified_original=modified_original,
                                   modified=modified))
 
-        dirs = []
-        if subpath:
-            dirs.append(dict(
-                type=u'directory',
-                title='..',
-                fullpath=parent_subpath,
-                url=u'{}/@@view/{}'.format(self.context.absolute_url(),
-                                           parent_subpath)
-            ))
-        for info in handle.listdirinfo(dirs_only=True):
-            path_name = safe_unicode(info[0])
-            fullpath = u'{}/{}'.format(joined_subpath, path_name)
-            url = u'{}/{}/{}'.format(context_url, view_prefix, path_name)
-            modified = info[1].get('modified_time')
-            dirs.append(dict(url=url,
-                             fullpath=fullpath,
-                             type='directory',
-                             title=path_name,
-                             st_mode=info[1].get('st_mode'),
-                             st_mode_text=stmode2unix(info[1].get('st_mode')),
-                             modified_original=modified,
-                             modified=self.human_readable_datetime(modified), to_utc=False))
-
+        index = itertools.count()
         dirs = sorted(dirs, key=operator.itemgetter('title'))
+        [d.update(index=index.next()) for d in dirs]
+
         files = sorted(files, key=operator.itemgetter('title'))
+        [f.update(index=index.next()) for f in files]
+
         result = dict(dirs=dirs, files=files)
         self.request.response.setHeader('Pragma', 'no-cache')
         self.request.response.setHeader('Cache-control', 'no-store')
