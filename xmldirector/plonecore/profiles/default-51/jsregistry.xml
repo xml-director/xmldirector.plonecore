@@ -5,5 +5,10 @@
     id="++resource++xmldirector.plonecore/local.js"
     expression=""
     />
+ <javascript cacheable="True" compression="none" cookable="True"
+    enabled="True" 
+    id="++resource++xmldirector.plonecore/ag-grid/dist/ag-grid.js"
+    expression=""
+    />
 </object>
 
