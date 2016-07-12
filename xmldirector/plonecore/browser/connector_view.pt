@@ -200,7 +200,9 @@
 
         /* Render modified entries */
         function modified_renderer(params) {
-            return params.node.data['modified'];
+            if (params.node.data['title'] != '..') 
+                return params.node.data['modified'];
+            return '';
         }
 
         /* Render size entries */
