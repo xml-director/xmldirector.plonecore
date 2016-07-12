@@ -293,7 +293,7 @@
           width: 600, 
           cellRenderer: title_renderer,
           filter: 'text',
-          filterParams: {apply: true, newRowsAction: 'keep'}
+          suppressFilter: true
         },
         { headerName: "Modified",
           field: 'index', 
@@ -301,7 +301,7 @@
           cellClass: ['cell-center'],
           cellRenderer: modified_renderer,
           comparator: modified_cmp,
-          
+          suppressFilter: true
         },
         { headerName: "Size", 
           field: 'index',
