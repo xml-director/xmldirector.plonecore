@@ -16,7 +16,17 @@
 <metal:main fill-slot="main">
 
 
-    <div id="myGrid" style="width: 800px;height: 500px;" class="ag-fresh"></div>
+    <input placeholder="Filter..." 
+        type="text"
+        onpaste="onFilterChanged(this.value)"
+        oninput="onFilterChanged(this.value)"
+        onchange="onFilterChanged(this.value)"
+        onchange="onFilterChanged(this.value)"
+        onkeydown="onFilterChanged(this.value)"
+        onkeyup="onFilterChanged(this.value)"
+    />
+
+    <div id="myGrid" style="width: 100%;height: 500px;" class="ag-fresh"></div>
 
     <script type="text/javascript" tal:content="string: var URL = '${context/absolute_url}'"></script>
     <script type="text/javascript" tal:content="string: var SUBPATH = ''"></script>
@@ -24,6 +34,99 @@
 
     <script type="text/javascript">
 
+
+        /* Render title entries */
+        function title_renderer(params) {
+            var item = params.node.data;
+            var url = item['url'];
+            var title = item['title'];
+            var fullpath = item['fullpath'];
+            var type = item['type'];
+            var s = '';
+                
+            var title = item['title'];
+            if (item['type'] == 'directory') {
+                s += sprintf('<a class="type-%s action-chdir" data-subpath="%s">%s</a>', type, fullpath, title);
+                if (title != '..') {
+                    s += sprintf('<a class="action-delete" title="Remove" data-subpath="%s" data-id="%s">', SUBPATH, title);
+                    s += '<img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove collection"/>'
+                    s += '</a>';
+                    s += sprintf('<a title="Rename" class="action-rename" data-fullpath="%s" data-title="%s"><img src="++resource++xmldirector.plonecore/images/rename.png" ></a>', fullpath, title);
+                    s += sprintf('<a title="ZIP Download" class="action-zip-download" data-fullpath="%s" data-title="%s"><img src="++resource++xmldirector.plonecore/images/zip.png" ></a>', fullpath, title);
+                        }
+                return s;
+            } else {
+                var remove_url = item['remove_url'];
+                var editable = item['editable'];
+                s += sprintf('<a class="type-%s" href="%s">%s</a>', type, url, title);
+                s += sprintf('\
+                            <a class="action-delete" title="Remove" data-subpath="%s" data-id="%s">\
+                            <img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove item" i18n:attributes="title"/> </a>', 
+                        SUBPATH, title);
+                s += sprintf('<a title="Rename" class="action-rename" data-fullpath="%s" data-title="%s"><img src="++resource++xmldirector.plonecore/images/rename.png" ></a>', fullpath, title);
+                s += sprintf('<a title="Download" class="action-download" data-fullpath="%s" data-title="%s"><img src="++resource++xmldirector.plonecore/images/download.png" ></a>', fullpath, title);
+                if (editable) {
+                    var edit_url = item['edit_url'];
+                s += sprintf('<a href="%s" title="Edit" class="action-edit" ><img src="++resource++xmldirector.plonecore/images/edit.png" /></a>', edit_url);
+                }
+                return s;
+            }
+                ;
+            return s;
+        }
+
+        /* Render modified entries */
+        function modified_renderer(params) {
+            return params.node.data['modified'];
+        }
+
+        /* Render size entries */
+        function size_renderer(params) {
+            if (params.node.data['type'] == 'file') 
+                return params.node.data['size'];
+            return '';
+        }
+
+        /* cmp() for modified */
+        function modified_cmp(idx1, idx2) {
+            function _modified(idx) {
+                var size = 0
+                try { modified = DATA[idx]['modified_original'];
+                } catch(e) { modified = 0; }
+                if (modified == undefined) modified = 0;
+                return modified;
+            }
+
+            var m1 = _modified(idx1); var m2 = _modified(idx2);
+            if (m1 < m2) return -1;
+            if (m1 > m2) return 1;
+            return 0;
+        }
+
+        /* cmp() for size */
+        function size_cmp(idx1, idx2) {
+            function _size(idx) {
+                var size = 0
+                try { size = DATA[idx]['size_original'];
+                } catch(e) { size = 0; }
+                if (size == undefined) size = -1;
+                return size;
+            }
+
+            var s1 = _size(idx1); var s2 = _size(idx2);
+            if (s1 < s2) return -1;
+            if (s1 > s2) return 1;
+            return 0;
+        }
+
+
+function onFilterChanged(value) {
+
+    gridOptions.api.setQuickFilter(value);
+
+}
+
+        /* global array holding all directory and file rows */
         var DATA = new Array();
 
         function get_data(filter) {
@@ -65,78 +168,41 @@
 
     var columnDefs = [
         { headerName: "File/Directory", 
-          width: 200, 
-          cellRenderer: function(params) {
-            return params.node.data['title'];
-            } 
+          width: 400, 
+          cellRenderer: title_renderer,
+          filter: 'text',
+ filterParams: {apply: true, newRowsAction: 'keep'}
         },
         { headerName: "Modified",
-          fields: 'index', 
+          field: 'index', 
           width: 200, 
-          cellRenderer: function(params) {
-            return params.node.data['modified'];
-            },
-          comparator: function(idx1, idx2) {
-              function _modified(idx) {
-                    var size = 0
-                    try {
-                        modified = DATA[idx]['modified_original'];
-                        } catch(e) {
-                        modified = 0;
-                    }
-                    if (modified == undefined) modified = 0;
-                    return modified;
-                }
-
-                var m1 = _modified(idx1);
-                var m2 = _modified(idx2);
-                if (m1 < m2) return -1;
-                if (m1 > m2) return 1;
-                return 0;
-          }
-
+          cellClass: ['cell-center'],
+          cellRenderer: modified_renderer,
+          comparator: modified_cmp,
+          
         },
         { headerName: "Size", 
           field: 'index',
           width: 200, 
-          cellRenderer: function(params) {
-              if (params.node.data['type'] == 'file') 
-                return params.node.data['size'];
-              return '';
-          } ,
-          comparator: function(idx1, idx2) {
-              function _size(idx) {
-                    var size = 0
-                    try {
-                        size = DATA[idx]['size_original'];
-                        } catch(e) {
-                        size = 0;
-                    }
-                    if (size == undefined) size = 0;
-                    return size;
-                }
-
-                var s1 = _size(idx1);
-                var s2 = _size(idx2);
-                if (s1 < s2) return -1;
-                if (s1 > s2) return 1;
-                return 0;
-          }
+          cellClass: ['cell-center'],
+          cellRenderer: size_renderer,
+          comparator: size_cmp,
+          suppressFilter: true
         },
     ];
 
 
-    var pageSize = 20;
+    var pageSize = 200;
 
     var gridOptions = {
         // note - we do not set 'virtualPaging' here, so the grid knows we are doing standard paging
         enableSorting: true,
         enableFilter: true,
-        debug: true,
-        rowSelection: 'multiple',
         enableColResize: true,
         columnDefs: columnDefs,
-        rowModelType: 'pagination'
+        rowModelType: 'pagination',
+        rowHeight: 40
+
     };
 
     function onPageSizeChanged(newPageSize) {
@@ -152,29 +218,29 @@
             return;
         }
 
-    var dataSource = {
-        //rowCount: ???, - not setting the row count, infinite paging will be used
-        pageSize: pageSize, // changing to number, as scope keeps it as a string
-        getRows: function (params) {
-            // this code should contact the server for rows. however for the purposes of the demo,
-            // the data is generated locally, a timer is used to give the experience of
-            // an asynchronous call
-            console.log('asking for ' + params.startRow + ' to ' + params.endRow);
-            setTimeout( function() {
-                // take a chunk of the array, matching the start and finish times
-                var rowsThisPage = allOfTheData.slice(params.startRow, params.endRow);
-                // see if we have come to the last page. if we have, set lastRow to
-                // the very last row of the last page. if you are getting data from
-                // a server, lastRow could be returned separately if the lastRow
-                // is not in the current page.
-                var lastRow = -1;
-                if (allOfTheData.length <= params.endRow) {
-                    lastRow = allOfTheData.length;
-                }
-                params.successCallback(rowsThisPage, lastRow);
-            }, 500);
-        }
-    };
+        var dataSource = {
+            //rowCount: ???, - not setting the row count, infinite paging will be used
+            pageSize: pageSize, // changing to number, as scope keeps it as a string
+            getRows: function (params) {
+                // this code should contact the server for rows. however for the purposes of the demo,
+                // the data is generated locally, a timer is used to give the experience of
+                // an asynchronous call
+                console.log('asking for ' + params.startRow + ' to ' + params.endRow);
+                setTimeout( function() {
+                    // take a chunk of the array, matching the start and finish times
+                    var rowsThisPage = allOfTheData.slice(params.startRow, params.endRow);
+                    // see if we have come to the last page. if we have, set lastRow to
+                    // the very last row of the last page. if you are getting data from
+                    // a server, lastRow could be returned separately if the lastRow
+                    // is not in the current page.
+                    var lastRow = -1;
+                    if (allOfTheData.length <= params.endRow) {
+                        lastRow = allOfTheData.length;
+                    }
+                    params.successCallback(rowsThisPage, lastRow);
+                }, 500);
+            }
+        };
 
         gridOptions.api.setDatasource(dataSource);
     }

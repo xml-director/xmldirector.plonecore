@@ -318,3 +318,10 @@ body#visual-portal-wrapper.pat-plone .outer-wrapper .contenttype-xmldirector-plo
     background: #99ccff;
     padding: 2em;
 }
+
+/* ag-grid */
+
+.cell-center {
+    text-align: center;
+    color: blue;
+}
