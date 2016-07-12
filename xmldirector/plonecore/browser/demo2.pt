@@ -26,13 +26,129 @@
         onkeyup="onFilterChanged(this.value)"
     />
 
-    <div id="myGrid" style="width: 100%;height: 500px;" class="ag-fresh"></div>
+    <div id="table-info"></div>
+    <div id="myGrid" style="height: 500px;" class="ag-fresh"></div>
+    <div id="table-actions">
+        <button class="action-create-collection button" name="action-create-collection" i18n:translate="">Create Collection</button>
+        <button class="action-import button" name="action-import" i18n:translate="">Import</button>
+        <button class="action-refresh button" name="action-refresh" i18n:translate="">Refresh</button>
+    </div>
 
     <script type="text/javascript" tal:content="string: var URL = '${context/absolute_url}'"></script>
     <script type="text/javascript" tal:content="string: var SUBPATH = ''"></script>
     <script type="text/javascript" tal:content="string: var FILTER_BY = ''"></script>
 
     <script type="text/javascript">
+
+
+        function ajax_success(result) {
+            $('#table-info').removeClass('status-ok status-error').addClass('status-ok');
+            $('#table-info').text(result).stop(true, true).show().fadeOut(5000);
+            DATA.length = 0;
+            refresh_table();
+        }
+        
+        function ajax_error(result) {
+            $('#table-info').removeClass('status-ok status-error').addClass('status-error');
+            $('#table-info').text(result.responseText).stop(true, true).show().fadeOut(5000);
+        }
+
+        $('body').on('click', '.action-chdir', function(e) {
+            e.preventDefault();
+            SUBPATH = $(this).data('subpath');
+            if (SUBPATH.indexOf('/') == 0)
+                SUBPATH = SUBPATH.substring(1, SUBPATH.length);
+            url = sprintf("%s/@@view/%s",URL, SUBPATH);
+            var state = {url: url} 
+            window.history.pushState(state, null, url);
+            refresh_table();
+        });
+
+        $('body').on('click', '.action-download', function(e) {
+            e.preventDefault();
+            var fullpath = $(this).data('fullpath');
+            var url = sprintf("%s/@@filemanager-download?filename:utf8:ustring=%s", URL, fullpath);
+            window.location.href = url;
+        });
+
+        $('body').on('click', '.action-zip-download', function(e) {
+            e.preventDefault();
+            var fullpath = $(this).data('fullpath');
+            var url = sprintf("%s/@@filemanager-zip-download?subpath:utf8:ustring=%s", URL, fullpath);
+            window.location.href = url;
+        });
+
+        $('.action-refresh').on('click', function(e) {
+            e.preventDefault();
+            DATA.length = 0;
+            refresh_table();
+        });
+
+        $('body').on('click', '.action-import', function(e) {
+            var url = sprintf("%s/@@connector-zip-import?subpath=%s", URL, SUBPATH)
+            window.location.href = url;
+        });
+        
+        $('body').on('click', '.action-create-collection', function(e) {
+            e.preventDefault();
+            var new_id = window.prompt('Create new collection');
+            if (new_id != null) {
+                var url = sprintf('%s/@@filemanager-create-collection', URL);
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data: {
+                        'subpath:utf8:ustring': SUBPATH,
+                        'new_id:utf8:ustring': new_id
+                    },
+                    success: ajax_success,
+                    error: ajax_error
+                });
+            }
+        });
+        
+        $('body').on('click', '.action-rename', function(e) {
+            e.preventDefault();
+            var title = $(this).data('title');
+            var fullpath = $(this).data('fullpath');
+            var msg = sprintf('Rename "%s" to', title);
+            var new_id = window.prompt(msg, title);
+            var url = sprintf('%s/@@filemanager-rename', URL);
+            if (new_id != null) {
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data: {
+                        'subpath:utf8:ustring': SUBPATH,
+                        'old_id:utf8:ustring': title,
+                        'new_id:utf8:ustring': new_id
+                    },
+                    success: ajax_success,
+                    error: ajax_error
+                });
+            }
+        });
+        
+        $('body').on('click', '.action-delete', function(e) {
+            e.preventDefault();
+            var title = $(this).data('title');
+            var subpath = $(this).data('subpath');
+            var id = $(this).data('id');
+            var msg = sprintf('Do you really want to delete "%s/%s" to', subpath, id);
+            if (confirm(msg)) {
+                var url = sprintf('%s/@@filemanager-delete', URL);
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data: {
+                        'subpath:utf8:ustring': SUBPATH,
+                        'id:utf8:ustring': id
+                    },
+                    success: ajax_success,
+                    error: ajax_error
+                });
+            }
+        });
 
 
         /* Render title entries */
@@ -84,7 +200,7 @@
         function size_renderer(params) {
             if (params.node.data['type'] == 'file') 
                 return params.node.data['size'];
-            return '';
+            return '[DIR]';
         }
 
         /* cmp() for modified */
@@ -168,14 +284,15 @@ function onFilterChanged(value) {
 
     var columnDefs = [
         { headerName: "File/Directory", 
-          width: 400, 
+          field: 'title',
+          width: 600, 
           cellRenderer: title_renderer,
           filter: 'text',
- filterParams: {apply: true, newRowsAction: 'keep'}
+          filterParams: {apply: true, newRowsAction: 'keep'}
         },
         { headerName: "Modified",
           field: 'index', 
-          width: 200, 
+          width: 150, 
           cellClass: ['cell-center'],
           cellRenderer: modified_renderer,
           comparator: modified_cmp,
@@ -183,7 +300,7 @@ function onFilterChanged(value) {
         },
         { headerName: "Size", 
           field: 'index',
-          width: 200, 
+          width: 100, 
           cellClass: ['cell-center'],
           cellRenderer: size_renderer,
           comparator: size_cmp,
@@ -251,12 +368,15 @@ function onFilterChanged(value) {
         createNewDatasource();
     }
 
+    function refresh_table() {
+        get_data();
+        setRowData(DATA);
+    }
 
     $(document).ready(function() {
         var eGridDiv = document.querySelector('#myGrid');
         new agGrid.Grid(eGridDiv, gridOptions);
-        get_data();
-        setRowData(DATA);
+        refresh_table();
     });
 
     </script>
