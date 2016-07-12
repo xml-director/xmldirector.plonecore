@@ -8,98 +8,152 @@
 <body>
 
 <metal:slot fill-slot="style_slot">
-    <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/jsgrid/jsgrid.min.css" />
-    <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/jsgrid/jsgrid-theme.min.css" />
-    <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/styles.css" />
 </metal:slot>
 
 <metal:slot fill-slot="javascript_head_slot">
-    <script type="text/javascript" charset="utf8" tal:attributes="src string:$portal_url/++resource++xmldirector.plonecore/jsgrid/jsgrid.min.js"></script>
 </metal:slot>
 
-<metal:main fill-slot="content-core">
-  <metal:content-core define-macro="content-core">
+<metal:main fill-slot="main">
 
-      <div id="table-info"></div>
-      <table id="table">
-      </table>
 
-      <div id="no-data" class="error" i18n:translate="">The root collection does not contain any data</div>
+    <input placeholder="Filter..." 
+        type="text"
+        onpaste="onFilterChanged(this.value)"
+        oninput="onFilterChanged(this.value)"
+        onchange="onFilterChanged(this.value)"
+        onchange="onFilterChanged(this.value)"
+        onkeydown="onFilterChanged(this.value)"
+        onkeyup="onFilterChanged(this.value)"
+    />
 
-      <div id="table-actions">
-          <button class="action-create-collection button" name="action-create-collection" i18n:translate="">Create Collection</button>
-          <button class="action-import button" name="action-import" i18n:translate="">Import</button>
-          <button class="action-refresh button" name="action-refresh" i18n:translate="">Refresh</button>
-      </div>
+    <div id="table-info"></div>
+    <div id="myGrid" style="height: 500px;" class="ag-fresh"></div>
+    <div id="table-actions">
+        <button class="action-create-collection button" name="action-create-collection" i18n:translate="">Create Collection</button>
+        <button class="action-import button" name="action-import" i18n:translate="">Import</button>
+        <button class="action-refresh button" name="action-refresh" i18n:translate="">Refresh</button>
+    </div>
 
-      <script type="text/javascript" 
-          tal:define="authenticator context/@@authenticator;
-                      auth_value python: authenticator.authenticator('authenticator')"
-          tal:content="string: AUTHENTICATOR = '${auth_value}'"
-          >
-      </script>
-      <script type="text/javascript" tal:content="string: var URL = '${context/absolute_url}'"></script>
-      <script type="text/javascript" tal:content="string: var SUBPATH = '${options/subpath}'"></script>
-      <script type="text/javascript" tal:content="string: var FILTER_BY = '${options/filter_by}'"></script>
-      <script type="text/javascript" 
-          tal:define="is_plone5 python: str(view.is_plone5()).lower()"
-          tal:content="string: var IS_PLONE5 = $is_plone5"></script>
-      <script type="text/javascript">
+    <script type="text/javascript" tal:content="string: var URL = '${context/absolute_url}'"></script>
+    <script type="text/javascript" tal:content="string: var SUBPATH = ''"></script>
+    <script type="text/javascript" tal:content="string: var FILTER_BY = ''"></script>
 
-        PAGING = IS_PLONE5; 
+    <script type="text/javascript">
 
-        DATA = new Array;
 
-        function get_data(filter) {
-            var url = URL + "/@@connector-folder-contents?subpath=" + SUBPATH + '&amp;filter_by=' + FILTER_BY;
-            if (DATA.length == 0) {
-                $.ajax({
-                    url: url,
-                    dataType: 'json',
-                    async: false,
-                    method: 'GET',
-                    success: function(result) {
-                        DATA.push.apply(DATA, result['dirs']);
-                        DATA.push.apply(DATA, result['files']);
-
-                        /* Update #collection-list */
-                        if (result['dirs'].length > 0) {
-                            var select = $('#collection-list');
-                            $(result['dirs']).each(function(index, d) {
-                                if (d['title'] != '..') 
-                                    select.append(sprintf('<option value="%s">%s</option>', d['title'], d['title']));
-                            });
-                            if (select.find('option').length == 0)
-                                $('#action-rename-collection').remove();
-                        } else {
-                            $('#action-rename-collection').remove();
-                        }
-                        
-                        if (DATA.length == 0) {
-                            $('#table').fadeOut();
-                            $('#no-data').fadeIn();
-                        } else {
-                            $('#table').fadeIn();
-                            $('#no-data').fadeOut();
-                        }
-                    } 
-                });
-            }
-
-            var result = $.grep(DATA, function(item, idx) {
-                for (var key in filter) {
-                    var value = filter[key];
-                    if (value.length > 0) {
-                        if (item[key].indexOf(value) == -1)
-                            return false;
-                    }
-                }
-                return true;
-            });
-            return result;
+        function ajax_success(result) {
+            $('#table-info').removeClass('status-ok status-error').addClass('status-ok');
+            $('#table-info').text(result).stop(true, true).show().fadeOut(5000);
+            DATA.length = 0;
+            refresh_table();
+        }
+        
+        function ajax_error(result) {
+            $('#table-info').removeClass('status-ok status-error').addClass('status-error');
+            $('#table-info').text(result.responseText).stop(true, true).show().fadeOut(5000);
         }
 
-        function title_renderer(value, item) {
+        $('body').on('click', '.action-chdir', function(e) {
+            e.preventDefault();
+            SUBPATH = $(this).data('subpath');
+            if (SUBPATH.indexOf('/') == 0)
+                SUBPATH = SUBPATH.substring(1, SUBPATH.length);
+            url = sprintf("%s/@@view/%s",URL, SUBPATH);
+            var state = {url: url} 
+            window.history.pushState(state, null, url);
+            refresh_table();
+        });
+
+        $('body').on('click', '.action-download', function(e) {
+            e.preventDefault();
+            var fullpath = $(this).data('fullpath');
+            var url = sprintf("%s/@@filemanager-download?filename:utf8:ustring=%s", URL, fullpath);
+            window.location.href = url;
+        });
+
+        $('body').on('click', '.action-zip-download', function(e) {
+            e.preventDefault();
+            var fullpath = $(this).data('fullpath');
+            var url = sprintf("%s/@@filemanager-zip-download?subpath:utf8:ustring=%s", URL, fullpath);
+            window.location.href = url;
+        });
+
+        $('.action-refresh').on('click', function(e) {
+            e.preventDefault();
+            DATA.length = 0;
+            refresh_table();
+        });
+
+        $('body').on('click', '.action-import', function(e) {
+            var url = sprintf("%s/@@connector-zip-import?subpath=%s", URL, SUBPATH)
+            window.location.href = url;
+        });
+        
+        $('body').on('click', '.action-create-collection', function(e) {
+            e.preventDefault();
+            var new_id = window.prompt('Create new collection');
+            if (new_id != null) {
+                var url = sprintf('%s/@@filemanager-create-collection', URL);
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data: {
+                        'subpath:utf8:ustring': SUBPATH,
+                        'new_id:utf8:ustring': new_id
+                    },
+                    success: ajax_success,
+                    error: ajax_error
+                });
+            }
+        });
+        
+        $('body').on('click', '.action-rename', function(e) {
+            e.preventDefault();
+            var title = $(this).data('title');
+            var fullpath = $(this).data('fullpath');
+            var msg = sprintf('Rename "%s" to', title);
+            var new_id = window.prompt(msg, title);
+            var url = sprintf('%s/@@filemanager-rename', URL);
+            if (new_id != null) {
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data: {
+                        'subpath:utf8:ustring': SUBPATH,
+                        'old_id:utf8:ustring': title,
+                        'new_id:utf8:ustring': new_id
+                    },
+                    success: ajax_success,
+                    error: ajax_error
+                });
+            }
+        });
+        
+        $('body').on('click', '.action-delete', function(e) {
+            e.preventDefault();
+            var title = $(this).data('title');
+            var subpath = $(this).data('subpath');
+            var id = $(this).data('id');
+            var msg = sprintf('Do you really want to delete "%s/%s" to', subpath, id);
+            if (confirm(msg)) {
+                var url = sprintf('%s/@@filemanager-delete', URL);
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data: {
+                        'subpath:utf8:ustring': SUBPATH,
+                        'id:utf8:ustring': id
+                    },
+                    success: ajax_success,
+                    error: ajax_error
+                });
+            }
+        });
+
+
+        /* Render title entries */
+        function title_renderer(params) {
+            var item = params.node.data;
             var url = item['url'];
             var title = item['title'];
             var fullpath = item['fullpath'];
@@ -137,183 +191,196 @@
             return s;
         }
 
+        /* Render modified entries */
+        function modified_renderer(params) {
+            return params.node.data['modified'];
+        }
 
-        jsGrid.sortStrategies.filesize = function(v1, v2) {
-            function _v(s) {
-                try {
-                    var arr = s.split(" ");
-                }
-                catch(e) { return 0};
-                var num = parseInt(arr[0]);
-                var unit = arr[1];
-                if (unit == 'KB') return num * 1024;                 
-                if (unit == 'MB') return num * 1024 * 1024;                 
-                if (unit == 'GB') return num * 1024 * 1024 * 1024;                 
-                return num;
+        /* Render size entries */
+        function size_renderer(params) {
+            if (params.node.data['type'] == 'file') 
+                return params.node.data['size'];
+            return '[DIR]';
+        }
+
+        /* cmp() for modified */
+        function modified_cmp(idx1, idx2) {
+            function _modified(idx) {
+                var size = 0
+                try { modified = DATA[idx]['modified_original'];
+                } catch(e) { modified = 0; }
+                if (modified == undefined) modified = 0;
+                return modified;
             }
-            v1 = _v(v1);
-            v2 = _v(v2);
-            if (v1 < v2) return -1;
-            if (v1 > v2) return 1;
+
+            var m1 = _modified(idx1); var m2 = _modified(idx2);
+            if (m1 < m2) return -1;
+            if (m1 > m2) return 1;
             return 0;
+        }
+
+        /* cmp() for size */
+        function size_cmp(idx1, idx2) {
+            function _size(idx) {
+                var size = 0
+                try { size = DATA[idx]['size_original'];
+                } catch(e) { size = 0; }
+                if (size == undefined) size = -1;
+                return size;
+            }
+
+            var s1 = _size(idx1); var s2 = _size(idx2);
+            if (s1 < s2) return -1;
+            if (s1 > s2) return 1;
+            return 0;
+        }
+
+
+function onFilterChanged(value) {
+
+    gridOptions.api.setQuickFilter(value);
+
+}
+
+        /* global array holding all directory and file rows */
+        var DATA = new Array();
+
+        function get_data(filter) {
+            var url = URL + "/@@connector-folder-contents?subpath=" + SUBPATH + '&amp;filter_by=' + FILTER_BY;
+            if (DATA.length == 0) {
+                $.ajax({
+                    url: url,
+                    dataType: 'json',
+                    async: false,
+                    method: 'GET',
+                    success: function(result) {
+                        DATA.push.apply(DATA, result['dirs']);
+                        DATA.push.apply(DATA, result['files']);
+
+                        /* Update #collection-list */
+                        if (result['dirs'].length > 0) {
+                            var select = $('#collection-list');
+                            $(result['dirs']).each(function(index, d) {
+                                if (d['title'] != '..') 
+                                    select.append(sprintf('<option value="%s">%s</option>', d['title'], d['title']));
+                            });
+                            if (select.find('option').length == 0)
+                                $('#action-rename-collection').remove();
+                        } else {
+                            $('#action-rename-collection').remove();
+                        }
+                        
+                        if (DATA.length == 0) {
+                            $('#table').fadeOut();
+                            $('#no-data').fadeIn();
+                        } else {
+                            $('#table').fadeIn();
+                            $('#no-data').fadeOut();
+                        }
+                    } 
+                });
+            }
+        }
+
+    var columnDefs = [
+        { headerName: "File/Directory", 
+          field: 'title',
+          width: 600, 
+          cellRenderer: title_renderer,
+          filter: 'text',
+          filterParams: {apply: true, newRowsAction: 'keep'}
+        },
+        { headerName: "Modified",
+          field: 'index', 
+          width: 150, 
+          cellClass: ['cell-center'],
+          cellRenderer: modified_renderer,
+          comparator: modified_cmp,
+          
+        },
+        { headerName: "Size", 
+          field: 'index',
+          width: 100, 
+          cellClass: ['cell-center'],
+          cellRenderer: size_renderer,
+          comparator: size_cmp,
+          suppressFilter: true
+        },
+    ];
+
+
+    var pageSize = 200;
+
+    var gridOptions = {
+        // note - we do not set 'virtualPaging' here, so the grid knows we are doing standard paging
+        enableSorting: true,
+        enableFilter: true,
+        enableColResize: true,
+        columnDefs: columnDefs,
+        rowModelType: 'pagination',
+        rowHeight: 40
+
+    };
+
+    function onPageSizeChanged(newPageSize) {
+        pageSize = new Number(newPageSize);
+        createNewDatasource();
+    }
+
+    var allOfTheData;
+
+    function createNewDatasource() {
+        if (!allOfTheData) {
+            // in case user selected 'onPageSizeChanged()' before the json was loaded
+            return;
+        }
+
+        var dataSource = {
+            //rowCount: ???, - not setting the row count, infinite paging will be used
+            pageSize: pageSize, // changing to number, as scope keeps it as a string
+            getRows: function (params) {
+                // this code should contact the server for rows. however for the purposes of the demo,
+                // the data is generated locally, a timer is used to give the experience of
+                // an asynchronous call
+                console.log('asking for ' + params.startRow + ' to ' + params.endRow);
+                setTimeout( function() {
+                    // take a chunk of the array, matching the start and finish times
+                    var rowsThisPage = allOfTheData.slice(params.startRow, params.endRow);
+                    // see if we have come to the last page. if we have, set lastRow to
+                    // the very last row of the last page. if you are getting data from
+                    // a server, lastRow could be returned separately if the lastRow
+                    // is not in the current page.
+                    var lastRow = -1;
+                    if (allOfTheData.length <= params.endRow) {
+                        lastRow = allOfTheData.length;
+                    }
+                    params.successCallback(rowsThisPage, lastRow);
+                }, 500);
+            }
         };
 
-        function init_table() {            
-            $('#table').jsGrid({
-                width: "100%",
-                /*                height: "600px",*/
-                autoload: true,
-                sorting: true,
-                paging: PAGING,
-                filtering: true,
-                controller: {
-                    loadData: get_data
-                },
-
-                fields: [
-                    { name: "title", title: "Name", type: "text", width: 200,  itemTemplate: title_renderer},
-                    { name: "size", title: "Size", type: "text", width: 40, css: 'field-size', filtering: false, sorter: 'filesize'},
-                    { name: "modified", title: "Last modified", type: "text", width: 50, css: 'field-modified', filtering: false }
-                ]
-            });
-        }
-
-        function refresh_table() {
-            DATA =  new Array;
-            $("#table").jsGrid("refresh");
-            init_table();
-        }
-
-        function ajax_success(result) {
-            spinner_stop();
-            $('#table-info').removeClass('status-ok status-error').addClass('status-ok');
-            $('#table-info').text(result).stop(true, true).show().fadeOut(5000);
-            refresh_table();
-        }
-        
-        function ajax_error(result) {
-            spinner_stop();
-            $('#table-info').removeClass('status-ok status-error').addClass('status-error');
-            $('#table-info').text(result.responseText).stop(true, true).show().fadeOut(5000);
-            }
-
-        function spinner_start() {
-            $('#table-info').html('<img src="++resource++xmldirector.plonecore/images/spinning.gif"/>')
-        }
-
-        function spinner_stop() {
-            $('#table-info').html('');
-        }
+        gridOptions.api.setDatasource(dataSource);
+    }
 
 
-        $(document).ready(function() {
+    function setRowData(rowData) {
+        allOfTheData = rowData;
+        createNewDatasource();
+    }
 
-            $('body').on('click', '.action-chdir', function(e) {
-                e.preventDefault();
-                SUBPATH = $(this).data('subpath');
-                if (SUBPATH.indexOf('/') == 0)
-                    SUBPATH = SUBPATH.substring(1, SUBPATH.length);
-                url = sprintf("%s/@@view/%s",URL, SUBPATH);
-                var state = {url: url} 
-                window.history.pushState(state, null, url);
-                refresh_table();
-            });
+    function refresh_table() {
+        get_data();
+        setRowData(DATA);
+    }
 
-            $('body').on('click', '.action-download', function(e) {
-                e.preventDefault();
-                var fullpath = $(this).data('fullpath');
-                var url = sprintf("%s/@@filemanager-download?filename:utf8:ustring=%s", URL, fullpath);
-                window.location.href = url;
-            });
+    $(document).ready(function() {
+        var eGridDiv = document.querySelector('#myGrid');
+        new agGrid.Grid(eGridDiv, gridOptions);
+        refresh_table();
+    });
 
-            $('body').on('click', '.action-zip-download', function(e) {
-                e.preventDefault();
-                var fullpath = $(this).data('fullpath');
-                var url = sprintf("%s/@@filemanager-zip-download?subpath:utf8:ustring=%s", URL, fullpath);
-                window.location.href = url;
-            });
+    </script>
 
-            $('.action-refresh').on('click', function(e) {
-                e.preventDefault();
-                spinner_start();
-                refresh_table();
-                spinner_stop();
-                });
-
-            $('body').on('click', '.action-import', function(e) {
-                var url = sprintf("%s/@@connector-zip-import?subpath=%s", URL, SUBPATH)
-                window.location.href = url;
-            });
-            
-            $('body').on('click', '.action-create-collection', function(e) {
-                e.preventDefault();
-                var new_id = window.prompt('Create new collection');
-                if (new_id != null) {
-                    var url = sprintf('%s/@@filemanager-create-collection', URL);
-                    spinner_start();
-                    $.ajax({
-                        type: 'GET',
-                        url: url,
-                        data: {
-                            'subpath:utf8:ustring': SUBPATH,
-                            'new_id:utf8:ustring': new_id
-                        },
-                        success: ajax_success,
-                        error: ajax_error
-                    });
-                }
-            });
-            
-            $('body').on('click', '.action-rename', function(e) {
-                e.preventDefault();
-                var title = $(this).data('title');
-                var fullpath = $(this).data('fullpath');
-                var msg = sprintf('Rename "%s" to', title);
-                var new_id = window.prompt(msg, title);
-                var url = sprintf('%s/@@filemanager-rename', URL);
-                if (new_id != null) {
-                    spinner_start();
-                    $.ajax({
-                        type: 'GET',
-                        url: url,
-                        data: {
-                            'subpath:utf8:ustring': SUBPATH,
-                            'old_id:utf8:ustring': title,
-                            'new_id:utf8:ustring': new_id
-                        },
-                        success: ajax_success,
-                        error: ajax_error
-                    });
-                }
-            });
-            
-            $('body').on('click', '.action-delete', function(e) {
-                e.preventDefault();
-                var title = $(this).data('title');
-                var subpath = $(this).data('subpath');
-                var id = $(this).data('id');
-                var msg = sprintf('Do you really want to delete "%s/%s" to', subpath, id);
-                if (confirm(msg)) {
-                    var url = sprintf('%s/@@filemanager-delete', URL);
-                    spinner_start();
-                    $.ajax({
-                        type: 'GET',
-                        url: url,
-                        data: {
-                            'subpath:utf8:ustring': SUBPATH,
-                            'id:utf8:ustring': id
-                        },
-                        success: ajax_success,
-                        error: ajax_error
-                    });
-                }
-            });
-
-            init_table();
-        });
-      </script>
-
-  </metal:content-core>
 </metal:main>
 
 </body>

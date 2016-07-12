@@ -10,22 +10,6 @@
 
     <browser:page
         for="*"
-        name="demo"
-        template="demo.pt"
-        permission="zope2.View"
-        layer="xmldirector.plonecore.interfaces.IBrowserLayer"
-    />
-    <browser:page
-        for="*"
-        name="demo2"
-        template="demo2.pt"
-        permission="zope2.View"
-        layer="xmldirector.plonecore.interfaces.IBrowserLayer"
-    />
-
-
-    <browser:page
-        for="*"
         name="lock"
         class=".lock.Lock"
         attribute="lock"
