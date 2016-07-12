@@ -11,6 +11,7 @@ import stat
 import json
 import datetime
 import fs.errors
+import itertools
 import fs.path
 import humanize
 import operator
@@ -289,8 +290,11 @@ class Connector(BrowserView):
                              modified_original=modified,
                              modified=self.human_readable_datetime(modified), to_utc=False))
 
+        index = itertools.count()
         dirs = sorted(dirs, key=operator.itemgetter('title'))
+        [d.update(index=index.next()) for d in dirs]
         files = sorted(files, key=operator.itemgetter('title'))
+        [f.update(index=index.next()) for f in files]
         result = dict(dirs=dirs, files=files)
         self.request.response.setHeader('Pragma', 'no-cache')
         self.request.response.setHeader('Cache-control', 'no-store')
