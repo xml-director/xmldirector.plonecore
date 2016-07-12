@@ -4,7 +4,7 @@ Changelog
 2.0.0 (2016-XX-XX)
 ------------------
 - full compatibility with Plone 5.1
-- replace DataTables.net with jsGrid
+- replaced DataTables.net with agGrid
 - major UI changes
 - updated to latest ACE version
 - switch to Dropzone.js for multi-file uploads
