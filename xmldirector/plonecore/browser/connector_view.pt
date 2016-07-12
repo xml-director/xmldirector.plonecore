@@ -61,7 +61,7 @@
             if (SUBPATH.indexOf('/') == 0)
                 SUBPATH = SUBPATH.substring(1, SUBPATH.length);
             url = sprintf("%s/@@view/%s",URL, SUBPATH);
-            var state = {url: url} 
+            var state = {url: url, subpath: SUBPATH} 
             window.history.pushState(state, null, url);
             DATA.length = 0;
             refresh_table();
@@ -382,6 +382,17 @@
         new agGrid.Grid(eGridDiv, gridOptions);
         refresh_table();
     });
+
+    /* Restore window state based on stored History state */
+    window.onpopstate  = function(event) {
+        try {
+            SUBPATH = event.state['subpath'];
+        } catch(e) {
+            SUBPATH = '';
+        }
+        DATA.length = 0;
+        refresh_table();
+    }
 
     </script>
 
