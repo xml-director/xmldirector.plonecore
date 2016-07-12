@@ -63,6 +63,7 @@
             url = sprintf("%s/@@view/%s",URL, SUBPATH);
             var state = {url: url} 
             window.history.pushState(state, null, url);
+            DATA.length = 0;
             refresh_table();
         });
 
