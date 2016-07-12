@@ -17,6 +17,7 @@
 
 
     <input placeholder="Filter..." 
+        id="query"
         type="text"
         onpaste="onFilterChanged(this.value)"
         oninput="onFilterChanged(this.value)"
@@ -25,6 +26,7 @@
         onkeydown="onFilterChanged(this.value)"
         onkeyup="onFilterChanged(this.value)"
     />
+    <input id="reset-query" type="button" i18n:attributes="value" value="Clear query">
 
     <div id="table-info"></div>
     <div id="myGrid" style="height: 500px;" class="ag-fresh"></div>
@@ -150,6 +152,10 @@
             }
         });
 
+        $('#reset-query').on('click', function() {
+            $('#query').val("");
+            $('#query').trigger("change");
+        });
 
         /* Render title entries */
         function title_renderer(params) {
@@ -236,11 +242,9 @@
         }
 
 
-function onFilterChanged(value) {
-
-    gridOptions.api.setQuickFilter(value);
-
-}
+        function onFilterChanged(value) {
+            gridOptions.api.setQuickFilter(value);
+        }
 
         /* global array holding all directory and file rows */
         var DATA = new Array();
@@ -319,7 +323,6 @@ function onFilterChanged(value) {
         columnDefs: columnDefs,
         rowModelType: 'pagination',
         rowHeight: 40
-
     };
 
     function onPageSizeChanged(newPageSize) {

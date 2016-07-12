@@ -325,3 +325,7 @@ body#visual-portal-wrapper.pat-plone .outer-wrapper .contenttype-xmldirector-plo
     text-align: center;
     color: blue;
 }
+
+#query {
+    width: 200px
+}
