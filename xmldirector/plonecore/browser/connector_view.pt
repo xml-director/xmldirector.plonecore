@@ -37,8 +37,9 @@
     </div>
 
     <script type="text/javascript" tal:content="string: var URL = '${context/absolute_url}'"></script>
-    <script type="text/javascript" tal:content="string: var SUBPATH = ''"></script>
-    <script type="text/javascript" tal:content="string: var FILTER_BY = ''"></script>
+    <script type="text/javascript" 
+        tal:define="subpath python: options.get('subpath', '')"
+        tal:content="string: var SUBPATH = '${subpath}'"></script>
 
     <script type="text/javascript">
 
@@ -253,7 +254,7 @@
         var DATA = new Array();
 
         function get_data(filter) {
-            var url = URL + "/@@connector-folder-contents?subpath=" + SUBPATH + '&amp;filter_by=' + FILTER_BY;
+            var url = URL + "/@@connector-folder-contents?subpath=" + SUBPATH;
             if (DATA.length == 0) {
                 $.ajax({
                     url: url,
