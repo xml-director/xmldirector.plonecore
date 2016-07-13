@@ -22,6 +22,11 @@
 <metal:main fill-slot="content-core">
     <metal:content-core define-macro="content-core">
 
+        <div id="import-path">
+            <span class="label" i18n:translate="">Import path</span>:
+            <span tal:content="request/subpath | string:''"/>
+        </div>
+
         <div id="zip-form"
             tal:define="UPLOAD_URL string:${context/absolute_url}/upload-file">
 

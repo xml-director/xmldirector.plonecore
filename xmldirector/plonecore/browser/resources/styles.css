@@ -200,6 +200,12 @@ td.field-type {
 
 
 /* ZIP upload */
+
+div#import-path {
+    font-size: 1.4em;
+    margin-top: 1em;
+}
+
 .template-connector-zip-import legend {
     font-size: 1.0rem !important;
 }
