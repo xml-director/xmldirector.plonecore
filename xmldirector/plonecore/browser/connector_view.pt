@@ -7,14 +7,9 @@
       i18n:domain="xmldirector.plonecore">
 <body>
 
-<metal:slot fill-slot="style_slot">
-</metal:slot>
-
-<metal:slot fill-slot="javascript_head_slot">
-</metal:slot>
-
 <metal:main fill-slot="main">
 
+    <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/icons.css" />
 
     <input placeholder="Filter..." 
         id="query"

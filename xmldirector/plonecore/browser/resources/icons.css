@@ -1,3 +1,16 @@
+
+a.type-directory:before {
+    background-image: url(++resource++xmldirector.plonecore/images/directory.svg) !important;
+    width: 24px;
+    height: 24px;
+    margin-left: 4px;
+}
+
+
+a.type-file:before {
+    background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/bin-file-format.svg) !important;
+}
+
 a.type-file[href*=".txt"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/txt-file-symbol.svg) !important;
 }

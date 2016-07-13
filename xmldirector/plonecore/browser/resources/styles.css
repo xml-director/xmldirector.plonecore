@@ -204,6 +204,7 @@ td.field-type {
 div#import-path {
     font-size: 1.4em;
     margin-top: 1em;
+    margin-bottom: 1em;
 }
 
 .template-connector-zip-import legend {
