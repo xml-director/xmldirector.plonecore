@@ -11,18 +11,24 @@
 
     <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/icons.css" />
 
-    <input placeholder="Filter..." 
-        id="query"
-        type="text"
-        onpaste="onFilterChanged(this.value)"
-        oninput="onFilterChanged(this.value)"
-        onchange="onFilterChanged(this.value)"
-        onchange="onFilterChanged(this.value)"
-        onkeydown="onFilterChanged(this.value)"
-        onkeyup="onFilterChanged(this.value)"
-    />
-    <input id="reset-query" type="button" i18n:attributes="value" value="Clear query">
+    <div>
+        <label i18n:translate="">Path</label>:
+        <span id="subpath" tal:content="options/subpath"/>
+    </div>
 
+    <div>
+        <input placeholder="Filter..." 
+            id="query"
+            type="text"
+            onpaste="onFilterChanged(this.value)"
+            oninput="onFilterChanged(this.value)"
+            onchange="onFilterChanged(this.value)"
+            onchange="onFilterChanged(this.value)"
+            onkeydown="onFilterChanged(this.value)"
+            onkeyup="onFilterChanged(this.value)"
+        />
+        <input id="reset-query" type="button" i18n:attributes="value" value="Clear query">
+    </div>
     <div id="table-info"></div>
     <div id="myGrid" style="height: 500px;" class="ag-fresh"></div>
     <div id="table-actions">
@@ -42,6 +48,7 @@
         function ajax_success(result) {
             $('#table-info').removeClass('status-ok status-error').addClass('status-ok');
             $('#table-info').text(result).stop(true, true).show().fadeOut(5000);
+            $('#subpath').text(SUBPATH);
             DATA.length = 0;
             refresh_table();
         }
@@ -59,6 +66,7 @@
             url = sprintf("%s/@@view/%s",URL, SUBPATH);
             var state = {url: url, subpath: SUBPATH} 
             window.history.pushState(state, null, url);
+            $('#subpath').text(SUBPATH);
             DATA.length = 0;
             refresh_table();
         });
