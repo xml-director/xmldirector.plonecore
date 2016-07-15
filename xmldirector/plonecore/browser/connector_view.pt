@@ -15,8 +15,8 @@
         <label i18n:translate="">Path</label>:
         <span id="subpath" tal:content="options/subpath"/>
     </div>
-
-    <div>
+    
+    <div class="left" style="float: left; vertical-align: top">
         <input placeholder="Filter..." 
             id="query"
             type="text"
@@ -29,13 +29,15 @@
         />
         <input id="reset-query" type="button" i18n:attributes="value" value="Clear query">
     </div>
+    <div id="able-actions" style="float: right; vertical-align: bottom">
+        <button class="action-create-collection " name="action-create-collection" i18n:translate="">Create Collection</button>
+        <button class="action-import" name="action-import" i18n:translate="">Import</button>
+        <button class="action-refresh" name="action-refresh" i18n:translate="">Refresh</button>
+    </div>
+    <div style="clear: both"></div>
+
     <div id="table-info"></div>
     <div id="myGrid" style="height: 500px;" class="ag-fresh"></div>
-    <div id="table-actions">
-        <button class="action-create-collection button" name="action-create-collection" i18n:translate="">Create Collection</button>
-        <button class="action-import button" name="action-import" i18n:translate="">Import</button>
-        <button class="action-refresh button" name="action-refresh" i18n:translate="">Refresh</button>
-    </div>
 
     <script type="text/javascript" tal:content="string: var URL = '${context/absolute_url}'"></script>
     <script type="text/javascript" 
@@ -44,11 +46,11 @@
 
     <script type="text/javascript">
 
-
         function ajax_success(result) {
             $('#table-info').removeClass('status-ok status-error').addClass('status-ok');
             $('#table-info').text(result).stop(true, true).show().fadeOut(5000);
             $('#subpath').text(SUBPATH);
+            clear_query();
             DATA.length = 0;
             refresh_table();
         }
@@ -158,9 +160,13 @@
         });
 
         $('#reset-query').on('click', function() {
+            clear_query();
+        });
+
+        function clear_query() {
             $('#query').val("");
             $('#query').trigger("change");
-        });
+        }
 
         /* Render title entries */
         function title_renderer(params) {
