@@ -79,6 +79,7 @@
                     url: UPLOAD_URL,
                     maxFilesize: 50,
                     addRemoveLinks: false,
+                    parallelUploads: 1
                 });
             });
         </script>
