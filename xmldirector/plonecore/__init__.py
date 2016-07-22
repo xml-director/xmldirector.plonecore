@@ -12,6 +12,8 @@ import pkg_resources
 
 from xmldirector.plonecore.logger import LOG
 
+import patches
+
 
 try:
     __import__('pkg_resources').declare_namespace(__name__)
