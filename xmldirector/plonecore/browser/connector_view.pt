@@ -328,6 +328,10 @@
 
     var pageSize = 200;
 
+    var localeText = {
+
+    };
+
     var gridOptions = {
         // note - we do not set 'virtualPaging' here, so the grid knows we are doing standard paging
         enableSorting: true,
@@ -335,7 +339,8 @@
         enableColResize: true,
         columnDefs: columnDefs,
         rowModelType: 'pagination',
-        rowHeight: 40
+        rowHeight: 40,
+        localeText: localeText
     };
 
     function onPageSizeChanged(newPageSize) {
