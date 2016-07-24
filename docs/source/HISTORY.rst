@@ -1,8 +1,8 @@
 Changelog
 =========
 
-2.0.0 (2016-XX-XX)
-------------------
+2.0.0-beta1 (2016-07-24)
+------------------------
 - full compatibility with Plone 5.1
 - replaced DataTables.net with agGrid
 - major UI changes
