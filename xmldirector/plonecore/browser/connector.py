@@ -252,7 +252,6 @@ class Connector(BrowserView):
 
                 basename, ext = os.path.splitext(path_name)
                 ext = ext.lower().lstrip('.')
-                print ext
                 files.append(dict(url=u'{}/{}/{}'.format(context_url, view_prefix, path_name),
                                   type='file',
                                   fullpath=fullpath,
