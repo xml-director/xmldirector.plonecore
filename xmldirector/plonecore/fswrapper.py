@@ -97,6 +97,15 @@ LOCK_PERMISSION_MAP = dict([
 ])
 
 
+class RequiresAuthorizationError(RuntimeError):
+    """ Exception for unauthorized request against service using OAuth """
+
+    def __init__(self, msg, authorization_url):
+        super(RequiresAuthorizationError, self).__init__(msg)
+        self.authorization_url = authorization_url
+
+
+
 class BaseWrapper(object):
     """ A wapper for DAVFS """
 
@@ -322,9 +331,9 @@ def get_fs_wrapper(url, credentials=None, context=None):
             context = zope.globalrequest.getRequest().PUBLISHED.context
             authorization_url = '{}/authorize-dropbox'.format(
                 context.absolute_url())
-            raise RuntimeError(
-                'Connector does not seem to be '
-                'authorized with Dropbox (use {})'.format(authorization_url))
+            raise RequiresAuthorizationError(
+                'Connector does not seem to be authorized against Dropbox',
+                authorization_url)
 
         wrapper = DropboxFSWrapper(
             settings.dropbox_app_key,

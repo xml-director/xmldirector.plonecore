@@ -22,6 +22,7 @@ from xmldirector.plonecore.i18n import MessageFactory as _
 from xmldirector.plonecore.interfaces import IConnectorSettings
 from xmldirector.plonecore.interfaces import IConnectorHandle
 from xmldirector.plonecore.fswrapper import get_fs_wrapper
+from xmldirector.plonecore.fswrapper import RequiresAuthorizationError
 from xmldirector.plonecore.logger import LOG
 
 
@@ -152,6 +153,12 @@ class Connector(Item):
             exc = RuntimeError(url)
             exc.url = url
             raise exc
+
+        except RequiresAuthorizationError as e:
+            if e.authorization_url:
+                self.plone_utils.addPortalMessage(_(u'You need to authorize the connector first. Visit {}'.format(e.authorization_url)))
+            raise
+
         except Exception as e:
             LOG.warn(u'Error accessing {}::{}::{}'.format(
                 self.absolute_url(), url, self.REQUEST.get('HTTP_USER_AGENT')), exc_info=True)
