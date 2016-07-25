@@ -250,6 +250,9 @@ class Connector(BrowserView):
                     modified = self.human_readable_datetime(
                         info[1]['modified_time'], to_utc=False)
 
+                basename, ext = os.path.splitext(path_name)
+                ext = ext.lower().lstrip('.')
+                print ext
                 files.append(dict(url=u'{}/{}/{}'.format(context_url, view_prefix, path_name),
                                   type='file',
                                   fullpath=fullpath,
@@ -258,6 +261,7 @@ class Connector(BrowserView):
                                   edit_url=u'{}/{}/{}'.format(
                                       context_url, edit_prefix, path_name),
                                   title=info[0],
+                                  ext=ext,
                                   editable=self.is_ace_editable(path_name),
                                   st_mode=info[1].get('st_mode'),
                                   st_mode_text=stmode2unix(
@@ -284,6 +288,7 @@ class Connector(BrowserView):
             dirs.append(dict(url=url,
                              fullpath=fullpath,
                              type='directory',
+                             ext=u'',
                              title=path_name,
                              st_mode=info[1].get('st_mode'),
                              st_mode_text=stmode2unix(info[1].get('st_mode')),

@@ -175,11 +175,12 @@
             var title = item['title'];
             var fullpath = item['fullpath'];
             var type = item['type'];
+            var ext = item['ext'];
             var s = '';
                 
             var title = item['title'];
             if (item['type'] == 'directory') {
-                s += sprintf('<a class="type-%s action-chdir" data-subpath="%s">%s</a>', type, fullpath, title);
+                s += sprintf('<a class="type-%s action-chdir" data-subpath="%s" data-ext="">%s</a>', type, fullpath, title);
                 if (title != '..') {
                     s += sprintf('<a class="action-delete" title="Remove" data-subpath="%s" data-id="%s">', SUBPATH, title);
                     s += '<img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove collection"/>'
@@ -191,7 +192,7 @@
             } else {
                 var remove_url = item['remove_url'];
                 var editable = item['editable'];
-                s += sprintf('<a class="type-%s" href="%s">%s</a>', type, url, title);
+                s += sprintf('<a class="type-%s" href="%s" data-ext="%s">%s</a>', type, url, ext, title);
                 s += sprintf('\
                             <a class="action-delete" title="Remove" data-subpath="%s" data-id="%s">\
                             <img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove item" i18n:attributes="title"/> </a>', 

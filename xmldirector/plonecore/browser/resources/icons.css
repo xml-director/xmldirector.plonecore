@@ -11,707 +11,707 @@ a.type-file:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/bin-file-format.svg) !important;
 }
 
-a.type-file[href*=".txt"]:before {
+a.type-file[data-ext*="txt"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/txt-file-symbol.svg) !important;
 }
 
-a.type-file[href*=".dtd"]:before {
+a.type-file[data-ext*="dtd"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/dtd-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".3gp"]:before {
+a.type-file[data-ext*="3gp"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/3gp-file-format.svg) !important;
 }
 
-a.type-file[href*=".exe"]:before {
+a.type-file[data-ext*="exe"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/exe-file-format-variant.svg) !important;
 }
 
-a.type-file[href*=".js"]:before {
+a.type-file[data-ext*="js"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/js-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".com"]:before {
+a.type-file[data-ext*="com"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/com-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".dbf"]:before {
+a.type-file[data-ext*="dbf"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/dbf-file-format.svg) !important;
 }
 
-a.type-file[href*=".iso"]:before {
+a.type-file[data-ext*="iso"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/iso-file-format.svg) !important;
 }
 
-a.type-file[href*=".sitx"]:before {
+a.type-file[data-ext*="sitx"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/sitx-file-format.svg) !important;
 }
 
-a.type-file[href*=".app"]:before {
+a.type-file[data-ext*="app"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/app-file-symbol.svg) !important;
 }
 
-a.type-file[href*=".xlr"]:before {
+a.type-file[data-ext*="xlr"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/xlr-file-format-variant.svg) !important;
 }
 
-a.type-file[href*=".aac"]:before {
+a.type-file[data-ext*="aac"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/aac-file-format-variant.svg) !important;
 }
 
-a.type-file[href*=".crx"]:before {
+a.type-file[data-ext*="crx"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/crx-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".gzip"]:before {
+a.type-file[data-ext*="gzip"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/gzip-file-format-variant.svg) !important;
 }
 
-a.type-file[href*=".pl"]:before {
+a.type-file[data-ext*="pl"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/pl-file-format-variant.svg) !important;
 }
 
-a.type-file[href*=".3ds"]:before {
+a.type-file[data-ext*="3ds"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/3ds-file-format-extension.svg) !important;
 }
 
-a.type-file[href*=".msg"]:before {
+a.type-file[data-ext*="msg"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/msg-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".tex"]:before {
+a.type-file[data-ext*="tex"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/tex-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".dwg"]:before {
+a.type-file[data-ext*="dwg"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/dwg-file-format-variant.svg) !important;
 }
 
-a.type-file[href*=".mp4"]:before {
+a.type-file[data-ext*="mp4"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/mp4-music-file-format.svg) !important;
 }
 
-a.type-file[href*=".py"]:before {
+a.type-file[data-ext*="py"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/py-file-format.svg) !important;
 }
 
-a.type-file[href*=".torrent"]:before {
+a.type-file[data-ext*="torrent"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/torrent-symbol-file-format.svg) !important;
 }
 
-a.type-file[href*=".zip"]:before {
+a.type-file[data-ext*="zip"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/zip-file-format.svg) !important;
 }
 
-a.type-file[href*=".hqz"]:before {
+a.type-file[data-ext*="hqz"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/hqz-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".indd"]:before {
+a.type-file[data-ext*="indd"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/indd-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".cdr"]:before {
+a.type-file[data-ext*="cdr"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/cdr-file-format-extension.svg) !important;
 }
 
-a.type-file[href*=".aif"]:before {
+a.type-file[data-ext*="aif"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/aif-file-symbol.svg) !important;
 }
 
-a.type-file[href*=".log"]:before {
+a.type-file[data-ext*="log"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/log-file-format.svg) !important;
 }
 
-a.type-file[href*=".tiff"]:before {
+a.type-file[data-ext*="tiff"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/tiff-file-extension-symbol.svg) !important;
 }
 
-a.type-file[href*=".pptx"]:before {
+a.type-file[data-ext*="pptx"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/pptx-file-format.svg) !important;
 }
 
-a.type-file[href*=".ai"]:before {
+a.type-file[data-ext*="ai"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/ai-file-format.svg) !important;
 }
 
-a.type-file[href*=".sql"]:before {
+a.type-file[data-ext*="sql"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/sql-file-format.svg) !important;
 }
 
-a.type-file[href*=".otf"]:before {
+a.type-file[data-ext*="otf"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/otf-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".odx"]:before {
+a.type-file[data-ext*="odx"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/odx-file-format-interface.svg) !important;
 }
 
-a.type-file[href*=".ppt"]:before {
+a.type-file[data-ext*="ppt"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/ppt-business-presentation-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".cpl"]:before {
+a.type-file[data-ext*="cpl"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/cpl-file-format.svg) !important;
 }
 
-a.type-file[href*=".wmv"]:before {
+a.type-file[data-ext*="wmv"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/wmv-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".mid"]:before {
+a.type-file[data-ext*="mid"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/mid-file-format-extension.svg) !important;
 }
 
-a.type-file[href*=".odt"]:before {
+a.type-file[data-ext*="odt"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/odt-file-format-symbol-1.svg) !important;
 }
 
-a.type-file[href*=".mpg"]:before {
+a.type-file[data-ext*="mpg"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/mpg-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".pif"]:before {
+a.type-file[data-ext*="pif"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/pif-file-format-variant.svg) !important;
 }
 
-a.type-file[href*=".pps"]:before {
+a.type-file[data-ext*="pps"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/pps-file-format.svg) !important;
 }
 
-a.type-file[href*=".ra"]:before {
+a.type-file[data-ext*="ra"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/ra-file-symbol.svg) !important;
 }
 
-a.type-file[href*=".odi"]:before {
+a.type-file[data-ext*="odi"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/odi-file-format.svg) !important;
 }
 
-a.type-file[href*=".iff"]:before {
+a.type-file[data-ext*="iff"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/iff-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".rss"]:before {
+a.type-file[data-ext*="rss"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/rss-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".lnk"]:before {
+a.type-file[data-ext*="lnk"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/lnk-file-format.svg) !important;
 }
 
-a.type-file[href*=".ods"]:before {
+a.type-file[data-ext*="ods"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/ods-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".mach"]:before {
+a.type-file[data-ext*="mach"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/mach-o-file-format-variant-symbol.svg) !important;
 }
 
-a.type-file[href*=".vcf"]:before {
+a.type-file[data-ext*="vcf"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/vcf-file-symbol.svg) !important;
 }
 
-a.type-file[href*=".jpg"]:before {
+a.type-file[data-ext*="jpg"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/jpg-file-format-variant.svg) !important;
 }
 
-a.type-file[href*=".srt"]:before {
+a.type-file[data-ext*="srt"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/srt-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".kml"]:before {
+a.type-file[data-ext*="kml"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/kml-file-format-interface.svg) !important;
 }
 
-a.type-file[href*=".sys"]:before {
+a.type-file[data-ext*="sys"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/sys-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".elf"]:before {
+a.type-file[data-ext*="elf"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/elf-file-format.svg) !important;
 }
 
-a.type-file[href*=".mdf"]:before {
+a.type-file[data-ext*="mdf"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/mdf-icon-format.svg) !important;
 }
 
-a.type-file[href*=".vob"]:before {
+a.type-file[data-ext*="vob"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/vob-file-format-variant.svg) !important;
 }
 
-a.type-file[href*=".csr"]:before {
+a.type-file[data-ext*="csr"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/csr-file-format-variant.svg) !important;
 }
 
-a.type-file[href*=".dmp"]:before {
+a.type-file[data-ext*="dmp"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/dmp-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".drv"]:before {
+a.type-file[data-ext*="drv"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/drv-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".xhtml"]:before {
+a.type-file[data-ext*="xhtml"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/xhtml-file-format-variant.svg) !important;
 }
 
-a.type-file[href*=".ged"]:before {
+a.type-file[data-ext*="ged"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/ged-icon-file-format.svg) !important;
 }
 
-a.type-file[href*=".odt"]:before {
+a.type-file[data-ext*="odt"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/odt-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".asp"]:before {
+a.type-file[data-ext*="asp"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/asp-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".cer"]:before {
+a.type-file[data-ext*="cer"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/cer-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".eps"]:before {
+a.type-file[data-ext*="eps"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/eps-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".vcd"]:before {
+a.type-file[data-ext*="vcd"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/vcd-file-format-variant.svg) !important;
 }
 
-a.type-file[href*=".max"]:before {
+a.type-file[data-ext*="max"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/max-file-format-extension.svg) !important;
 }
 
-a.type-file[href*=".yuv"]:before {
+a.type-file[data-ext*="yuv"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/yuv-file-format.svg) !important;
 }
 
-a.type-file[href*=".rar"]:before {
+a.type-file[data-ext*="rar"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/rar-file-format.svg) !important;
 }
 
-a.type-file[href*=".bak"]:before {
+a.type-file[data-ext*="bak"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/bak-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".ics"]:before {
+a.type-file[data-ext*="ics"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/ics-file-format.svg) !important;
 }
 
-a.type-file[href*=".wsf"]:before {
+a.type-file[data-ext*="wsf"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/wsf-file-format.svg) !important;
 }
 
-a.type-file[href*=".apk"]:before {
+a.type-file[data-ext*="apk"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/apk-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".gam"]:before {
+a.type-file[data-ext*="gam"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/gam-file-format.svg) !important;
 }
 
-a.type-file[href*=".mim"]:before {
+a.type-file[data-ext*="mim"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/mim-file-format-variant.svg) !important;
 }
 
-a.type-file[href*=".m3u"]:before {
+a.type-file[data-ext*="m3u"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/m3u-file-format-variant.svg) !important;
 }
 
-a.type-file[href*=".bat"]:before {
+a.type-file[data-ext*="bat"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/bat-file-format.svg) !important;
 }
 
-a.type-file[href*=".nes"]:before {
+a.type-file[data-ext*="nes"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/nes-file-format-variant.svg) !important;
 }
 
-a.type-file[href*=".jar"]:before {
+a.type-file[data-ext*="jar"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/jar-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".dfx"]:before {
+a.type-file[data-ext*="dfx"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/dfx-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".pub"]:before {
+a.type-file[data-ext*="pub"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/pub-file-format.svg) !important;
 }
 
-a.type-file[href*=".7z"]:before {
+a.type-file[data-ext*="7z"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/7z-file-format-variant.svg) !important;
 }
 
-a.type-file[href*=".fnt"]:before {
+a.type-file[data-ext*="fnt"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/fnt-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".tga"]:before {
+a.type-file[data-ext*="tga"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/tga-file-format.svg) !important;
 }
 
-a.type-file[href*=".obj"]:before {
+a.type-file[data-ext*="obj"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/obj-file-format-variant.svg) !important;
 }
 
-a.type-file[href*=".wps"]:before {
+a.type-file[data-ext*="wps"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/wps-file-format-variant.svg) !important;
 }
 
-a.type-file[href*=".3dm"]:before {
+a.type-file[data-ext*="3dm"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/3dm-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".cad"]:before {
+a.type-file[data-ext*="cad"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/cad-file-format.svg) !important;
 }
 
-a.type-file[href*=".fon"]:before {
+a.type-file[data-ext*="fon"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/fon-file-format-variant.svg) !important;
 }
 
-a.type-file[href*=".asf"]:before {
+a.type-file[data-ext*="asf"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/asf-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".rpm"]:before {
+a.type-file[data-ext*="rpm"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/rpm-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".vb"]:before {
+a.type-file[data-ext*="vb"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/vb-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".eps"]:before {
+a.type-file[data-ext*="eps"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/eps-file-format-symbol-1.svg) !important;
 }
 
-a.type-file[href*=".gbr"]:before {
+a.type-file[data-ext*="gbr"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/gbr-file-format.svg) !important;
 }
 
-a.type-file[href*=".pdf"]:before {
+a.type-file[data-ext*="pdf"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/pdf-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".cgi"]:before {
+a.type-file[data-ext*="cgi"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/cgi-file-format-variant.svg) !important;
 }
 
-a.type-file[href*=".doc"]:before {
+a.type-file[data-ext*="doc"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/doc-file-format.svg) !important;
 }
 
-a.type-file[href*=".dll"]:before {
+a.type-file[data-ext*="dll"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/dll-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".html"]:before {
+a.type-file[data-ext*="html"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/html-file-extension-interface-symbol.svg) !important;
 }
 
-a.type-file[href*=".otf"]:before {
+a.type-file[data-ext*="otf"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/otf-file-format-symbol-1.svg) !important;
 }
 
-a.type-file[href*=".icns"]:before {
+a.type-file[data-ext*="icns"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/icns-file-format.svg) !important;
 }
 
-a.type-file[href*=".wav"]:before {
+a.type-file[data-ext*="wav"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/wav-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".lua"]:before {
+a.type-file[data-ext*="lua"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/lua-file-format-variant.svg) !important;
 }
 
-a.type-file[href*=".uue"]:before {
+a.type-file[data-ext*="uue"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/uue-file-format.svg) !important;
 }
 
-a.type-file[href*=".photoshop"]:before {
+a.type-file[data-ext*="photoshop"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/photoshop-file-format.svg) !important;
 }
 
-a.type-file[href*=".odf"]:before {
+a.type-file[data-ext*="odf"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/odf-file-format.svg) !important;
 }
 
-a.type-file[href*=".svg"]:before {
+a.type-file[data-ext*="svg"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/svg-file-format-variant.svg) !important;
 }
 
-a.type-file[href*=".iso"]:before {
+a.type-file[data-ext*="iso"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/iso-file-format-variant.svg) !important;
 }
 
-a.type-file[href*=".cfg"]:before {
+a.type-file[data-ext*="cfg"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/cfg-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".dat"]:before {
+a.type-file[data-ext*="dat"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/dat-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".odg"]:before {
+a.type-file[data-ext*="odg"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/odg-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".odc"]:before {
+a.type-file[data-ext*="odc"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/odc-file-format.svg) !important;
 }
 
-a.type-file[href*=".db"]:before {
+a.type-file[data-ext*="db"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/db-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".mp3"]:before {
+a.type-file[data-ext*="mp3"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/mp3-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".dem"]:before {
+a.type-file[data-ext*="dem"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/dem-file-format-extension.svg) !important;
 }
 
-a.type-file[href*=".xlsx"]:before {
+a.type-file[data-ext*="xlsx"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/xlsx-file-format-extension.svg) !important;
 }
 
-a.type-file[href*=".cab"]:before {
+a.type-file[data-ext*="cab"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/cab-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".flash"]:before {
+a.type-file[data-ext*="flash"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/flash-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".bmp"]:before {
+a.type-file[data-ext*="bmp"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/bmp-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".css"]:before {
+a.type-file[data-ext*="css"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/css-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".gz"]:before {
+a.type-file[data-ext*="gz"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/gz-file-format-variant.svg) !important;
 }
 
-a.type-file[href*=".png"]:before {
+a.type-file[data-ext*="png"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/png-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".docx"]:before {
+a.type-file[data-ext*="docx"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/docx-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".dds"]:before {
+a.type-file[data-ext*="dds"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/dds-icon.svg) !important;
 }
 
-a.type-file[href*=".rom"]:before {
+a.type-file[data-ext*="rom"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/rom-file-format.svg) !important;
 }
 
-a.type-file[href*=".tmp"]:before {
+a.type-file[data-ext*="tmp"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/tmp-file-format-variant.svg) !important;
 }
 
-a.type-file[href*=".xls"]:before {
+a.type-file[data-ext*="xls"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/xls-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".ico"]:before {
+a.type-file[data-ext*="ico"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/ico-file-format-variant.svg) !important;
 }
 
-a.type-file[href*=".cfm"]:before {
+a.type-file[data-ext*="cfm"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/cfm-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".raw"]:before {
+a.type-file[data-ext*="raw"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/raw-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".gif"]:before {
+a.type-file[data-ext*="gif"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/gif-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".rm"]:before {
+a.type-file[data-ext*="rm"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/rm-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".class"]:before {
+a.type-file[data-ext*="class"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/class-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".bin"]:before {
+a.type-file[data-ext*="bin"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/bin-file-format.svg) !important;
 }
 
-a.type-file[href*=".ps"]:before {
+a.type-file[data-ext*="ps"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/ps-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".ttf"]:before {
+a.type-file[data-ext*="ttf"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/ttf-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".cue"]:before {
+a.type-file[data-ext*="cue"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/cue-file-format-variant.svg) !important;
 }
 
-a.type-file[href*=".key"]:before {
+a.type-file[data-ext*="key"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/key-file-format.svg) !important;
 }
 
-a.type-file[href*=".dmg"]:before {
+a.type-file[data-ext*="dmg"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/dmg-file-format-variant.svg) !important;
 }
 
-a.type-file[href*=".mpa"]:before {
+a.type-file[data-ext*="mpa"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/mpa-file-format-variant.svg) !important;
 }
 
-a.type-file[href*=".m4v"]:before {
+a.type-file[data-ext*="m4v"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/m4v-file-format.svg) !important;
 }
 
-a.type-file[href*=".pdb"]:before {
+a.type-file[data-ext*="pdb"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/pdb-icon-file-format.svg) !important;
 }
 
-a.type-file[href*=".gpx"]:before {
+a.type-file[data-ext*="gpx"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/gpx-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".mdb"]:before {
+a.type-file[data-ext*="mdb"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/mdb-file-format.svg) !important;
 }
 
-a.type-file[href*=".msi"]:before {
+a.type-file[data-ext*="msi"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/msi-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".rtf"]:before {
+a.type-file[data-ext*="rtf"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/rtf-file-symbol.svg) !important;
 }
 
-a.type-file[href*=".ibooks"]:before {
+a.type-file[data-ext*="ibooks"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/ibooks-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".sdf"]:before {
+a.type-file[data-ext*="sdf"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/sdf-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".sql"]:before {
+a.type-file[data-ext*="sql"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/sql-file-symbol.svg) !important;
 }
 
-a.type-file[href*=".thm"]:before {
+a.type-file[data-ext*="thm"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/thm-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".3g2"]:before {
+a.type-file[data-ext*="3g2"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/3g2-file-format.svg) !important;
 }
 
-a.type-file[href*=".fla"]:before {
+a.type-file[data-ext*="fla"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/fla-file-format.svg) !important;
 }
 
-a.type-file[href*=".xml"]:before {
+a.type-file[data-ext*="xml"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/xml-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".aspx"]:before {
+a.type-file[data-ext*="aspx"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/aspx-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".wpd"]:before {
+a.type-file[data-ext*="wpd"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/wpd-file-format.svg) !important;
 }
 
-a.type-file[href*=".cpp"]:before {
+a.type-file[data-ext*="cpp"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/cpp-icon-file-format.svg) !important;
 }
 
-a.type-file[href*=".swf"]:before {
+a.type-file[data-ext*="swf"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/swf-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".avi"]:before {
+a.type-file[data-ext*="avi"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/avi-video-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".odp"]:before {
+a.type-file[data-ext*="odp"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/odp-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".cur"]:before {
+a.type-file[data-ext*="cur"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/cur-icon-file-format.svg) !important;
 }
 
-a.type-file[href*=".m4a"]:before {
+a.type-file[data-ext*="m4a"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/m4a-file-format-variant.svg) !important;
 }
 
-a.type-file[href*=".pct"]:before {
+a.type-file[data-ext*="pct"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/pct-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".pkg"]:before {
+a.type-file[data-ext*="pkg"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/pkg-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".ogg"]:before {
+a.type-file[data-ext*="ogg"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/ogg-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".sav"]:before {
+a.type-file[data-ext*="sav"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/sav-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".pages"]:before {
+a.type-file[data-ext*="pages"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/pages-file-format.svg) !important;
 }
 
-a.type-file[href*=".csv"]:before {
+a.type-file[data-ext*="csv"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/csv-file-format-extension.svg) !important;
 }
 
-a.type-file[href*=".odb"]:before {
+a.type-file[data-ext*="odb"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/odb-file-format-variant.svg) !important;
 }
 
-a.type-file[href*=".flv"]:before {
+a.type-file[data-ext*="flv"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/flv-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".asx"]:before {
+a.type-file[data-ext*="asx"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/asx-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".mov"]:before {
+a.type-file[data-ext*="mov"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/mov-file-format.svg) !important;
 }
 
-a.type-file[href*=".tar"]:before {
+a.type-file[data-ext*="tar"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/tar-file-format-symbol.svg) !important;
 }
 
-a.type-file[href*=".jsp"]:before {
+a.type-file[data-ext*="jsp"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/jsp-file-format-variant.svg) !important;
 }
 
-a.type-file[href*=".wma"]:before {
+a.type-file[data-ext*="wma"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/wma-file-format-variant.svg) !important;
 }
 
-a.type-file[href*=".kmz"]:before {
+a.type-file[data-ext*="kmz"]:before {
     background-image: url(++resource++xmldirector.plonecore/images/110941-file-formats-text/svg/kmz-file-format-variant.svg) !important;
 }
 
