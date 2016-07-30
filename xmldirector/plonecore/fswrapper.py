@@ -176,7 +176,7 @@ class BaseWrapper(object):
     def open(self, path, mode="r", lock_check=True, **kwargs):
         if lock_check:
             self._check_lock(path, op='open_{}'.format(mode[0]))
-        for i in range(1):
+        for i in range(4):
             try:
                 return super(BaseWrapper, self).open(path, mode, **kwargs)
             except fs.errors.OperationFailedError:
