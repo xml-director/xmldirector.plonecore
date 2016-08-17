@@ -12,8 +12,10 @@
     <link rel="stylesheet" type="text/css" tal:attributes="href string:$portal_url/++resource++xmldirector.plonecore/icons.css" />
 
     <div>
-        <label i18n:translate="">Path</label>:
-        <span id="subpath" tal:content="options/subpath"/>
+        <label i18n:translate="">Path</label>:            
+        <span id="subpath">
+            <tal:loop repeat="d options/subpath_components"><a tal:attributes="href d/href" tal:content="d/title"/>/</tal:loop>
+        </span>
     </div>
     
     <div class="left" style="float: left; vertical-align: top">
@@ -49,7 +51,7 @@
         function ajax_success(result) {
             $('#table-info').removeClass('status-ok status-error').addClass('status-ok');
             $('#table-info').text(result).stop(true, true).show().fadeOut(5000);
-            $('#subpath').text(SUBPATH);
+            set_subpath(SUBPATH);
             clear_query();
             DATA.length = 0;
             refresh_table();
@@ -60,6 +62,21 @@
             $('#table-info').text(result.responseText).stop(true, true).show().fadeOut(5000);
         }
 
+        function set_subpath(subpath) {
+            var result = '';
+            var items = subpath.split('/');
+            var items_seen =  [];
+            for (var i=0; i<items.length; i++)    {
+                var item = items[i];
+                items_seen.push(item)
+                var url = sprintf('%s/@@view/%s', URL, items_seen.join('/'));
+                result += sprintf('<a href="%s">%s</a>', url , item);
+                if (i != items.length)
+                    result += '/';
+            }
+            $('#subpath').html(result);
+        }
+
         $('body').on('click', '.action-chdir', function(e) {
             e.preventDefault();
             SUBPATH = $(this).data('subpath');
@@ -68,7 +85,7 @@
             url = sprintf("%s/@@view/%s",URL, SUBPATH);
             var state = {url: url, subpath: SUBPATH} 
             window.history.pushState(state, null, url);
-            $('#subpath').text(SUBPATH);
+            set_subpath(SUBPATH);
             DATA.length = 0;
             refresh_table();
             gridOptions.api.setSortModel([]);

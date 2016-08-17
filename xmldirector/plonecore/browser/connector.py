@@ -304,12 +304,21 @@ class Connector(BrowserView):
         self.request.response.setHeader('Cache-control', 'no-store')
         return json.dumps(result, default=json_serial)
 
+    def _subpath_components(self):
+
+        result = []
+        for count, item in enumerate(self.subpath):
+            href = '{}/@@view/{}'.format(self.context.absolute_url(), '/'.join(self.subpath[:count+1]))
+            result.append(dict(href=href, title=item))            
+        return result
+
     def __call__(self, *args, **kw):
 
         handle = self.get_handle()
         if handle.isDirectory():
             return self.template(
                 filter_by=self.filter_by,
+                subpath_components=self._subpath_components(),
                 subpath='/'.join(self.subpath))
         elif handle.isFile():
             filename = self.subpath[-1]
