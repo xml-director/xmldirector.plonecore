@@ -71,6 +71,7 @@
             $('#subpath').text(SUBPATH);
             DATA.length = 0;
             refresh_table();
+            gridOptions.api.setSortModel([]);
         });
 
         $('body').on('click', '.action-download', function(e) {
