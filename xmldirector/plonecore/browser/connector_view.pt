@@ -393,6 +393,7 @@
     function refresh_table() {
         get_data();
         setRowData(DATA);
+        gridOptions.api.sizeColumnsToFit();
     }
 
     $(document).ready(function() {
