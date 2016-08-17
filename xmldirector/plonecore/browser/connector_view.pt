@@ -138,7 +138,7 @@
             e.preventDefault();
             var title = $(this).data('title');
             var fullpath = $(this).data('fullpath');
-            var msg = sprintf('Rename "%s" to', title);
+            
             var new_id = window.prompt(msg, title);
             var url = sprintf('%s/@@filemanager-rename', URL);
             if (new_id != null) {
