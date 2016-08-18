@@ -20,7 +20,6 @@ __import__('pkg_resources').declare_namespace(__name__)
 for mod, min_version in [('lxml', [3, 4])]:
     dist = pkg_resources.get_distribution('lxml')
     try:
-        print dist.parsed_version
         dist_version = map(int, dist.parsed_version[:-1])
     except ValueError:
         raise ValueError('Unable to parse version {}:{}'.format(mod, dist.parsed_version))
