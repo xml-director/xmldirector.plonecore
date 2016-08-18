@@ -1,14 +1,13 @@
 Changelog
 =========
 
-2.0.0-beta1 (2016-07-24)
+2.0.0 (2016-08-18)
 ------------------------
-- full compatibility with Plone 5.1
+- full compatibility with Plone 5.0 (limited to Plone 5.1 alpha)
 - replaced DataTables.net with agGrid
 - major UI changes
 - updated to latest ACE version
 - switch to Dropzone.js for multi-file uploads
-
 
 1.6.1 (2016-04-08)
 ------------------
