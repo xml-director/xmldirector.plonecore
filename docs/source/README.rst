@@ -68,7 +68,9 @@ Requirements
 
 - Plone 4.3 (tested)
   
-- Plone 5.1 (tested, no support for Plone 5.0)
+- Plone 5.0 (tested)
+
+- Plone 5.1 (unsupported to due the alpha state of Plone 5.1)  
 
 - Supported backends:
 
@@ -134,6 +136,13 @@ Dropbox (via dropdav.com SaaS)
 
 - https://dav.dropdav.com
 - username and password required of your dropdav.com account
+
+Dropbox (via xmldirector.dropbox)
++++++++++++++++++++++++++++++++++
+
+- dropbox://dropbox.com
+- access to Dropbox must be authenticated using OAuth 
+  (see xmldirector.dropbox documentation)
 
 SME (storagemadeeasy.com)
 +++++++++++++++++++++++++
