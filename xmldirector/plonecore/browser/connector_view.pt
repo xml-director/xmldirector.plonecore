@@ -210,7 +210,7 @@
             } else {
                 var remove_url = item['remove_url'];
                 var editable = item['editable'];
-                s += sprintf('<a class="type-%s" href="%s" data-ext="%s">%s</a>', type, url, ext, title);
+                s += sprintf('<a target="_new" class="type-%s" href="%s" data-ext="%s">%s</a>', type, url, ext, title);
                 s += sprintf('\
                             <a class="action-delete" title="Remove" data-subpath="%s" data-id="%s">\
                             <img src="++resource++xmldirector.plonecore/images/remove.png" title="Remove item" i18n:attributes="title"/> </a>', 
