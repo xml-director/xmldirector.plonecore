@@ -26,7 +26,7 @@ bin/test-crex xmldirector.crex
 
 export CONNECTOR_URL=http://demo.xml-director.info:22080/webdav
 echo '######################################################'
-echo Tests against BASEX  8.3
+echo Tests against BASEX  8.5
 echo $CONNECTOR_URL
 echo '######################################################'
 bin/test xmldirector.plone
