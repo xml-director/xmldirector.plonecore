@@ -111,6 +111,21 @@ class BaseWrapper(object):
 
     supports_locks = True
 
+    _context = None
+
+    def setContext(self, context):
+        """ Custom context if the current Plone 'context' object is not a connector
+            instance. Need e.g. when you deal with different connectors from other
+            persistent objects that are not connector instances.
+        """
+        self._context = context
+
+    @property
+    def context(self):
+        if self._context:
+            return self._context
+        return zope.globalrequest.getRequest().PUBLISHED.context
+
     def isDirectory(self):
         """ Represents a directory """
         __leaf__ = getattr(self, '__leaf__', _marker)
@@ -150,8 +165,7 @@ class BaseWrapper(object):
         ignore_errors = getattr(self, 'ignore_errors', False)
 
         try:
-            context = zope.globalrequest.getRequest().PUBLISHED.context
-            lm = LockManager(context)
+            lm = LockManager(self.context)
         except AttributeError:
             lm = LockManager(None)
 
@@ -322,15 +336,14 @@ def get_fs_wrapper(url, credentials=None, context=None):
 
         registry = getUtility(IRegistry)
         settings = registry.forInterface(IDropboxSettings)
-        annotation = IAnnotations(context)
+        annotation = IAnnotations(self.context)
 
         token_key = annotation.get(dropbox_authentication.DROPBOX_TOKEN_KEY)
         token_secret = annotation.get(
             dropbox_authentication.DROPBOX_TOKEN_SECRET)
         if not token_key or not token_secret:
-            context = zope.globalrequest.getRequest().PUBLISHED.context
             authorization_url = '{}/authorize-dropbox'.format(
-                context.absolute_url())
+                self.context.absolute_url())
             raise RequiresAuthorizationError(
                 'Connector does not seem to be authorized against Dropbox',
                 authorization_url)

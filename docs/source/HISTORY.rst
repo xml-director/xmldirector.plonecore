@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.0.2 (2016-08-26)
+------------------
+- added explicit setContext() to BaseWrapper class for setting a custom
+  connector class
+
 2.0.0 (2016-08-18)
 ------------------------
 - full compatibility with Plone 5.0 (limited to Plone 5.1 alpha)
