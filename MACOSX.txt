@@ -1,0 +1,4 @@
+virtualenv-2.7
+bin/python bootstrap.py -c base.cfg
+env LDFLAGS="-L/opt/local/lib" CFLAGS="-I/opt/local/include" bin/pip install cryptography
+bin/buildout -c ...
