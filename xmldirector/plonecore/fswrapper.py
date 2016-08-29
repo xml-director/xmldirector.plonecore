@@ -105,7 +105,6 @@ class RequiresAuthorizationError(RuntimeError):
         self.authorization_url = authorization_url
 
 
-
 class BaseWrapper(object):
     """ A wapper for DAVFS """
 
@@ -273,7 +272,7 @@ def get_fs_wrapper(url, credentials=None, context=None):
     if not url:
         raise ValueError('No connector URL configured - either set a connector URL '
                          'in Plone Site-Setup -> XML Director settings or '
-                         'configure the connector URL locally on the ' 
+                         'configure the connector URL locally on the '
                          'current connector content object')
 
     if not url.endswith('/'):
@@ -336,14 +335,14 @@ def get_fs_wrapper(url, credentials=None, context=None):
 
         registry = getUtility(IRegistry)
         settings = registry.forInterface(IDropboxSettings)
-        annotation = IAnnotations(self.context)
+        annotation = IAnnotations(context)
 
         token_key = annotation.get(dropbox_authentication.DROPBOX_TOKEN_KEY)
         token_secret = annotation.get(
             dropbox_authentication.DROPBOX_TOKEN_SECRET)
         if not token_key or not token_secret:
             authorization_url = '{}/authorize-dropbox'.format(
-                self.context.absolute_url())
+                context.absolute_url())
             raise RequiresAuthorizationError(
                 'Connector does not seem to be authorized against Dropbox',
                 authorization_url)

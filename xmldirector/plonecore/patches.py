@@ -7,7 +7,7 @@
 
 
 ################################################################
-# Patch for 
+# Patch for
 # https://github.com/plone/Products.CMFPlone/issues/1527
 ################################################################
 
@@ -137,7 +137,8 @@ def bodyClass(self, template, view):
             body_classes.append('userrole-' + role.lower().replace(' ', '-'))
 
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(ISiteSchema, prefix='plone', check=False)
+        settings = registry.forInterface(
+            ISiteSchema, prefix='plone', check=False)
 
         # toolbar classes
         try:

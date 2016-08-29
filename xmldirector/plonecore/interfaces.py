@@ -83,4 +83,3 @@ class IConnectorSettings(Interface):
         default=u'',
         required=False
     )
-

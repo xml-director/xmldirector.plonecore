@@ -89,7 +89,7 @@ def ace_editor(get_handle, filename, view_name, request,
     action_url = '{}/view-editor/{}'.format(request.context.absolute_url(),
                                             '/'.join(request.subpath))
     view_url = '{}/view-editor-readonly/{}'.format(request.context.absolute_url(),
-                                            '/'.join(request.subpath))
+                                                   '/'.join(request.subpath))
     return template.pt_render(dict(
         template='ace_editor.pt',
         request=request,

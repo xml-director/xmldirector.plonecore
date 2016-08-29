@@ -308,8 +308,9 @@ class Connector(BrowserView):
 
         result = []
         for count, item in enumerate(self.subpath):
-            href = '{}/@@view/{}'.format(self.context.absolute_url(), '/'.join(self.subpath[:count+1]))
-            result.append(dict(href=href, title=item))            
+            href = '{}/@@view/{}'.format(self.context.absolute_url(),
+                                         '/'.join(self.subpath[:count + 1]))
+            result.append(dict(href=href, title=item))
         return result
 
     def __call__(self, *args, **kw):

@@ -127,7 +127,7 @@ class Connector(Item):
         if not url:
             raise ValueError('No connector URL configured - either set a connector URL '
                              'in Plone Site-Setup -> XML Director settings or '
-                             'configure the connector URL locally on the ' 
+                             'configure the connector URL locally on the '
                              'current connector content object')
 
         try:
@@ -156,7 +156,8 @@ class Connector(Item):
 
         except RequiresAuthorizationError as e:
             if e.authorization_url:
-                self.plone_utils.addPortalMessage(_(u'You need to authorize the connector first. Visit {}'.format(e.authorization_url)))
+                self.plone_utils.addPortalMessage(
+                    _(u'You need to authorize the connector first. Visit {}'.format(e.authorization_url)))
             raise
 
         except Exception as e:
