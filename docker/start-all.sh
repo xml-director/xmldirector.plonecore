@@ -1,5 +1,7 @@
 #!/bin/bash 
 export IGNORE_FS_ENCODING=1
+export LC_ALL="en_US.UTF-8"
+export LANG="en_US.UTF-8"
 
 git pull
 bin/develop update --force
