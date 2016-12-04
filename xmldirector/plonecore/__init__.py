@@ -37,6 +37,6 @@ if fs_enc.lower() not in ('utf8', 'utf-8'):
 
 # import patches only for Plone 5
 dist = pkg_resources.get_distribution('Products.CMFPlone')
-dist_version = map(int, dist.parsed_version[:-1])
-if dist_version[0] >= 5:
+if dist.version.startswith('5'):
     import patches
+    LOG.info('Applied patched for Plone 5')
