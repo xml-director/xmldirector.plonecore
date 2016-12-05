@@ -173,10 +173,15 @@ class BasicTests(unittest.TestCase):
         self.assertTrue('<table' in result)
 
     def test_xslt2_transformation(self):
-        T = Transformer([('demo', 'sample-xslt2')],
-                        transformer_registry=self.registry)
-        result = T(sample_xslt2_xml)
-        self.assertTrue('<test xmlns="http://www.example.com/v2">' in result)
+        from ..util import runcmd
+        cmd = 'java -version'
+        status, output = runcmd(cmd)
+        # don't run test if java is not available
+        if status == 0:
+            T = Transformer([('demo', 'sample-xslt2')],
+                            transformer_registry=self.registry)
+            result = T(sample_xslt2_xml)
+            self.assertTrue('<test xmlns="http://www.example.com/v2">' in result)
 
 
 def test_suite():
