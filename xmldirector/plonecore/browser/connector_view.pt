@@ -61,6 +61,13 @@
 
     <script type="text/javascript">
 
+        function sprintf(){
+            var args = Array.prototype.slice.call(arguments);
+            return args.shift().replace(/%s/g, function(){
+                return args.shift();
+            });
+        }
+
         function ajax_success(result) {
             $('#table-info').removeClass('status-ok status-error').addClass('status-ok');
             $('#table-info').text(result).stop(true, true).show().fadeOut(5000);
