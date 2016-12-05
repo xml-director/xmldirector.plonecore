@@ -95,8 +95,11 @@ class SaxonWrapper(object):
         cmd = 'java -jar "{}" -s:"{}" -xsl:"{}" -o:"{}"'.format(
             saxon_path, xml_in, xslt_in, xml_out)
         status, output = runcmd(cmd)
-        with open(xml_out, 'rb') as fp:
-            xml_out = fp.read()
+        if status == 0:
+            with open(xml_out, 'rb') as fp:
+                xml_out = fp.read()
+        else:
+            raise RuntimeError('"{}" failed: {}'.format(cmd, output))
 
         # house keeping
         shutil.rmtree(temp_d)
