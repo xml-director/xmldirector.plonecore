@@ -49,10 +49,12 @@ def default_html_handler(get_handle, filename, view_name, request):
     base_url = '{}/@@view/{}'.format(
         request.context.absolute_url(1),
         '/'.join(request.subpath[:-1]))
-
     # get HTML
     html = get_handle.open(get_handle.leaf_filename, 'rb').read()
     html = unicode(html, 'utf8')
+    if html.startswith(u'<?xml'):
+        pos = html.find('?>')
+        html = html[pos+3:]
     root = lxml.html.fromstring(html)
 
     # rewrite relative image urls
