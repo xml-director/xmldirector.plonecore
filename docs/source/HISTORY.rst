@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.0.3 (2016-12-05)
+------------------
+- minor bug fixes
+
 2.0.2 (2016-08-26)
 ------------------
 - added explicit setContext() to BaseWrapper class for setting a custom
