@@ -1,7 +1,7 @@
 import os
 from setuptools import setup, find_packages
 
-version = '2.0.3'
+version = '2.0.4'
 
 setup(name='xmldirector.plonecore',
       version=version,
@@ -40,7 +40,7 @@ setup(name='xmldirector.plonecore',
           'requests',
           'progressbar',
           'python-dateutil',
-          'fs',
+          'fs==0.5.4',
           'furl',
           'dexml',
           'grampg',
