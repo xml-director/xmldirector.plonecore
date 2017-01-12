@@ -1,7 +1,7 @@
 import os
 from setuptools import setup, find_packages
 
-version = '2.0.4'
+version = '2.0.4.1'
 
 setup(name='xmldirector.plonecore',
       version=version,
