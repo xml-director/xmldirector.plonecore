@@ -100,6 +100,9 @@ Requirements
     
     - SFTP (working in general, open issues with the connection pool)
 
+.. note:: 
+
+    You need to pin `fs=0.5.4` in your buildout configuration
 
 Configuration
 -------------
