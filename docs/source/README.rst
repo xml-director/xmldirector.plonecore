@@ -70,7 +70,7 @@ Requirements
   
 - Plone 5.0 (tested)
 
-- Plone 5.1 (unsupported to due the alpha state of Plone 5.1)  
+- Plone 5.1 (tested)
 
 - Supported backends:
 
