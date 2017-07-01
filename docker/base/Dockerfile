@@ -19,7 +19,7 @@ RUN virtualenv .
 RUN bin/pip install pycparser
 RUN bin/pip install PyNaCl
 RUN bin/pip install grampg
-RUN bin/pip install dropbox=7.3.1
+RUN bin/pip install dropbox==7.3.1
 RUN git clone https://github.com/xml-director/xmldirector.plonecore.git  
 WORKDIR xmldirector.plonecore
 RUN git pull
