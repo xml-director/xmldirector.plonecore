@@ -155,10 +155,12 @@
         });
         
         $('body').on('click', '.action-rename', function(e) {
+
             e.preventDefault();
             var title = $(this).data('title');
             var fullpath = $(this).data('fullpath');
             
+            var msg = sprintf('Enter new name');
             var new_id = window.prompt(msg, title);
             var url = sprintf('%s/@@filemanager-rename', URL);
             if (new_id != null) {
