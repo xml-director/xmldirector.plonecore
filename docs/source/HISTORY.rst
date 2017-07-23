@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.1.1 (2017-07-23)
+------------------
+- fixed JS issue in rename action
+
 2.1.0 (2017-04-04)
 ------------------
 - compatibility with Plone 5.1
