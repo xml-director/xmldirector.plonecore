@@ -4,6 +4,7 @@ repo_token: 9Gz8lbFOfnCehczzQnPMy49awudPW4Rzz
 sudo: false
 dist: trusty
 language: python
+group: deprecated-2017Q2
 
 services:
  - docker
