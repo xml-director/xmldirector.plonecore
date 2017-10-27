@@ -18,6 +18,7 @@ docker run -d $DOCKER_OPTIONS $DOCKER
 
 virtualenv .
 bin/pip install zc.buildout
+ln -sf base.cfg buildout.cfg
 bin/buildout bootstrap
 bin/buildout -c $config
 
