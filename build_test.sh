@@ -16,10 +16,10 @@ config=buildout-plone-$PLONE_VERSION.cfg
 docker run -d $DOCKER_OPTIONS $DOCKER
 docker run -d $DOCKER_OPTIONS $DOCKER
 
-#virtualenv-2.7 .
-pip install -U setuptools==25.2.0  
-pip install boto
-python bootstrap.py -c $config --setuptools-version 25.2.0 --version 2.5.2
+virtualenv .
+bin/pip install -U setuptools==36.5.0  
+bin/pip install zc.buildout
+bin/buildout bootstrap
 bin/buildout -c $config
 
 if [[ $TYPE  == 'OWNCLOUD' ]]
