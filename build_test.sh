@@ -17,7 +17,7 @@ docker run -d $DOCKER_OPTIONS $DOCKER
 docker run -d $DOCKER_OPTIONS $DOCKER
 
 virtualenv .
-bin/pip install zc.buildout boto
+bin/pip install zc.buildout
 bin/buildout bootstrap
 bin/buildout -c $config
 
