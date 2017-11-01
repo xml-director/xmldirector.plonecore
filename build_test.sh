@@ -14,7 +14,6 @@ echo $DOCKER_OPTIONS
 config=buildout-plone-$PLONE_VERSION.cfg
 
 docker run -d $DOCKER_OPTIONS $DOCKER
-docker run -d $DOCKER_OPTIONS $DOCKER
 
 virtualenv --clear .
 bin/pip install setuptools==36.6.0
