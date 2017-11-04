@@ -16,11 +16,11 @@ config=buildout-plone-$PLONE_VERSION.cfg
 docker run -d $DOCKER_OPTIONS $DOCKER
 
 virtualenv --clear .
-bin/pip install setuptools==36.6.0
-bin/pip install zc.buildout
+pip install setuptools==36.6.0
+pip install zc.buildout
 ln -sf base.cfg buildout.cfg
-bin/buildout bootstrap
-bin/buildout -c $config
+buildout bootstrap
+buildout -c $config
 
 if [[ $TYPE  == 'OWNCLOUD' ]]
 then
