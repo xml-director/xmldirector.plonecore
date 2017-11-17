@@ -106,7 +106,7 @@ class BaseWrapper(object):
         __leaf__ = getattr(self, '__leaf__', _marker)
         if __leaf__ != _marker:
             return not getattr(self, '__leaf__', False)
-        if isinstance(self, SFTPFSWrapper):
+        if have_paramiko and isinstance(self, SFTPFSWrapper):
             return not self.isfile('.')
         return self.isdir('.')
 
@@ -115,7 +115,7 @@ class BaseWrapper(object):
         __leaf__ = getattr(self, '__leaf__', _marker)
         if __leaf__ != _marker:
             return getattr(self, '__leaf__', False)
-        if isinstance(self, SFTPFSWrapper):
+        if have_paramiko and isinstance(self, SFTPFSWrapper):
             return self.isfile('.')
         return self.isfile('.')
 
@@ -125,7 +125,7 @@ class BaseWrapper(object):
         if __leaf__ != _marker:
             # hack for OSFS, fix this
             return urllib.unquote(self.__leaf_filename__)
-        if isinstance(self, SFTPFSWrapper):
+        if have_paramiko and isinstance(self, SFTPFSWrapper):
             return '.'
         if self.isFile():
             return '.'
