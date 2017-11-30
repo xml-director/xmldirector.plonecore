@@ -52,15 +52,15 @@ matrix:
 
   - python: "2.7"
     env: 
-     - TYPE=EXIST30 PLONE_VERSION=4.3 CONNECTOR_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-30 DOCKER_OPTIONS="-p 127.0.0.1:8080:8080"
+     - TYPE=EXIST36 PLONE_VERSION=4.3 CONNECTOR_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-36 DOCKER_OPTIONS="-p 127.0.0.1:8080:8080"
 
   - python: "2.7"
     env: 
-     - TYPE=EXIST30 PLONE_VERSION=5.0 CONNECTOR_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-30 DOCKER_OPTIONS="-p 127.0.0.1:8080:8080"
+     - TYPE=EXIST36 PLONE_VERSION=5.0 CONNECTOR_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-36 DOCKER_OPTIONS="-p 127.0.0.1:8080:8080"
 
   - python: "2.7"
     env: 
-     - TYPE=EXIST30 PLONE_VERSION=5.1 CONNECTOR_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-30 DOCKER_OPTIONS="-p 127.0.0.1:8080:8080"
+     - TYPE=EXIST36 PLONE_VERSION=5.1 CONNECTOR_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-36 DOCKER_OPTIONS="-p 127.0.0.1:8080:8080"
 
   - python: "2.7"
     env: 
