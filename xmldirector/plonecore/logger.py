@@ -93,6 +93,7 @@ class PersistentLoggerAdapter(object):
             LOG_LAST_USER] = plone.api.user.get_current().getUserName()
         IAnnotations(self.context)[LOG_LAST_DATE] = datetime.datetime.utcnow()
         self.context.setModificationDate(DateTime())
+        self.context.reindexObject()
 
     def get_last_user(self):
         """ Return username of last user """
