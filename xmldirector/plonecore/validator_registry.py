@@ -14,6 +14,7 @@ import operator
 import defusedxml.lxml
 import lxml.etree
 import lxml.isoschematron
+from zope.interface import implementer
 from zope.interface import implements
 from xmldirector.plonecore.interfaces import IValidatorRegistry
 from xmldirector.plonecore.logger import LOG
@@ -32,11 +33,11 @@ from xmldirector.plonecore.logger import LOG
 # completey arbitrary.
 
 
+@implementer(IValidatorRegistry)
 class ValidatorRegistry(object):
 
     """ A registry for XML schemas and DTDs """
 
-    implements(IValidatorRegistry)
 
     registry = {}
 

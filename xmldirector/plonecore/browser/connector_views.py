@@ -9,6 +9,7 @@ import mimetypes
 import lxml.html
 
 from zope.interface import implements
+from zope.interface import implementer
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from ZPublisher.Iterators import IStreamIterator
 
@@ -16,10 +17,11 @@ from .view_registry import precondition_registry
 from .view_registry import Precondition
 from . import config
 
+import io
 
-class connector_iterator(file):
+@implementer(IStreamIterator)
+class connector_iterator(io.FileIO):
 
-    implements(IStreamIterator)
 
     def __init__(self, handle, mode='rb', streamsize=1 << 16):
         self.fp = handle.open(handle.leaf_filename, mode)

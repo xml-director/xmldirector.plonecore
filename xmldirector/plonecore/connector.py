@@ -13,6 +13,7 @@ import urllib
 import zExceptions
 from zope import schema
 from zope.interface import implements
+from zope.interface import implementer
 from zope.component import getUtility
 from plone.dexterity.content import Item
 from plone.supermodel import model
@@ -77,9 +78,9 @@ class IConnector(model.Schema):
     )
 
 
+@implementer(IConnector)
 class Connector(Item):
 
-    implements(IConnector)
 
     connector_url = None
     connector_username = None

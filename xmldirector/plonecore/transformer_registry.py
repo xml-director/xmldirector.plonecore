@@ -16,6 +16,7 @@ import datetime
 import shutil
 import pkg_resources
 
+from zope.interface import implementer
 from zope.interface import implements
 from zope.interface import Interface
 from xmldirector.plonecore.interfaces import ITransformerRegistry
@@ -44,9 +45,9 @@ class ITransformerWrapper(Interface):
 # which is the canonical API for chaining different transformations.
 
 
+@implementer(ITransformerWrapper)
 class XSLT1Wrapper(object):
 
-    implements(ITransformerWrapper)
 
     def __init__(self, registry_entry):
         # ``transformer`` is the original transformer object
@@ -61,11 +62,11 @@ class XSLT1Wrapper(object):
         return self.entry['transform'](root)
 
 
+@implementer(ITransformerWrapper)
 class SaxonWrapper(object):
 
     """ A Saxon 9.6 wrapper for XSLT 2/3 transformations """
 
-    implements(ITransformerWrapper)
 
     def __init__(self, registry_entry):
         self.entry = registry_entry
@@ -106,9 +107,9 @@ class SaxonWrapper(object):
         return defusedxml.lxml.fromstring(xml_out)
 
 
+@implementer(ITransformerRegistry)
 class TransformerRegistry(object):
 
-    implements(ITransformerRegistry)
 
     registry = {}
 

@@ -22,8 +22,3 @@ if fs_enc.lower() not in ('utf8', 'utf-8'):
     LOG.error('Filesystem encoding should be UTF-8, not {}'.format(fs_enc))
 
 
-# import patches only for Plone 5
-dist = pkg_resources.get_distribution('Products.CMFPlone')
-if dist.version.startswith('5'):
-    import patches
-    LOG.info('Applied patched for Plone 5')

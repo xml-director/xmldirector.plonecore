@@ -39,7 +39,8 @@ from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from xmldirector.plonecore.i18n import MessageFactory as _
-from zopyx.plone.persistentlogger.logger import IPersistentLogger
+
+import io
 
 from .view_registry import precondition_registry
 from . import connector_views  # NOQA - needed to initalize the registry
@@ -76,10 +77,10 @@ def json_serial(obj):
     raise TypeError("Type not serializable")
 
 
-class connector_iterator(file):
+@implementer(IStreamIterator)
+class connector_iterator(io.FileIO):
     """ Iterator for pyfilesystem content """
 
-    implements(IStreamIterator)
 
     def __init__(self, handle, filename, mode='rb', streamsize=1 << 16):
         self.fp = handle.open(filename, mode)
@@ -180,6 +181,7 @@ class Connector(BrowserView):
 
     @property
     def logger(self):
+        return None
         return IPersistentLogger(self.context)
 
     def get_handle(self, subpath=None, root=False):

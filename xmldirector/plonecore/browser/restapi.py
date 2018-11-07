@@ -22,13 +22,13 @@ from plone.rest import Service
 from zope.component import getUtility
 from zope.annotation.interfaces import IAnnotations
 from zope.interface import implements
+from zope.interface import implementer
 from ZPublisher.Iterators import filestream_iterator
 from ZPublisher.Iterators import IStreamIterator
 
 from xmldirector.plonecore.logger import LOG
 from xmldirector.plonecore.interfaces import IConnectorHandle
 from xmldirector.plonecore.connector import IConnector
-from zopyx.plone.persistentlogger.logger import IPersistentLogger
 
 
 ANNOTATION_KEY = 'xmldirector.plonecore.api'
@@ -109,10 +109,10 @@ def timed(method):
     return timed
 
 
+@implementer(IStreamIterator)
 class fs_filestream_iterator(object):
     """ Iterator for 'fs' module filesystems """
 
-    implements(IStreamIterator)
 
     def __init__(self, fs_handle, streamsize=1 << 16):
         self.streamsize = streamsize
@@ -192,7 +192,6 @@ class api_create(BaseService):
             annotations = IAnnotations(connector)
             annotations[ANNOTATION_KEY] = custom
 
-        IPersistentLogger(connector).log('created', details=payload)
         self.request.response.setStatus(201)
         return dict(
             id=id,
@@ -245,7 +244,6 @@ class api_set_metadata(BaseService):
     def _render(self):
 
         payload = decode_json_payload(self.request)
-        IPersistentLogger(self.context).log('set_metadata', details=payload)
 
         title = payload.get('title', _marker)
         if title is not _marker:
@@ -285,7 +283,6 @@ class api_store_zip(BaseService):
 
     def _render(self):
 
-        IPersistentLogger(self.context).log('store')
 
         if 'zipfile' not in self.request.form:
             raise ValueError('No parameter "zipfile" found')

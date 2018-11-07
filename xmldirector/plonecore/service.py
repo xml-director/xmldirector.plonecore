@@ -8,16 +8,15 @@
 
 import fs.errors
 import zope.interface
+from zope.interface import implementer
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
 from xmldirector.plonecore.interfaces import IConnectorSettings
 from xmldirector.plonecore.interfaces import IConnectorHandle
 from xmldirector.plonecore.fswrapper import get_fs_wrapper
 
-
+@implementer(IConnectorHandle)
 class ConnectorHandle(object):
-
-    zope.interface.implements(IConnectorHandle)
 
     def get_handle(self):
         """ Return Connector handle """

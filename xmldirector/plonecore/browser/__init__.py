@@ -5,4 +5,3 @@
 # (C) 2016,  Andreas Jung, www.zopyx.com, Tuebingen, Germany
 ################################################################
 
-import restapi_patches  # NOQA
