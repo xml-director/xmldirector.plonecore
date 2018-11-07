@@ -298,9 +298,9 @@ class Connector(BrowserView):
 
         index = itertools.count()
         dirs = sorted(dirs, key=operator.itemgetter('title'))
-        [d.update(index=index.next()) for d in dirs]
+        [d.update(index=next(index)) for d in dirs]
         files = sorted(files, key=operator.itemgetter('title'))
-        [f.update(index=index.next()) for f in files]
+        [f.update(index=next(index)) for f in files]
         result = dict(dirs=dirs, files=files)
         self.request.response.setHeader('Pragma', 'no-cache')
         self.request.response.setHeader('Cache-control', 'no-store')
