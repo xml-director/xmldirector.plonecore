@@ -8,7 +8,7 @@
 import json
 import defusedxml.lxml
 import lxml.etree
-import urlparse
+import urllib.parse
 import requests
 from requests.auth import HTTPBasicAuth
 
@@ -46,7 +46,7 @@ class API(BrowserView):
 
         registry = getUtility(IRegistry)
         settings = registry.forInterface(IConnectorSettings)
-        pr = urlparse.urlparse(settings.connector_url)
+        pr = urllib.parse.urlparse(settings.connector_url)
         url = '{}://{}/exist/restxq/{}.{}'.format(
             pr.scheme, pr.netloc, script_path, output_format)
 

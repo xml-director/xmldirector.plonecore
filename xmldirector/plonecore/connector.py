@@ -95,7 +95,7 @@ class Connector(Item):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(IConnectorSettings)
 
-        if isinstance(subpath, unicode):
+        if isinstance(subpath, str):
             subpath = subpath.encode('utf8')
 
         adapted = IConnector(self)

@@ -30,9 +30,9 @@ class IXMLImage(IField):
     pass
 
 
+@zope.interface.implementer(IXMLImage)
 class XMLImage(NamedImageField):
-    zope.interface.implements(IXMLImage)
-
+    pass
 
 XMLImageFactory = FieldFactory(
     XMLImage, _(u'label_xml_Image_field', default=u'XML (image)'))

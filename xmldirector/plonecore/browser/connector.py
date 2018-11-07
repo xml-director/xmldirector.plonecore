@@ -63,8 +63,8 @@ def stmode2unix(st_mode):
 
 
 def safe_unicode(s):
-    if not isinstance(s, unicode):
-        return unicode(s, 'utf8')
+    if not isinstance(s, str):
+        return str(s, 'utf8')
     return s
 
 
@@ -148,7 +148,7 @@ class Connector(BrowserView):
     view_name = 'view'
     template = ViewPageTemplateFile('connector_view.pt')
 
-    implements(IViewView)
+#    implements(IViewView)
 
     def __init__(self, context, request):
         super(Connector, self).__init__(context, request)

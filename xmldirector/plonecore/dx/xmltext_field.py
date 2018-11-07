@@ -59,8 +59,8 @@ class IXMLText(IField):
     """ Marker for XML fields """
 
 
+@zope.interface.implementer(IXMLText)
 class XMLText(Text):
-    zope.interface.implements(IXMLText)
 
     def render(self):
         import pdb
@@ -144,9 +144,9 @@ class IXMLTextWidget(IWidget):
     pass
 
 
+@zope.interface.implementer_only(IXMLTextWidget)
 class XMLTextWidget(text.TextWidget):
     """ Widget for XPath expressions."""
-    zope.interface.implementsOnly(IXMLTextWidget)
 
     def xml_content(self):
         dm = XMLFieldDataManager(context=self.context, field=self.field)

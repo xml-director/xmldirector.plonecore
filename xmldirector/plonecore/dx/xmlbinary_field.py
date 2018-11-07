@@ -34,8 +34,9 @@ class IXMLBinary(IField):
     pass
 
 
+@zope.interface.implementer(IXMLBinary)
 class XMLBinary(NamedFileField):
-    zope.interface.implements(IXMLBinary)
+    pass
 
 
 XMLBinaryFactory = FieldFactory(

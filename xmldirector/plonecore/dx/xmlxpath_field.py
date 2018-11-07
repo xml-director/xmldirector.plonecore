@@ -88,8 +88,8 @@ class IXMLXPath(IField):
     pass
 
 
+@zope.interface.implementer(IXMLXPath)
 class XMLXPath(TextLine):
-    zope.interface.implements(IXMLXPath)
 
     def validate(self, value):
 
@@ -112,10 +112,10 @@ class IXPathWidget(IWidget):
     pass
 
 
+@zope.interface.implementer_only(IXPathWidget)
 class XPathWidget(text.TextWidget):
 
     """ Widget for XPath expressions."""
-    zope.interface.implementsOnly(IXPathWidget)
 
     def xpath_evaluated(self):
         dm = XMLXPathDataManager(context=self.context, field=self.field)

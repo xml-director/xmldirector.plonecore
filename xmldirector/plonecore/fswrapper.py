@@ -228,7 +228,7 @@ class BaseWrapper(object):
         """ Convert string according to FS unicode_paths metadata """
         if issubclass(self.__class__, fs.osfs.OSFS):
             return unidecode.unidecode(s).encode('utf8')
-        if not self.getmeta('unicode_paths') and isinstance(s, unicode):
+        if not self.getmeta('unicode_paths') and isinstance(s, str):
             return s.encode('utf-8')
         return s
 
@@ -280,7 +280,8 @@ def get_fs_wrapper(url, credentials=None, context=None):
     f = furl(url)
     original_url = url
     if f.scheme == 'file':
-        path = unicode(urllib.unquote(str(f.path)), 'utf8')
+#        path = str(urllib.parse.unquote(str(f.path)), 'utf8')
+        path = urllib.parse.unquote(str(f.path))
         wrapper = OSFSWrapper(path, encoding='utf-8')
     elif f.scheme.startswith(('http', 'https')):
         try:
