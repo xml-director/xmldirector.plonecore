@@ -54,10 +54,14 @@ matrix:
     env: 
      - TYPE=BASEX83 PLONE_VERSION=4.3 CONNECTOR_URL=http://localhost:8080/webdav DOCKER=zopyx/basex-83 DOCKER_OPTIONS="-p 127.0.0.1:8080:8080"
 
+  - python: "2.7"
+    env: 
+     - TYPE=BASEX83 PLONE_VERSION=5.1 CONNECTOR_URL=http://localhost:8080/webdav DOCKER=zopyx/basex-83 DOCKER_OPTIONS="-p 127.0.0.1:8080:8080"
+
 
   - python: "2.7"
     env: 
-      - TYPE=BASEX83 PLONE_VERSION=5.1 CONNECTOR_URL=http://localhost:8080/webdav DOCKER=zopyx/basex-83 DOCKER_OPTIONS="-p 127.0.0.1:8080:8080"
+      - TYPE=BASEX91 PLONE_VERSION=5.1 CONNECTOR_URL=http://localhost:8080/webdav DOCKER=zopyx/basex-91 DOCKER_OPTIONS="-p 127.0.0.1:8080:8080"
 
   - python: "2.7"
     env: 
