@@ -30,9 +30,9 @@ matrix:
     env: 
      - TYPE=LOCAL_FS PLONE_VERSION=5.1 CONNECTOR_URL=file:///tmp/testing
 
-  - python: "2.7"
-    env: 
-     - TYPE=LOCAL_FS PLONE_VERSION=5.2 CONNECTOR_URL=file:///tmp/testing
+       #  - python: "2.7"
+       #    env: 
+       #     - TYPE=LOCAL_FS PLONE_VERSION=5.2 CONNECTOR_URL=file:///tmp/testing
 
   - python: "2.7"
     env: 
