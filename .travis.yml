@@ -32,6 +32,10 @@ matrix:
 
   - python: "2.7"
     env: 
+     - TYPE=LOCAL_FS PLONE_VERSION=5.2 CONNECTOR_URL=file:///tmp/testing
+
+  - python: "2.7"
+    env: 
      - TYPE=EXIST22 PLONE_VERSION=4.3 CONNECTOR_URL=http://localhost:8080/exist/webdav/db DOCKER=zopyx/existdb-22 DOCKER_OPTIONS="-p 127.0.0.1:8080:8080"
 
   - python: "2.7"
